@@ -17,6 +17,22 @@ app.get("/", (req, res) => {
     res.send("Fut a backend.");
 });
 
-app.listen(3001, () =>{
+app.get("/regiok", (req, res) => {
+    const query = "SELECT * FROM regiok";
+    db.query(query, (err, result) => {
+        if (err) return res.json(err);
+        return res.json(result)
+    })
+});
+
+app.get("/regio8", (req, res) => {
+    const query = "SELECT * FROM regiok WHERE Rid = 8"
+    db.query(query, (err, result) => {
+        if (err) return res.json(err);
+        return res.json(result)
+    })
+});
+
+app.listen(3001, () => {
     console.log("Server is running on port 3001");
 });
