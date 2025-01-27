@@ -33,6 +33,19 @@ app.get("/regio8", (req, res) => {
     })
 });
 
+app.post("/ujRegio", (req, res) => {
+    const query = "INSERT INTO regiok ('Rid' , 'regionev' , 'regio_tipusa') VALUES (? , ? , ?)"
+    const values = ['11', 'Budapest', 'főváros'];
+
+    db.query(query, values, (err, result) => {
+        if (err){
+            console.error("Hiba történt:", err); 
+            return res.status(500).json("error: Adatbázis hiba történt.");
+        }
+        return res.status(500).json("message: Az adatok fellettek töltve.")
+    })
+});
+
 app.listen(3001, () => {
     console.log("Server is running on port 3001");
 });
