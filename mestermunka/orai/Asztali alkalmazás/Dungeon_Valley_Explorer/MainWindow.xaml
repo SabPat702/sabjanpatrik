@@ -7,6 +7,19 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="95*" />
+            <RowDefinition Height="5*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15*" />
+            <ColumnDefinition Width="75*" />
+            <ColumnDefinition Width="10*" />
+        </Grid.ColumnDefinitions>
+        <ListBox Grid.Row="0" Grid.Column="1" Background="Black" Foreground="White" Grid.ColumnSpan="2" Name="lbDisplay" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Background="Black" Foreground="White" Name="tbInputArea" TextWrapping="Wrap" Text="TextBox"/>
+        <ListBox Grid.Column="0" Grid.Row="0" Background="Black" Foreground="White" Name="lbOptions" Grid.RowSpan="2" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+        <Button Grid.Column="2" Content="Input Button" Name="btInput" Grid.Row="1" Click="btInput_Click"/>
+
     </Grid>
 </Window>

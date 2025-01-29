@@ -40,6 +40,38 @@ namespace Dungeon_Valley_Explorer {
     /// </summary>
     public partial class MainWindow : System.Windows.Window, System.Windows.Markup.IComponentConnector {
         
+        
+        #line 19 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.ListBox lbDisplay;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 20 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.TextBox tbInputArea;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 21 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.ListBox lbOptions;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 22 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Button btInput;
+        
+        #line default
+        #line hidden
+        
         private bool _contentLoaded;
         
         /// <summary>
@@ -68,6 +100,27 @@ namespace Dungeon_Valley_Explorer {
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+            switch (connectionId)
+            {
+            case 1:
+            this.lbDisplay = ((System.Windows.Controls.ListBox)(target));
+            return;
+            case 2:
+            this.tbInputArea = ((System.Windows.Controls.TextBox)(target));
+            return;
+            case 3:
+            this.lbOptions = ((System.Windows.Controls.ListBox)(target));
+            return;
+            case 4:
+            this.btInput = ((System.Windows.Controls.Button)(target));
+            
+            #line 22 "..\..\MainWindow.xaml"
+            this.btInput.Click += new System.Windows.RoutedEventHandler(this.btInput_Click);
+            
+            #line default
+            #line hidden
+            return;
+            }
             this._contentLoaded = true;
         }
     }
