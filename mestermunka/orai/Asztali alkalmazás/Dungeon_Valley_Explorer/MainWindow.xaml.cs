@@ -40,6 +40,7 @@ namespace Dungeon_Valley_Explorer
         public bool skipDamageCalculator = false;
         public Random random = new Random();
         public List<Race> races = new List<Race>();
+        public Race ExampleRace = new Race();
         public Hero ExampleHero = new Hero();
         public Weapon ExampleWeapon = new Weapon();
         public SpecialEffect ExampleSpecialEffect = new SpecialEffect();
@@ -58,7 +59,30 @@ namespace Dungeon_Valley_Explorer
             {
                 DownloaderStepOne();
             }
-            /*ExamplePassive.Id = 0;
+
+            /*ExampleRace.Id = 0;
+            ExampleRace.RaceName = "Human";
+            ExampleRace.Description = "";
+            ExampleRace.Fatal.Add("");
+            ExampleRace.Weak.Add("");
+            ExampleRace.Resist.Add("");
+            ExampleRace.Endure.Add("");
+            ExampleRace.Nulls.Add("");
+
+            races.Add(ExampleRace);
+
+            ExampleRace.Id = 1;
+            ExampleRace.RaceName = "Goblin";
+            ExampleRace.Description = "";
+            ExampleRace.Fatal.Add("");
+            ExampleRace.Weak.Add("");
+            ExampleRace.Resist.Add("");
+            ExampleRace.Endure.Add("");
+            ExampleRace.Nulls.Add("");
+
+            races.Add(ExampleRace);
+
+            ExamplePassive.Id = 0;
             ExamplePassive.PassiveName = "Sword Proficiency";
             ExamplePassive.Description = "Sword strikes are a little bit stronger.";
             ExamplePassive.Affect = "Damage Calculator";
@@ -96,7 +120,7 @@ namespace Dungeon_Valley_Explorer
 
             ExampleMonster.Id = 0;
             ExampleMonster.MonsterName = "TestMonster";
-            ExampleMonster.RaceId = 2;
+            ExampleMonster.RaceId = 1;
             ExampleMonster.DEF = 0;
             ExampleMonster.InDEF = 0;
             ExampleMonster.MDEF = 0;
@@ -116,7 +140,7 @@ namespace Dungeon_Valley_Explorer
             ExampleHero.Guard = false;
             ExampleHero.Lvl = 1;
             ExampleHero.Exp = 0;
-            ExampleHero.RaceId = 1;
+            ExampleHero.RaceId = 0;
             ExampleHero.HP = 100;
             ExampleHero.MaxHP = 100;
             ExampleHero.InHP = 100;
@@ -323,21 +347,28 @@ namespace Dungeon_Valley_Explorer
             if (!Directory.Exists(@"GameAssets\Enemies"))
             {
                 Directory.CreateDirectory(@"GameAssets\Enemies");
+                DownloadMonsters();
+                DownloadAis();
             }
             
             if (!Directory.Exists(@"GameAssets\Dungeons"))
             {
                 Directory.CreateDirectory(@"GameAssets\Dungeons");
+                DownloadDungeons();
             }
             
             if (!Directory.Exists(@"GameAssets\Effects"))
             {
                 Directory.CreateDirectory(@"GameAssets\Effects");
+                DownloadBuffsDebuffs();
+                DownloadPassives();
+                DownloadSpecialEffects();
             }
             
             if (!Directory.Exists(@"GameAssets\Characters"))
             {
                 Directory.CreateDirectory(@"GameAssets\Characters");
+                DownloadNPCs();
             }
             
             if (!Directory.Exists(@"GameAssets\Items"))
@@ -358,6 +389,7 @@ namespace Dungeon_Valley_Explorer
             if (!Directory.Exists(@"GameAssets\EnvironmentHazards"))
             {
                 Directory.CreateDirectory(@"GameAssets\EnvironmentHazards");
+                DownloadEnvironmentHazards();
             }
             
             if (!Directory.Exists(@"GameAssets\Races"))
@@ -369,7 +401,54 @@ namespace Dungeon_Valley_Explorer
             {
                 Directory.CreateDirectory(@"Profiles");
             }
-            
+        }
+
+        public void DownloadMonsters()
+        {
+            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+        }
+
+        public void DownloadAis()
+        {
+            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+        }
+
+        public void DownloadDungeons()
+        {
+            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+        }
+
+        public void DownloadEnvironmentHazards()
+        {
+            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+        }
+
+        public void DownloadBuffsDebuffs()
+        {
+            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+        }
+
+        public void DownloadPassives()
+        {
+            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+        }
+
+        public void DownloadSpecialEffects()
+        {
+            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+        }
+
+        public void DownloadNPCs()
+        {
+            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
         }
     }
 }
