@@ -33,7 +33,7 @@ namespace Dungeon_Valley_Explorer
 
         public Weapon()
         {
-
+            SpecialEffect = new List<SpecialEffect>();
         }
     }
 }

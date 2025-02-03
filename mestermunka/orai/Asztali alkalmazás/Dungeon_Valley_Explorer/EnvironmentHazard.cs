@@ -25,7 +25,7 @@ namespace Dungeon_Valley_Explorer
 
         public EnvironmentHazard()
         {
-
+            SpecialEffect = new List<SpecialEffect>();
         }
     }
 }

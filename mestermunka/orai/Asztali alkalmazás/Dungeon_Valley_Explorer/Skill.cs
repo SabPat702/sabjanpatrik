@@ -28,7 +28,7 @@ namespace Dungeon_Valley_Explorer
 
         public Skill()
         {
-
+            SpecialEffect = new List<SpecialEffect>();
         }
     }
 }

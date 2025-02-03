@@ -24,7 +24,9 @@ namespace Dungeon_Valley_Explorer
 
         public DamageSource()
         {
-
+            SpecialEffect = new List<SpecialEffect>();
+            BuffsDebuffs = new List<BuffDebuff>();
+            Passives = new List<Passive>();
         }
         public DamageSource(EnvironmentHazard envHazard)
         {

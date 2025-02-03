@@ -23,7 +23,8 @@ namespace Dungeon_Valley_Explorer
 
         public Target()
         {
-
+            BuffsDebuffs = new List<BuffDebuff>();
+            Passives = new List<Passive>();
         }
 
         public Target(Hero hero)

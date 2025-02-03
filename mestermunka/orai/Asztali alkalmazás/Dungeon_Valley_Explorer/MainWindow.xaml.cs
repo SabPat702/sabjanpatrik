@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Bcpg;
 
 namespace Dungeon_Valley_Explorer
 {
@@ -21,7 +23,19 @@ namespace Dungeon_Valley_Explorer
     /// </summary>
     public partial class MainWindow : Window
     {
-        public List<string> physicalDamageTypes = new List<string>();
+        public MySqlConnectionStringBuilder mySqlConnectionStringBuilder = new MySqlConnectionStringBuilder()
+        {
+            Server = "10.3.1.65",
+            Port = 3306,
+            UserID = "sabpat702",
+            Password = "72587413702",
+            Database = "sabpat702",
+            SslMode = MySqlSslMode.Preferred
+        };
+
+
+
+        /*public List<string> physicalDamageTypes = new List<string>();
         public List<string> magicalDamageTypes = new List<string>();
         public bool skipDamageCalculator = false;
         public Random random = new Random();
@@ -34,13 +48,45 @@ namespace Dungeon_Valley_Explorer
         public Monster ExampleMonster = new Monster();
         public Skill ExampleSkill = new Skill();
         public Target targetPrep = new Target();
-        public DamageSource damageSourcePrep = new DamageSource();
+        public DamageSource damageSourcePrep = new DamageSource();*/
 
         public MainWindow()
         {
             InitializeComponent();
 
-            ExampleSkill.Id = 1;
+            if (!Directory.Exists(@"GameAssets") || !Directory.Exists(@"GameAssets\Enemies") || !Directory.Exists(@"GameAssets\Dungeons") || !Directory.Exists(@"GameAssets\Effects") || !Directory.Exists(@"GameAssets\Characters") || !Directory.Exists(@"GameAssets\Items") || !Directory.Exists(@"GameAssets\Abilities") || !Directory.Exists(@"GameAssets\Dungeons") || !Directory.Exists(@"GameAssets\EnvironmentHazards") || !Directory.Exists(@"GameAssets\Races") || !Directory.Exists(@"Profiles"))
+            {
+                DownloaderStepOne();
+            }
+            /*ExamplePassive.Id = 0;
+            ExamplePassive.PassiveName = "Sword Proficiency";
+            ExamplePassive.Description = "Sword strikes are a little bit stronger.";
+            ExamplePassive.Affect = "Damage Calculator";
+
+            ExampleBuffDebuff.Id = 0;
+            ExampleBuffDebuff.BuffDebuffName = "Damage up";
+            ExampleBuffDebuff.Description = "A small increase in damage.";
+            ExampleBuffDebuff.Affect = "Damage Calculator";
+            ExampleBuffDebuff.Timer = 3;
+
+            ExampleSpecialEffect.Id = 0;
+            ExampleSpecialEffect.SpecialEffectName = "Piercing Blade";
+            ExampleSpecialEffect.Description = "A blade that can even cut armor. (Ignores a set amount of defense(DEF))";
+            ExampleSpecialEffect.Affect = "Damage Calculator";
+
+            ExampleWeapon.Id = 0;
+            ExampleWeapon.WeaponName = "TestWeapon";
+            ExampleWeapon.ATK = 20;
+            ExampleWeapon.Range = "Melee";
+            ExampleWeapon.Description = "A weapon for testing.";
+            ExampleWeapon.CritChance = 10;
+            ExampleWeapon.CritDamage = 2;
+            ExampleWeapon.DamageType = "Slashing";
+            ExampleWeapon.SkillCompatibility = "Both";
+            ExampleWeapon.SpecialEffect.Add(ExampleSpecialEffect);
+            
+
+            ExampleSkill.Id = 0;
             ExampleSkill.SkillName = "Basic Strike";
             ExampleSkill.Description = "A basic strike from the monster";
             ExampleSkill.Range = "Melee";
@@ -64,33 +110,6 @@ namespace Dungeon_Valley_Explorer
             ExampleMonster.ATK = 20;
             ExampleMonster.Guard = false;
             ExampleMonster.Skills.Add(ExampleSkill);
-
-            ExamplePassive.Id = 0;
-            ExamplePassive.PassiveName = "Sword Proficiency";
-            ExamplePassive.Description = "Sword strikes are a little bit stronger.";
-            ExamplePassive.Affect = "Damage Calculator";
-
-            ExampleBuffDebuff.Id = 0;
-            ExampleBuffDebuff.BuffDebuffName = "Damage up";
-            ExampleBuffDebuff.Description = "A small increase in damage.";
-            ExampleBuffDebuff.Affect = "Damage Calculator";
-            ExampleBuffDebuff.Timer = 3;
-
-            ExampleSpecialEffect.Id = 0;
-            ExampleSpecialEffect.SpecialEffectName = "Piercing Blade";
-            ExampleSpecialEffect.Description = "A blade that can even cut armor. (Ignores a set amount of defense(DEF))";
-            ExamplePassive.Affect = "Damage Calculator";
-
-            ExampleWeapon.Id = 0;
-            ExampleWeapon.WeaponName = "TestWeapon";
-            ExampleWeapon.ATK = 20;
-            ExampleWeapon.Range = "Melee";
-            ExampleWeapon.Description = "A weapon for testing.";
-            ExampleWeapon.CritChance = 10;
-            ExampleWeapon.CritDamage = 2;
-            ExampleWeapon.DamageType = "Slashing";
-            ExampleWeapon.SkillCompatibility = "Both";
-            ExampleWeapon.SpecialEffect.Add(ExampleSpecialEffect);
 
             ExampleHero.Id = 0;
             ExampleHero.HeroName = "TestHero";
@@ -118,12 +137,12 @@ namespace Dungeon_Valley_Explorer
             lbDisplay.Items.Add("The program will calculate damage after the press of the button in the bottom right.");
             lbDisplay.Items.Add("To choose the target write 1 or 2 int the textbox on the bottom of the screen.");
             lbOptions.Items.Add("1 (The target is the Monster)");
-            lbOptions.Items.Add("2 (The target is the Hero)");
+            lbOptions.Items.Add("2 (The target is the Hero)");*/
         }
 
         private void btInput_Click(object sender, RoutedEventArgs e)
         {
-            if (tbInputArea.Text == "1")
+            /*if (tbInputArea.Text == "1")
             {
                 damageSourcePrep = new DamageSource(ExampleHero, 0);
                 targetPrep = new Target(ExampleHero);
@@ -138,10 +157,10 @@ namespace Dungeon_Valley_Explorer
             else
             {
                 lbDisplay.Items.Add(" -- Please choose an option from the left. -- ");
-            }
+            }*/
         }
 
-        public int DamageCalculator(Target target, DamageSource damageSource)
+        /*public int DamageCalculator(Target target, DamageSource damageSource)
         {
             skipDamageCalculator = false;
             int damage = random.Next(damageSource.ATK / 2, damageSource.ATK);
@@ -291,6 +310,67 @@ namespace Dungeon_Valley_Explorer
                 }
             }
             return damage;
+        }*/
+
+        public void DownloaderStepOne()
+        {
+            //string ConnectionString = mySqlConnectionStringBuilder.ConnectionString;
+            if (!Directory.Exists(@"GameAssets"))
+            {
+                Directory.CreateDirectory(@"GameAssets");
+            }
+            
+            if (!Directory.Exists(@"GameAssets\Enemies"))
+            {
+                Directory.CreateDirectory(@"GameAssets\Enemies");
+            }
+            
+            if (!Directory.Exists(@"GameAssets\Dungeons"))
+            {
+                Directory.CreateDirectory(@"GameAssets\Dungeons");
+            }
+            
+            if (!Directory.Exists(@"GameAssets\Effects"))
+            {
+                Directory.CreateDirectory(@"GameAssets\Effects");
+            }
+            
+            if (!Directory.Exists(@"GameAssets\Characters"))
+            {
+                Directory.CreateDirectory(@"GameAssets\Characters");
+            }
+            
+            if (!Directory.Exists(@"GameAssets\Items"))
+            {
+                Directory.CreateDirectory(@"GameAssets\Items");
+            }
+            
+            if (!Directory.Exists(@"GameAssets\Abilities"))
+            {
+                Directory.CreateDirectory(@"GameAssets\Abilities");
+            }
+            
+            if (!Directory.Exists(@"GameAssets\Dungeons"))
+            {
+                Directory.CreateDirectory(@"GameAssets\Dungeons");
+            }
+            
+            if (!Directory.Exists(@"GameAssets\EnvironmentHazards"))
+            {
+                Directory.CreateDirectory(@"GameAssets\EnvironmentHazards");
+            }
+            
+            if (!Directory.Exists(@"GameAssets\Races"))
+            {
+                Directory.CreateDirectory(@"GameAssets\Races");
+            }
+            
+            if (!Directory.Exists(@"Profiles"))
+            {
+                Directory.CreateDirectory(@"Profiles");
+            }
+            
         }
     }
 }
+

@@ -39,7 +39,10 @@ namespace Dungeon_Valley_Explorer
 
         public Monster()
         {
-
+            BuffsDebuffs = new List<BuffDebuff>();
+            Passives = new List<Passive>();
+            Skills = new List<Skill>();
+            Magics = new List<Magic>();
         }
     }
 }

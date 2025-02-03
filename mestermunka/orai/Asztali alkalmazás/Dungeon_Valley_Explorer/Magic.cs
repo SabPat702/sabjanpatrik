@@ -29,7 +29,7 @@ namespace Dungeon_Valley_Explorer
 
         public Magic()
         {
-
+            SpecialEffect = new List<SpecialEffect>();
         }
     }
 }
