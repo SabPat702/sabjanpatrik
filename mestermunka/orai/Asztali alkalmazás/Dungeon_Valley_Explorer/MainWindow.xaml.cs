@@ -23,7 +23,7 @@ namespace Dungeon_Valley_Explorer
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MySqlConnectionStringBuilder mySqlConnectionStringBuilder = new MySqlConnectionStringBuilder()
+        static MySqlConnectionStringBuilder mySqlConnectionStringBuilder = new MySqlConnectionStringBuilder()
         {
             Server = "10.3.1.65",
             Port = 3306,
@@ -32,8 +32,8 @@ namespace Dungeon_Valley_Explorer
             Database = "sabpat702",
             SslMode = MySqlSslMode.Preferred
         };
-
-
+        static string connectionString = mySqlConnectionStringBuilder.ConnectionString;
+        MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
 
         /*public List<string> physicalDamageTypes = new List<string>();
         public List<string> magicalDamageTypes = new List<string>();
@@ -120,7 +120,7 @@ namespace Dungeon_Valley_Explorer
 
             ExampleMonster.Id = 0;
             ExampleMonster.MonsterName = "TestMonster";
-            ExampleMonster.RaceId = 1;
+            ExampleMonster.Race = races[1];
             ExampleMonster.DEF = 0;
             ExampleMonster.InDEF = 0;
             ExampleMonster.MDEF = 0;
@@ -338,7 +338,6 @@ namespace Dungeon_Valley_Explorer
 
         public void DownloaderStepOne()
         {
-            //string ConnectionString = mySqlConnectionStringBuilder.ConnectionString;
             if (!Directory.Exists(@"GameAssets"))
             {
                 Directory.CreateDirectory(@"GameAssets");
@@ -374,16 +373,22 @@ namespace Dungeon_Valley_Explorer
             if (!Directory.Exists(@"GameAssets\Items"))
             {
                 Directory.CreateDirectory(@"GameAssets\Items");
+                DownloadArmors();
+                DownloadConsumables();
+                DownloadWeapons();
             }
             
             if (!Directory.Exists(@"GameAssets\Abilities"))
             {
                 Directory.CreateDirectory(@"GameAssets\Abilities");
+                DownloadSkills();
+                DownloadMagics();
             }
             
             if (!Directory.Exists(@"GameAssets\Dungeons"))
             {
                 Directory.CreateDirectory(@"GameAssets\Dungeons");
+                DownloadDungeons();
             }
             
             if (!Directory.Exists(@"GameAssets\EnvironmentHazards"))
@@ -395,6 +400,7 @@ namespace Dungeon_Valley_Explorer
             if (!Directory.Exists(@"GameAssets\Races"))
             {
                 Directory.CreateDirectory(@"GameAssets\Races");
+                DownloadRaces();
             }
             
             if (!Directory.Exists(@"Profiles"))
@@ -405,50 +411,177 @@ namespace Dungeon_Valley_Explorer
 
         public void DownloadMonsters()
         {
-            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            List<string> monstersDownloader = new List<string>();
+            string command = "SELECT * FROM monster";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    monstersDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetInt32(4)}@{mySqlDataReader.GetInt32(5)}@{mySqlDataReader.GetInt32(6)}@{mySqlDataReader.GetInt32(7)}@{mySqlDataReader.GetInt32(8)}@{mySqlDataReader.GetString(9)}@{mySqlDataReader.GetString(10)}@{mySqlDataReader.GetString(11)}@{mySqlDataReader.GetString(12)}@{mySqlDataReader.GetString(13)}@{mySqlDataReader.GetString(14)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Enemies\Monsters.txt");
+                foreach (string monster in monstersDownloader)
+                { 
+                    streamWriter.WriteLine(monster);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
+
+        //Maybe create a class for ais and have a list of easy access interface list
         public void DownloadAis()
         {
-            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            List<string> aisDownloader = new List<string>();
+            string command = "SELECT * FROM ai";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    aisDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Enemies\Ais.txt");
+                foreach (string ai in aisDownloader)
+                {
+                    streamWriter.WriteLine(ai);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void DownloadDungeons()
         {
-            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            List<string> dungeonsDownloader = new List<string>();
+            string command = "SELECT * FROM dungeon";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    dungeonsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetInt32(4)}@{mySqlDataReader.GetInt32(5)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Dungeons\Dungeons.txt");
+                foreach (string dungeon in dungeonsDownloader)
+                {
+                    streamWriter.WriteLine(dungeon);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void DownloadEnvironmentHazards()
         {
-            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            List<string> environmentHazardsDownloader = new List<string>();
+            string command = "SELECT * FROM environment_hazard";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    environmentHazardsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetString(4)}@{mySqlDataReader.GetInt32(5)}@{mySqlDataReader.GetDouble(6)}@{mySqlDataReader.GetString(7)}@{mySqlDataReader.GetString(8)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\EnvironmentHazards\EnvironmentHazards.txt");
+                foreach (string environmentHazard in environmentHazardsDownloader)
+                {
+                    streamWriter.WriteLine(environmentHazard);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+
         }
 
         public void DownloadBuffsDebuffs()
         {
-            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            
+            
         }
 
         public void DownloadPassives()
         {
-            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            
+            
         }
 
         public void DownloadSpecialEffects()
         {
-            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            
+            
         }
 
         public void DownloadNPCs()
         {
-            string connectionString = mySqlConnectionStringBuilder.ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            
+            
+        }
+
+        public void DownloadConsumables()
+        {
+            
+            
+        }
+
+        public void DownloadArmors()
+        {
+            
+            
+        }
+
+        public void DownloadWeapons()
+        {
+            
+            
+        }
+
+        public void DownloadSkills()
+        {
+            
+            
+        }
+
+        public void DownloadMagics()
+        {
+            
+            
+        }
+
+        public void DownloadRaces()
+        {
+            
+            
         }
     }
 }

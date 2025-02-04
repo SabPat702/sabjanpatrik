@@ -16,7 +16,7 @@ namespace Dungeon_Valley_Explorer
         public int MaxHP { get; set; }
         public List<BuffDebuff> BuffsDebuffs { get; set; }
         public List<Passive> Passives { get; set; }
-        public int RaceId { get; set; }
+        public Race Race { get; set; }
         public int MaxMP { get; set; }
         public int MP { get; set; }
         public bool Guard { get; set; }
@@ -36,7 +36,7 @@ namespace Dungeon_Valley_Explorer
             MaxHP = hero.MaxHP;
             BuffsDebuffs = hero.BuffsDebuffs;
             Passives = hero.Passives;
-            RaceId = hero.RaceId;
+            Race = hero.Race;
             MaxMP = hero.MaxMP;
             MP = hero.MaxMP;
             Guard = hero.Guard;
@@ -51,7 +51,7 @@ namespace Dungeon_Valley_Explorer
             MaxHP = monster.MaxHP;
             BuffsDebuffs = monster.BuffsDebuffs;
             Passives = monster.Passives;
-            RaceId = monster.RaceId;
+            Race = monster.Race;
             MaxMP = monster.MaxMP;
             MP = monster.MaxMP;
             Guard = monster.Guard;

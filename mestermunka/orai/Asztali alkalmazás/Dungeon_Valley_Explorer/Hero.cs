@@ -22,7 +22,7 @@ namespace Dungeon_Valley_Explorer
         public List<Passive> Passives { get; set; }
         public List<Skill> Skills { get; set; }
         public List<Magic> Magics { get; set; }
-        public int RaceId { get; set; }
+        public Race Race { get; set; }
         public int InMP { get; set; }
         public int MaxMP { get; set; }
         public int MP { get; set; }
@@ -38,6 +38,7 @@ namespace Dungeon_Valley_Explorer
             Passives = new List<Passive>();
             Skills = new List<Skill>();
             Magics = new List<Magic>();
+            Race = new Race();
         }
 
         public Hero()
@@ -47,6 +48,7 @@ namespace Dungeon_Valley_Explorer
             Passives = new List<Passive>();
             Skills = new List<Skill>();
             Magics = new List<Magic>();
+            Race = new Race();
         }
     }
 }

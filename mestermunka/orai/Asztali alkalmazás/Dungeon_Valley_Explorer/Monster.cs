@@ -22,10 +22,15 @@ namespace Dungeon_Valley_Explorer
         public List<Passive> Passives { get; set; }
         public List<Skill> Skills { get; set; }
         public List<Magic> Magics { get; set; }
-        public int RaceId { get; set; }
+        public Race Race { get; set; }
+        public string Ai { get; set; }
+        public string Dungeon { get; set; }
         public int InMP { get; set; }
         public int MaxMP { get; set; }
         public int MP { get; set; }
+        public int InSP { get; set; }
+        public int MaxSP { get; set; }
+        public int SP { get; set; }
         public bool Guard { get; set; }
 
         public Monster(string oneLine)
@@ -35,6 +40,7 @@ namespace Dungeon_Valley_Explorer
             Passives = new List<Passive>();
             Skills = new List<Skill>();
             Magics = new List<Magic>();
+            Race = new Race();
         }
 
         public Monster()
@@ -43,6 +49,7 @@ namespace Dungeon_Valley_Explorer
             Passives = new List<Passive>();
             Skills = new List<Skill>();
             Magics = new List<Magic>();
+            Race = new Race();
         }
     }
 }
