@@ -37,7 +37,7 @@ namespace Dungeon_Valley_Explorer
 
         /*public List<string> physicalDamageTypes = new List<string>();
         public List<string> magicalDamageTypes = new List<string>();
-        public bool skipDamageCalculator = false;
+        public bool skipDamageCalculation = false;
         public Random random = new Random();
         public List<Race> races = new List<Race>();
         public Race ExampleRace = new Race();
@@ -85,18 +85,18 @@ namespace Dungeon_Valley_Explorer
             ExamplePassive.Id = 0;
             ExamplePassive.PassiveName = "Sword Proficiency";
             ExamplePassive.Description = "Sword strikes are a little bit stronger.";
-            ExamplePassive.Affect = "Damage Calculator";
+            ExamplePassive.Affect = "Damage Calculation";
 
             ExampleBuffDebuff.Id = 0;
             ExampleBuffDebuff.BuffDebuffName = "Damage up";
             ExampleBuffDebuff.Description = "A small increase in damage.";
-            ExampleBuffDebuff.Affect = "Damage Calculator";
+            ExampleBuffDebuff.Affect = "Damage Calculation";
             ExampleBuffDebuff.Timer = 3;
 
             ExampleSpecialEffect.Id = 0;
             ExampleSpecialEffect.SpecialEffectName = "Piercing Blade";
             ExampleSpecialEffect.Description = "A blade that can even cut armor. (Ignores a set amount of defense(DEF))";
-            ExampleSpecialEffect.Affect = "Damage Calculator";
+            ExampleSpecialEffect.Affect = "Damage Calculation";
 
             ExampleWeapon.Id = 0;
             ExampleWeapon.WeaponName = "TestWeapon";
@@ -170,13 +170,13 @@ namespace Dungeon_Valley_Explorer
             {
                 damageSourcePrep = new DamageSource(ExampleHero, 0);
                 targetPrep = new Target(ExampleHero);
-                lbDisplay.Items.Add(DamageCalculator(targetPrep, damageSourcePrep));
+                lbDisplay.Items.Add(DamageCalculation(targetPrep, damageSourcePrep));
             }
             else if (tbInputArea.Text == "2")
             {
                 damageSourcePrep = new DamageSource(ExampleMonster, ExampleMonster.Skills[0]);
                 targetPrep = new Target(ExampleMonster);
-                lbDisplay.Items.Add(DamageCalculator(targetPrep, damageSourcePrep));
+                lbDisplay.Items.Add(DamageCalculation(targetPrep, damageSourcePrep));
             }
             else
             {
@@ -184,9 +184,9 @@ namespace Dungeon_Valley_Explorer
             }*/
         }
 
-        /*public int DamageCalculator(Target target, DamageSource damageSource)
+        /*public int DamageCalculation(Target target, DamageSource damageSource)
         {
-            skipDamageCalculator = false;
+            skipDamageCalculation = false;
             int damage = random.Next(damageSource.ATK / 2, damageSource.ATK);
             if (random.Next(0, 100) < damageSource.CritChance)
             {
@@ -194,7 +194,7 @@ namespace Dungeon_Valley_Explorer
             }
             damage = DMGCalcDamageTypeChecker(damage, target, damageSource);
 
-            if (skipDamageCalculator == false)
+            if (skipDamageCalculation == false)
             {
                 if (physicalDamageTypes.Contains(damageSource.DamageType))
                 {
@@ -236,7 +236,7 @@ namespace Dungeon_Valley_Explorer
             else if (races[target.RaceId].Nulls.Contains(damageSource.DamageType))
             {
                 damage = 0;
-                skipDamageCalculator = true;
+                skipDamageCalculation = true;
             }
             else
             {
@@ -249,7 +249,7 @@ namespace Dungeon_Valley_Explorer
         {
             foreach (BuffDebuff buffdebuff in target.BuffsDebuffs)
             {
-                if (buffdebuff.Affect == "Damage Calculator")
+                if (buffdebuff.Affect == "Damage Calculation")
                 {
                     switch (buffdebuff.BuffDebuffName)
                     {
@@ -263,7 +263,7 @@ namespace Dungeon_Valley_Explorer
             }
             foreach (BuffDebuff buffdebuff in damageSource.BuffsDebuffs)
             {
-                if (buffdebuff.Affect == "Damage Calculator")
+                if (buffdebuff.Affect == "Damage Calculation")
                 {
                     switch (buffdebuff.BuffDebuffName)
                     {
@@ -283,7 +283,7 @@ namespace Dungeon_Valley_Explorer
         {
             foreach (SpecialEffect specialEffect in damageSource.SpecialEffect)
             {
-                if (specialEffect.Affect == "Damage Calculator")
+                if (specialEffect.Affect == "Damage Calculation")
                 {
                     switch (specialEffect.SpecialEffectName)
                     {
@@ -306,7 +306,7 @@ namespace Dungeon_Valley_Explorer
         {
             foreach (Passive passive in target.Passives)
             {
-                if (passive.Affect == "Damage Calculator")
+                if (passive.Affect == "Damage Calculation")
                 {
                     switch (passive.PassiveName)
                     {
@@ -320,7 +320,7 @@ namespace Dungeon_Valley_Explorer
             }
             foreach (Passive passive in damageSource.Passives)
             {
-                if (passive.Affect == "Damage Calculator")
+                if (passive.Affect == "Damage Calculation")
                 {
                     switch (passive.PassiveName)
                     {
@@ -521,37 +521,146 @@ namespace Dungeon_Valley_Explorer
             {
                 MessageBox.Show(error.Message);
             }
-
         }
 
         public void DownloadBuffsDebuffs()
         {
-            
-            
+            List<string> buffsDebuffsDownloader = new List<string>();
+            string command = "SELECT * FROM buff_and_debuff";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    buffsDebuffsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetString(3)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Effects\BuffsDebuffs.txt");
+                foreach (string buffDebuff in buffsDebuffsDownloader)
+                {
+                    streamWriter.WriteLine(buffDebuff);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void DownloadPassives()
         {
-            
-            
+            List<string> passivesDownloader = new List<string>();
+            string command = "SELECT * FROM passive";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    passivesDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetString(3)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Effects\Passives.txt");
+                foreach (string passive in passivesDownloader)
+                {
+                    streamWriter.WriteLine(passive);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void DownloadSpecialEffects()
         {
-            
-            
+            List<string> specialEffectsDownloader = new List<string>();
+            string command = "SELECT * FROM special_effect";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    specialEffectsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetString(3)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Effects\SpecialEffects.txt");
+                foreach (string specialEffect in specialEffectsDownloader)
+                {
+                    streamWriter.WriteLine(specialEffect);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void DownloadNPCs()
         {
-            
-            
+            List<string> npcsDownloader = new List<string>();
+            string command = "SELECT * FROM npc";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    npcsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetInt32(4)}@{mySqlDataReader.GetInt32(5)}@{mySqlDataReader.GetInt32(6)}@{mySqlDataReader.GetInt32(7)}@{mySqlDataReader.GetInt32(8)}@{mySqlDataReader.GetInt32(9)}@{mySqlDataReader.GetString(10)}@{mySqlDataReader.GetString(11)}@{mySqlDataReader.GetString(12)}@{mySqlDataReader.GetString(13)}@{mySqlDataReader.GetString(14)}@{mySqlDataReader.GetString(15)}@{mySqlDataReader.GetString(16)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Characters\NPCs.txt");
+                foreach (string npc in npcsDownloader)
+                {
+                    streamWriter.WriteLine(npc);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void DownloadConsumables()
         {
-            
-            
+            List<string> consumablesDownloader = new List<string>();
+            string command = "SELECT * FROM consumable";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    consumablesDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetString(3)}@{mySqlDataReader.GetInt32(4)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Items\Consumables.txt");
+                foreach (string consumable in consumablesDownloader)
+                {
+                    streamWriter.WriteLine(consumable);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void DownloadArmors()

@@ -1,0 +1,1 @@
+0@Piercing Blade@A blade that can even cut armor. (Ignores a set amount of defense(DEF))@Damage Calculation

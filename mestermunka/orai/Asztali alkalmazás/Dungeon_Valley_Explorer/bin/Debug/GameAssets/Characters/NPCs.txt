@@ -1,0 +1,1 @@
+0@Test NPC@10@10@100@20@20@0@1@TestWeapon@Test Helmet,Test Chestplate@Fighter@Basic Strike,Power Slash@Firebolt,Self care@Sword Proficiency@Human
