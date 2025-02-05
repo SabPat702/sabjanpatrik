@@ -55,7 +55,7 @@ namespace Dungeon_Valley_Explorer
         {
             InitializeComponent();
 
-            if (!Directory.Exists(@"GameAssets") || !Directory.Exists(@"GameAssets\Enemies") || !Directory.Exists(@"GameAssets\Dungeons") || !Directory.Exists(@"GameAssets\Effects") || !Directory.Exists(@"GameAssets\Characters") || !Directory.Exists(@"GameAssets\Items") || !Directory.Exists(@"GameAssets\Abilities") || !Directory.Exists(@"GameAssets\Dungeons") || !Directory.Exists(@"GameAssets\EnvironmentHazards") || !Directory.Exists(@"GameAssets\Races") || !Directory.Exists(@"Profiles"))
+            if (!Directory.Exists(@"GameAssets") || !Directory.Exists(@"GameAssets\Enemies") || !Directory.Exists(@"GameAssets\Dungeons") || !Directory.Exists(@"GameAssets\Effects") || !Directory.Exists(@"GameAssets\Characters") || !Directory.Exists(@"GameAssets\Items") || !Directory.Exists(@"GameAssets\Abilities") || !Directory.Exists(@"GameAssets\Dungeons") || !Directory.Exists(@"GameAssets\EnvironmentHazards") || !Directory.Exists(@"GameAssets\Races") || !Directory.Exists(@"Profiles") || !File.Exists(@"GameAssets\Enemies\Monsters.txt") || !File.Exists(@"GameAssets\Enemies\Ais.txt") || !File.Exists(@"GameAssets\Characters\NPCs.txt") || !File.Exists(@"GameAssets\Dungeons\Dungeons.txt") || !File.Exists(@"GameAssets\EnvironmentHazards\EnvironmentHazards.txt") || !File.Exists(@"GameAssets\Effects\Passives.txt") || !File.Exists(@"GameAssets\Effects\BuffsDebuffs.txt") || !File.Exists(@"GameAssets\Effects\SpecialEffects.txt") || !File.Exists(@"GameAssets\Abilities\Skills.txt") || !File.Exists(@"GameAssets\Abilities\Magic.txt") || !File.Exists(@"GameAssets\Races\Races.txt") || !File.Exists(@"GameAssets\Items\Consumables.txt") || !File.Exists(@"GameAssets\Items\Armors.txt") || !File.Exists(@"GameAssets\Items\Weapons.txt"))
             {
                 DownloaderStepOne();
             }
@@ -336,6 +336,8 @@ namespace Dungeon_Valley_Explorer
             return damage;
         }*/
 
+        //Downloader below this line------------------------------------------------------------------------------------
+
         public void DownloaderStepOne()
         {
             if (!Directory.Exists(@"GameAssets"))
@@ -346,66 +348,121 @@ namespace Dungeon_Valley_Explorer
             if (!Directory.Exists(@"GameAssets\Enemies"))
             {
                 Directory.CreateDirectory(@"GameAssets\Enemies");
-                DownloadMonsters();
-                DownloadAis();
             }
             
             if (!Directory.Exists(@"GameAssets\Dungeons"))
             {
                 Directory.CreateDirectory(@"GameAssets\Dungeons");
-                DownloadDungeons();
             }
             
             if (!Directory.Exists(@"GameAssets\Effects"))
             {
                 Directory.CreateDirectory(@"GameAssets\Effects");
-                DownloadBuffsDebuffs();
-                DownloadPassives();
-                DownloadSpecialEffects();
             }
             
             if (!Directory.Exists(@"GameAssets\Characters"))
             {
                 Directory.CreateDirectory(@"GameAssets\Characters");
-                DownloadNPCs();
             }
             
             if (!Directory.Exists(@"GameAssets\Items"))
             {
                 Directory.CreateDirectory(@"GameAssets\Items");
-                DownloadArmors();
-                DownloadConsumables();
-                DownloadWeapons();
             }
             
             if (!Directory.Exists(@"GameAssets\Abilities"))
             {
                 Directory.CreateDirectory(@"GameAssets\Abilities");
-                DownloadSkills();
-                DownloadMagics();
             }
             
             if (!Directory.Exists(@"GameAssets\Dungeons"))
             {
                 Directory.CreateDirectory(@"GameAssets\Dungeons");
-                DownloadDungeons();
             }
             
             if (!Directory.Exists(@"GameAssets\EnvironmentHazards"))
             {
                 Directory.CreateDirectory(@"GameAssets\EnvironmentHazards");
-                DownloadEnvironmentHazards();
             }
             
             if (!Directory.Exists(@"GameAssets\Races"))
             {
                 Directory.CreateDirectory(@"GameAssets\Races");
-                DownloadRaces();
             }
             
             if (!Directory.Exists(@"Profiles"))
             {
                 Directory.CreateDirectory(@"Profiles");
+            }
+
+            if (!File.Exists(@"GameAssets\Enemies\Monsters.txt"))
+            {
+                DownloadMonsters();
+            }
+
+            if (!File.Exists(@"GameAssets\Enemies\Ais.txt"))
+            {
+                DownloadAis();
+            }
+
+            if (!File.Exists(@"GameAssets\Characters\NPCs.txt"))
+            {
+                DownloadNPCs();
+            }
+
+            if (!File.Exists(@"GameAssets\Dungeons\Dungeons.txt"))
+            {
+                DownloadDungeons();
+            }
+
+            if (!File.Exists(@"GameAssets\Effects\Passives.txt"))
+            {
+                DownloadPassives();
+            }
+
+            if (!File.Exists(@"GameAssets\Effects\BuffsDebuffs.txt"))
+            {
+                DownloadBuffsDebuffs();
+            }
+
+            if (!File.Exists(@"GameAssets\Effects\SpecialEffects.txt"))
+            {
+                DownloadSpecialEffects();
+            }
+
+            if (!File.Exists(@"GameAssets\Races\Races.txt"))
+            {
+                DownloadRaces();
+            }
+
+            if (!File.Exists(@"GameAssets\EnvironmentHazards\EnvironmentHazards.txt"))
+            {
+                DownloadEnvironmentHazards();
+            }
+
+            if (!File.Exists(@"GameAssets\Abilities\Skills.txt"))
+            {
+                DownloadSkills();
+            }
+
+            if (!File.Exists(@"GameAssets\Abilities\Magics.txt"))
+            {
+                DownloadMagics();
+            }
+
+            if (!File.Exists(@"GameAssets\Items\Consumables.txt"))
+            {
+                DownloadConsumables();
+            }
+
+            if (!File.Exists(@"GameAssets\Items\Weapons.txt"))
+            {
+                DownloadWeapons();
+            }
+
+            if (!File.Exists(@"GameAssets\Items\Armors.txt"))
+            {
+                DownloadArmors();
             }
         }
 
@@ -665,33 +722,145 @@ namespace Dungeon_Valley_Explorer
 
         public void DownloadArmors()
         {
-            
-            
+            List<string> armorsDownloader = new List<string>();
+            string command = "SELECT * FROM armor";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    armorsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetInt32(4)}@{mySqlDataReader.GetString(5)}@{mySqlDataReader.GetInt32(6)}@{mySqlDataReader.GetInt32(7)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Items\Armors.txt");
+                foreach (string armor in armorsDownloader)
+                {
+                    streamWriter.WriteLine(armor);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void DownloadWeapons()
         {
-            
-            
+            List<string> weaponsDownloader = new List<string>();
+            string command = "SELECT * FROM weapon";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    weaponsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetString(4)}@{mySqlDataReader.GetInt32(5)}@{mySqlDataReader.GetDouble(6)}@{mySqlDataReader.GetString(7)}@{mySqlDataReader.GetString(8)}@{mySqlDataReader.GetString(9)}@{mySqlDataReader.GetInt32(10)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Items\Weapons.txt");
+                foreach (string weapon in weaponsDownloader)
+                {
+                    streamWriter.WriteLine(weapon);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void DownloadSkills()
         {
-            
-            
+            List<string> skillsDownloader = new List<string>();
+            string command = "SELECT * FROM skill";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    skillsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetString(3)}@{mySqlDataReader.GetInt32(4)}@{mySqlDataReader.GetDouble(5)}@{mySqlDataReader.GetString(6)}@{mySqlDataReader.GetString(7)}@{mySqlDataReader.GetInt32(8)}@{mySqlDataReader.GetInt32(9)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Abilities\Skills.txt");
+                foreach (string skill in skillsDownloader)
+                {
+                    streamWriter.WriteLine(skill);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void DownloadMagics()
         {
-            
-            
+            List<string> magicsDownloader = new List<string>();
+            string command = "SELECT * FROM magic";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    magicsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetString(4)}@{mySqlDataReader.GetInt32(5)}@{mySqlDataReader.GetDouble(6)}@{mySqlDataReader.GetString(7)}@{mySqlDataReader.GetString(8)}@{mySqlDataReader.GetInt32(9)}@{mySqlDataReader.GetInt32(10)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Abilities\Magics.txt");
+                foreach (string magic in magicsDownloader)
+                {
+                    streamWriter.WriteLine(magic);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void DownloadRaces()
         {
-            
-            
+            List<string> racesDownloader = new List<string>();
+            string command = "SELECT * FROM race";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    racesDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetString(3)}@{mySqlDataReader.GetString(4)}@{mySqlDataReader.GetString(5)}@{mySqlDataReader.GetString(6)}@{mySqlDataReader.GetString(7)}");
+                }
+                mySqlConnection.Close();
+
+                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Races\Races.txt");
+                foreach (string race in racesDownloader)
+                {
+                    streamWriter.WriteLine(race);
+                }
+                streamWriter.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
+        
+        //Downloader ends here------------------------------------------------------------------------------------------
     }
 }
 

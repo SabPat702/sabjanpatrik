@@ -1,0 +1,1 @@
+0@TestWeapon@A weapon for testing.@20@Slashing@10@2@Piercing Blade@Melee@Melee@20
