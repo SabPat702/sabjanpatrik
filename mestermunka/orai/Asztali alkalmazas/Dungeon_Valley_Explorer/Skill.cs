@@ -16,6 +16,9 @@ namespace Dungeon_Valley_Explorer
         public int CritChance { get; set; }
         public double CritDamage { get; set; }
         public string Range { get; set; }
+        public int SPCost { get; set; }
+        public int inCD { get; set; }
+        public int CD {  get; set; }
 
         public Skill(string oneLine)
         {

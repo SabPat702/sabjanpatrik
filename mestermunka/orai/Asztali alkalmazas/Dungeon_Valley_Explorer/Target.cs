@@ -15,15 +15,19 @@ namespace Dungeon_Valley_Explorer
         public int HP { get; set; }
         public int MaxHP { get; set; }
         public List<BuffDebuff> BuffsDebuffs { get; set; }
+        public List<SpecialEffect> SpecialEffects { get; set; }
         public List<Passive> Passives { get; set; }
         public Race Race { get; set; }
         public int MaxMP { get; set; }
         public int MP { get; set; }
+        public int MaxSP { get; set; }
+        public int SP { get; set; }
         public bool Guard { get; set; }
 
         public Target()
         {
             BuffsDebuffs = new List<BuffDebuff>();
+            SpecialEffects = new List<SpecialEffect>();
             Passives = new List<Passive>();
         }
 
@@ -35,15 +39,25 @@ namespace Dungeon_Valley_Explorer
             HP = hero.HP;
             MaxHP = hero.MaxHP;
             BuffsDebuffs = hero.BuffsDebuffs;
+            foreach (var armors in hero.Armors)
+            {
+                foreach (var specialEffect in armors.SpecialEffects)
+                {
+                    SpecialEffects.Add(specialEffect);
+                }
+            }
             Passives = hero.Passives;
             Race = hero.Race;
             MaxMP = hero.MaxMP;
             MP = hero.MaxMP;
+            MaxSP = hero.MaxSP;
+            SP = hero.SP;
             Guard = hero.Guard;
         }
 
         public Target(Monster monster)
         {
+            SpecialEffects = new List<SpecialEffect>();
             TargetName = monster.MonsterName;
             DEF = monster.DEF;
             MDEF = monster.MDEF;
@@ -54,6 +68,8 @@ namespace Dungeon_Valley_Explorer
             Race = monster.Race;
             MaxMP = monster.MaxMP;
             MP = monster.MaxMP;
+            MaxSP = monster.MaxSP;
+            SP = monster.SP;
             Guard = monster.Guard;
         }
     }

@@ -9,7 +9,7 @@ namespace Dungeon_Valley_Explorer
     public class DamageSource
     {
         public int ATK { get; set; }
-        public List<SpecialEffect> SpecialEffect { get; set; }
+        public List<SpecialEffect> SpecialEffects { get; set; }
         public List<BuffDebuff> BuffsDebuffs { get; set; }
         public List<Passive> Passives { get; set; }
         public int CritChance { get; set; }
@@ -17,6 +17,8 @@ namespace Dungeon_Valley_Explorer
         public string DamageType { get; set; }
         public int MaxMP { get; set; }
         public int MP { get; set; }
+        public int MaxSP { get; set; }
+        public int SP { get; set; }
         public int DEF { get; set; }
         public int MDEF { get; set; }
         public int HP { get; set; }
@@ -24,14 +26,14 @@ namespace Dungeon_Valley_Explorer
 
         public DamageSource()
         {
-            SpecialEffect = new List<SpecialEffect>();
+            SpecialEffects = new List<SpecialEffect>();
             BuffsDebuffs = new List<BuffDebuff>();
             Passives = new List<Passive>();
         }
         public DamageSource(EnvironmentHazard envHazard)
         {
             ATK = envHazard.ATK;
-            SpecialEffect = envHazard.SpecialEffect;
+            SpecialEffects = envHazard.SpecialEffect;
             BuffsDebuffs = new List<BuffDebuff>();
             Passives = new List<Passive>();
             CritChance = envHazard.CritChance;
@@ -39,6 +41,8 @@ namespace Dungeon_Valley_Explorer
             DamageType = envHazard.DamageType;
             MaxMP = 0;
             MP = 0;
+            MaxSP = 0;
+            SP = 0;
             DEF = 0;
             MDEF = 0;
             HP = 0;
@@ -48,7 +52,14 @@ namespace Dungeon_Valley_Explorer
         public DamageSource(Hero hero, int chosenWeapon)
         {
             ATK = hero.Weapons[chosenWeapon].ATK;
-            SpecialEffect = hero.Weapons[chosenWeapon].SpecialEffect;
+            SpecialEffects = hero.Weapons[chosenWeapon].SpecialEffect;
+            foreach (var armors in hero.Armors)
+            {
+                foreach (var specialEffect in armors.SpecialEffects)
+                {
+                    SpecialEffects.Add(specialEffect);
+                }
+            }
             BuffsDebuffs = hero.BuffsDebuffs;
             Passives = hero.Passives;
             CritChance = hero.Weapons[chosenWeapon].CritChance;
@@ -56,6 +67,8 @@ namespace Dungeon_Valley_Explorer
             DamageType = hero.Weapons[chosenWeapon].DamageType;
             MaxMP = hero.MaxMP;
             MP = hero.MP;
+            MaxSP = hero.MaxSP;
+            SP = hero.SP;
             DEF = hero.DEF;
             MDEF = hero.MDEF;
             HP = hero.HP;
@@ -65,10 +78,17 @@ namespace Dungeon_Valley_Explorer
         public DamageSource(Hero hero, int chosenWeapon, Skill skill)
         {
             ATK = hero.Weapons[chosenWeapon].ATK;
-            SpecialEffect = hero.Weapons[chosenWeapon].SpecialEffect;
-            foreach (var item in skill.SpecialEffect)
+            SpecialEffects = hero.Weapons[chosenWeapon].SpecialEffect;
+            foreach (var specialEffect in skill.SpecialEffect)
             {
-                SpecialEffect.Add(item);
+                SpecialEffects.Add(specialEffect);
+            }
+            foreach (var armors in hero.Armors)
+            {
+                foreach (var specialEffect in armors.SpecialEffects)
+                {
+                    SpecialEffects.Add(specialEffect);
+                }
             }
             BuffsDebuffs = hero.BuffsDebuffs;
             Passives = hero.Passives;
@@ -77,6 +97,8 @@ namespace Dungeon_Valley_Explorer
             DamageType = hero.Weapons[chosenWeapon].DamageType;
             MaxMP = hero.MaxMP;
             MP = hero.MP;
+            MaxSP = hero.MaxSP;
+            SP = hero.SP;
             DEF = hero.DEF;
             MDEF = hero.MDEF;
             HP = hero.HP;
@@ -86,7 +108,14 @@ namespace Dungeon_Valley_Explorer
         public DamageSource(Hero hero, Magic magic)
         {
             ATK = magic.ATK;
-            SpecialEffect = magic.SpecialEffect;
+            SpecialEffects = magic.SpecialEffect;
+            foreach (var armors in hero.Armors)
+            {
+                foreach (var specialEffect in armors.SpecialEffects)
+                {
+                    SpecialEffects.Add(specialEffect);
+                }
+            }
             BuffsDebuffs = hero.BuffsDebuffs;
             Passives = hero.Passives;
             CritChance = magic.CritChance;
@@ -94,6 +123,8 @@ namespace Dungeon_Valley_Explorer
             DamageType = magic.DamageType;
             MaxMP = hero.MaxMP;
             MP = hero.MP;
+            MaxSP = hero.MaxSP;
+            SP = hero.SP;
             DEF = hero.DEF;
             MDEF = hero.MDEF;
             HP = hero.HP;
@@ -103,7 +134,7 @@ namespace Dungeon_Valley_Explorer
         public DamageSource(Monster monster, Skill skill)
         {
             ATK = monster.ATK;
-            SpecialEffect = skill.SpecialEffect;
+            SpecialEffects = skill.SpecialEffect;
             BuffsDebuffs = monster.BuffsDebuffs;
             Passives = monster.Passives;
             CritChance = skill.CritChance;
@@ -111,6 +142,8 @@ namespace Dungeon_Valley_Explorer
             DamageType = skill.DamageType;
             MaxMP = monster.MaxMP;
             MP = monster.MP;
+            MaxSP = monster.MaxSP;
+            SP = monster.SP;
             DEF = monster.DEF;
             MDEF = monster.MDEF;
             HP = monster.HP;
@@ -120,7 +153,7 @@ namespace Dungeon_Valley_Explorer
         public DamageSource(Monster monster, Magic magic)
         {
             ATK = magic.ATK;
-            SpecialEffect = magic.SpecialEffect;
+            SpecialEffects = magic.SpecialEffect;
             BuffsDebuffs = monster.BuffsDebuffs;
             Passives = monster.Passives;
             CritChance = magic.CritChance;
@@ -128,6 +161,8 @@ namespace Dungeon_Valley_Explorer
             DamageType = magic.DamageType;
             MaxMP = monster.MaxMP;
             MP = monster.MP;
+            MaxSP = monster.MaxSP;
+            SP = monster.SP;
             DEF = monster.DEF;
             MDEF = monster.MDEF;
             HP = monster.HP;

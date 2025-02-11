@@ -1,66 +1,70 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\",
+  "WorkspaceRootPath": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|c:\\users\\sabpat702\\documents\\github\\sabjanpatrik\\mestermunka\\orai\\asztali alkalmaz\u00E1s\\dungeon_valley_explorer\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\buffdebuff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:buffdebuff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\skill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:skill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\environmenthazard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:environmenthazard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\dungeon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:dungeon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\monster.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:monster.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\target.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:target.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\damagesource.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:damagesource.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\hero.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:hero.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\magic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:magic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\passive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:passive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\specialeffect.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:specialeffect.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\weapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\weapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:weapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\race.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\target.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:target.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\damagesource.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:damagesource.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\specialeffect.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:specialeffect.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\race.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:race.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\passive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:passive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\monster.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:monster.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\magic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:magic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\skill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:skill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\hero.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:hero.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\environmenthazard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:environmenthazard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\dungeon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:dungeon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|c:\\users\\sabpat702\\documents\\github\\sabjanpatrik\\mestermunka\\orai\\asztali alkalmazas\\dungeon_valley_explorer\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\buffdebuff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:buffdebuff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|c:\\users\\sabpat702\\documents\\github\\sabjanpatrik\\mestermunka\\orai\\asztali alkalmazas\\dungeon_valley_explorer\\armor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:armor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -70,17 +74,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 12,
               "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAAEwDAAAAAAAAAAAAAF4DAAB4AAAAAAAAAA==",
+              "ViewState": "AgIAAP0AAAAAAAAAAAAAABABAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-28T20:55:06.735Z",
               "IsPinned": true,
@@ -89,85 +93,116 @@
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "DamageSource.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\DamageSource.cs",
-              "RelativeDocumentMoniker": "DamageSource.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\DamageSource.cs",
-              "RelativeToolTip": "DamageSource.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAUwAkAAAAFAAAAAAAAAA==",
+              "Title": "Magic.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Magic.cs",
+              "RelativeDocumentMoniker": "Magic.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Magic.cs",
+              "RelativeToolTip": "Magic.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABQAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:31:36.552Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Monster.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Monster.cs",
-              "RelativeDocumentMoniker": "Monster.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Monster.cs",
-              "RelativeToolTip": "Monster.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAA4wBYAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:28:23.636Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "EnvironmentHazard.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\EnvironmentHazard.cs",
-              "RelativeDocumentMoniker": "EnvironmentHazard.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\EnvironmentHazard.cs",
-              "RelativeToolTip": "EnvironmentHazard.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABEAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:31:03.949Z"
+              "WhenOpened": "2025-01-29T08:28:52.745Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "Target.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Target.cs",
-              "RelativeDocumentMoniker": "Target.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Target.cs",
-              "RelativeToolTip": "Target.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAACYAAAAcAAAAAAAAAA==",
+              "Title": "Monster.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Monster.cs",
+              "RelativeDocumentMoniker": "Monster.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Monster.cs",
+              "RelativeToolTip": "Monster.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAwwBoAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:27:46.81Z"
+              "WhenOpened": "2025-01-29T08:28:23.636Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "BuffDebuff.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\BuffDebuff.cs",
-              "RelativeDocumentMoniker": "BuffDebuff.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\BuffDebuff.cs",
-              "RelativeToolTip": "BuffDebuff.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAowBsAAAAiAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "Passive.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Passive.cs",
+              "RelativeDocumentMoniker": "Passive.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Passive.cs",
+              "RelativeToolTip": "Passive.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:27:04.071Z",
+              "WhenOpened": "2025-01-29T08:26:29.606Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Dungeon.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Dungeon.cs",
-              "RelativeDocumentMoniker": "Dungeon.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Dungeon.cs",
-              "RelativeToolTip": "Dungeon.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAFAAAAAAAAAA==",
+              "Title": "Race.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Race.cs",
+              "RelativeDocumentMoniker": "Race.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Race.cs",
+              "RelativeToolTip": "Race.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAIwCIAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:30:21.665Z"
+              "WhenOpened": "2025-01-29T08:24:42.984Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SpecialEffect.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\SpecialEffect.cs",
+              "RelativeDocumentMoniker": "SpecialEffect.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\SpecialEffect.cs",
+              "RelativeToolTip": "SpecialEffect.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAqwCkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-29T08:25:55.512Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Target.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Target.cs",
+              "RelativeDocumentMoniker": "Target.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Target.cs",
+              "RelativeToolTip": "Target.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABAAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-29T08:27:46.81Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "DamageSource.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\DamageSource.cs",
+              "RelativeDocumentMoniker": "DamageSource.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\DamageSource.cs",
+              "RelativeToolTip": "DamageSource.cs",
+              "ViewState": "AgIAAJsAAAAAAAAAAAAAAJsAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-29T08:31:36.552Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Weapon.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Weapon.cs",
+              "RelativeDocumentMoniker": "Weapon.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Weapon.cs",
+              "RelativeToolTip": "Weapon.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAADwvxQAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-29T08:25:17.84Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "Skill.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Skill.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Skill.cs",
               "RelativeDocumentMoniker": "Skill.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Skill.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Skill.cs",
               "RelativeToolTip": "Skill.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAowCAAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAuwBQAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-29T08:29:28.723Z",
               "EditorCaption": ""
@@ -175,85 +210,79 @@
             {
               "$type": "Document",
               "DocumentIndex": 9,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "MainWindow.xaml",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\MainWindow.xaml",
-              "RelativeToolTip": "MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-01-28T20:55:07.362Z"
+              "Title": "Hero.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Hero.cs",
+              "RelativeDocumentMoniker": "Hero.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Hero.cs",
+              "RelativeToolTip": "Hero.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAADwvxgAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-29T08:23:05.246Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 10,
-              "Title": "Magic.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Magic.cs",
-              "RelativeDocumentMoniker": "Magic.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Magic.cs",
-              "RelativeToolTip": "Magic.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAFAAAAAAAAAA==",
+              "Title": "EnvironmentHazard.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\EnvironmentHazard.cs",
+              "RelativeDocumentMoniker": "EnvironmentHazard.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\EnvironmentHazard.cs",
+              "RelativeToolTip": "EnvironmentHazard.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABAAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:28:52.745Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Hero.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Hero.cs",
-              "RelativeDocumentMoniker": "Hero.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Hero.cs",
-              "RelativeToolTip": "Hero.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAQwDIAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:23:05.246Z"
+              "WhenOpened": "2025-01-29T08:31:03.949Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 11,
-              "Title": "Passive.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Passive.cs",
-              "RelativeDocumentMoniker": "Passive.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Passive.cs",
-              "RelativeToolTip": "Passive.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAFAAAAAAAAAA==",
+              "Title": "Dungeon.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Dungeon.cs",
+              "RelativeDocumentMoniker": "Dungeon.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Dungeon.cs",
+              "RelativeToolTip": "Dungeon.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAwAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:26:29.606Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "SpecialEffect.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\SpecialEffect.cs",
-              "RelativeDocumentMoniker": "SpecialEffect.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\SpecialEffect.cs",
-              "RelativeToolTip": "SpecialEffect.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAqwCkAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:25:55.512Z"
+              "WhenOpened": "2025-01-29T08:30:21.665Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 13,
-              "Title": "Weapon.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Weapon.cs",
-              "RelativeDocumentMoniker": "Weapon.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Weapon.cs",
-              "RelativeToolTip": "Weapon.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAuwCUAAAAFAAAAAAAAAA==",
+              "Title": "BuffDebuff.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\BuffDebuff.cs",
+              "RelativeDocumentMoniker": "BuffDebuff.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\BuffDebuff.cs",
+              "RelativeToolTip": "BuffDebuff.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAswBsAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:25:17.84Z"
+              "WhenOpened": "2025-01-29T08:27:04.071Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 14,
-              "Title": "Race.cs",
-              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Race.cs",
-              "RelativeDocumentMoniker": "Race.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmaz\u00E1s\\Dungeon_Valley_Explorer\\Race.cs",
-              "RelativeToolTip": "Race.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAIwCIAAAAFAAAAAAAAAA==",
+              "Title": "Armor.cs",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Armor.cs",
+              "RelativeDocumentMoniker": "Armor.cs",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\Armor.cs",
+              "RelativeToolTip": "Armor.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAWwBoAAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:24:42.984Z"
+              "WhenOpened": "2025-02-11T08:22:14.869Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "MainWindow.xaml",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\MainWindow.xaml",
+              "RelativeToolTip": "MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-01-28T20:55:07.362Z",
+              "EditorCaption": ""
             }
           ]
         }

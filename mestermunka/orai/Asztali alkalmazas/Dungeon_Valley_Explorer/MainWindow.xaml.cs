@@ -34,6 +34,8 @@ namespace Dungeon_Valley_Explorer
         };
         static string connectionString = mySqlConnectionStringBuilder.ConnectionString;
         MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+        List<string> folders = new List<string> { "GameAssets","Enemies","Dungeons","Effects","Characters","Items","Abilities","EnvironmentHazard","Races","Profiles"};
+        List<string> files = new List<string> { "Monsters.txt","Ais.txt","NPCs.txt","Dungeons.txt","EnvironmentHazards.txt","Passives.txt","BuffsDebuffs.txt","SpecialEffects.txt","Skills.txt","Magics.txt","Races.txt","Consumables.txt","Armors.txt","Weapons.txt"};
 
         /*public List<string> physicalDamageTypes = new List<string>();
         public List<string> magicalDamageTypes = new List<string>();
@@ -55,9 +57,9 @@ namespace Dungeon_Valley_Explorer
         {
             InitializeComponent();
 
-            if (!Directory.Exists(@"GameAssets") || !Directory.Exists(@"GameAssets\Enemies") || !Directory.Exists(@"GameAssets\Dungeons") || !Directory.Exists(@"GameAssets\Effects") || !Directory.Exists(@"GameAssets\Characters") || !Directory.Exists(@"GameAssets\Items") || !Directory.Exists(@"GameAssets\Abilities") || !Directory.Exists(@"GameAssets\Dungeons") || !Directory.Exists(@"GameAssets\EnvironmentHazards") || !Directory.Exists(@"GameAssets\Races") || !Directory.Exists(@"Profiles") || !File.Exists(@"GameAssets\Enemies\Monsters.txt") || !File.Exists(@"GameAssets\Enemies\Ais.txt") || !File.Exists(@"GameAssets\Characters\NPCs.txt") || !File.Exists(@"GameAssets\Dungeons\Dungeons.txt") || !File.Exists(@"GameAssets\EnvironmentHazards\EnvironmentHazards.txt") || !File.Exists(@"GameAssets\Effects\Passives.txt") || !File.Exists(@"GameAssets\Effects\BuffsDebuffs.txt") || !File.Exists(@"GameAssets\Effects\SpecialEffects.txt") || !File.Exists(@"GameAssets\Abilities\Skills.txt") || !File.Exists(@"GameAssets\Abilities\Magic.txt") || !File.Exists(@"GameAssets\Races\Races.txt") || !File.Exists(@"GameAssets\Items\Consumables.txt") || !File.Exists(@"GameAssets\Items\Armors.txt") || !File.Exists(@"GameAssets\Items\Weapons.txt"))
+            if (!Directory.Exists($@"{folders[0]}") || !Directory.Exists($@"{folders[0]}\{folders[1]}") || !Directory.Exists($@"{folders[0]}\{folders[2]}") || !Directory.Exists($@"{folders[0]}\{folders[3]}") || !Directory.Exists($@"{folders[0]}\{folders[4]}") || !Directory.Exists($@"{folders[0]}\{folders[5]}") || !Directory.Exists($@"{folders[0]}\{folders[6]}") || !Directory.Exists($@"{folders[0]}\{folders[7]}") || !Directory.Exists($@"{folders[0]}\{folders[8]}") || !Directory.Exists($@"{folders[9]}") || !File.Exists($@"{folders[0]}\{folders[1]}\{files[0]}") || !File.Exists($@"{folders[0]}\{folders[1]}\{files[1]}") || !File.Exists($@"{folders[0]}\{folders[4]}\{files[2]}") || !File.Exists($@"{folders[0]}\{folders[2]}\{files[3]}") || !File.Exists($@"{folders[0]}\{folders[7]}\{files[4]}") || !File.Exists($@"{folders[0]}\{folders[3]}\{files[5]}") || !File.Exists($@"{folders[0]}\{folders[3]}\{files[6]}") || !File.Exists($@"{folders[0]}\{folders[3]}\{files[7]}") || !File.Exists($@"{folders[0]}\{folders[6]}\{files[8]}") || !File.Exists($@"{folders[0]}\{folders[6]}\{files[9]}") || !File.Exists($@"{folders[0]}\{folders[8]}\{files[10]}") || !File.Exists($@"{folders[0]}\{folders[5]}\{files[11]}") || !File.Exists($@"{folders[0]}\{folders[5]}\{files[12]}") || !File.Exists($@"{folders[0]}\{folders[5]}\{files[13]}"))
             {
-                DownloaderStepOne();
+                Downloader();
             }
 
             /*ExampleRace.Id = 0;
@@ -338,129 +340,129 @@ namespace Dungeon_Valley_Explorer
 
         //Downloader below this line------------------------------------------------------------------------------------
 
-        public void DownloaderStepOne()
+        public void Downloader()
         {
-            if (!Directory.Exists(@"GameAssets"))
+            if (!Directory.Exists($@"{folders[0]}"))
             {
-                Directory.CreateDirectory(@"GameAssets");
+                Directory.CreateDirectory($@"{folders[0]}");
             }
             
-            if (!Directory.Exists(@"GameAssets\Enemies"))
+            if (!Directory.Exists($@"{folders[0]}\{folders[1]}"))
             {
-                Directory.CreateDirectory(@"GameAssets\Enemies");
+                Directory.CreateDirectory($@"{folders[0]}\{folders[1]}");
             }
             
-            if (!Directory.Exists(@"GameAssets\Dungeons"))
+            if (!Directory.Exists($@"{folders[0]}\{folders[2]}"))
             {
-                Directory.CreateDirectory(@"GameAssets\Dungeons");
+                Directory.CreateDirectory($@"{folders[0]}\{folders[2]}");
             }
             
-            if (!Directory.Exists(@"GameAssets\Effects"))
+            if (!Directory.Exists($@"{folders[0]}\{folders[3]}"))
             {
-                Directory.CreateDirectory(@"GameAssets\Effects");
+                Directory.CreateDirectory($@"{folders[0]}\{folders[3]}");
             }
             
-            if (!Directory.Exists(@"GameAssets\Characters"))
+            if (!Directory.Exists($@"{folders[0]}\{folders[4]}"))
             {
-                Directory.CreateDirectory(@"GameAssets\Characters");
+                Directory.CreateDirectory($@"{folders[0]}\{folders[4]}");
             }
             
-            if (!Directory.Exists(@"GameAssets\Items"))
+            if (!Directory.Exists($@"{folders[0]}\{folders[5]}"))
             {
-                Directory.CreateDirectory(@"GameAssets\Items");
+                Directory.CreateDirectory($@"{folders[0]}\{folders[5]}");
             }
             
-            if (!Directory.Exists(@"GameAssets\Abilities"))
+            if (!Directory.Exists($@"{folders[0]}\{folders[6]}"))
             {
-                Directory.CreateDirectory(@"GameAssets\Abilities");
+                Directory.CreateDirectory($@"{folders[0]}\{folders[6]}");
             }
             
-            if (!Directory.Exists(@"GameAssets\Dungeons"))
+            if (!Directory.Exists($@"{folders[0]}\{folders[7]}"))
             {
-                Directory.CreateDirectory(@"GameAssets\Dungeons");
+                Directory.CreateDirectory($@"{folders[0]}\{folders[7]}");
             }
             
-            if (!Directory.Exists(@"GameAssets\EnvironmentHazards"))
+            if (!Directory.Exists($@"{folders[0]}\{folders[8]}"))
             {
-                Directory.CreateDirectory(@"GameAssets\EnvironmentHazards");
+                Directory.CreateDirectory($@"{folders[0]}\{folders[8]}");
             }
             
-            if (!Directory.Exists(@"GameAssets\Races"))
+            if (!Directory.Exists($@"{folders[0]}\{folders[9]}"))
             {
-                Directory.CreateDirectory(@"GameAssets\Races");
+                Directory.CreateDirectory($@"{folders[0]}\{folders[9]}");
             }
             
-            if (!Directory.Exists(@"Profiles"))
+            if (!Directory.Exists($@"{folders[9]}"))
             {
-                Directory.CreateDirectory(@"Profiles");
+                Directory.CreateDirectory($@"{folders[9]}");
             }
 
-            if (!File.Exists(@"GameAssets\Enemies\Monsters.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[1]}\{files[0]}"))
             {
                 DownloadMonsters();
             }
 
-            if (!File.Exists(@"GameAssets\Enemies\Ais.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[1]}\{files[1]}"))
             {
                 DownloadAis();
             }
 
-            if (!File.Exists(@"GameAssets\Characters\NPCs.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[4]}\{files[2]}"))
             {
                 DownloadNPCs();
             }
 
-            if (!File.Exists(@"GameAssets\Dungeons\Dungeons.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[2]}\{files[3]}"))
             {
                 DownloadDungeons();
             }
 
-            if (!File.Exists(@"GameAssets\Effects\Passives.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[7]}\{files[5]}"))
             {
                 DownloadPassives();
             }
 
-            if (!File.Exists(@"GameAssets\Effects\BuffsDebuffs.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[7]}\{files[6]}"))
             {
                 DownloadBuffsDebuffs();
             }
 
-            if (!File.Exists(@"GameAssets\Effects\SpecialEffects.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[7]}\{files[7]}"))
             {
                 DownloadSpecialEffects();
             }
 
-            if (!File.Exists(@"GameAssets\Races\Races.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[8]}\{files[10]}"))
             {
                 DownloadRaces();
             }
 
-            if (!File.Exists(@"GameAssets\EnvironmentHazards\EnvironmentHazards.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[7]}\{files[4]}"))
             {
                 DownloadEnvironmentHazards();
             }
 
-            if (!File.Exists(@"GameAssets\Abilities\Skills.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[6]}\{files[8]}"))
             {
                 DownloadSkills();
             }
 
-            if (!File.Exists(@"GameAssets\Abilities\Magics.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[6]}\{files[9]}"))
             {
                 DownloadMagics();
             }
 
-            if (!File.Exists(@"GameAssets\Items\Consumables.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[5]}\{files[11]}"))
             {
                 DownloadConsumables();
             }
 
-            if (!File.Exists(@"GameAssets\Items\Weapons.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[5]}\{files[13]}"))
             {
                 DownloadWeapons();
             }
 
-            if (!File.Exists(@"GameAssets\Items\Armors.txt"))
+            if (!File.Exists($@"{folders[0]}\{folders[5]}\{files[12]}"))
             {
                 DownloadArmors();
             }
@@ -481,7 +483,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Enemies\Monsters.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[1]}\{files[0]}");
                 foreach (string monster in monstersDownloader)
                 { 
                     streamWriter.WriteLine(monster);
@@ -511,7 +513,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Enemies\Ais.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[1]}\{files[1]}");
                 foreach (string ai in aisDownloader)
                 {
                     streamWriter.WriteLine(ai);
@@ -539,7 +541,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Dungeons\Dungeons.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[2]}\{files[3]}");
                 foreach (string dungeon in dungeonsDownloader)
                 {
                     streamWriter.WriteLine(dungeon);
@@ -567,7 +569,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\EnvironmentHazards\EnvironmentHazards.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[7]}\{files[4]}");
                 foreach (string environmentHazard in environmentHazardsDownloader)
                 {
                     streamWriter.WriteLine(environmentHazard);
@@ -595,7 +597,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Effects\BuffsDebuffs.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[7]}\{files[6]}");
                 foreach (string buffDebuff in buffsDebuffsDownloader)
                 {
                     streamWriter.WriteLine(buffDebuff);
@@ -623,7 +625,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Effects\Passives.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[7]}\{files[5]}");
                 foreach (string passive in passivesDownloader)
                 {
                     streamWriter.WriteLine(passive);
@@ -651,7 +653,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Effects\SpecialEffects.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[7]}\{files[7]}");
                 foreach (string specialEffect in specialEffectsDownloader)
                 {
                     streamWriter.WriteLine(specialEffect);
@@ -679,7 +681,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Characters\NPCs.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[4]}\{files[2]}");
                 foreach (string npc in npcsDownloader)
                 {
                     streamWriter.WriteLine(npc);
@@ -707,7 +709,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Items\Consumables.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[5]}\{files[11]}");
                 foreach (string consumable in consumablesDownloader)
                 {
                     streamWriter.WriteLine(consumable);
@@ -735,7 +737,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Items\Armors.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[5]}\{files[12]}");
                 foreach (string armor in armorsDownloader)
                 {
                     streamWriter.WriteLine(armor);
@@ -763,7 +765,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Items\Weapons.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[5]}\{files[13]}");
                 foreach (string weapon in weaponsDownloader)
                 {
                     streamWriter.WriteLine(weapon);
@@ -791,7 +793,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Abilities\Skills.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[6]}\{files[8]}");
                 foreach (string skill in skillsDownloader)
                 {
                     streamWriter.WriteLine(skill);
@@ -819,7 +821,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Abilities\Magics.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[6]}\{files[9]}");
                 foreach (string magic in magicsDownloader)
                 {
                     streamWriter.WriteLine(magic);
@@ -847,7 +849,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter(@"GameAssets\Races\Races.txt");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[8]}\{files[10]}");
                 foreach (string race in racesDownloader)
                 {
                     streamWriter.WriteLine(race);
@@ -861,6 +863,13 @@ namespace Dungeon_Valley_Explorer
         }
         
         //Downloader ends here------------------------------------------------------------------------------------------
+
+        //Initializer starts here---------------------------------------------------------------------------------------
+
+        public void Initializer()
+        {
+
+        }
     }
 }
 

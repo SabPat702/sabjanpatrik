@@ -109,6 +109,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Armor.cs" />
     <Compile Include="BuffDebuff.cs" />
     <Compile Include="DamageSource.cs" />
     <Compile Include="Dungeon.cs" />
