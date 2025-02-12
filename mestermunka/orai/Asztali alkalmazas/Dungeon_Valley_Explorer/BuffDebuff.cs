@@ -16,8 +16,11 @@ namespace Dungeon_Valley_Explorer
 
         public BuffDebuff(string oneLine)
         {
-            Description = string.Empty;
-            BuffDebuffName = string.Empty;
+            string[] linecutter = oneLine.Split('@');
+            Id = Convert.ToInt32(linecutter[0]);
+            BuffDebuffName = linecutter[1];
+            Description = linecutter[2];
+            Affect = linecutter[3];
         }
 
         public BuffDebuff()

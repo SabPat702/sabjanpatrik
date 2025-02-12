@@ -36,12 +36,21 @@ namespace Dungeon_Valley_Explorer
         MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
         List<string> folders = new List<string> { "GameAssets","Enemies","Dungeons","Effects","Characters","Items","Abilities","EnvironmentHazard","Races","Profiles"};
         List<string> files = new List<string> { "Monsters.txt","Ais.txt","NPCs.txt","Dungeons.txt","EnvironmentHazards.txt","Passives.txt","BuffsDebuffs.txt","SpecialEffects.txt","Skills.txt","Magics.txt","Races.txt","Consumables.txt","Armors.txt","Weapons.txt"};
+        List<Passive> passives = new List<Passive>();
+        List<BuffDebuff> buffsDebuffs = new List<BuffDebuff>();
+        List<SpecialEffect> specialEffects = new List<SpecialEffect>();
+        List<Race> races = new List<Race>();
+        List<Skill> skills = new List<Skill>();
+        List<Magic> magics = new List<Magic>();
+        List<Monster> monsters = new List<Monster>();
+
+
+
 
         /*public List<string> physicalDamageTypes = new List<string>();
         public List<string> magicalDamageTypes = new List<string>();
         public bool skipDamageCalculation = false;
         public Random random = new Random();
-        public List<Race> races = new List<Race>();
         public Race ExampleRace = new Race();
         public Hero ExampleHero = new Hero();
         public Weapon ExampleWeapon = new Weapon();
@@ -61,6 +70,7 @@ namespace Dungeon_Valley_Explorer
             {
                 Downloader();
             }
+            Initializer();
 
             /*ExampleRace.Id = 0;
             ExampleRace.RaceName = "Human";
@@ -597,7 +607,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[7]}\{files[6]}");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[3]}\{files[6]}");
                 foreach (string buffDebuff in buffsDebuffsDownloader)
                 {
                     streamWriter.WriteLine(buffDebuff);
@@ -625,7 +635,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[7]}\{files[5]}");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[3]}\{files[5]}");
                 foreach (string passive in passivesDownloader)
                 {
                     streamWriter.WriteLine(passive);
@@ -653,7 +663,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[7]}\{files[7]}");
+                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[3]}\{files[7]}");
                 foreach (string specialEffect in specialEffectsDownloader)
                 {
                     streamWriter.WriteLine(specialEffect);
@@ -868,7 +878,188 @@ namespace Dungeon_Valley_Explorer
 
         public void Initializer()
         {
+            LoadPassives();
+            LoadBuffsDebuffs();
+            LoadSpecialEffects();
+            LoadRaces();
+            LoadSkills();
+            LoadMagics();
+            LoadMonsters();//<--- finished here
+            LoadAis();
+            LoadNPCs();
+            LoadDungeons();
+            LoadEnvironmentHazards();
+            LoadConsumables();
+            LoadArmors();
+            LoadWeapons();
+        }
 
+        public void LoadMonsters()
+        {
+            monsters.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[1]}\{files[0]}");
+                while(!streamreader.EndOfStream)
+                {
+                    Monster monster = new Monster(streamreader.ReadLine(), passives, skills, magics, races);
+                    monsters.Add(monster);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
+
+        public void LoadAis()
+        {
+            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[1]}\{files[1]}");
+        }
+
+        public void LoadNPCs()
+        {
+            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[4]}\{files[2]}");
+        }
+
+        public void LoadDungeons()
+        {
+            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[2]}\{files[3]}");
+        }
+
+        public void LoadEnvironmentHazards()
+        {
+            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[7]}\{files[4]}");
+        }
+
+        public void LoadPassives()
+        {
+            passives.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[3]}\{files[5]}");
+                while (!streamreader.EndOfStream)
+                {
+                    Passive passive = new Passive(streamreader.ReadLine());
+                    passives.Add(passive);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
+
+        public void LoadBuffsDebuffs()
+        {
+            buffsDebuffs.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[3]}\{files[6]}");
+                while (!streamreader.EndOfStream)
+                {
+                    BuffDebuff buffDebuff = new BuffDebuff(streamreader.ReadLine());
+                    buffsDebuffs.Add(buffDebuff);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
+
+        public void LoadSpecialEffects()
+        {
+            specialEffects.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[3]}\{files[7]}");
+                while (!streamreader.EndOfStream)
+                {
+                    SpecialEffect specialEffect = new SpecialEffect(streamreader.ReadLine());
+                    specialEffects.Add(specialEffect);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
+
+        public void LoadSkills()
+        {
+            skills.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[6]}\{files[8]}");
+                while (!streamreader.EndOfStream)
+                {
+                    Skill skill = new Skill(streamreader.ReadLine(), specialEffects);
+                    skills.Add(skill);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
+
+        public void LoadMagics()
+        {
+            magics.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[6]}\{files[9]}");
+                while (!streamreader.EndOfStream)
+                {
+                    Magic magic = new Magic(streamreader.ReadLine(), specialEffects);
+                    magics.Add(magic);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
+
+        public void LoadRaces()
+        {
+            races.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[8]}\{files[10]}");
+                while (!streamreader.EndOfStream)
+                {
+                    Race race = new Race(streamreader.ReadLine());
+                    races.Add(race);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
+
+        public void LoadConsumables()
+        {
+            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[5]}\{files[11]}");
+        }
+
+        public void LoadArmors()
+        {
+            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[5]}\{files[12]}");
+        }
+
+        public void LoadWeapons()
+        {
+            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[5]}\{files[13]}");
         }
     }
 }

@@ -15,8 +15,11 @@ namespace Dungeon_Valley_Explorer
 
         public SpecialEffect(string oneLine)
         {
-            SpecialEffectName = string.Empty;
-            Description = string.Empty;
+            string[] linecutter = oneLine.Split('@');
+            Id = Convert.ToInt32(linecutter[0]);
+            SpecialEffectName = linecutter[1];
+            Description = linecutter[2];
+            Affect = linecutter[3];
         }
 
         public SpecialEffect()

@@ -12,7 +12,7 @@ namespace Dungeon_Valley_Explorer
         public string SkillName { get; set; }
         public string Description { get; set; }
         public string DamageType { get; set; }
-        public List<SpecialEffect> SpecialEffect { get; set; }
+        public List<SpecialEffect> SpecialEffects { get; set; }
         public int CritChance { get; set; }
         public double CritDamage { get; set; }
         public string Range { get; set; }
@@ -20,18 +20,34 @@ namespace Dungeon_Valley_Explorer
         public int inCD { get; set; }
         public int CD {  get; set; }
 
-        public Skill(string oneLine)
+        public Skill(string oneLine, List<SpecialEffect> specialEffects)
         {
-            SkillName = string.Empty;
-            Description = string.Empty;
-            DamageType = string.Empty;
-            SpecialEffect = new List<SpecialEffect>();
-            Range = string.Empty;
+            string[] linecutter = oneLine.Split('@');
+            Id = Convert.ToInt32(linecutter[0]);
+            SkillName = linecutter[1];
+            Description = linecutter[2];
+            DamageType = linecutter[3];
+            CritChance = Convert.ToInt32(linecutter[4]);
+            CritDamage = Convert.ToDouble(linecutter[5]);
+            string[] specialEffectscutter = linecutter[6].Split(',');
+            foreach (string specialEffect in specialEffectscutter)
+            {
+                for (int i = 0; i < specialEffects.Count(); i++)
+                {
+                    if (specialEffect == specialEffects[i].SpecialEffectName)
+                    {
+                        SpecialEffects.Add(specialEffects[i]);
+                    }
+                }
+            }
+            Range = linecutter[7];
+            SPCost = Convert.ToInt32(linecutter[8]);
+            CD = Convert.ToInt32(linecutter[9]);
         }
 
         public Skill()
         {
-            SpecialEffect = new List<SpecialEffect>();
+            SpecialEffects = new List<SpecialEffect>();
         }
     }
 }

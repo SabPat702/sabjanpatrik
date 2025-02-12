@@ -15,9 +15,11 @@ namespace Dungeon_Valley_Explorer
 
         public Passive(string oneLine)
         {
-            PassiveName = string.Empty;
-            Description = string.Empty;
-            Affect = string.Empty;
+            string[] linecutter = oneLine.Split('@');
+            Id = Convert.ToInt32(linecutter[0]);
+            PassiveName = linecutter[1];
+            Description = linecutter[2];
+            Affect = linecutter[3];
         }
 
         public Passive()

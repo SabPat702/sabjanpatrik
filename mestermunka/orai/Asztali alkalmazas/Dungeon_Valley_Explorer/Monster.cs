@@ -33,14 +33,69 @@ namespace Dungeon_Valley_Explorer
         public int SP { get; set; }
         public bool Guard { get; set; }
 
-        public Monster(string oneLine)
+        public Monster(string oneLine, List<Passive> passives, List<Skill> skills, List<Magic> magics, List<Race> races)
         {
-            MonsterName = string.Empty;
+            string[] linecutter = oneLine.Split('@');
+            Id = Convert.ToInt32(linecutter[0]);
+            MonsterName = linecutter[1];
+            InHP = Convert.ToInt32(linecutter[2]);
+            MaxHP = InHP;
+            HP = InHP;
+            InDEF = Convert.ToInt32(linecutter[3]);
+            DEF = InDEF;
+            InMDEF = Convert.ToInt32(linecutter[4]);
+            MDEF = InMDEF;
+            ATK = Convert.ToInt32(linecutter[5]);
+            InSP = Convert.ToInt32(linecutter[6]);
+            MaxSP = InSP;
+            SP = InSP;
+            InMP = Convert.ToInt32(linecutter[7]);
+            MaxMP = InMP;
+            MP = InMP;
+            string[] passivescutter = linecutter[8].Split(',');
+            foreach (string passive in passivescutter)
+            {
+                for (int i = 0; i < passives.Count(); i++)
+                {
+                    if (passive == passives[i].PassiveName)
+                    {
+                        Passives.Add(passives[i]);
+                    }
+                }
+            }
+            string[] skillscutter = linecutter[9].Split(',');
+            foreach (string skill in skillscutter)
+            {
+                for (int i = 0; i < skillscutter.Count(); i++)
+                {
+                    if (skill == skills[i].SkillName)
+                    {
+                        Skills.Add(skills[i]);
+                    }
+                }
+            }
+            string[] magicscutter = linecutter[10].Split(',');
+            foreach (string magic in magicscutter)
+            {
+                for (int i = 0; i < magicscutter.Count(); i++)
+                {
+                    if (magic == magics[i].MagicName)
+                    {
+                        Magics.Add(magics[i]);
+                    }
+                }
+            }
+            for (int i = 0; i < races.Count(); i++)
+            {
+                if (linecutter[11] == races[i].RaceName)
+                {
+                    Race = races[i];
+                }
+            }
+            Ai = linecutter[12];
+            Dungeon = linecutter[13];
+
             BuffsDebuffs = new List<BuffDebuff>();
-            Passives = new List<Passive>();
-            Skills = new List<Skill>();
-            Magics = new List<Magic>();
-            Race = new Race();
         }
 
         public Monster()

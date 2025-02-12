@@ -19,13 +19,35 @@ namespace Dungeon_Valley_Explorer
 
         public Race(string oneLine)
         {
-            Description = string.Empty;
-            RaceName = string.Empty;
-            Fatal = new List<string>();
-            Weak = new List<string>();
-            Resist = new List<string>();
-            Endure = new List<string>();
-            Nulls = new List<string>();
+            string[] linecutter = oneLine.Split('@');
+            Id = Convert.ToInt32(linecutter[0]);
+            RaceName = linecutter[1];
+            Description = linecutter[2];
+            string[] fatalcutter = linecutter[3].Split(',');
+            foreach (string fatal in fatalcutter)
+            {
+                Fatal.Add(fatal);
+            }
+            string[] weakcutter = linecutter[4].Split(',');
+            foreach (string weak in weakcutter)
+            {
+                Weak.Add(weak);
+            }
+            string[] resistcutter = linecutter[5].Split(',');
+            foreach (string resist in resistcutter)
+            {
+                Resist.Add(resist);
+            }
+            string[] endurecutter = linecutter[6].Split(',');
+            foreach (string endure in endurecutter)
+            {
+                Endure.Add(endure);
+            }
+            string[] nullscutter = linecutter[7].Split(',');
+            foreach (string nulls in nullscutter)
+            {
+                Nulls.Add(nulls);
+            }
         }
 
         public Race()
