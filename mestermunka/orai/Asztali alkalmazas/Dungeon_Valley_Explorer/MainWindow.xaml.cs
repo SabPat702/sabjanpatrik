@@ -43,6 +43,13 @@ namespace Dungeon_Valley_Explorer
         List<Skill> skills = new List<Skill>();
         List<Magic> magics = new List<Magic>();
         List<Monster> monsters = new List<Monster>();
+        List<Ai> ais = new List<Ai>();
+        List<Armor> armors = new List<Armor>();
+        List<Weapon> weapons = new List<Weapon>();
+        List<Hero> npcs = new List<Hero>();
+        List<Dungeon> dungeons = new List<Dungeon>();
+        List<EnvironmentHazard> environmentHazards = new List<EnvironmentHazard>();
+        List<Consumable> consumables = new List<Consumable>();
 
 
 
@@ -884,14 +891,14 @@ namespace Dungeon_Valley_Explorer
             LoadRaces();
             LoadSkills();
             LoadMagics();
-            LoadMonsters();//<--- finished here
+            LoadMonsters();
             LoadAis();
+            LoadArmors();
+            LoadWeapons();
             LoadNPCs();
             LoadDungeons();
             LoadEnvironmentHazards();
             LoadConsumables();
-            LoadArmors();
-            LoadWeapons();
         }
 
         public void LoadMonsters()
@@ -915,22 +922,78 @@ namespace Dungeon_Valley_Explorer
 
         public void LoadAis()
         {
-            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[1]}\{files[1]}");
+            ais.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[1]}\{files[1]}");
+                while (!streamreader.EndOfStream)
+                {
+                    Ai ai = new Ai(streamreader.ReadLine());
+                    ais.Add(ai);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void LoadNPCs()
         {
-            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[4]}\{files[2]}");
+            npcs.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[4]}\{files[2]}");
+                while (!streamreader.EndOfStream)
+                {
+                    Hero npc = new Hero(streamreader.ReadLine(), passives, skills, magics, races, armors, weapons);
+                    npcs.Add(npc);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void LoadDungeons()
         {
-            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[2]}\{files[3]}");
+            dungeons.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[2]}\{files[3]}");
+                while (!streamreader.EndOfStream)
+                {
+                    Dungeon dungeon = new Dungeon(streamreader.ReadLine());
+                    dungeons.Add(dungeon);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void LoadEnvironmentHazards()
         {
-            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[7]}\{files[4]}");
+            environmentHazards.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[7]}\{files[4]}");
+                while (!streamreader.EndOfStream)
+                {
+                    EnvironmentHazard environmentHazard = new EnvironmentHazard(streamreader.ReadLine(), specialEffects);
+                    environmentHazards.Add(environmentHazard);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void LoadPassives()
@@ -1049,18 +1112,62 @@ namespace Dungeon_Valley_Explorer
 
         public void LoadConsumables()
         {
-            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[5]}\{files[11]}");
+            consumables.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[5]}\{files[11]}");
+                while (!streamreader.EndOfStream)
+                {
+                    Consumable consumable = new Consumable(streamreader.ReadLine(), specialEffects);
+                    consumables.Add(consumable);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void LoadArmors()
         {
-            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[5]}\{files[12]}");
+            armors.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[5]}\{files[12]}");
+                while (!streamreader.EndOfStream)
+                {
+                    Armor armor = new Armor(streamreader.ReadLine(), specialEffects);
+                    armors.Add(armor);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void LoadWeapons()
         {
-            StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[5]}\{files[13]}");
+            weapons.Clear();
+            try
+            {
+                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[5]}\{files[13]}");
+                while (!streamreader.EndOfStream)
+                {
+                    Weapon weapon = new Weapon(streamreader.ReadLine(), specialEffects);
+                    weapons.Add(weapon);
+                }
+                streamreader.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
+
+        //Initializer ends here-----------------------------------------------------------------------------------------
     }
 }
 

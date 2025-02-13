@@ -17,8 +17,13 @@ namespace Dungeon_Valley_Explorer
 
         public Dungeon(string oneLine)
         {
-            DungeonName = string.Empty;
-            Description = string.Empty;
+            string[] linecutter = oneLine.Split('@');
+            Id = Convert.ToInt32(linecutter[0]);
+            DungeonName = linecutter[1];
+            Description = linecutter[2];
+            Length = Convert.ToInt32(linecutter[3]);
+            GoldReward = Convert.ToInt32(linecutter[4]);
+            ExpReward = Convert.ToInt32(linecutter[5]);
         }
 
         public Dungeon()

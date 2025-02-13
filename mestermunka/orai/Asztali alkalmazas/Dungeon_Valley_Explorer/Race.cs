@@ -19,6 +19,11 @@ namespace Dungeon_Valley_Explorer
 
         public Race(string oneLine)
         {
+            Fatal = new List<string>();
+            Weak = new List<string>();
+            Resist = new List<string>();
+            Endure = new List<string>();
+            Nulls = new List<string>();
             string[] linecutter = oneLine.Split('@');
             Id = Convert.ToInt32(linecutter[0]);
             RaceName = linecutter[1];

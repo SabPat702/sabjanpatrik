@@ -35,6 +35,11 @@ namespace Dungeon_Valley_Explorer
 
         public Monster(string oneLine, List<Passive> passives, List<Skill> skills, List<Magic> magics, List<Race> races)
         {
+            BuffsDebuffs = new List<BuffDebuff>();
+            Passives = new List<Passive>();
+            Skills = new List<Skill>();
+            Magics = new List<Magic>();
+            Race = new Race();
             string[] linecutter = oneLine.Split('@');
             Id = Convert.ToInt32(linecutter[0]);
             MonsterName = linecutter[1];
@@ -94,8 +99,6 @@ namespace Dungeon_Valley_Explorer
             }
             Ai = linecutter[12];
             Dungeon = linecutter[13];
-
-            BuffsDebuffs = new List<BuffDebuff>();
         }
 
         public Monster()
