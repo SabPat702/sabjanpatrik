@@ -22,9 +22,27 @@ namespace Dungeon_Valley_Explorer
             SpecialEffects = new List<SpecialEffect>();
         }
 
-        public Armor(string oneline)
+        public Armor(string oneline, List<SpecialEffect> specialEffects)
         {
-            SpecialEffects = new List<SpecialEffect>();
+            string[] linecutter = oneline.Split('@');
+            Id = Convert.ToInt32(linecutter[0]);
+            ArmorName = linecutter[1];
+            Description = linecutter[2];
+            DEF = Convert.ToInt32(linecutter[3]);
+            MDEF = Convert.ToInt32(linecutter[4]);
+            string[] specialEffectscutter = linecutter[5].Split(',');
+            foreach (string specialEffect in specialEffectscutter)
+            {
+                for (int i = 0; i < specialEffects.Count(); i++)
+                {
+                    if (specialEffect == specialEffects[i].SpecialEffectName)
+                    {
+                        SpecialEffects.Add(specialEffects[i]);
+                    }
+                }
+            }
+            Type = Convert.ToInt32(linecutter[6]);
+            Price = Convert.ToInt32(linecutter[7]);
         }
     }
 }

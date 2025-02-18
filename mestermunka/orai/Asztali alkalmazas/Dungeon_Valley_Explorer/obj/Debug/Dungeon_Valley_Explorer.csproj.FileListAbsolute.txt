@@ -91,6 +91,6 @@ C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalm
 C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalmazas\Dungeon_Valley_Explorer\obj\Debug\Dungeon_Valley_Explorer.Properties.Resources.resources
 C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalmazas\Dungeon_Valley_Explorer\obj\Debug\Dungeon_Valley_Explorer.csproj.GenerateResource.cache
 C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalmazas\Dungeon_Valley_Explorer\obj\Debug\Dungeon_Valley_Explorer.csproj.CoreCompileInputs.cache
-C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalmazas\Dungeon_Valley_Explorer\obj\Debug\Dungeon_.E7BB24DC.Up2Date
 C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalmazas\Dungeon_Valley_Explorer\obj\Debug\Dungeon_Valley_Explorer.exe
 C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalmazas\Dungeon_Valley_Explorer\obj\Debug\Dungeon_Valley_Explorer.pdb
+C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalmazas\Dungeon_Valley_Explorer\obj\Debug\Dungeon_Valley_Explorer.csproj.CopyComplete

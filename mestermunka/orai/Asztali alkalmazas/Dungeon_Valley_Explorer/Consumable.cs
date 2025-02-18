@@ -20,9 +20,24 @@ namespace Dungeon_Valley_Explorer
             SpecialEffects = new List<SpecialEffect>();
         }
 
-        public Consumable(string oneline)
+        public Consumable(string oneline, List<SpecialEffect> specialEffects)
         {
-            SpecialEffects = new List<SpecialEffect>();
+            string[] linecutter = oneline.Split('@');
+            Id = Convert.ToInt32(linecutter[0]);
+            ConsumableName = linecutter[1];
+            Description = linecutter[2];
+            string[] specialEffectscutter = linecutter[3].Split(',');
+            foreach (string specialEffect in specialEffectscutter)
+            {
+                for (int i = 0; i < specialEffects.Count(); i++)
+                {
+                    if (specialEffect == specialEffects[i].SpecialEffectName)
+                    {
+                        SpecialEffects.Add(specialEffects[i]);
+                    }
+                }
+            }
+            Price = Convert.ToInt32(linecutter[4]);
         }
     }
 }
