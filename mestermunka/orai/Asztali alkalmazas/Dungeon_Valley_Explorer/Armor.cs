@@ -24,6 +24,7 @@ namespace Dungeon_Valley_Explorer
 
         public Armor(string oneline, List<SpecialEffect> specialEffects)
         {
+            SpecialEffects = new List<SpecialEffect>();
             string[] linecutter = oneline.Split('@');
             Id = Convert.ToInt32(linecutter[0]);
             ArmorName = linecutter[1];

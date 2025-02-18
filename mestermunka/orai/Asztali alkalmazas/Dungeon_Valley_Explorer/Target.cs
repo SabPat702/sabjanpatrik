@@ -33,6 +33,9 @@ namespace Dungeon_Valley_Explorer
 
         public Target(Hero hero)
         {
+            BuffsDebuffs = new List<BuffDebuff>();
+            SpecialEffects = new List<SpecialEffect>();
+            Passives = new List<Passive>();
             TargetName = hero.HeroName;
             DEF = hero.DEF;
             MDEF = hero.MDEF;
@@ -57,7 +60,9 @@ namespace Dungeon_Valley_Explorer
 
         public Target(Monster monster)
         {
+            BuffsDebuffs = new List<BuffDebuff>();
             SpecialEffects = new List<SpecialEffect>();
+            Passives = new List<Passive>();
             TargetName = monster.MonsterName;
             DEF = monster.DEF;
             MDEF = monster.MDEF;

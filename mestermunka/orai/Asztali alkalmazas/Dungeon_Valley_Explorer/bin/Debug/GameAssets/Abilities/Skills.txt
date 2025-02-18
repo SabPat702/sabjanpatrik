@@ -1,4 +1,4 @@
 0@Basic Strike@A basic strike from the monster@Blunt@10@2@None@Melee@0@0
 1@Advanced Strike@An advanced striking technique from a monster.@Blunt@15@2,2@None@Melee@0@0
 2@Shield@A basic defensive ability that raises the users defense.@None@0@0@None@None@5@2
-3@Power Slash@A powerful cut.@Slashing@20@3@None@Melee@3@2
+3@Power Slash@A powerful cut.@Slash@20@3@None@Melee@3@2

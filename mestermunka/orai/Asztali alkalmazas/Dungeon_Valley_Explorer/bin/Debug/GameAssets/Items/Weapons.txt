@@ -1,1 +1,2 @@
-0@TestWeapon@A weapon for testing.@20@Slashing@10@2@Piercing Blade@Melee@Melee@20
+0@TestWeapon@A weapon for testing.@20@Slash@10@2@Piercing Blade@Melee@Melee@20
+1@Unarmed@No weapons here@2@Blunt@1@1,1@None@Melee@Melee@0

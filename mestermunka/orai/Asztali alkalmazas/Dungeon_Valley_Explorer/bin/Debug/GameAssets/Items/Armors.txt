@@ -1,2 +1,4 @@
 0@Test Helmet@Armor for testing purpose@4@4@None@1@10
 1@Test Chestplate@Armor for testing purpose@6@6@None@2@20
+2@Test Leggings@Armor for testing purpose@2@2@None@3@5
+3@Test Boots@Armor for testing purpose@2@2@None@4@5

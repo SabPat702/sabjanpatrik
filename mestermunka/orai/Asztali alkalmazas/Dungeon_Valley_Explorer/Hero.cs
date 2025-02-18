@@ -49,9 +49,7 @@ namespace Dungeon_Valley_Explorer
             Id = Convert.ToInt32(linecutter[0]);
             HeroName = linecutter[1];
             InDEF = Convert.ToInt32(linecutter[2]);
-            DEF = InDEF;
             InMDEF = Convert.ToInt32(linecutter[3]);
-            MDEF = InMDEF;
             InHP = Convert.ToInt32(linecutter[4]);
             MaxHP = InHP;
             HP = InHP;
@@ -75,6 +73,7 @@ namespace Dungeon_Valley_Explorer
                         weaponcounter++;
                     }
                 }
+                
             }
             string[] armorscutter = linecutter[10].Split(',');
             int armorcounter = 0;
@@ -130,6 +129,16 @@ namespace Dungeon_Valley_Explorer
                     Race = races[i];
                 }
             }
+
+
+            foreach (Armor armor in Armors)
+            {
+                InDEF = InDEF + armor.DEF;
+                InMDEF = InMDEF + armor.MDEF;
+            }
+
+            DEF = InDEF;
+            MDEF = InMDEF;
         }
 
         public Hero()

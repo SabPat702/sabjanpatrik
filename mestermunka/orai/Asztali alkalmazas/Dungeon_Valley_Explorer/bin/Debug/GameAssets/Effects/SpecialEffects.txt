@@ -1,2 +1,3 @@
 0@Piercing Blade@A blade that can even cut armor. (Ignores a set amount of defense(DEF))@Damage Calculation
 1@Burn@Sets your targets ablaze.@Give Buff or Debuff
+2@None@Not so special now are we.@Nothing

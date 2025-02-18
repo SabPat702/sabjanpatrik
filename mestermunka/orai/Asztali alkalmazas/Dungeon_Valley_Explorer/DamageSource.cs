@@ -32,10 +32,11 @@ namespace Dungeon_Valley_Explorer
         }
         public DamageSource(EnvironmentHazard envHazard)
         {
-            ATK = envHazard.ATK;
-            SpecialEffects = envHazard.SpecialEffects;
+            SpecialEffects = new List<SpecialEffect>();
             BuffsDebuffs = new List<BuffDebuff>();
             Passives = new List<Passive>();
+            ATK = envHazard.ATK;
+            SpecialEffects = envHazard.SpecialEffects;
             CritChance = envHazard.CritChance;
             CritDamage = envHazard.CritDamage;
             DamageType = envHazard.DamageType;
@@ -51,6 +52,9 @@ namespace Dungeon_Valley_Explorer
 
         public DamageSource(Hero hero, int chosenWeapon)
         {
+            SpecialEffects = new List<SpecialEffect>();
+            BuffsDebuffs = new List<BuffDebuff>();
+            Passives = new List<Passive>();
             ATK = hero.Weapons[chosenWeapon].ATK;
             SpecialEffects = hero.Weapons[chosenWeapon].SpecialEffects;
             foreach (var armors in hero.Armors)
@@ -77,6 +81,9 @@ namespace Dungeon_Valley_Explorer
 
         public DamageSource(Hero hero, int chosenWeapon, Skill skill)
         {
+            SpecialEffects = new List<SpecialEffect>();
+            BuffsDebuffs = new List<BuffDebuff>();
+            Passives = new List<Passive>();
             ATK = hero.Weapons[chosenWeapon].ATK;
             SpecialEffects = hero.Weapons[chosenWeapon].SpecialEffects;
             foreach (var specialEffect in skill.SpecialEffects)
@@ -107,6 +114,9 @@ namespace Dungeon_Valley_Explorer
 
         public DamageSource(Hero hero, Magic magic)
         {
+            SpecialEffects = new List<SpecialEffect>();
+            BuffsDebuffs = new List<BuffDebuff>();
+            Passives = new List<Passive>();
             ATK = magic.ATK;
             SpecialEffects = magic.SpecialEffects;
             foreach (var armors in hero.Armors)
@@ -133,6 +143,9 @@ namespace Dungeon_Valley_Explorer
 
         public DamageSource(Monster monster, Skill skill)
         {
+            SpecialEffects = new List<SpecialEffect>();
+            BuffsDebuffs = new List<BuffDebuff>();
+            Passives = new List<Passive>();
             ATK = monster.ATK;
             SpecialEffects = skill.SpecialEffects;
             BuffsDebuffs = monster.BuffsDebuffs;
@@ -152,6 +165,9 @@ namespace Dungeon_Valley_Explorer
 
         public DamageSource(Monster monster, Magic magic)
         {
+            SpecialEffects = new List<SpecialEffect>();
+            BuffsDebuffs = new List<BuffDebuff>();
+            Passives = new List<Passive>();
             ATK = magic.ATK;
             SpecialEffects = magic.SpecialEffects;
             BuffsDebuffs = monster.BuffsDebuffs;

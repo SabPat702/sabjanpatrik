@@ -22,6 +22,7 @@ namespace Dungeon_Valley_Explorer
 
         public Consumable(string oneline, List<SpecialEffect> specialEffects)
         {
+            SpecialEffects = new List<SpecialEffect>();
             string[] linecutter = oneline.Split('@');
             Id = Convert.ToInt32(linecutter[0]);
             ConsumableName = linecutter[1];
