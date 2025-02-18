@@ -53,7 +53,6 @@ namespace Dungeon_Valley_Explorer
 
 
 
-
         public List<string> physicalDamageTypes = new List<string> { "Blunt","Pierce","Slash"};
         public List<string> magicalDamageTypes = new List<string> { "Fire"};
         public bool skipDamageCalculation = false;
@@ -72,7 +71,15 @@ namespace Dungeon_Valley_Explorer
             Initializer();
 
             lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
+            lbDisplay.Items.Add("Tip: To check if you have all the game assets downloaded just delete the GameAssets folder and download everything again.");
+            lbDisplay.Items.Add("Tip: To play with cloud saving you need to login to a account through the Login option.");
+            lbDisplay.Items.Add("Tip: To progress write text based on the options on the far left into the area at the bottom of the window or select an option on the far left then press the input button. (This can be the number or the option as well example:'1'. 'Start')");
 
+            lbDisplay.Items.Add("1. Offline play");
+            lbOptions.Items.Add("2. Login");
+            lbOptions.Items.Add("3. Add Profile");
+
+            
         }
 
         private void lbOptions_SelectionChanged(object sender, SelectionChangedEventArgs e)
