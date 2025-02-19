@@ -251,8 +251,10 @@ namespace Dungeon_Valley_Explorer
                 if (!Directory.Exists($@"{folders[9]}\{folders.Last()}") && folders.Last() != "Profiles")
                 {
                     Directory.CreateDirectory($@"{folders[9]}\{folders.Last()}");
+                    GetProfileSaves();
                     folders.Remove(folders[folders.Count() - 1]);
                     MessageBox.Show("The profile has been added successfully.");
+
                 }
                 else if (Directory.Exists($@"{folders[9]}\{folders.Last()}") && folders.Last() != "Profiles")
                 {
@@ -269,14 +271,50 @@ namespace Dungeon_Valley_Explorer
                 MessageBox.Show(error.Message);
             }
 
-
-
             tbInputArea.Text = "";
             btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
             lbOptions.Items.Clear();
             lbOptions.Items.Add("1. Offline play");
             lbOptions.Items.Add("2. Select Profile");
             lbOptions.Items.Add("3. Add Profile");
+        }
+
+        public void GetProfileSaves()
+        {
+            string command = $"Select `save_game`.SaveName, `save_game`.SaveData from save_game inner join hero on hero.Id = save_game.HeroId inner join user on user.Id = hero.UserId where UserName = '{folders.Last()}'";
+            MySqlCommand mySqlCommand = new MySqlCommand(command,mySqlConnection);
+            int savesCount = 0;
+            List<string> saveData = new List<string>();
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    files.Add(mySqlDataReader.GetString(0));
+                    saveData.Add(mySqlDataReader.GetString(1));
+                    savesCount++;
+                }
+
+                if (files.Last() != "Weapons.txt")
+                {
+                    for (int i = 0; i < savesCount; i++)
+                    {
+                        StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files[files.Count()-(i+1)]}.txt");
+                        streamWriter.WriteLine(saveData[i]);
+                        streamWriter.Close();
+                    }
+
+                    for (int i = 0; i < savesCount; i++)
+                    {
+                        files.Remove(files[files.Count() - 1]);
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void ExitAddProfile()
