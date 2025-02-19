@@ -51,6 +51,9 @@ namespace Dungeon_Valley_Explorer
         List<EnvironmentHazard> environmentHazards = new List<EnvironmentHazard>();
         List<Consumable> consumables = new List<Consumable>();
 
+        string addEmail = "";
+        string addPassword = "";
+
 
 
         public List<string> physicalDamageTypes = new List<string> { "Blunt","Pierce","Slash"};
@@ -73,21 +76,246 @@ namespace Dungeon_Valley_Explorer
             lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
             lbDisplay.Items.Add("Tip: To check if you have all the game assets downloaded just delete the GameAssets folder and download everything again.");
             lbDisplay.Items.Add("Tip: To play with cloud saving you need to login to a account through the Login option.");
-            lbDisplay.Items.Add("Tip: To progress write text based on the options on the far left into the area at the bottom of the window or select an option on the far left then press the input button. (This can be the number or the option as well example:'1'. 'Start')");
+            lbDisplay.Items.Add("Tip: To progress write text based on the options on the far left into the area at the bottom of the window or select an option on the far left then press the input button. (This can be the number or the option as well example:'1'. 'Offline play')");
+            lbDisplay.Items.Add("Tip: To learn more about most options you can type '?' to get a short explanation.");
 
-            lbDisplay.Items.Add("1. Offline play");
-            lbOptions.Items.Add("2. Login");
+            lbOptions.Items.Add("1. Offline play");
+            lbOptions.Items.Add("2. Select Profile");
             lbOptions.Items.Add("3. Add Profile");
 
-            
+            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
         }
+
+        //Main menu starts here ----------------------------------------------------------------------------------------
+
+        public void OfflineSelectProfileAddProfileOption(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+            switch (tbInputArea.Text)
+            {
+                case "1":
+
+                    break;
+                case "2":
+
+                    break;
+                case "3":
+                    AddProfile();
+                    break;
+                case "Offline play":
+
+                    break;
+                case "Select Profile":
+
+                    break;
+                case "Add Profile":
+                    AddProfile();
+                    break;
+                case "?":
+                    ExplainOfflineLoginAddProfileOption();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                    break;
+            }
+        }
+
+        public void OfflinePlay()
+        {
+            tbInputArea.Text = "";
+        }
+
+        public void SelectProfile()
+        {
+            tbInputArea.Text = "";
+        }
+
+        public void AddProfile()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("To add a profile you will have to first write in your email then write in your password into the textbox and click the input button after both the email and the password. (You can also write 'Back' to go back.)");
+            btInput.Click += new RoutedEventHandler(AddProfileEmail);
+            lbOptions.Items.Clear();
+        }
+
+        public void ExplainOfflineLoginAddProfileOption()
+        {
+            lbDisplay.Items.Add("Offline play allows you to play without an account on this computer.");
+            lbDisplay.Items.Add("Select Profile allows you to select an already added profile to use the cloud save feature so that you can access your saves from different computers.");
+            lbDisplay.Items.Add("Add Profile allows you to add a existing account from our database so that you can create saves that have access to cloud saving and get access to existing cloud saves.");
+            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+            tbInputArea.Text = "";
+        }
+
+        public void AddProfileEmail(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(AddProfileEmail);
+            if (!tbInputArea.Text.Contains('@') || !tbInputArea.Text.Contains('.'))
+            {
+                switch (tbInputArea.Text)
+                {
+                    case "Back":
+                        tbInputArea.Text = "";
+                        lbOptions.Items.Add("1. Offline play");
+                        lbOptions.Items.Add("2. Select Profile");
+                        lbOptions.Items.Add("3. Add Profile");
+                        btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                        break;
+                    default:
+                        MessageBox.Show("Please write down the email for the profile or write 'Back' to cancel.");
+                        btInput.Click += new RoutedEventHandler(AddProfileEmail);
+                        break;
+                }
+            }
+            else if (tbInputArea.Text.Contains('@') && tbInputArea.Text.Contains('.'))
+            {
+                addEmail = tbInputArea.Text;
+                lbDisplay.Items.Add("Now please write down the password.");
+                btInput.Click += new RoutedEventHandler(AddProfilePassword);
+                tbInputArea.Text = "";
+            }
+        }
+
+        public void AddProfilePassword(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(AddProfilePassword);
+            switch (tbInputArea.Text)
+            {
+                case "Back":
+                    tbInputArea.Text = "";
+                    lbOptions.Items.Add("1. Offline play");
+                    lbOptions.Items.Add("2. Select Profile");
+                    lbOptions.Items.Add("3. Add Profile");
+                    btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                    break;
+                default:
+                    addPassword = tbInputArea.Text;
+                    lbDisplay.Items.Add($"Are you sure you want to add this profile? (Email: {addEmail},Password: {addPassword})");
+                    tbInputArea.Text = "";
+                    lbOptions.Items.Add("1. Yes");
+                    lbOptions.Items.Add("2. No");
+                    lbOptions.Items.Add("3. Change information");
+                    btInput.Click += new RoutedEventHandler(AddProfileConfirm);
+                    break;
+            }
+        }
+
+        public void AddProfileConfirm(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(AddProfileConfirm);
+            switch (tbInputArea.Text)
+            {
+                case "1":
+                    AddProfileGetProfile();
+                    break;
+                case "2":
+                    ExitAddProfile();
+                    break;
+                case "3":
+                    ReAddProfileEmail();
+                    break;
+                case "Yes":
+                    AddProfileGetProfile();
+                    break;
+                case "No":
+                    ExitAddProfile();
+                    break;
+                case "Change information":
+                    ReAddProfileEmail();
+                    break;
+                case "?":
+                    ExplainAddProfileConfirm();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(AddProfileConfirm);
+                    break;
+            }
+        }
+
+        public void AddProfileGetProfile()
+        {
+            string command = $"Select UserName from user where Email = '{addEmail}' and Password = '{addPassword}' limit 1";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    folders.Add(mySqlDataReader.GetString(0));
+                }
+                mySqlConnection.Close();
+
+                if (!Directory.Exists($@"{folders[9]}\{folders.Last()}") && folders.Last() != "Profiles")
+                {
+                    Directory.CreateDirectory($@"{folders[9]}\{folders.Last()}");
+                    folders.Remove(folders[folders.Count() - 1]);
+                    MessageBox.Show("The profile has been added successfully.");
+                }
+                else if (Directory.Exists($@"{folders[9]}\{folders.Last()}") && folders.Last() != "Profiles")
+                {
+                    MessageBox.Show("This profile has already been added to the game.");
+                    folders.Remove(folders[folders.Count() - 1]);
+                }
+                else
+                {
+                    MessageBox.Show("We couldn't find a matching profile please try again.");
+                }
+            }
+            catch (Exception error)
+            { 
+                MessageBox.Show(error.Message);
+            }
+
+
+
+            tbInputArea.Text = "";
+            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Offline play");
+            lbOptions.Items.Add("2. Select Profile");
+            lbOptions.Items.Add("3. Add Profile");
+        }
+
+        public void ExitAddProfile()
+        {
+            tbInputArea.Text = "";
+            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Offline play");
+            lbOptions.Items.Add("2. Select Profile");
+            lbOptions.Items.Add("3. Add Profile");
+        }
+
+        public void ReAddProfileEmail()
+        {
+            tbInputArea.Text = "";
+            btInput.Click += new RoutedEventHandler(AddProfileEmail);
+            lbOptions.Items.Clear();
+        }
+
+        public void ExplainAddProfileConfirm()
+        {
+            lbDisplay.Items.Add("Yes will try to get the profile from our and then download all saves that exist there.");
+            lbDisplay.Items.Add("No will cancel the Add Profile process and give you the previous 3 options.");
+            lbDisplay.Items.Add("Change informatoin will send you back to the email adding step.");
+            btInput.Click += new RoutedEventHandler(AddProfileConfirm);
+            tbInputArea.Text = "";
+        }
+
+        //Main menu ends here ------------------------------------------------------------------------------------------
 
         private void lbOptions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBox lboptions = sender as ListBox;
-            string selectedItem = lboptions.SelectedItem as string;
-            int dotintext = selectedItem.IndexOf('.');
-            tbInputArea.Text = selectedItem.Substring(0, dotintext);
+            if (lboptions.SelectedItem != null)
+            {
+                string selectedItem = lboptions.SelectedItem as string;
+                int dotintext = selectedItem.IndexOf('.');
+                tbInputArea.Text = selectedItem.Substring(0, dotintext);
+            }
         }
 
         public void WIP()
@@ -267,7 +495,7 @@ namespace Dungeon_Valley_Explorer
             return damage;
         }
 
-        //Downloader below this line------------------------------------------------------------------------------------
+        //Downloader starts here ---------------------------------------------------------------------------------------
 
         public void Downloader()
         {

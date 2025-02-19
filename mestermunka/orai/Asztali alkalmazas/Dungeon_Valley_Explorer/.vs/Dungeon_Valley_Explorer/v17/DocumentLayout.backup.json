@@ -86,9 +86,9 @@
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\MainWindow.xaml.cs*",
-              "RelativeToolTip": "MainWindow.xaml.cs*",
-              "ViewState": "AgIAADoAAAAAAAAAAAAIwEoAAAAjAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\SabPat702\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\MainWindow.xaml.cs",
+              "RelativeToolTip": "MainWindow.xaml.cs",
+              "ViewState": "AgIAACUBAAAAAAAAAADgvzoBAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-28T20:55:06.735Z",
               "IsPinned": true,
@@ -141,8 +141,7 @@
               "RelativeToolTip": "Hero.cs",
               "ViewState": "AgIAAC0AAAAAAAAAAAAiwIwAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:23:05.246Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-29T08:23:05.246Z"
             },
             {
               "$type": "Document",
@@ -154,8 +153,7 @@
               "RelativeToolTip": "Consumable.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAAAnwA4AAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-12T07:05:08.308Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-12T07:05:08.308Z"
             },
             {
               "$type": "Document",
@@ -167,8 +165,7 @@
               "RelativeToolTip": "Skill.cs",
               "ViewState": "AgIAAA0AAAAAAAAAAAA5wCcAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:29:28.723Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-29T08:29:28.723Z"
             },
             {
               "$type": "Document",
@@ -180,8 +177,7 @@
               "RelativeToolTip": "Target.cs",
               "ViewState": "AgIAACwAAAAAAAAAAAAEwE4AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:27:46.81Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-29T08:27:46.81Z"
             },
             {
               "$type": "Document",
@@ -205,8 +201,7 @@
               "RelativeToolTip": "Weapon.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAABMAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:25:17.84Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-29T08:25:17.84Z"
             },
             {
               "$type": "Document",
@@ -218,8 +213,7 @@
               "RelativeToolTip": "DamageSource.cs",
               "ViewState": "AgIAADQAAAAAAAAAAIAzwE8AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:31:36.552Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-29T08:31:36.552Z"
             },
             {
               "$type": "Document",
@@ -231,8 +225,7 @@
               "RelativeToolTip": "Armor.cs",
               "ViewState": "AgIAABEAAAAAAAAAAIA1wBkAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T08:22:14.869Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-11T08:22:14.869Z"
             },
             {
               "$type": "Document",
