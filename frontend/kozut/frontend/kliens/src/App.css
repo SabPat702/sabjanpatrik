@@ -40,3 +40,18 @@
 .read-the-docs {
   color: #888;
 }
+
+table tr td{
+  border: black 1px solid;
+  padding: 5px;
+}
+
+table th{
+  border: black 1px solid;
+  padding: 5px;
+}
+
+button{
+  background-color: rgb(200, 200, 200);
+  border: black 1px solid;
+}
