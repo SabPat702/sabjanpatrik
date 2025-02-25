@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MySql.Data.MySqlClient;
+using Mysqlx;
 using Org.BouncyCastle.Bcpg;
 
 namespace Dungeon_Valley_Explorer
@@ -36,20 +37,7 @@ namespace Dungeon_Valley_Explorer
         MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
         List<string> folders = new List<string> { "GameAssets","Enemies","Dungeons","Effects","Characters","Items","Abilities","EnvironmentHazard","Races","Profiles"};
         List<string> files = new List<string> { "Monsters.txt","Ais.txt","NPCs.txt","Dungeons.txt","EnvironmentHazards.txt","Passives.txt","BuffsDebuffs.txt","SpecialEffects.txt","Skills.txt","Magics.txt","Races.txt","Consumables.txt","Armors.txt","Weapons.txt"};
-        List<Passive> passives = new List<Passive>();
-        List<BuffDebuff> buffsDebuffs = new List<BuffDebuff>();
-        List<SpecialEffect> specialEffects = new List<SpecialEffect>();
-        List<Race> races = new List<Race>();
-        List<Skill> skills = new List<Skill>();
-        List<Magic> magics = new List<Magic>();
-        List<Monster> monsters = new List<Monster>();
-        List<Ai> ais = new List<Ai>();
-        List<Armor> armors = new List<Armor>();
-        List<Weapon> weapons = new List<Weapon>();
-        List<Hero> npcs = new List<Hero>();
-        List<Dungeon> dungeons = new List<Dungeon>();
-        List<EnvironmentHazard> environmentHazards = new List<EnvironmentHazard>();
-        List<Consumable> consumables = new List<Consumable>();
+        List<string> tempProfiles = new List<string>();
 
         string addEmail = "";
         string addPassword = "";
@@ -69,13 +57,13 @@ namespace Dungeon_Valley_Explorer
 
             if (!Directory.Exists($@"{folders[0]}") || !Directory.Exists($@"{folders[0]}\{folders[1]}") || !Directory.Exists($@"{folders[0]}\{folders[2]}") || !Directory.Exists($@"{folders[0]}\{folders[3]}") || !Directory.Exists($@"{folders[0]}\{folders[4]}") || !Directory.Exists($@"{folders[0]}\{folders[5]}") || !Directory.Exists($@"{folders[0]}\{folders[6]}") || !Directory.Exists($@"{folders[0]}\{folders[7]}") || !Directory.Exists($@"{folders[0]}\{folders[8]}") || !Directory.Exists($@"{folders[9]}") || !File.Exists($@"{folders[0]}\{folders[1]}\{files[0]}") || !File.Exists($@"{folders[0]}\{folders[1]}\{files[1]}") || !File.Exists($@"{folders[0]}\{folders[4]}\{files[2]}") || !File.Exists($@"{folders[0]}\{folders[2]}\{files[3]}") || !File.Exists($@"{folders[0]}\{folders[7]}\{files[4]}") || !File.Exists($@"{folders[0]}\{folders[3]}\{files[5]}") || !File.Exists($@"{folders[0]}\{folders[3]}\{files[6]}") || !File.Exists($@"{folders[0]}\{folders[3]}\{files[7]}") || !File.Exists($@"{folders[0]}\{folders[6]}\{files[8]}") || !File.Exists($@"{folders[0]}\{folders[6]}\{files[9]}") || !File.Exists($@"{folders[0]}\{folders[8]}\{files[10]}") || !File.Exists($@"{folders[0]}\{folders[5]}\{files[11]}") || !File.Exists($@"{folders[0]}\{folders[5]}\{files[12]}") || !File.Exists($@"{folders[0]}\{folders[5]}\{files[13]}"))
             {
-                Downloader();
+                Downloader.Download(folders, files, mySqlConnection);
             }
-            Initializer();
+            Initializer.Initialize(folders, files);
 
             lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
             lbDisplay.Items.Add("Tip: To check if you have all the game assets downloaded just delete the GameAssets folder and download everything again.");
-            lbDisplay.Items.Add("Tip: To play with cloud saving you need to login to a account through the Login option.");
+            lbDisplay.Items.Add("Tip: To play with cloud saving you need to login to an account through the Select Profile option.");
             lbDisplay.Items.Add("Tip: To progress write text based on the options on the far left into the area at the bottom of the window or select an option on the far left then press the input button. (This can be the number or the option as well example:'1'. 'Offline play')");
             lbDisplay.Items.Add("Tip: To learn more about most options you can type '?' to get a short explanation.");
 
@@ -97,7 +85,7 @@ namespace Dungeon_Valley_Explorer
 
                     break;
                 case "2":
-
+                    SelectProfile();
                     break;
                 case "3":
                     AddProfile();
@@ -106,7 +94,7 @@ namespace Dungeon_Valley_Explorer
 
                     break;
                 case "Select Profile":
-
+                    SelectProfile();
                     break;
                 case "Add Profile":
                     AddProfile();
@@ -121,24 +109,6 @@ namespace Dungeon_Valley_Explorer
             }
         }
 
-        public void OfflinePlay()
-        {
-            tbInputArea.Text = "";
-        }
-
-        public void SelectProfile()
-        {
-            tbInputArea.Text = "";
-        }
-
-        public void AddProfile()
-        {
-            tbInputArea.Text = "";
-            lbDisplay.Items.Add("To add a profile you will have to first write in your email then write in your password into the textbox and click the input button after both the email and the password. (You can also write 'Back' to go back.)");
-            btInput.Click += new RoutedEventHandler(AddProfileEmail);
-            lbOptions.Items.Clear();
-        }
-
         public void ExplainOfflineLoginAddProfileOption()
         {
             lbDisplay.Items.Add("Offline play allows you to play without an account on this computer.");
@@ -146,6 +116,232 @@ namespace Dungeon_Valley_Explorer
             lbDisplay.Items.Add("Add Profile allows you to add a existing account from our database so that you can create saves that have access to cloud saving and get access to existing cloud saves.");
             btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
             tbInputArea.Text = "";
+        }
+
+        public void OfflinePlay()
+        {
+            tbInputArea.Text = "";
+        }
+
+        //Profile selection starts here --------------------------------------------------------------------------------
+
+        public void SelectProfile()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            SelectProfileGetProfiles();
+            if (lbOptions.Items.IsEmpty == true)
+            {
+                lbDisplay.Items.Add("There are no profiles added to the game yet, please add a profile through the Add Profile option to add a profile or choose Offline play and play using the local saves.");
+
+                lbOptions.Items.Add("1. Offline play");
+                lbOptions.Items.Add("2. Select Profile");
+                lbOptions.Items.Add("3. Add Profile");
+
+                btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+            }
+            else
+            {
+                MessageBox.Show("Please select a profile from the left.");
+
+                btInput.Click += new RoutedEventHandler(SelectProfileChooseProfile);
+            }
+        }
+
+        public void SelectProfileGetProfiles()
+        {
+            string[] seged = Directory.GetDirectories($@"{folders[9]}");
+            for (int i = 0; i < seged.Count(); i++)
+            {
+                string[] linecutter = seged[i].Split('\\');
+                lbOptions.Items.Add($"{i+1}. "+linecutter[1]);
+                tempProfiles.Add(linecutter[1]);
+            }
+        }
+
+        public void SelectProfileChooseProfile(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SelectProfileChooseProfile);
+
+            if (tbInputArea.Text == "?")
+            {
+                ExplainSelectProfileChooseProfile();
+                btInput.Click += new RoutedEventHandler(SelectProfileChooseProfile);
+            }
+            else
+            {
+                if (tempProfiles.Contains(tbInputArea.Text) == true || (tbInputArea.Text.Contains("1") == true || tbInputArea.Text.Contains("2") == true || tbInputArea.Text.Contains("3") == true || tbInputArea.Text.Contains("4") == true || tbInputArea.Text.Contains("5") == true || tbInputArea.Text.Contains("6") == true || tbInputArea.Text.Contains("7") == true || tbInputArea.Text.Contains("8") == true || tbInputArea.Text.Contains("9") == true || tbInputArea.Text.Contains("0") == true))
+                {
+                    if (tempProfiles.Contains(tbInputArea.Text) == true)
+                    {
+                        folders.Add(tbInputArea.Text);
+                        lbDisplay.Items.Add("Will you login with this profile? You can also write 'Back' to cancel.");
+                        lbOptions.Items.Clear();
+                        lbOptions.Items.Add("1. Login");
+                        lbOptions.Items.Add("2. Back");
+                        btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            int profileIndex = Convert.ToInt32(tbInputArea.Text)-1;
+                            folders.Add(tempProfiles[profileIndex]);
+                            lbDisplay.Items.Add("Will you login with this profile? You can also write 'Back' to cancel.");
+                            lbOptions.Items.Clear();
+                            lbOptions.Items.Add("1. Login");
+                            lbOptions.Items.Add("2. Back");
+                            btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                            btInput.Click += new RoutedEventHandler(SelectProfileChooseProfile);
+                            tbInputArea.Text = "";
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(SelectProfileChooseProfile);
+                    tbInputArea.Text = "";
+                }
+            }
+        }
+
+        public void ExplainSelectProfileChooseProfile()
+        {
+            lbDisplay.Items.Add("Each option is a profile added to the game, and by choosing one of them you can login to them and use cloud saving to access saves from our database from anywhere.");
+            tbInputArea.Text = "";
+        }
+
+        public void SelectProfileLoginOrBack(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SelectProfileChooseProfile);
+            switch (tbInputArea.Text)
+            {
+                case "1":
+                    tbInputArea.Text = "";
+                    lbOptions.Items.Clear();
+                    lbDisplay.Items.Add("First write down your email.");
+                    btInput.Click += new RoutedEventHandler(SelectProfileEmail);
+                    break;
+                case "2":
+                    tbInputArea.Text = "";
+                    lbOptions.Items.Add("1. Offline play");
+                    lbOptions.Items.Add("2. Select Profile");
+                    lbOptions.Items.Add("3. Add Profile");
+                    btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                    break;
+                case "Login":
+                    tbInputArea.Text = "";
+                    lbOptions.Items.Clear();
+                    lbDisplay.Items.Add("First write down your email.");
+                    btInput.Click += new RoutedEventHandler(SelectProfileEmail);
+                    break;
+                case "Back":
+                    tbInputArea.Text = "";
+                    lbOptions.Items.Add("1. Offline play");
+                    lbOptions.Items.Add("2. Select Profile");
+                    lbOptions.Items.Add("3. Add Profile");
+                    btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(SelectProfileChooseProfile);
+                    break;
+            }
+        }
+
+        public void SelectProfileEmail(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SelectProfileEmail);
+            if (!tbInputArea.Text.Contains('@') || !tbInputArea.Text.Contains('.'))
+            {
+                switch (tbInputArea.Text)
+                {
+                    case "Back":
+                        tbInputArea.Text = "";
+                        lbOptions.Items.Add("1. Offline play");
+                        lbOptions.Items.Add("2. Select Profile");
+                        lbOptions.Items.Add("3. Add Profile");
+                        btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                        break;
+                    default:
+                        MessageBox.Show("Please write down the email for the profile or write 'Back' to cancel.");
+                        btInput.Click += new RoutedEventHandler(SelectProfileEmail);
+                        break;
+                }
+            }
+            else if (tbInputArea.Text.Contains('@') && tbInputArea.Text.Contains('.'))
+            {
+                addEmail = tbInputArea.Text;
+                lbDisplay.Items.Add("Now please write down the password.");
+                btInput.Click += new RoutedEventHandler(SelectProfilePassword);
+                tbInputArea.Text = "";
+            }
+        }
+
+        public void SelectProfilePassword(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SelectProfilePassword);
+            switch (tbInputArea.Text)
+            {
+                case "Back":
+                    tbInputArea.Text = "";
+                    lbOptions.Items.Add("1. Offline play");
+                    lbOptions.Items.Add("2. Select Profile");
+                    lbOptions.Items.Add("3. Add Profile");
+                    btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                    break;
+                default:
+                    addPassword = tbInputArea.Text;
+                    tbInputArea.Text = "";
+                    SelectProfileLogin();
+                    break;
+            }
+        }
+
+        public void SelectProfileLogin()
+        {
+            string command = $"Select UserName from user where Email = '{addEmail}' and Password = '{addPassword}' limit 1";
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+            try
+            {
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    if (mySqlDataReader.GetString(0) == folders.Last())
+                    {
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("The email or password was incorrect for the selected profile.");
+                        btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+
+
+        }
+
+        //Profile selection ends here ----------------------------------------------------------------------------------
+
+        //Profile adding starts here -----------------------------------------------------------------------------------
+
+        public void AddProfile()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("To add a profile you will have to first write in your email then write in your password into the textbox and click the input button after both the email and the password. (You can also write 'Back' to go back.)");
+            btInput.Click += new RoutedEventHandler(AddProfileEmail);
+            lbOptions.Items.Clear();
         }
 
         public void AddProfileEmail(object sender, RoutedEventArgs e)
@@ -343,6 +539,8 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
         }
 
+        //Profile adding ends here -------------------------------------------------------------------------------------
+
         //Main menu ends here ------------------------------------------------------------------------------------------
 
         private void lbOptions_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -365,14 +563,14 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("2. (The target is the Hero)");
             if (tbInputArea.Text == "1")
             {
-                damageSourcePrep = new DamageSource(npcs[0], 0);
-                targetPrep = new Target(monsters[0]);
+                damageSourcePrep = new DamageSource(Initializer.npcs[0], 0);
+                targetPrep = new Target(Initializer.monsters[0]);
                 lbDisplay.Items.Add(DamageCalculation(targetPrep, damageSourcePrep));
             }
             else if (tbInputArea.Text == "2")
             {
-                damageSourcePrep = new DamageSource(monsters[0], monsters[0].Skills[0]);
-                targetPrep = new Target(npcs[0]);
+                damageSourcePrep = new DamageSource(Initializer.monsters[0], Initializer.monsters[0].Skills[0]);
+                targetPrep = new Target(Initializer.npcs[0]);
                 lbDisplay.Items.Add(DamageCalculation(targetPrep, damageSourcePrep));
             }
             else
@@ -414,23 +612,23 @@ namespace Dungeon_Valley_Explorer
 
         public int DMGCalcDamageTypeChecker(int damage, Target target, DamageSource damageSource)
         {
-            if (races[target.Race.Id].Fatal.Contains(damageSource.DamageType))
+            if (Initializer.races[target.Race.Id].Fatal.Contains(damageSource.DamageType))
             {
                 damage = damage * 2;
             }
-            else if (races[target.Race.Id].Weak.Contains(damageSource.DamageType))
+            else if (Initializer.races[target.Race.Id].Weak.Contains(damageSource.DamageType))
             {
                 damage = (int)Math.Round(damage * 1.5, 0);
             }
-            else if (races[target.Race.Id].Resist.Contains(damageSource.DamageType))
+            else if (Initializer.races[target.Race.Id].Resist.Contains(damageSource.DamageType))
             {
                 damage = (int)Math.Round(damage * 0.75, 0);
             }
-            else if (races[target.Race.Id].Endure.Contains(damageSource.DamageType))
+            else if (Initializer.races[target.Race.Id].Endure.Contains(damageSource.DamageType))
             {
                 damage = (int)Math.Round(damage * 0.25, 0);
             }
-            else if (races[target.Race.Id].Nulls.Contains(damageSource.DamageType))
+            else if (Initializer.races[target.Race.Id].Nulls.Contains(damageSource.DamageType))
             {
                 damage = 0;
                 skipDamageCalculation = true;
@@ -532,820 +730,6 @@ namespace Dungeon_Valley_Explorer
             }
             return damage;
         }
-
-        //Downloader starts here ---------------------------------------------------------------------------------------
-
-        public void Downloader()
-        {
-            if (!Directory.Exists($@"{folders[0]}"))
-            {
-                Directory.CreateDirectory($@"{folders[0]}");
-            }
-            
-            if (!Directory.Exists($@"{folders[0]}\{folders[1]}"))
-            {
-                Directory.CreateDirectory($@"{folders[0]}\{folders[1]}");
-            }
-            
-            if (!Directory.Exists($@"{folders[0]}\{folders[2]}"))
-            {
-                Directory.CreateDirectory($@"{folders[0]}\{folders[2]}");
-            }
-            
-            if (!Directory.Exists($@"{folders[0]}\{folders[3]}"))
-            {
-                Directory.CreateDirectory($@"{folders[0]}\{folders[3]}");
-            }
-            
-            if (!Directory.Exists($@"{folders[0]}\{folders[4]}"))
-            {
-                Directory.CreateDirectory($@"{folders[0]}\{folders[4]}");
-            }
-            
-            if (!Directory.Exists($@"{folders[0]}\{folders[5]}"))
-            {
-                Directory.CreateDirectory($@"{folders[0]}\{folders[5]}");
-            }
-            
-            if (!Directory.Exists($@"{folders[0]}\{folders[6]}"))
-            {
-                Directory.CreateDirectory($@"{folders[0]}\{folders[6]}");
-            }
-            
-            if (!Directory.Exists($@"{folders[0]}\{folders[7]}"))
-            {
-                Directory.CreateDirectory($@"{folders[0]}\{folders[7]}");
-            }
-            
-            if (!Directory.Exists($@"{folders[0]}\{folders[8]}"))
-            {
-                Directory.CreateDirectory($@"{folders[0]}\{folders[8]}");
-            }
-            
-            if (!Directory.Exists($@"{folders[0]}\{folders[9]}"))
-            {
-                Directory.CreateDirectory($@"{folders[0]}\{folders[9]}");
-            }
-            
-            if (!Directory.Exists($@"{folders[9]}"))
-            {
-                Directory.CreateDirectory($@"{folders[9]}");
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[1]}\{files[0]}"))
-            {
-                DownloadMonsters();
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[1]}\{files[1]}"))
-            {
-                DownloadAis();
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[4]}\{files[2]}"))
-            {
-                DownloadNPCs();
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[2]}\{files[3]}"))
-            {
-                DownloadDungeons();
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[7]}\{files[5]}"))
-            {
-                DownloadPassives();
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[7]}\{files[6]}"))
-            {
-                DownloadBuffsDebuffs();
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[7]}\{files[7]}"))
-            {
-                DownloadSpecialEffects();
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[8]}\{files[10]}"))
-            {
-                DownloadRaces();
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[7]}\{files[4]}"))
-            {
-                DownloadEnvironmentHazards();
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[6]}\{files[8]}"))
-            {
-                DownloadSkills();
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[6]}\{files[9]}"))
-            {
-                DownloadMagics();
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[5]}\{files[11]}"))
-            {
-                DownloadConsumables();
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[5]}\{files[13]}"))
-            {
-                DownloadWeapons();
-            }
-
-            if (!File.Exists($@"{folders[0]}\{folders[5]}\{files[12]}"))
-            {
-                DownloadArmors();
-            }
-        }
-
-        public void DownloadMonsters()
-        {
-            List<string> monstersDownloader = new List<string>();
-            string command = "SELECT * FROM monster";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    monstersDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetInt32(4)}@{mySqlDataReader.GetInt32(5)}@{mySqlDataReader.GetInt32(6)}@{mySqlDataReader.GetInt32(7)}@{mySqlDataReader.GetInt32(8)}@{mySqlDataReader.GetString(9)}@{mySqlDataReader.GetString(10)}@{mySqlDataReader.GetString(11)}@{mySqlDataReader.GetString(12)}@{mySqlDataReader.GetString(13)}@{mySqlDataReader.GetString(14)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[1]}\{files[0]}");
-                foreach (string monster in monstersDownloader)
-                { 
-                    streamWriter.WriteLine(monster);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-
-        //Maybe create a class for ais and have a list of easy access interface list
-        public void DownloadAis()
-        {
-            List<string> aisDownloader = new List<string>();
-            string command = "SELECT * FROM ai";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    aisDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[1]}\{files[1]}");
-                foreach (string ai in aisDownloader)
-                {
-                    streamWriter.WriteLine(ai);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void DownloadDungeons()
-        {
-            List<string> dungeonsDownloader = new List<string>();
-            string command = "SELECT * FROM dungeon";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    dungeonsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetInt32(4)}@{mySqlDataReader.GetInt32(5)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[2]}\{files[3]}");
-                foreach (string dungeon in dungeonsDownloader)
-                {
-                    streamWriter.WriteLine(dungeon);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void DownloadEnvironmentHazards()
-        {
-            List<string> environmentHazardsDownloader = new List<string>();
-            string command = "SELECT * FROM environment_hazard";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    environmentHazardsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetString(4)}@{mySqlDataReader.GetInt32(5)}@{mySqlDataReader.GetDouble(6)}@{mySqlDataReader.GetString(7)}@{mySqlDataReader.GetString(8)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[7]}\{files[4]}");
-                foreach (string environmentHazard in environmentHazardsDownloader)
-                {
-                    streamWriter.WriteLine(environmentHazard);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void DownloadBuffsDebuffs()
-        {
-            List<string> buffsDebuffsDownloader = new List<string>();
-            string command = "SELECT * FROM buff_and_debuff";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    buffsDebuffsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetString(3)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[3]}\{files[6]}");
-                foreach (string buffDebuff in buffsDebuffsDownloader)
-                {
-                    streamWriter.WriteLine(buffDebuff);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void DownloadPassives()
-        {
-            List<string> passivesDownloader = new List<string>();
-            string command = "SELECT * FROM passive";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    passivesDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetString(3)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[3]}\{files[5]}");
-                foreach (string passive in passivesDownloader)
-                {
-                    streamWriter.WriteLine(passive);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void DownloadSpecialEffects()
-        {
-            List<string> specialEffectsDownloader = new List<string>();
-            string command = "SELECT * FROM special_effect";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    specialEffectsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetString(3)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[3]}\{files[7]}");
-                foreach (string specialEffect in specialEffectsDownloader)
-                {
-                    streamWriter.WriteLine(specialEffect);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void DownloadNPCs()
-        {
-            List<string> npcsDownloader = new List<string>();
-            string command = "SELECT * FROM npc";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    npcsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetInt32(4)}@{mySqlDataReader.GetInt32(5)}@{mySqlDataReader.GetInt32(6)}@{mySqlDataReader.GetInt32(7)}@{mySqlDataReader.GetInt32(8)}@{mySqlDataReader.GetInt32(9)}@{mySqlDataReader.GetString(10)}@{mySqlDataReader.GetString(11)}@{mySqlDataReader.GetString(12)}@{mySqlDataReader.GetString(13)}@{mySqlDataReader.GetString(14)}@{mySqlDataReader.GetString(15)}@{mySqlDataReader.GetString(16)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[4]}\{files[2]}");
-                foreach (string npc in npcsDownloader)
-                {
-                    streamWriter.WriteLine(npc);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void DownloadConsumables()
-        {
-            List<string> consumablesDownloader = new List<string>();
-            string command = "SELECT * FROM consumable";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    consumablesDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetString(3)}@{mySqlDataReader.GetInt32(4)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[5]}\{files[11]}");
-                foreach (string consumable in consumablesDownloader)
-                {
-                    streamWriter.WriteLine(consumable);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void DownloadArmors()
-        {
-            List<string> armorsDownloader = new List<string>();
-            string command = "SELECT * FROM armor";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    armorsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetInt32(4)}@{mySqlDataReader.GetString(5)}@{mySqlDataReader.GetInt32(6)}@{mySqlDataReader.GetInt32(7)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[5]}\{files[12]}");
-                foreach (string armor in armorsDownloader)
-                {
-                    streamWriter.WriteLine(armor);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void DownloadWeapons()
-        {
-            List<string> weaponsDownloader = new List<string>();
-            string command = "SELECT * FROM weapon";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    weaponsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetString(4)}@{mySqlDataReader.GetInt32(5)}@{mySqlDataReader.GetDouble(6)}@{mySqlDataReader.GetString(7)}@{mySqlDataReader.GetString(8)}@{mySqlDataReader.GetString(9)}@{mySqlDataReader.GetInt32(10)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[5]}\{files[13]}");
-                foreach (string weapon in weaponsDownloader)
-                {
-                    streamWriter.WriteLine(weapon);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void DownloadSkills()
-        {
-            List<string> skillsDownloader = new List<string>();
-            string command = "SELECT * FROM skill";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    skillsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetString(3)}@{mySqlDataReader.GetInt32(4)}@{mySqlDataReader.GetDouble(5)}@{mySqlDataReader.GetString(6)}@{mySqlDataReader.GetString(7)}@{mySqlDataReader.GetInt32(8)}@{mySqlDataReader.GetInt32(9)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[6]}\{files[8]}");
-                foreach (string skill in skillsDownloader)
-                {
-                    streamWriter.WriteLine(skill);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void DownloadMagics()
-        {
-            List<string> magicsDownloader = new List<string>();
-            string command = "SELECT * FROM magic";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    magicsDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetInt32(3)}@{mySqlDataReader.GetString(4)}@{mySqlDataReader.GetInt32(5)}@{mySqlDataReader.GetDouble(6)}@{mySqlDataReader.GetString(7)}@{mySqlDataReader.GetString(8)}@{mySqlDataReader.GetInt32(9)}@{mySqlDataReader.GetInt32(10)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[6]}\{files[9]}");
-                foreach (string magic in magicsDownloader)
-                {
-                    streamWriter.WriteLine(magic);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void DownloadRaces()
-        {
-            List<string> racesDownloader = new List<string>();
-            string command = "SELECT * FROM race";
-            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
-            try
-            {
-                mySqlConnection.Open();
-                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-                while (mySqlDataReader.Read())
-                {
-                    racesDownloader.Add($"{mySqlDataReader.GetInt32(0)}@{mySqlDataReader.GetString(1)}@{mySqlDataReader.GetString(2)}@{mySqlDataReader.GetString(3)}@{mySqlDataReader.GetString(4)}@{mySqlDataReader.GetString(5)}@{mySqlDataReader.GetString(6)}@{mySqlDataReader.GetString(7)}");
-                }
-                mySqlConnection.Close();
-
-                StreamWriter streamWriter = new StreamWriter($@"{folders[0]}\{folders[8]}\{files[10]}");
-                foreach (string race in racesDownloader)
-                {
-                    streamWriter.WriteLine(race);
-                }
-                streamWriter.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-        
-        //Downloader ends here------------------------------------------------------------------------------------------
-
-        //Initializer starts here---------------------------------------------------------------------------------------
-
-        public void Initializer()
-        {
-            LoadPassives();
-            LoadBuffsDebuffs();
-            LoadSpecialEffects();
-            LoadRaces();
-            LoadSkills();
-            LoadMagics();
-            LoadMonsters();
-            LoadAis();
-            LoadArmors();
-            LoadWeapons();
-            LoadNPCs();
-            LoadDungeons();
-            LoadEnvironmentHazards();
-            LoadConsumables();
-        }
-
-        public void LoadMonsters()
-        {
-            monsters.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[1]}\{files[0]}");
-                while(!streamreader.EndOfStream)
-                {
-                    Monster monster = new Monster(streamreader.ReadLine(), passives, skills, magics, races);
-                    monsters.Add(monster);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void LoadAis()
-        {
-            ais.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[1]}\{files[1]}");
-                while (!streamreader.EndOfStream)
-                {
-                    Ai ai = new Ai(streamreader.ReadLine());
-                    ais.Add(ai);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void LoadNPCs()
-        {
-            npcs.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[4]}\{files[2]}");
-                while (!streamreader.EndOfStream)
-                {
-                    Hero npc = new Hero(streamreader.ReadLine(), passives, skills, magics, races, armors, weapons);
-                    npcs.Add(npc);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void LoadDungeons()
-        {
-            dungeons.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[2]}\{files[3]}");
-                while (!streamreader.EndOfStream)
-                {
-                    Dungeon dungeon = new Dungeon(streamreader.ReadLine());
-                    dungeons.Add(dungeon);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void LoadEnvironmentHazards()
-        {
-            environmentHazards.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[7]}\{files[4]}");
-                while (!streamreader.EndOfStream)
-                {
-                    EnvironmentHazard environmentHazard = new EnvironmentHazard(streamreader.ReadLine(), specialEffects);
-                    environmentHazards.Add(environmentHazard);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void LoadPassives()
-        {
-            passives.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[3]}\{files[5]}");
-                while (!streamreader.EndOfStream)
-                {
-                    Passive passive = new Passive(streamreader.ReadLine());
-                    passives.Add(passive);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void LoadBuffsDebuffs()
-        {
-            buffsDebuffs.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[3]}\{files[6]}");
-                while (!streamreader.EndOfStream)
-                {
-                    BuffDebuff buffDebuff = new BuffDebuff(streamreader.ReadLine());
-                    buffsDebuffs.Add(buffDebuff);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void LoadSpecialEffects()
-        {
-            specialEffects.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[3]}\{files[7]}");
-                while (!streamreader.EndOfStream)
-                {
-                    SpecialEffect specialEffect = new SpecialEffect(streamreader.ReadLine());
-                    specialEffects.Add(specialEffect);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void LoadSkills()
-        {
-            skills.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[6]}\{files[8]}");
-                while (!streamreader.EndOfStream)
-                {
-                    Skill skill = new Skill(streamreader.ReadLine(), specialEffects);
-                    skills.Add(skill);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void LoadMagics()
-        {
-            magics.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[6]}\{files[9]}");
-                while (!streamreader.EndOfStream)
-                {
-                    Magic magic = new Magic(streamreader.ReadLine(), specialEffects);
-                    magics.Add(magic);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void LoadRaces()
-        {
-            races.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[8]}\{files[10]}");
-                while (!streamreader.EndOfStream)
-                {
-                    Race race = new Race(streamreader.ReadLine());
-                    races.Add(race);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void LoadConsumables()
-        {
-            consumables.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[5]}\{files[11]}");
-                while (!streamreader.EndOfStream)
-                {
-                    Consumable consumable = new Consumable(streamreader.ReadLine(), specialEffects);
-                    consumables.Add(consumable);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void LoadArmors()
-        {
-            armors.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[5]}\{files[12]}");
-                while (!streamreader.EndOfStream)
-                {
-                    Armor armor = new Armor(streamreader.ReadLine(), specialEffects);
-                    armors.Add(armor);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        public void LoadWeapons()
-        {
-            weapons.Clear();
-            try
-            {
-                StreamReader streamreader = new StreamReader($@"{folders[0]}\{folders[5]}\{files[13]}");
-                while (!streamreader.EndOfStream)
-                {
-                    Weapon weapon = new Weapon(streamreader.ReadLine(), specialEffects);
-                    weapons.Add(weapon);
-                }
-                streamreader.Close();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
-
-        //Initializer ends here-----------------------------------------------------------------------------------------
     }
 }
 
