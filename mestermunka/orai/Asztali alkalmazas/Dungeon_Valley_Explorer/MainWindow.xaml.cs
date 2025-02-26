@@ -38,6 +38,7 @@ namespace Dungeon_Valley_Explorer
         List<string> folders = new List<string> { "GameAssets","Enemies","Dungeons","Effects","Characters","Items","Abilities","EnvironmentHazard","Races","Profiles"};
         List<string> files = new List<string> { "Monsters.txt","Ais.txt","NPCs.txt","Dungeons.txt","EnvironmentHazards.txt","Passives.txt","BuffsDebuffs.txt","SpecialEffects.txt","Skills.txt","Magics.txt","Races.txt","Consumables.txt","Armors.txt","Weapons.txt"};
         List<string> tempProfiles = new List<string>();
+        List<string> tempSaves = new List<string>();
 
         string addEmail = "";
         string addPassword = "";
@@ -60,6 +61,7 @@ namespace Dungeon_Valley_Explorer
                 Downloader.Download(folders, files, mySqlConnection);
             }
             Initializer.Initialize(folders, files);
+            Initializer.GetProfilesFromDevice(folders, lbOptions, tempProfiles);
 
             lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
             lbDisplay.Items.Add("Tip: To check if you have all the game assets downloaded just delete the GameAssets folder and download everything again.");
@@ -129,7 +131,10 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
-            SelectProfileGetProfiles();
+            for (int i = 0; i < tempProfiles.Count(); i++)
+            {
+                lbOptions.Items.Add($"{i + 1}. " + tempProfiles[i]);
+            }
             if (lbOptions.Items.IsEmpty == true)
             {
                 lbDisplay.Items.Add("There are no profiles added to the game yet, please add a profile through the Add Profile option to add a profile or choose Offline play and play using the local saves.");
@@ -142,27 +147,15 @@ namespace Dungeon_Valley_Explorer
             }
             else
             {
-                MessageBox.Show("Please select a profile from the left.");
+                lbDisplay.Items.Add("Please select a profile from the left.");
 
                 btInput.Click += new RoutedEventHandler(SelectProfileChooseProfile);
-            }
-        }
-
-        public void SelectProfileGetProfiles()
-        {
-            string[] seged = Directory.GetDirectories($@"{folders[9]}");
-            for (int i = 0; i < seged.Count(); i++)
-            {
-                string[] linecutter = seged[i].Split('\\');
-                lbOptions.Items.Add($"{i+1}. "+linecutter[1]);
-                tempProfiles.Add(linecutter[1]);
             }
         }
 
         public void SelectProfileChooseProfile(object sender, RoutedEventArgs e)
         {
             btInput.Click -= new RoutedEventHandler(SelectProfileChooseProfile);
-
             if (tbInputArea.Text == "?")
             {
                 ExplainSelectProfileChooseProfile();
@@ -218,9 +211,12 @@ namespace Dungeon_Valley_Explorer
 
         public void SelectProfileLoginOrBack(object sender, RoutedEventArgs e)
         {
-            btInput.Click -= new RoutedEventHandler(SelectProfileChooseProfile);
+            btInput.Click -= new RoutedEventHandler(SelectProfileLoginOrBack);
             switch (tbInputArea.Text)
             {
+                case "?":
+                    ExplainSelectProfileLoginOrBack();
+                    break;
                 case "1":
                     tbInputArea.Text = "";
                     lbOptions.Items.Clear();
@@ -249,9 +245,17 @@ namespace Dungeon_Valley_Explorer
                     break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
-                    btInput.Click += new RoutedEventHandler(SelectProfileChooseProfile);
+                    btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
                     break;
             }
+        }
+
+        public void ExplainSelectProfileLoginOrBack()
+        {
+            lbDisplay.Items.Add("Login will allow you to try and access saves that have cloud save compatibility.");
+            lbDisplay.Items.Add("Back will take you back to the first option.");
+            tbInputArea.Text = "";
+            btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
         }
 
         public void SelectProfileEmail(object sender, RoutedEventArgs e)
@@ -315,11 +319,29 @@ namespace Dungeon_Valley_Explorer
                 {
                     if (mySqlDataReader.GetString(0) == folders.Last())
                     {
-
+                        SelectProfileGetProfileSaves();
+                        if (lbOptions.Items.IsEmpty == true)
+                        {
+                            lbDisplay.Items.Add("No saves were detected for this profile please start a new game and get to the town to create a cloud save for later use.");
+                            lbOptions.Items.Add("1. New Game");
+                            lbOptions.Items.Add("2. Log out");
+                            btInput.Click += new RoutedEventHandler(SelectProfileCreateSave);
+                        }
+                        else
+                        {
+                            lbDisplay.Items.Add("Please select a save from the left or start a new game.");
+                            lbOptions.Items.Clear();
+                            lbOptions.Items.Add("1. New Game");
+                            lbOptions.Items.Add("2. Log out");
+                            SelectProfileGetProfileSaves();
+                            btInput.Click += new RoutedEventHandler(SelectProfileChooseSave);
+                        }
                     }
                     else
                     {
                         MessageBox.Show("The email or password was incorrect for the selected profile.");
+                        lbOptions.Items.Add("1. Login");
+                        lbOptions.Items.Add("2. Back");
                         btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
                     }
                 }
@@ -327,9 +349,146 @@ namespace Dungeon_Valley_Explorer
             catch (Exception error)
             {
                 MessageBox.Show(error.Message);
+                btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
             }
+        }
 
+        public void SelectProfileGetProfileSaves()
+        {
+            string[] seged = Directory.GetFiles($@"{folders[9]}\{folders.Last()}");
+            for (int i = 0; i < seged.Count(); i++)
+            {
+                string[] linecutter = seged[i].Split('\\');
+                lbOptions.Items.Add($"{i + 3}. " + linecutter[2].Substring(0,linecutter[2].Length-4));
+                tempProfiles.Add(linecutter[2]);
+            }
+        }
 
+        public void SelectProfileChooseSave(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SelectProfileChooseSave);
+            if (tbInputArea.Text == "?")
+            {
+                ExplainSelectProfileChooseSave();
+                btInput.Click += new RoutedEventHandler(SelectProfileChooseSave);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "New Game")
+            {
+                lbOptions.Items.Clear();
+
+                // This needs to be finished later ---------------------------------------------------------------------
+            }
+            else if (tbInputArea.Text == "2" || tbInputArea.Text == "Log out")
+            {
+                lbOptions.Items.Clear();
+                if (folders.Last() != "Profiles")
+                {
+                    folders.Remove(folders.Last());
+                }
+                tbInputArea.Text = "";
+                lbOptions.Items.Add("1. Offline play");
+                lbOptions.Items.Add("2. Select Profile");
+                lbOptions.Items.Add("3. Add Profile");
+                btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+            }
+            else
+            {
+                if (tempSaves.Contains(tbInputArea.Text) == true || (tbInputArea.Text.Contains("1") == true || tbInputArea.Text.Contains("2") == true || tbInputArea.Text.Contains("3") == true || tbInputArea.Text.Contains("4") == true || tbInputArea.Text.Contains("5") == true || tbInputArea.Text.Contains("6") == true || tbInputArea.Text.Contains("7") == true || tbInputArea.Text.Contains("8") == true || tbInputArea.Text.Contains("9") == true || tbInputArea.Text.Contains("0") == true))
+                {
+                    if (tempSaves.Contains(tbInputArea.Text) == true)
+                    {
+                        files.Add(tbInputArea.Text);
+                        lbOptions.Items.Clear();
+
+                        // This needs to be finished later -------------------------------------------------------------
+
+                    }
+                    else
+                    {
+                        try
+                        {
+                            int profileIndex = Convert.ToInt32(tbInputArea.Text) - 2;
+                            folders.Add(tempProfiles[profileIndex]);
+                            lbOptions.Items.Clear();
+
+                            // This needs to be finished later ---------------------------------------------------------
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                            btInput.Click += new RoutedEventHandler(SelectProfileChooseSave);
+                            tbInputArea.Text = "";
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(SelectProfileChooseSave);
+                    tbInputArea.Text = "";
+                }
+            }
+        }
+
+        public void ExplainSelectProfileChooseSave()
+        {
+            lbDisplay.Items.Add("New game will start a new game that you can use for cloud saves later and load from here as well.");
+            lbDisplay.Items.Add("Log out will take you back to the first option and remove the selected profile selection meaning you will have to login to it again.");
+            lbDisplay.Items.Add("All other options are saves from your selected profile.");
+            tbInputArea.Text = "";
+        }
+
+        public void SelectProfileCreateSave(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SelectProfileCreateSave);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainSelectProfileCreateSave();
+                    btInput.Click += new RoutedEventHandler(SelectProfileCreateSave);
+                    break;
+                case "1":
+                    // This needs to be finished later -----------------------------------------------------------------
+                    break;
+                case "2":
+                    lbOptions.Items.Clear();
+                    if (folders.Last() != "Profiles")
+                    {
+                        folders.Remove(folders.Last());
+                    }
+                    tbInputArea.Text = "";
+                    lbOptions.Items.Add("1. Offline play");
+                    lbOptions.Items.Add("2. Select Profile");
+                    lbOptions.Items.Add("3. Add Profile");
+                    btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                    break;
+                case "New game":
+                    // This needs to be finished later -----------------------------------------------------------------
+                    break;
+                case "Log out":
+                    lbOptions.Items.Clear();
+                    if (folders.Last() != "Profiles")
+                    {
+                        folders.Remove(folders.Last());
+                    }
+                    tbInputArea.Text = "";
+                    lbOptions.Items.Add("1. Offline play");
+                    lbOptions.Items.Add("2. Select Profile");
+                    lbOptions.Items.Add("3. Add Profile");
+                    btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(SelectProfileCreateSave);
+                    break;
+            }
+        }
+
+        public void ExplainSelectProfileCreateSave()
+        {
+            lbDisplay.Items.Add("New game will start a new game that you can use for cloud saves later and load from here as well.");
+            lbDisplay.Items.Add("Log out will take you back to the first option and remove the selected profile selection meaning you will have to login to it again.");
+            tbInputArea.Text = "";
         }
 
         //Profile selection ends here ----------------------------------------------------------------------------------

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace Dungeon_Valley_Explorer
 {
@@ -23,6 +24,17 @@ namespace Dungeon_Valley_Explorer
         public static List<Dungeon> dungeons = new List<Dungeon>();
         public static List<EnvironmentHazard> environmentHazards = new List<EnvironmentHazard>();
         public static List<Consumable> consumables = new List<Consumable>();
+
+        public static List<string> GetProfilesFromDevice(List<string> folders, ListBox lbOptions, List<string> tempProfiles)
+        {
+            string[] seged = Directory.GetDirectories($@"{folders[9]}");
+            for (int i = 0; i < seged.Count(); i++)
+            {
+                string[] linecutter = seged[i].Split('\\');
+                tempProfiles.Add(linecutter[1]);
+            }
+            return tempProfiles;
+        }
 
         public static void Initialize(List<string> folders, List<string> files)
         {
