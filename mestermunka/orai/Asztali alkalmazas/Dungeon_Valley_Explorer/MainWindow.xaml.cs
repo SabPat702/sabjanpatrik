@@ -35,7 +35,7 @@ namespace Dungeon_Valley_Explorer
         };
         static string connectionString = mySqlConnectionStringBuilder.ConnectionString;
         MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
-        List<string> folders = new List<string> { "GameAssets","Enemies","Dungeons","Effects","Characters","Items","Abilities","EnvironmentHazard","Races","Profiles"};
+        List<string> folders = new List<string> { "GameAssets","Enemies","Dungeons","Effects","Characters","Items","Abilities","EnvironmentHazard","Races","Profiles","Offline"};
         List<string> files = new List<string> { "Monsters.txt","Ais.txt","NPCs.txt","Dungeons.txt","EnvironmentHazards.txt","Passives.txt","BuffsDebuffs.txt","SpecialEffects.txt","Skills.txt","Magics.txt","Races.txt","Consumables.txt","Armors.txt","Weapons.txt"};
         List<string> tempProfiles = new List<string>();
         List<string> tempSaves = new List<string>();
@@ -56,7 +56,7 @@ namespace Dungeon_Valley_Explorer
         {
             InitializeComponent();
 
-            if (!Directory.Exists($@"{folders[0]}") || !Directory.Exists($@"{folders[0]}\{folders[1]}") || !Directory.Exists($@"{folders[0]}\{folders[2]}") || !Directory.Exists($@"{folders[0]}\{folders[3]}") || !Directory.Exists($@"{folders[0]}\{folders[4]}") || !Directory.Exists($@"{folders[0]}\{folders[5]}") || !Directory.Exists($@"{folders[0]}\{folders[6]}") || !Directory.Exists($@"{folders[0]}\{folders[7]}") || !Directory.Exists($@"{folders[0]}\{folders[8]}") || !Directory.Exists($@"{folders[9]}") || !File.Exists($@"{folders[0]}\{folders[1]}\{files[0]}") || !File.Exists($@"{folders[0]}\{folders[1]}\{files[1]}") || !File.Exists($@"{folders[0]}\{folders[4]}\{files[2]}") || !File.Exists($@"{folders[0]}\{folders[2]}\{files[3]}") || !File.Exists($@"{folders[0]}\{folders[7]}\{files[4]}") || !File.Exists($@"{folders[0]}\{folders[3]}\{files[5]}") || !File.Exists($@"{folders[0]}\{folders[3]}\{files[6]}") || !File.Exists($@"{folders[0]}\{folders[3]}\{files[7]}") || !File.Exists($@"{folders[0]}\{folders[6]}\{files[8]}") || !File.Exists($@"{folders[0]}\{folders[6]}\{files[9]}") || !File.Exists($@"{folders[0]}\{folders[8]}\{files[10]}") || !File.Exists($@"{folders[0]}\{folders[5]}\{files[11]}") || !File.Exists($@"{folders[0]}\{folders[5]}\{files[12]}") || !File.Exists($@"{folders[0]}\{folders[5]}\{files[13]}"))
+            if (!Directory.Exists($@"{folders[0]}") || !Directory.Exists($@"{folders[0]}\{folders[1]}") || !Directory.Exists($@"{folders[0]}\{folders[2]}") || !Directory.Exists($@"{folders[0]}\{folders[3]}") || !Directory.Exists($@"{folders[0]}\{folders[4]}") || !Directory.Exists($@"{folders[0]}\{folders[5]}") || !Directory.Exists($@"{folders[0]}\{folders[6]}") || !Directory.Exists($@"{folders[0]}\{folders[7]}") || !Directory.Exists($@"{folders[0]}\{folders[8]}") || !Directory.Exists($@"{folders[9]}") || !Directory.Exists($@"{folders[9]}\{folders[10]}") || !File.Exists($@"{folders[0]}\{folders[1]}\{files[0]}") || !File.Exists($@"{folders[0]}\{folders[1]}\{files[1]}") || !File.Exists($@"{folders[0]}\{folders[4]}\{files[2]}") || !File.Exists($@"{folders[0]}\{folders[2]}\{files[3]}") || !File.Exists($@"{folders[0]}\{folders[7]}\{files[4]}") || !File.Exists($@"{folders[0]}\{folders[3]}\{files[5]}") || !File.Exists($@"{folders[0]}\{folders[3]}\{files[6]}") || !File.Exists($@"{folders[0]}\{folders[3]}\{files[7]}") || !File.Exists($@"{folders[0]}\{folders[6]}\{files[8]}") || !File.Exists($@"{folders[0]}\{folders[6]}\{files[9]}") || !File.Exists($@"{folders[0]}\{folders[8]}\{files[10]}") || !File.Exists($@"{folders[0]}\{folders[5]}\{files[11]}") || !File.Exists($@"{folders[0]}\{folders[5]}\{files[12]}") || !File.Exists($@"{folders[0]}\{folders[5]}\{files[13]}"))
             {
                 Downloader.Download(folders, files, mySqlConnection);
             }
@@ -72,6 +72,7 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("1. Offline play");
             lbOptions.Items.Add("2. Select Profile");
             lbOptions.Items.Add("3. Add Profile");
+            lbOptions.Items.Add("4. Options");
 
             btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
         }
@@ -84,7 +85,7 @@ namespace Dungeon_Valley_Explorer
             switch (tbInputArea.Text)
             {
                 case "1":
-
+                    OfflinePlay();
                     break;
                 case "2":
                     SelectProfile();
@@ -92,14 +93,20 @@ namespace Dungeon_Valley_Explorer
                 case "3":
                     AddProfile();
                     break;
+                case "4":
+                    MainMenuOptions();
+                    break;
                 case "Offline play":
-
+                    OfflinePlay();
                     break;
                 case "Select Profile":
                     SelectProfile();
                     break;
                 case "Add Profile":
                     AddProfile();
+                    break;
+                case "Options":
+                    MainMenuOptions();
                     break;
                 case "?":
                     ExplainOfflineLoginAddProfileOption();
@@ -120,10 +127,174 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
         }
 
+        public void ReturnToOfflineSelectProfileAddProfileOption()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Offline play");
+            lbOptions.Items.Add("2. Select Profile");
+            lbOptions.Items.Add("3. Add Profile");
+            lbOptions.Items.Add("4. Options");
+            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+        }
+
+        //Options starts here ------------------------------------------------------------------------------------------
+
+        public void MainMenuOptions()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Change Colors");
+            lbOptions.Items.Add("2. Back");
+            lbDisplay.Items.Add("Currently you can only change from dark mode to light mode or vice versa.");
+            btInput.Click += new RoutedEventHandler(MainMenuOptionsOptions);
+        }
+
+        public void MainMenuOptionsOptions(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(MainMenuOptionsOptions);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainMainMenuOptionsOptions();
+                    break;
+                case "1":
+                    OptionsChangeColors();
+                    break; 
+                case "2":
+                    ReturnToOfflineSelectProfileAddProfileOption();
+                    break;
+                case "Change Colors":
+                    OptionsChangeColors();
+                    break;
+                case "Back":
+                    ReturnToOfflineSelectProfileAddProfileOption();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(MainMenuOptionsOptions);
+                    break;
+            } 
+        }
+
+        public void ExplainMainMenuOptionsOptions()
+        {
+            lbDisplay.Items.Add("Change colors will change everything from black to white and vice versa.");
+            lbDisplay.Items.Add("Back will take you back to the first option.");
+            lbDisplay.Items.Add("There will also be more fun little things that can be change from here. (But these won't be priority)");
+            btInput.Click += new RoutedEventHandler(MainMenuOptionsOptions);
+            tbInputArea.Text = "";
+        }
+
+        public void OptionsChangeColors()
+        {
+            if (lbDisplay.Background == Brushes.Black)
+            {
+                lbDisplay.Background = Brushes.White;
+                lbDisplay.Foreground = Brushes.Black;
+                lbOptions.Background = Brushes.White;
+                lbOptions.Foreground = Brushes.Black;
+                tbInputArea.Background = Brushes.White;
+                tbInputArea.Foreground = Brushes.Black;
+            }
+            else
+            {
+                lbDisplay.Background = Brushes.Black;
+                lbDisplay.Foreground = Brushes.White;
+                lbOptions.Background = Brushes.Black;
+                lbOptions.Foreground = Brushes.White;
+                tbInputArea.Background = Brushes.Black;
+                tbInputArea.Foreground = Brushes.White;
+            }
+            tbInputArea.Text = "";
+            btInput.Click += new RoutedEventHandler(MainMenuOptionsOptions);
+        }
+
+        //Options ends here --------------------------------------------------------------------------------------------
+
+        //Offline play starts here -------------------------------------------------------------------------------------
+
         public void OfflinePlay()
         {
             tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbDisplay.Items.Add("Please select a save from the left or start a new game.");
+            lbOptions.Items.Add("1. New Game");
+            lbOptions.Items.Add("2. Back");
+            GetProfileSaves();
+            btInput.Click += new RoutedEventHandler(OfflinePlayChooseSave);
         }
+
+        public void OfflinePlayChooseSave(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(OfflinePlayChooseSave);
+            if (tbInputArea.Text == "?")
+            {
+                ExplainOfflinePlayChooseSave();
+                btInput.Click += new RoutedEventHandler(OfflinePlayChooseSave);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "New Game")
+            {
+                lbOptions.Items.Clear();
+
+                // This needs to be finished later ---------------------------------------------------------------------
+            }
+            else if (tbInputArea.Text == "2" || tbInputArea.Text == "Back")
+            {
+                if (folders.Last() != "Offline")
+                {
+                    folders.Remove(folders.Last());
+                }
+                ReturnToOfflineSelectProfileAddProfileOption();
+            }
+            else
+            {
+                if (tempSaves.Contains(tbInputArea.Text) == true || (tbInputArea.Text.Contains("1") == true || tbInputArea.Text.Contains("2") == true || tbInputArea.Text.Contains("3") == true || tbInputArea.Text.Contains("4") == true || tbInputArea.Text.Contains("5") == true || tbInputArea.Text.Contains("6") == true || tbInputArea.Text.Contains("7") == true || tbInputArea.Text.Contains("8") == true || tbInputArea.Text.Contains("9") == true || tbInputArea.Text.Contains("0") == true))
+                {
+                    if (tempSaves.Contains(tbInputArea.Text) == true)
+                    {
+                        files.Add(tbInputArea.Text);
+                        lbOptions.Items.Clear();
+
+                        // This needs to be finished later -------------------------------------------------------------
+
+                    }
+                    else
+                    {
+                        try
+                        {
+                            int savesIndex = Convert.ToInt32(tbInputArea.Text) - 2;
+                            files.Add(tempSaves[savesIndex]);
+                            lbOptions.Items.Clear();
+
+                            // This needs to be finished later ---------------------------------------------------------
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                            btInput.Click += new RoutedEventHandler(OfflinePlayChooseSave);
+                            tbInputArea.Text = "";
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(OfflinePlayChooseSave);
+                    tbInputArea.Text = "";
+                }
+            }
+        }
+
+        public void ExplainOfflinePlayChooseSave()
+        {
+            lbDisplay.Items.Add("New game will start a new game that you can use through Offline play later and load from your local saves");
+            lbDisplay.Items.Add("Back will take you back to the first option.");
+            lbDisplay.Items.Add("All other options are saves from your local Offline folder.");
+            tbInputArea.Text = "";
+        }
+
+        //Offline play ends here ---------------------------------------------------------------------------------------
 
         //Profile selection starts here --------------------------------------------------------------------------------
 
@@ -139,11 +310,7 @@ namespace Dungeon_Valley_Explorer
             {
                 lbDisplay.Items.Add("There are no profiles added to the game yet, please add a profile through the Add Profile option to add a profile or choose Offline play and play using the local saves.");
 
-                lbOptions.Items.Add("1. Offline play");
-                lbOptions.Items.Add("2. Select Profile");
-                lbOptions.Items.Add("3. Add Profile");
-
-                btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                ReturnToOfflineSelectProfileAddProfileOption();
             }
             else
             {
@@ -224,11 +391,11 @@ namespace Dungeon_Valley_Explorer
                     btInput.Click += new RoutedEventHandler(SelectProfileEmail);
                     break;
                 case "2":
-                    tbInputArea.Text = "";
-                    lbOptions.Items.Add("1. Offline play");
-                    lbOptions.Items.Add("2. Select Profile");
-                    lbOptions.Items.Add("3. Add Profile");
-                    btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                    if (folders.Last() != "Offline")
+                    {
+                        folders.Remove(folders.Last());
+                    }
+                    ReturnToOfflineSelectProfileAddProfileOption();
                     break;
                 case "Login":
                     tbInputArea.Text = "";
@@ -237,11 +404,11 @@ namespace Dungeon_Valley_Explorer
                     btInput.Click += new RoutedEventHandler(SelectProfileEmail);
                     break;
                 case "Back":
-                    tbInputArea.Text = "";
-                    lbOptions.Items.Add("1. Offline play");
-                    lbOptions.Items.Add("2. Select Profile");
-                    lbOptions.Items.Add("3. Add Profile");
-                    btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                    if (folders.Last() != "Offline")
+                    {
+                        folders.Remove(folders.Last());
+                    }
+                    ReturnToOfflineSelectProfileAddProfileOption();
                     break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
@@ -266,11 +433,7 @@ namespace Dungeon_Valley_Explorer
                 switch (tbInputArea.Text)
                 {
                     case "Back":
-                        tbInputArea.Text = "";
-                        lbOptions.Items.Add("1. Offline play");
-                        lbOptions.Items.Add("2. Select Profile");
-                        lbOptions.Items.Add("3. Add Profile");
-                        btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                        ReturnToOfflineSelectProfileAddProfileOption();
                         break;
                     default:
                         MessageBox.Show("Please write down the email for the profile or write 'Back' to cancel.");
@@ -293,11 +456,7 @@ namespace Dungeon_Valley_Explorer
             switch (tbInputArea.Text)
             {
                 case "Back":
-                    tbInputArea.Text = "";
-                    lbOptions.Items.Add("1. Offline play");
-                    lbOptions.Items.Add("2. Select Profile");
-                    lbOptions.Items.Add("3. Add Profile");
-                    btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                    ReturnToOfflineSelectProfileAddProfileOption();
                     break;
                 default:
                     addPassword = tbInputArea.Text;
@@ -319,7 +478,7 @@ namespace Dungeon_Valley_Explorer
                 {
                     if (mySqlDataReader.GetString(0) == folders.Last())
                     {
-                        SelectProfileGetProfileSaves();
+                        GetProfileSaves();
                         if (lbOptions.Items.IsEmpty == true)
                         {
                             lbDisplay.Items.Add("No saves were detected for this profile please start a new game and get to the town to create a cloud save for later use.");
@@ -333,7 +492,7 @@ namespace Dungeon_Valley_Explorer
                             lbOptions.Items.Clear();
                             lbOptions.Items.Add("1. New Game");
                             lbOptions.Items.Add("2. Log out");
-                            SelectProfileGetProfileSaves();
+                            GetProfileSaves();
                             btInput.Click += new RoutedEventHandler(SelectProfileChooseSave);
                         }
                     }
@@ -353,14 +512,14 @@ namespace Dungeon_Valley_Explorer
             }
         }
 
-        public void SelectProfileGetProfileSaves()
+        public void GetProfileSaves()
         {
             string[] seged = Directory.GetFiles($@"{folders[9]}\{folders.Last()}");
             for (int i = 0; i < seged.Count(); i++)
             {
                 string[] linecutter = seged[i].Split('\\');
                 lbOptions.Items.Add($"{i + 3}. " + linecutter[2].Substring(0,linecutter[2].Length-4));
-                tempProfiles.Add(linecutter[2]);
+                tempSaves.Add(linecutter[2]);
             }
         }
 
@@ -380,16 +539,12 @@ namespace Dungeon_Valley_Explorer
             }
             else if (tbInputArea.Text == "2" || tbInputArea.Text == "Log out")
             {
-                lbOptions.Items.Clear();
-                if (folders.Last() != "Profiles")
+                if (folders.Last() != "Offline")
                 {
                     folders.Remove(folders.Last());
                 }
-                tbInputArea.Text = "";
-                lbOptions.Items.Add("1. Offline play");
-                lbOptions.Items.Add("2. Select Profile");
-                lbOptions.Items.Add("3. Add Profile");
-                btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                tempSaves.Clear();
+                ReturnToOfflineSelectProfileAddProfileOption();
             }
             else
             {
@@ -451,31 +606,21 @@ namespace Dungeon_Valley_Explorer
                     // This needs to be finished later -----------------------------------------------------------------
                     break;
                 case "2":
-                    lbOptions.Items.Clear();
-                    if (folders.Last() != "Profiles")
+                    if (folders.Last() != "Offline")
                     {
                         folders.Remove(folders.Last());
                     }
-                    tbInputArea.Text = "";
-                    lbOptions.Items.Add("1. Offline play");
-                    lbOptions.Items.Add("2. Select Profile");
-                    lbOptions.Items.Add("3. Add Profile");
-                    btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                    ReturnToOfflineSelectProfileAddProfileOption();
                     break;
                 case "New game":
                     // This needs to be finished later -----------------------------------------------------------------
                     break;
                 case "Log out":
-                    lbOptions.Items.Clear();
-                    if (folders.Last() != "Profiles")
+                    if (folders.Last() != "Offline")
                     {
                         folders.Remove(folders.Last());
                     }
-                    tbInputArea.Text = "";
-                    lbOptions.Items.Add("1. Offline play");
-                    lbOptions.Items.Add("2. Select Profile");
-                    lbOptions.Items.Add("3. Add Profile");
-                    btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                    ReturnToOfflineSelectProfileAddProfileOption();
                     break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
@@ -511,11 +656,7 @@ namespace Dungeon_Valley_Explorer
                 switch (tbInputArea.Text)
                 {
                     case "Back":
-                        tbInputArea.Text = "";
-                        lbOptions.Items.Add("1. Offline play");
-                        lbOptions.Items.Add("2. Select Profile");
-                        lbOptions.Items.Add("3. Add Profile");
-                        btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                        ReturnToOfflineSelectProfileAddProfileOption();
                         break;
                     default:
                         MessageBox.Show("Please write down the email for the profile or write 'Back' to cancel.");
@@ -538,11 +679,7 @@ namespace Dungeon_Valley_Explorer
             switch (tbInputArea.Text)
             {
                 case "Back":
-                    tbInputArea.Text = "";
-                    lbOptions.Items.Add("1. Offline play");
-                    lbOptions.Items.Add("2. Select Profile");
-                    lbOptions.Items.Add("3. Add Profile");
-                    btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+                    ReturnToOfflineSelectProfileAddProfileOption();
                     break;
                 default:
                     addPassword = tbInputArea.Text;
@@ -603,15 +740,15 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                if (!Directory.Exists($@"{folders[9]}\{folders.Last()}") && folders.Last() != "Profiles")
+                if (!Directory.Exists($@"{folders[9]}\{folders.Last()}") && folders.Last() != "Offline")
                 {
                     Directory.CreateDirectory($@"{folders[9]}\{folders.Last()}");
-                    GetProfileSaves();
+                    AddProfileGetProfileSaves();
                     folders.Remove(folders[folders.Count() - 1]);
                     MessageBox.Show("The profile has been added successfully.");
 
                 }
-                else if (Directory.Exists($@"{folders[9]}\{folders.Last()}") && folders.Last() != "Profiles")
+                else if (Directory.Exists($@"{folders[9]}\{folders.Last()}") && folders.Last() != "Offline")
                 {
                     MessageBox.Show("This profile has already been added to the game.");
                     folders.Remove(folders[folders.Count() - 1]);
@@ -626,15 +763,10 @@ namespace Dungeon_Valley_Explorer
                 MessageBox.Show(error.Message);
             }
 
-            tbInputArea.Text = "";
-            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
-            lbOptions.Items.Clear();
-            lbOptions.Items.Add("1. Offline play");
-            lbOptions.Items.Add("2. Select Profile");
-            lbOptions.Items.Add("3. Add Profile");
+            ReturnToOfflineSelectProfileAddProfileOption();
         }
 
-        public void GetProfileSaves()
+        public void AddProfileGetProfileSaves()
         {
             string command = $"Select `save_game`.SaveName, `save_game`.SaveData from save_game inner join hero on hero.Id = save_game.HeroId inner join user on user.Id = hero.UserId where UserName = '{folders.Last()}'";
             MySqlCommand mySqlCommand = new MySqlCommand(command,mySqlConnection);
@@ -665,6 +797,7 @@ namespace Dungeon_Valley_Explorer
                         files.Remove(files[files.Count() - 1]);
                     }
                 }
+                mySqlConnection.Close();
             }
             catch (Exception error)
             {
@@ -674,12 +807,7 @@ namespace Dungeon_Valley_Explorer
 
         public void ExitAddProfile()
         {
-            tbInputArea.Text = "";
-            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
-            lbOptions.Items.Clear();
-            lbOptions.Items.Add("1. Offline play");
-            lbOptions.Items.Add("2. Select Profile");
-            lbOptions.Items.Add("3. Add Profile");
+            ReturnToOfflineSelectProfileAddProfileOption();
         }
 
         public void ReAddProfileEmail()

@@ -63,6 +63,11 @@ namespace Dungeon_Valley_Explorer
                 Directory.CreateDirectory($@"{folders[9]}");
             }
 
+            if (!Directory.Exists($@"{folders[9]}\{folders[10]}"))
+            {
+                Directory.CreateDirectory($@"{folders[9]}\{folders[10]}");
+            }
+
             if (!File.Exists($@"{folders[0]}\{folders[1]}\{files[0]}"))
             {
                 DownloadMonsters(folders, files, mySqlConnection);

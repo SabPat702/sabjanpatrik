@@ -119,6 +119,7 @@
     <Compile Include="EnvironmentHazard.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="Magic.cs" />
+    <Compile Include="MainMenu.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="Passive.cs" />
     <Compile Include="Race.cs" />

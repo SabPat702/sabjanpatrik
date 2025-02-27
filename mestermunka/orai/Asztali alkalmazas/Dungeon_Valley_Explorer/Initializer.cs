@@ -31,7 +31,10 @@ namespace Dungeon_Valley_Explorer
             for (int i = 0; i < seged.Count(); i++)
             {
                 string[] linecutter = seged[i].Split('\\');
-                tempProfiles.Add(linecutter[1]);
+                if (linecutter[1] != "Offline")
+                {
+                    tempProfiles.Add(linecutter[1]);
+                }
             }
             return tempProfiles;
         }
