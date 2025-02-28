@@ -334,12 +334,14 @@ namespace Dungeon_Valley_Explorer
                 {
                     if (tempProfiles.Contains(tbInputArea.Text) == true)
                     {
+                        
                         folders.Add(tbInputArea.Text);
                         lbDisplay.Items.Add("Will you login with this profile? You can also write 'Back' to cancel.");
                         lbOptions.Items.Clear();
                         lbOptions.Items.Add("1. Login");
                         lbOptions.Items.Add("2. Back");
                         btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
+                        tbInputArea.Text = "";
                     }
                     else
                     {
@@ -352,6 +354,7 @@ namespace Dungeon_Valley_Explorer
                             lbOptions.Items.Add("1. Login");
                             lbOptions.Items.Add("2. Back");
                             btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
+                            tbInputArea.Text = "";
                         }
                         catch
                         {
@@ -504,6 +507,7 @@ namespace Dungeon_Valley_Explorer
                         btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
                     }
                 }
+                mySqlConnection.Close();
             }
             catch (Exception error)
             {
