@@ -393,7 +393,7 @@ namespace Dungeon_Valley_Explorer
                 case "1":
                     tbInputArea.Text = "";
                     lbOptions.Items.Clear();
-                    lbDisplay.Items.Add("First write down your email.");
+                    lbDisplay.Items.Add("To login to a profile you will have to first write down your email then write down your password into the textbox and click the input button after both the email and the password. (You can also write 'Back' to go back.).");
                     btInput.Click += new RoutedEventHandler(SelectProfileEmail);
                     break;
                 case "2":
@@ -406,7 +406,7 @@ namespace Dungeon_Valley_Explorer
                 case "Login":
                     tbInputArea.Text = "";
                     lbOptions.Items.Clear();
-                    lbDisplay.Items.Add("First write down your email.");
+                    lbDisplay.Items.Add("To login to a profile you will have to first write down your email then write down your password into the textbox and click the input button after both the email and the password. (You can also write 'Back' to go back.).");
                     btInput.Click += new RoutedEventHandler(SelectProfileEmail);
                     break;
                 case "Back":
@@ -656,7 +656,7 @@ namespace Dungeon_Valley_Explorer
         public void AddProfile()
         {
             tbInputArea.Text = "";
-            lbDisplay.Items.Add("To add a profile you will have to first write in your email then write in your password into the textbox and click the input button after both the email and the password. (You can also write 'Back' to go back.)");
+            lbDisplay.Items.Add("To add a profile you will have to first write down your email then write down your password into the textbox and click the input button after both the email and the password. (You can also write 'Back' to go back.).");
             btInput.Click += new RoutedEventHandler(AddProfileEmail);
             lbOptions.Items.Clear();
         }
