@@ -188,6 +188,9 @@ namespace Dungeon_Valley_Explorer
 
         public void OptionsChangeColors()
         {
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Change Colors");
+            lbOptions.Items.Add("2. Back");
             if (lbDisplay.Background == Brushes.Black)
             {
                 lbDisplay.Background = Brushes.White;
@@ -241,7 +244,7 @@ namespace Dungeon_Valley_Explorer
             }
             else if (tbInputArea.Text == "2" || tbInputArea.Text == "Back")
             {
-                if (folders.Last() != "Offline")
+                if (folders.Last() != folders[10])
                 {
                     folders.Remove(folders.Last());
                 }
@@ -394,7 +397,7 @@ namespace Dungeon_Valley_Explorer
                     btInput.Click += new RoutedEventHandler(SelectProfileEmail);
                     break;
                 case "2":
-                    if (folders.Last() != "Offline")
+                    if (folders.Last() != folders[10])
                     {
                         folders.Remove(folders.Last());
                     }
@@ -407,7 +410,7 @@ namespace Dungeon_Valley_Explorer
                     btInput.Click += new RoutedEventHandler(SelectProfileEmail);
                     break;
                 case "Back":
-                    if (folders.Last() != "Offline")
+                    if (folders.Last() != folders[10])
                     {
                         folders.Remove(folders.Last());
                     }
@@ -477,41 +480,47 @@ namespace Dungeon_Valley_Explorer
             {
                 mySqlConnection.Open();
                 MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                bool foundProfile = false;
                 while (mySqlDataReader.Read())
                 {
                     if (mySqlDataReader.GetString(0) == folders.Last())
                     {
                         GetProfileSaves();
-                        if (lbOptions.Items.IsEmpty == true)
-                        {
-                            lbDisplay.Items.Add("No saves were detected for this profile please start a new game and get to the town to create a cloud save for later use.");
-                            lbOptions.Items.Add("1. New Game");
-                            lbOptions.Items.Add("2. Log out");
-                            btInput.Click += new RoutedEventHandler(SelectProfileCreateSave);
-                        }
-                        else
-                        {
-                            lbDisplay.Items.Add("Please select a save from the left or start a new game.");
-                            lbOptions.Items.Clear();
-                            lbOptions.Items.Add("1. New Game");
-                            lbOptions.Items.Add("2. Log out");
-                            GetProfileSaves();
-                            btInput.Click += new RoutedEventHandler(SelectProfileChooseSave);
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("The email or password was incorrect for the selected profile.");
-                        lbOptions.Items.Add("1. Login");
-                        lbOptions.Items.Add("2. Back");
-                        btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
+                        foundProfile = true;
                     }
                 }
+
+                if (lbOptions.Items.IsEmpty == true && foundProfile == true)
+                {
+                    lbDisplay.Items.Add("No saves were detected for this profile please start a new game and get to the town to create a cloud save for later use.");
+                    lbOptions.Items.Add("1. New Game");
+                    lbOptions.Items.Add("2. Log out");
+                    btInput.Click += new RoutedEventHandler(SelectProfileCreateSave);
+                }
+                else if (foundProfile == true)
+                {
+                    lbDisplay.Items.Add("Please select a save from the left or start a new game.");
+                    lbOptions.Items.Clear();
+                    lbOptions.Items.Add("1. New Game");
+                    lbOptions.Items.Add("2. Log out");
+                    GetProfileSaves();
+                    btInput.Click += new RoutedEventHandler(SelectProfileChooseSave);
+                }
+                else
+                {
+                    MessageBox.Show("The email or password was incorrect for the selected profile.");
+                    lbOptions.Items.Add("1. Login");
+                    lbOptions.Items.Add("2. Back");
+                    btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
+                }
+
                 mySqlConnection.Close();
             }
             catch (Exception error)
             {
                 MessageBox.Show(error.Message);
+                lbOptions.Items.Add("1. Login");
+                lbOptions.Items.Add("2. Back");
                 btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
             }
         }
@@ -543,7 +552,7 @@ namespace Dungeon_Valley_Explorer
             }
             else if (tbInputArea.Text == "2" || tbInputArea.Text == "Log out")
             {
-                if (folders.Last() != "Offline")
+                if (folders.Last() != folders[10])
                 {
                     folders.Remove(folders.Last());
                 }
@@ -610,7 +619,7 @@ namespace Dungeon_Valley_Explorer
                     // This needs to be finished later -----------------------------------------------------------------
                     break;
                 case "2":
-                    if (folders.Last() != "Offline")
+                    if (folders.Last() != folders[10])
                     {
                         folders.Remove(folders.Last());
                     }
@@ -620,7 +629,7 @@ namespace Dungeon_Valley_Explorer
                     // This needs to be finished later -----------------------------------------------------------------
                     break;
                 case "Log out":
-                    if (folders.Last() != "Offline")
+                    if (folders.Last() != folders[10])
                     {
                         folders.Remove(folders.Last());
                     }
@@ -744,7 +753,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 mySqlConnection.Close();
 
-                if (!Directory.Exists($@"{folders[9]}\{folders.Last()}") && folders.Last() != "Offline")
+                if (!Directory.Exists($@"{folders[9]}\{folders.Last()}") && folders.Last() != folders[10])
                 {
                     Directory.CreateDirectory($@"{folders[9]}\{folders.Last()}");
                     AddProfileGetProfileSaves();
@@ -752,7 +761,7 @@ namespace Dungeon_Valley_Explorer
                     MessageBox.Show("The profile has been added successfully.");
 
                 }
-                else if (Directory.Exists($@"{folders[9]}\{folders.Last()}") && folders.Last() != "Offline")
+                else if (Directory.Exists($@"{folders[9]}\{folders.Last()}") && folders.Last() != folders[10])
                 {
                     MessageBox.Show("This profile has already been added to the game.");
                     folders.Remove(folders[folders.Count() - 1]);
