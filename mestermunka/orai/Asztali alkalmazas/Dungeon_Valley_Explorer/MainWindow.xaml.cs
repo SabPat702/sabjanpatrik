@@ -77,7 +77,27 @@ namespace Dungeon_Valley_Explorer
             Initializer.Initialize(folders, files);
             Initializer.GetProfilesFromDevice(folders, lbOptions, tempProfiles);
 
-            lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
+            heroes.Add(Initializer.npcs[0]);
+            party.Add(Initializer.npcs[0]);
+            questsCompleted.Add("test", false);
+            consumables.Add("Test Item", 1);
+            Gold = 123;
+            Experience = 100;
+            dungeonsCompleted.Add("Test Place", false);
+            weaponsImproved.Add("TestWeapon", 2);
+            armorsImproved.Add("Test Helmet", 3);
+            weaponsObtained.Add("TestWeapon", true);
+            weaponsObtained.Add("Unarmed", true);
+            armorsObtained.Add("Test Helmet", true);
+            armorsObtained.Add("Test Chestplate", true);
+            armorsObtained.Add("Test Leggings", true);
+            armorsObtained.Add("Test Boots", true);
+            consumablesUnlocked.Add("Test Item", true);
+
+            files.Add("Local Save.txt");
+            EnterTown();
+
+            /*lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
             lbDisplay.Items.Add("Tip: To check if you have all the game assets downloaded just delete the GameAssets folder and download everything again.");
             lbDisplay.Items.Add("Tip: To play with cloud saving you need to login to an account through the Select Profile option.");
             lbDisplay.Items.Add("Tip: To progress write text based on the options on the far left into the area at the bottom of the window or select an option on the far left then press the input button. (This can be the number or the option as well example:'1'. 'Offline play')");
@@ -87,8 +107,8 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("2. Select Profile");
             lbOptions.Items.Add("3. Add Profile");
             lbOptions.Items.Add("4. Options");
-
-            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+            
+            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);*/
         }
 
         //Main menu starts here ----------------------------------------------------------------------------------------
@@ -1114,7 +1134,7 @@ namespace Dungeon_Valley_Explorer
         {
             if (files.Last() != "Weapons.txt")
             {
-                WriteSave.StartWriteSave();
+                WriteSave.StartWriteSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked);
             }
             this.Close();
         }

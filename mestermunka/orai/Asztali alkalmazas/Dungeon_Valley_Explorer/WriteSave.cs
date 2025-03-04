@@ -11,7 +11,7 @@ namespace Dungeon_Valley_Explorer
 {
     static class WriteSave
     {
-        public static void StartWriteSave(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold = 0, int Experience = 0, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked)
+        public static void StartWriteSave(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked)
         {
             try
             {
@@ -33,6 +33,13 @@ namespace Dungeon_Valley_Explorer
                     streamWriter.Write(consumable.Key);
                     streamWriter.Write("@");
                     streamWriter.Write(consumable.Value);
+
+                    if (consumablesCounter < consumables.Count - 1)
+                    {
+                        streamWriter.Write("%");
+                    }
+
+                    consumablesCounter++;
                 }
                 streamWriter.Write("$");
                 streamWriter.Write(Gold);
@@ -78,6 +85,58 @@ namespace Dungeon_Valley_Explorer
                     weaponsImprovementCounter++;
                 }
                 streamWriter.Write("$");
+                int armorsImprovementCounter = 0;
+                foreach (var armorImprovement in armorsImproved)
+                {
+                    streamWriter.Write(armorImprovement.Value);
+
+                    if (armorsImprovementCounter < armorsImproved.Count - 1)
+                    {
+                        streamWriter.Write("%");
+                    }
+
+                    armorsImprovementCounter++;
+                }
+                streamWriter.Write("$");
+                int weaponsObtainedCounter = 0;
+                foreach (var weaponObtained in weaponsObtained)
+                {
+                    streamWriter.Write(weaponObtained.Value);
+
+                    if (weaponsObtainedCounter < weaponsObtained.Count - 1)
+                    {
+                        streamWriter.Write("%");
+                    }
+
+                    weaponsObtainedCounter++;
+                }
+                streamWriter.Write("$");
+                int armorsObtainedCounter = 0;
+                foreach (var armorObtained in armorsObtained)
+                {
+                    streamWriter.Write(armorObtained.Value);
+
+                    if (armorsObtainedCounter < armorsObtained.Count - 1)
+                    {
+                        streamWriter.Write("%");
+                    }
+
+                    armorsObtainedCounter++;
+                }
+                streamWriter.Write("$");
+                int consumablesUnlockedCounter = 0;
+                foreach (var consumableUnlocked in consumablesUnlocked)
+                {
+                    streamWriter.Write(consumableUnlocked.Value);
+
+                    if (consumablesUnlockedCounter < consumablesUnlocked.Count - 1)
+                    {
+                        streamWriter.Write("%");
+                    }
+
+                    consumablesUnlockedCounter++;
+                }
+                streamWriter.Close();
             }
             catch (Exception error)
             {
