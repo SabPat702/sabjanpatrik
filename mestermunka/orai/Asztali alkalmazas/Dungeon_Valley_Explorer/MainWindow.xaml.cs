@@ -35,6 +35,7 @@ namespace Dungeon_Valley_Explorer
         };
         static string connectionString = mySqlConnectionStringBuilder.ConnectionString;
         MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+
         List<string> folders = new List<string> { "GameAssets","Enemies","Dungeons","Effects","Characters","Items","Abilities","EnvironmentHazard","Races","Profiles","Offline"};
         List<string> files = new List<string> { "Monsters.txt","Ais.txt","NPCs.txt","Dungeons.txt","EnvironmentHazards.txt","Passives.txt","BuffsDebuffs.txt","SpecialEffects.txt","Skills.txt","Magics.txt","Races.txt","Consumables.txt","Armors.txt","Weapons.txt"};
         List<string> tempProfiles = new List<string>();
@@ -44,13 +45,26 @@ namespace Dungeon_Valley_Explorer
         string addPassword = "";
 
 
+        List<Hero> heroes = new List<Hero>();
+        List<Hero> party = new List<Hero>();
+        Dictionary<string,bool> questsCompleted = new Dictionary<string,bool>();
+        List<Consumable> consumables = new List<Consumable>();
+        int Gold = 0;
+        int Experience = 0;
+        Dictionary<Dungeon, bool> dungeonsCompleted = new Dictionary<Dungeon, bool>();
+        Dictionary<Weapon, int> weaponsImproved = new Dictionary<Weapon, int>();
+        Dictionary<Armor, int> armorsImproved = new Dictionary<Armor, int>();
+        Dictionary<Weapon, bool> weaponsObtained = new Dictionary<Weapon, bool>();
+        Dictionary<Armor, bool> armorsObtained = new Dictionary<Armor, bool>();
+        Dictionary<Consumable, bool> consumablesUnlocked = new Dictionary<Consumable, bool>();
 
-        public List<string> physicalDamageTypes = new List<string> { "Blunt","Pierce","Slash"};
-        public List<string> magicalDamageTypes = new List<string> { "Fire"};
-        public bool skipDamageCalculation = false;
-        public Random random = new Random();
-        public Target targetPrep = new Target();
-        public DamageSource damageSourcePrep = new DamageSource();
+
+        List<string> physicalDamageTypes = new List<string> { "Blunt","Pierce","Slash"};
+        List<string> magicalDamageTypes = new List<string> { "Fire"};
+        bool skipDamageCalculation = false;
+        Random random = new Random();
+        Target targetPrep = new Target();
+        DamageSource damageSourcePrep = new DamageSource();
 
         public MainWindow()
         {
@@ -549,6 +563,7 @@ namespace Dungeon_Valley_Explorer
                 lbOptions.Items.Clear();
 
                 // This needs to be finished later ---------------------------------------------------------------------
+                CreateNewGame();
             }
             else if (tbInputArea.Text == "2" || tbInputArea.Text == "Log out")
             {
@@ -569,6 +584,7 @@ namespace Dungeon_Valley_Explorer
                         lbOptions.Items.Clear();
 
                         // This needs to be finished later -------------------------------------------------------------
+                        LoadExistingSave();
 
                     }
                     else
@@ -580,6 +596,7 @@ namespace Dungeon_Valley_Explorer
                             lbOptions.Items.Clear();
 
                             // This needs to be finished later ---------------------------------------------------------
+                            LoadExistingSave();
                         }
                         catch
                         {
@@ -617,6 +634,7 @@ namespace Dungeon_Valley_Explorer
                     break;
                 case "1":
                     // This needs to be finished later -----------------------------------------------------------------
+                    CreateNewGame();
                     break;
                 case "2":
                     if (folders.Last() != folders[10])
@@ -627,6 +645,7 @@ namespace Dungeon_Valley_Explorer
                     break;
                 case "New game":
                     // This needs to be finished later -----------------------------------------------------------------
+                    CreateNewGame();
                     break;
                 case "Log out":
                     if (folders.Last() != folders[10])
@@ -843,6 +862,16 @@ namespace Dungeon_Valley_Explorer
 
         //Main menu ends here ------------------------------------------------------------------------------------------
 
+        public void CreateNewGame()
+        { 
+        
+        }
+
+        public void LoadExistingSave ()
+        {
+
+        }
+
         private void lbOptions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBox lboptions = sender as ListBox;
@@ -1029,6 +1058,67 @@ namespace Dungeon_Valley_Explorer
                 }
             }
             return damage;
+        }
+
+        public void EnterTown()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbDisplay.Items.Add("GAME: You have entered the town and now you can save and modify your party and your items.");
+            lbOptions.Items.Add("1. Quit Game");
+            lbOptions.Items.Add("2. Save Game");
+            lbOptions.Items.Add("3. ");
+            btInput.Click += new RoutedEventHandler(MainTownOption);
+        }
+
+        public void MainTownOption(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(MainTownOption);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainMainTownOption();
+                    break;
+                case "1":
+                    QuitGame();
+                    break;
+                case "2":
+                    SaveGame();
+                    break;
+                case "Quit Game":
+                    QuitGame();
+                    break;
+                case "Save Game":
+                    SaveGame();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(MainTownOption);
+                    break;
+            }
+        }
+
+        public void ExplainMainTownOption()
+        {
+            lbDisplay.Items.Add("EXPLANATION: Guit Game will close the game without saving if you are playing through the New Game option, but will save automatically if you have loaded an existing save to play.");
+            lbDisplay.Items.Add("EXPLANATION: Save Game will allow you to save the game without closing the game and it will allow you to create a new save as well so that you can avoid overwriting an existing save.");
+            lbDisplay.Items.Add("EXPLANATION: ");
+            tbInputArea.Text = "";
+            btInput.Click += new RoutedEventHandler(MainTownOption);
+        }
+
+        public void QuitGame()
+        {
+            if (files.Last() != "Weapons.txt")
+            {
+                WriteSave.StartWriteSave();
+            }
+            this.Close();
+        }
+
+        public void SaveGame()
+        {
+
         }
     }
 }
