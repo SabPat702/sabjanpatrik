@@ -11,7 +11,7 @@ namespace Dungeon_Valley_Explorer
 {
     static class WriteSave
     {
-        public static void StartWriteSave(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, List<Consumable> consumables, int Gold = 0, int Experience = 0, Dictionary<Dungeon, bool> dungeonsCompleted, Dictionary<Weapon, int> weaponsImproved, Dictionary<Armor, int> armorsImproved, Dictionary<Weapon, bool> weaponsObtained, Dictionary<Armor, bool> armorsObtained, Dictionary<Consumable, bool> consumablesUnlocked)
+        public static void StartWriteSave(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold = 0, int Experience = 0, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked)
         {
             try
             {
@@ -20,11 +20,64 @@ namespace Dungeon_Valley_Explorer
                 foreach (Hero hero in heroes)
                 {
                     streamWriter.Write(WriteHero(hero, party));
-                    if (hero != null)
-                    { 
-                    
+                    if (heroesCounter < heroes.Count - 1)
+                    {
+                        streamWriter.Write("%");
                     }
+                    heroesCounter++;
                 }
+                streamWriter.Write("$");
+                int consumablesCounter = 0;
+                foreach (var consumable in consumables)
+                {
+                    streamWriter.Write(consumable.Key);
+                    streamWriter.Write("@");
+                    streamWriter.Write(consumable.Value);
+                }
+                streamWriter.Write("$");
+                streamWriter.Write(Gold);
+                streamWriter.Write("$");
+                streamWriter.Write(Experience);
+                streamWriter.Write("$");
+                int questsCounter = 0;
+                foreach (var quest in questsCompleted)
+                {
+                    streamWriter.Write(quest.Value);
+
+                    if (questsCounter < questsCompleted.Count - 1)
+                    {
+                        streamWriter.Write("%");
+                    }
+
+                    questsCounter++;
+                }
+                streamWriter.Write("$");
+                int dungeonsCounter = 0;
+                foreach (var dungeon in dungeonsCompleted)
+                {
+                    streamWriter.Write(dungeon.Value);
+
+                    if (dungeonsCounter < dungeonsCompleted.Count - 1)
+                    {
+                        streamWriter.Write("%");
+                    }
+
+                    dungeonsCounter++;
+                }
+                streamWriter.Write("$");
+                int weaponsImprovementCounter = 0;
+                foreach (var weaponImprovement in weaponsImproved)
+                {
+                    streamWriter.Write(weaponImprovement.Value);
+
+                    if (weaponsImprovementCounter < weaponsImproved.Count - 1)
+                    {
+                        streamWriter.Write("%");
+                    }
+
+                    weaponsImprovementCounter++;
+                }
+                streamWriter.Write("$");
             }
             catch (Exception error)
             {
@@ -128,8 +181,6 @@ namespace Dungeon_Valley_Explorer
                     output += false;
                 }
             }
-            
-            output += "%";
 
             return output;
         }

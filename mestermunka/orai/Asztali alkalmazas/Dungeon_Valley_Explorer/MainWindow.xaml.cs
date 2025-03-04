@@ -47,16 +47,16 @@ namespace Dungeon_Valley_Explorer
 
         List<Hero> heroes = new List<Hero>();
         List<Hero> party = new List<Hero>();
-        Dictionary<string,bool> questsCompleted = new Dictionary<string,bool>();
-        List<Consumable> consumables = new List<Consumable>();
+        Dictionary<string, bool> questsCompleted = new Dictionary<string,bool>();
+        Dictionary<string, int> consumables = new Dictionary<string, int>();
         int Gold = 0;
         int Experience = 0;
-        Dictionary<Dungeon, bool> dungeonsCompleted = new Dictionary<Dungeon, bool>();
-        Dictionary<Weapon, int> weaponsImproved = new Dictionary<Weapon, int>();
-        Dictionary<Armor, int> armorsImproved = new Dictionary<Armor, int>();
-        Dictionary<Weapon, bool> weaponsObtained = new Dictionary<Weapon, bool>();
-        Dictionary<Armor, bool> armorsObtained = new Dictionary<Armor, bool>();
-        Dictionary<Consumable, bool> consumablesUnlocked = new Dictionary<Consumable, bool>();
+        Dictionary<string, bool> dungeonsCompleted = new Dictionary<string, bool>();
+        Dictionary<string, int> weaponsImproved = new Dictionary<string, int>();
+        Dictionary<string, int> armorsImproved = new Dictionary<string, int>();
+        Dictionary<string, bool> weaponsObtained = new Dictionary<string, bool>();
+        Dictionary<string, bool> armorsObtained = new Dictionary<string, bool>();
+        Dictionary<string, bool> consumablesUnlocked = new Dictionary<string, bool>();
 
 
         List<string> physicalDamageTypes = new List<string> { "Blunt","Pierce","Slash"};
@@ -255,6 +255,7 @@ namespace Dungeon_Valley_Explorer
                 lbOptions.Items.Clear();
 
                 // This needs to be finished later ---------------------------------------------------------------------
+                CreateNewGame();
             }
             else if (tbInputArea.Text == "2" || tbInputArea.Text == "Back")
             {
@@ -274,6 +275,7 @@ namespace Dungeon_Valley_Explorer
                         lbOptions.Items.Clear();
 
                         // This needs to be finished later -------------------------------------------------------------
+                        LoadExistingSave();
 
                     }
                     else
@@ -285,6 +287,7 @@ namespace Dungeon_Valley_Explorer
                             lbOptions.Items.Clear();
 
                             // This needs to be finished later ---------------------------------------------------------
+                            LoadExistingSave();
                         }
                         catch
                         {
