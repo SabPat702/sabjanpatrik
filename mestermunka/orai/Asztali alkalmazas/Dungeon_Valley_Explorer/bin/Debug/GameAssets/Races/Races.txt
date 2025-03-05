@@ -1,2 +1,2 @@
-0@Human@The average race we all know.@None@None@None@None@None
-1@Goblin@The most basic green skinned monster.@None@None@None@None@None
+1@Human@The average race we all know.@None@None@None@None@None
+2@Goblin@The most basic green skinned monster.@None@None@None@None@None

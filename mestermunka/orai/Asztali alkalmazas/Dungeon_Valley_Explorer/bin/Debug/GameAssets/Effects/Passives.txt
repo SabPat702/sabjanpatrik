@@ -1,3 +1,3 @@
-0@Sword Proficiency@Sword strikes are a little bit stronger.@Damage Calculation
-1@Test Passive@A passive ability for testing purpose.@Nothing
-2@None@Not so special now are we.@Nothing
+1@None@Not so special now are we.@Nothing
+2@Sword Proficiency@Sword strikes are a little bit stronger.@Damage Calculation
+3@Test Passive@A passive ability for testing purpose.@Nothing

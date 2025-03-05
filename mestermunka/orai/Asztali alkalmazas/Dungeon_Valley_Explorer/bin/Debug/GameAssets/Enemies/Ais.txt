@@ -1,2 +1,2 @@
-0@Basic
-1@Defense
+1@Basic
+2@Defense

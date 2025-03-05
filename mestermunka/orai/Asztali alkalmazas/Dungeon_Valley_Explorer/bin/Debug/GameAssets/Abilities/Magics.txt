@@ -1,2 +1,2 @@
-0@Firebolt@A fiery ball of magic.@15@Fire@15@1,5@Burn@Both@2@0
 1@Self care@A basic healing spell that all adventurers know about.@0@None@0@0@None@None@2@3
+2@Firebolt@A fiery ball of magic.@15@Fire@15@1,5@Burn@Both@2@0

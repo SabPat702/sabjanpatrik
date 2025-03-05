@@ -1,1 +1,1 @@
-0@Damage up@A small increase in damage.@Damage Calculation
+1@Damage up@A small increase in damage.@Damage Calculation

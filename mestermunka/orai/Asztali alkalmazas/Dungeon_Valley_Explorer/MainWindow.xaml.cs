@@ -77,7 +77,7 @@ namespace Dungeon_Valley_Explorer
             Initializer.Initialize(folders, files);
             Initializer.GetProfilesFromDevice(folders, lbOptions, tempProfiles);
 
-            heroes.Add(Initializer.npcs[0]);
+            /*heroes.Add(Initializer.npcs[0]);
             party.Add(Initializer.npcs[0]);
             questsCompleted.Add("test", false);
             consumables.Add("Test Item", 1);
@@ -86,6 +86,9 @@ namespace Dungeon_Valley_Explorer
             dungeonsCompleted.Add("Test Place", false);
             weaponsImproved.Add("TestWeapon", 2);
             armorsImproved.Add("Test Helmet", 3);
+            armorsImproved.Add("Test Chestplate", 0);
+            armorsImproved.Add("Test Leggings", 0);
+            armorsImproved.Add("Test Boots", 0);
             weaponsObtained.Add("TestWeapon", true);
             weaponsObtained.Add("Unarmed", true);
             armorsObtained.Add("Test Helmet", true);
@@ -95,9 +98,9 @@ namespace Dungeon_Valley_Explorer
             consumablesUnlocked.Add("Test Item", true);
 
             files.Add("Local Save.txt");
-            EnterTown();
+            EnterTown();*/
 
-            /*lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
+            lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
             lbDisplay.Items.Add("Tip: To check if you have all the game assets downloaded just delete the GameAssets folder and download everything again.");
             lbDisplay.Items.Add("Tip: To play with cloud saving you need to login to an account through the Select Profile option.");
             lbDisplay.Items.Add("Tip: To progress write text based on the options on the far left into the area at the bottom of the window or select an option on the far left then press the input button. (This can be the number or the option as well example:'1'. 'Offline play')");
@@ -108,7 +111,7 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("3. Add Profile");
             lbOptions.Items.Add("4. Options");
             
-            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);*/
+            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
         }
 
         //Main menu starts here ----------------------------------------------------------------------------------------
@@ -1083,15 +1086,22 @@ namespace Dungeon_Valley_Explorer
             return damage;
         }
 
+        //Town starts here ---------------------------------------------------------------------------------------------
+
         public void EnterTown()
         {
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbDisplay.Items.Add("GAME: You have entered the town and now you can save and modify your party and your items.");
+            MainTownLBOptions();
+            btInput.Click += new RoutedEventHandler(MainTownOption);
+        }
+
+        public void MainTownLBOptions()
+        {
             lbOptions.Items.Add("1. Quit Game");
             lbOptions.Items.Add("2. Save Game");
             lbOptions.Items.Add("3. ");
-            btInput.Click += new RoutedEventHandler(MainTownOption);
         }
 
         public void MainTownOption(object sender, RoutedEventArgs e)
@@ -1130,19 +1140,187 @@ namespace Dungeon_Valley_Explorer
             btInput.Click += new RoutedEventHandler(MainTownOption);
         }
 
+        //Saving starts here -------------------------------------------------------------------------------------------
+
         public void QuitGame()
         {
-            if (files.Last() != "Weapons.txt")
+            if (files.Last() != files[13])
             {
-                WriteSave.StartWriteSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked);
+                try
+                {
+                    WriteSave.StartWriteSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked);
+
+                    if (folders.Last() != "Offline")
+                    {
+                        InsertSave();
+                    }
+                }
+                catch (Exception error)
+                {
+                    MessageBox.Show(error.Message);
+                }
             }
             this.Close();
         }
 
         public void SaveGame()
         {
-
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            if (files.Last() != files[13])
+            {
+                lbDisplay.Items.Add($"GAME: Will you overwrite the current save ({files.Last()}) or create a new save?");
+                lbOptions.Items.Add("1. Overwrite Save");
+                lbOptions.Items.Add("2. New Save");
+                lbOptions.Items.Add("3. Cancel");
+                btInput.Click += new RoutedEventHandler(SaveGameNewOrNot);
+            }
+            else
+            {
+                lbDisplay.Items.Add("GAME: To save the game you first need to give a name to the save.");
+                SaveGameNewSave();
+            }
         }
+
+        public void SaveGameNewOrNot(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SaveGameNewOrNot);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainSaveGameNewOrNot();
+                    break;
+                case "1":
+                    SaveGameSaving();
+                    break;
+                case "2":
+                    SaveGameNewSave();
+                    break;
+                case "3":
+                    SaveGameExit();
+                    break;
+                case "Overwrite Save":
+                    SaveGameSaving();
+                    break;
+                case "New Save":
+                    SaveGameNewSave();
+                    break;
+                case "Cancel":
+                    SaveGameExit();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(SaveGameNewOrNot);
+                    break;
+            }
+        }
+
+        public void ExplainSaveGameNewOrNot()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("EXPLANATION: Overwrite Save will swap out the contents of the save that you opened in the beginning.");
+            lbDisplay.Items.Add("EXPLANATION: New Save will create a new text file in the current profile and create a save in that new file for later use.");
+            lbDisplay.Items.Add("EXPLANATION: Cancel will stop the Save Game process and take you back to the town.");
+            btInput.Click += new RoutedEventHandler(SaveGameNewOrNot);
+        }
+
+        public void SaveGameExit()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            MainTownLBOptions();
+            btInput.Click += new RoutedEventHandler(MainTownOption);
+        }
+
+        public void SaveGameSaving()
+        {
+            try
+            {
+                WriteSave.StartWriteSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked);
+                MessageBox.Show("Game saved successfully");
+
+                if (folders.Last() != "Offline")
+                {
+                    InsertSave();
+                }
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+            SaveGameExit();
+        }
+
+        public void SaveGameNewSave()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbDisplay.Items.Add("GAME: While writing a name for the save do keep in mind that the name will be given the '.txt' extension to make it a text file. (you can't name it '1', 'Cancel' or any file that is in the GameAssets folder)");
+            lbOptions.Items.Add("1. Cancel");
+            btInput.Click += new RoutedEventHandler(NewSaveNaming);
+        }
+
+        public void NewSaveNaming(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(NewSaveNaming);
+            if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                SaveGameExit();
+            }
+            else if (tbInputArea.Text == "?")
+            {
+                ExplainNewSaveNaming();
+            }
+            else if (files.Contains(tbInputArea.Text + ".txt"))
+            {
+                MessageBox.Show("You can't name the save Weapon");
+            }
+            else
+            {
+                NewSaveSaving();
+            }
+        }
+
+        public void NewSaveSaving()
+        {
+            if (files.Last() != files[13])
+            {
+                files.Remove(files.Last());
+            }
+            files.Add(tbInputArea.Text + ".txt");
+            try
+            {
+                WriteSave.StartWriteSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked);
+                MessageBox.Show("Game saved successfully");
+
+                if (folders.Last() != "Offline")
+                {
+                    InsertSave();
+                }
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+            SaveGameExit();
+        }
+
+        public void ExplainNewSaveNaming()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("EXPLANATION: Cancel will stop the Save Game process and take you back to the town.");
+            btInput.Click += new RoutedEventHandler(NewSaveNaming);
+        }
+
+        public void InsertSave()
+        {
+            string command = $"Insert into save_game (HeroId, SaveData, SaveName) Values ('1','{WriteSave.MakeString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked)}','{files.Last()}')";
+            MySqlCommand cmd = new MySqlCommand(command, mySqlConnection);
+        }
+
+        //Saving ends here ---------------------------------------------------------------------------------------------
+
+        //Town ends here -----------------------------------------------------------------------------------------------
     }
 }
 

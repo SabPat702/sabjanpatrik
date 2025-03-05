@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
 using Org.BouncyCastle.Crypto;
+using K4os.Compression.LZ4.Streams.Abstractions;
 
 namespace Dungeon_Valley_Explorer
 {
@@ -226,7 +227,7 @@ namespace Dungeon_Valley_Explorer
             output += "@";
             output += hero.heroClass;
             output += "@";
-            output += hero.Race;
+            output += hero.Race.RaceName;
             output += "@";
 
             foreach (Hero partyMember in party)
@@ -241,6 +242,132 @@ namespace Dungeon_Valley_Explorer
                 }
             }
 
+            return output;
+        }
+
+        public static string MakeString(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked)
+        {
+            string output = "";
+            int heroesCounter = 0;
+            foreach (Hero hero in heroes)
+            {
+                output += WriteHero(hero, party);
+                if (heroesCounter < heroes.Count - 1)
+                {
+                    output += "%";
+                }
+                heroesCounter++;
+            }
+            output += "$";
+            int consumablesCounter = 0;
+            foreach (var consumable in consumables)
+            {
+                output += consumable.Key;
+                output += "@";
+                output += consumable.Value;
+
+                if (consumablesCounter < consumables.Count - 1)
+                {
+                    output += "%";
+                }
+
+                consumablesCounter++;
+            }
+            output += "$";
+            output += Gold;
+            output += "$";
+            output += Experience;
+            output += "$";
+            int questsCounter = 0;
+            foreach (var quest in questsCompleted)
+            {
+                output += quest.Value;
+
+                if (questsCounter < questsCompleted.Count - 1)
+                {
+                    output += "%";
+                }
+
+                questsCounter++;
+            }
+            output += "$";
+            int dungeonsCounter = 0;
+            foreach (var dungeon in dungeonsCompleted)
+            {
+                output += dungeon.Value;
+
+                if (dungeonsCounter < dungeonsCompleted.Count - 1)
+                {
+                    output += "%";
+                }
+
+                dungeonsCounter++;
+            }
+            output += "$";
+            int weaponsImprovementCounter = 0;
+            foreach (var weaponImprovement in weaponsImproved)
+            {
+                output += weaponImprovement.Value;
+
+                if (weaponsImprovementCounter < weaponsImproved.Count - 1)
+                {
+                    output += "%";
+                }
+
+                weaponsImprovementCounter++;
+            }
+            output += "$";
+            int armorsImprovementCounter = 0;
+            foreach (var armorImprovement in armorsImproved)
+            {
+                output += armorImprovement.Value;
+
+                if (armorsImprovementCounter < armorsImproved.Count - 1)
+                {
+                    output += "%";
+                }
+
+                armorsImprovementCounter++;
+            }
+            output += "$";
+            int weaponsObtainedCounter = 0;
+            foreach (var weaponObtained in weaponsObtained)
+            {
+                output += weaponObtained.Value;
+
+                if (weaponsObtainedCounter < weaponsObtained.Count - 1)
+                {
+                    output += "%";
+                }
+
+                weaponsObtainedCounter++;
+            }
+            output += "$";
+            int armorsObtainedCounter = 0;
+            foreach (var armorObtained in armorsObtained)
+            {
+                output += armorObtained.Value;
+
+                if (armorsObtainedCounter < armorsObtained.Count - 1)
+                {
+                    output += "%";
+                }
+
+                armorsObtainedCounter++;
+            }
+            output += "$";
+            int consumablesUnlockedCounter = 0;
+            foreach (var consumableUnlocked in consumablesUnlocked)
+            {
+                output += consumableUnlocked.Value;
+
+                if (consumablesUnlockedCounter < consumablesUnlocked.Count - 1)
+                {
+                    output += "%";
+                }
+
+                consumablesUnlockedCounter++;
+            }
             return output;
         }
     }

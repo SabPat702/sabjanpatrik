@@ -92,7 +92,7 @@ namespace Dungeon_Valley_Explorer
             string[] skillscutter = linecutter[12].Split(',');
             foreach (string skill in skillscutter)
             {
-                for (int i = 0; i < skillscutter.Count(); i++)
+                for (int i = 0; i < skills.Count(); i++)
                 {
                     if (skill == skills[i].SkillName)
                     {
@@ -103,7 +103,7 @@ namespace Dungeon_Valley_Explorer
             string[] magicscutter = linecutter[13].Split(',');
             foreach (string magic in magicscutter)
             {
-                for (int i = 0; i < magicscutter.Count(); i++)
+                for (int i = 0; i < magics.Count(); i++)
                 {
                     if (magic == magics[i].MagicName)
                     {

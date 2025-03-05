@@ -19,6 +19,7 @@ namespace Dungeon_Valley_Explorer
         public string Range { get; set; }
         public string SkillCompatibility { get; set; }
         public int Price { get; set; }
+        public bool Unique { get; set; }
 
 
         public Weapon(string oneLine, List<SpecialEffect> specialEffects)
@@ -46,6 +47,7 @@ namespace Dungeon_Valley_Explorer
             Range = linecutter[8];
             SkillCompatibility = linecutter[9];
             Price = Convert.ToInt32(linecutter[10]);
+            Unique = Convert.ToBoolean(linecutter[11]);
         }
 
         public Weapon()

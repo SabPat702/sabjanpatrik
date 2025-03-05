@@ -16,6 +16,7 @@ namespace Dungeon_Valley_Explorer
         public List<SpecialEffect> SpecialEffects { get; set; }
         public int Type { get; set; }
         public int Price { get; set; }
+        public bool Unique { get; set; }
 
         public Armor()
         {
@@ -44,6 +45,7 @@ namespace Dungeon_Valley_Explorer
             }
             Type = Convert.ToInt32(linecutter[6]);
             Price = Convert.ToInt32(linecutter[7]);
+            Unique = Convert.ToBoolean(linecutter[8]);
         }
     }
 }
