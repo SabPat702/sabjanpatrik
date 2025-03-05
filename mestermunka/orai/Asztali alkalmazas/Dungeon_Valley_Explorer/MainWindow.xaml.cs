@@ -77,7 +77,7 @@ namespace Dungeon_Valley_Explorer
             Initializer.Initialize(folders, files);
             Initializer.GetProfilesFromDevice(folders, lbOptions, tempProfiles);
 
-            /*heroes.Add(Initializer.npcs[0]);
+            heroes.Add(Initializer.npcs[0]);
             party.Add(Initializer.npcs[0]);
             questsCompleted.Add("test", false);
             consumables.Add("Test Item", 1);
@@ -98,9 +98,9 @@ namespace Dungeon_Valley_Explorer
             consumablesUnlocked.Add("Test Item", true);
 
             files.Add("Local Save.txt");
-            EnterTown();*/
+            EnterTown();
 
-            lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
+            /*lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
             lbDisplay.Items.Add("Tip: To check if you have all the game assets downloaded just delete the GameAssets folder and download everything again.");
             lbDisplay.Items.Add("Tip: To play with cloud saving you need to login to an account through the Select Profile option.");
             lbDisplay.Items.Add("Tip: To progress write text based on the options on the far left into the area at the bottom of the window or select an option on the far left then press the input button. (This can be the number or the option as well example:'1'. 'Offline play')");
@@ -111,7 +111,7 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("3. Add Profile");
             lbOptions.Items.Add("4. Options");
             
-            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
+            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);*/
         }
 
         //Main menu starts here ----------------------------------------------------------------------------------------
@@ -1148,11 +1148,13 @@ namespace Dungeon_Valley_Explorer
             {
                 try
                 {
-                    WriteSave.StartWriteSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked);
+                    StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
+                    streamWriter.Write(Saving.MakeString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked));
+                    streamWriter.Close();
 
                     if (folders.Last() != "Offline")
                     {
-                        InsertSave();
+                        Saving.InsertSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs);
                     }
                 }
                 catch (Exception error)
@@ -1236,12 +1238,14 @@ namespace Dungeon_Valley_Explorer
         {
             try
             {
-                WriteSave.StartWriteSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked);
+                StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
+                streamWriter.Write(Saving.MakeString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked));
+                streamWriter.Close();
                 MessageBox.Show("Game saved successfully");
 
                 if (folders.Last() != "Offline")
                 {
-                    InsertSave();
+                    Saving.InsertSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs);
                 }
             }
             catch (Exception error)
@@ -1290,12 +1294,14 @@ namespace Dungeon_Valley_Explorer
             files.Add(tbInputArea.Text + ".txt");
             try
             {
-                WriteSave.StartWriteSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked);
+                StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
+                streamWriter.Write(Saving.MakeString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked));
+                streamWriter.Close();
                 MessageBox.Show("Game saved successfully");
 
                 if (folders.Last() != "Offline")
                 {
-                    InsertSave();
+                    Saving.InsertSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs);
                 }
             }
             catch (Exception error)
@@ -1310,12 +1316,6 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
             lbDisplay.Items.Add("EXPLANATION: Cancel will stop the Save Game process and take you back to the town.");
             btInput.Click += new RoutedEventHandler(NewSaveNaming);
-        }
-
-        public void InsertSave()
-        {
-            string command = $"Insert into save_game (HeroId, SaveData, SaveName) Values ('1','{WriteSave.MakeString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked)}','{files.Last()}')";
-            MySqlCommand cmd = new MySqlCommand(command, mySqlConnection);
         }
 
         //Saving ends here ---------------------------------------------------------------------------------------------

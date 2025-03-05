@@ -127,7 +127,7 @@
     <Compile Include="SpecialEffect.cs" />
     <Compile Include="Target.cs" />
     <Compile Include="Weapon.cs" />
-    <Compile Include="WriteSave.cs" />
+    <Compile Include="Saving.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
