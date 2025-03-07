@@ -49,6 +49,7 @@ namespace Dungeon_Valley_Explorer
         List<Hero> party = new List<Hero>();
         Dictionary<string, bool> questsCompleted = new Dictionary<string,bool>();
         Dictionary<string, int> consumables = new Dictionary<string, int>();
+        bool tutorialComplete = false;
         int Gold = 0;
         int Experience = 0;
         Dictionary<string, bool> dungeonsCompleted = new Dictionary<string, bool>();
