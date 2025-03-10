@@ -115,9 +115,9 @@ namespace Dungeon_Valley_Explorer
             return output;
         }
 
-        public static string MakeString(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked, bool tutorialCompleted)
+        public static string MakeString(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked, bool tutorialCompleted, int HeroId)
         {
-            string output = "";
+            string output = $"{HeroId}$";
             int heroesCounter = 0;
             foreach (Hero hero in heroes)
             {
@@ -243,26 +243,21 @@ namespace Dungeon_Valley_Explorer
             return output;
         }
 
-        public static void InsertSave(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked, MySqlConnection mySqlConnection, List<Hero> npcs, bool tutorialCompleted)
+        public static void InsertSave(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked, MySqlConnection mySqlConnection, List<Hero> npcs, bool tutorialCompleted, int HeroId, bool newHero)
         {
-            if (HeroExists(mySqlConnection, folders, heroes, npcs) == false)
+            if (HeroExists(mySqlConnection, folders, heroes, npcs, newHero) == false)
             {
                 NewHero(mySqlConnection, folders, heroes, npcs);
+                HeroId = GetHeroId(mySqlConnection, folders, heroes, npcs);
             }
-            string command = $"Insert into sabpat702.save_game (HeroId, SaveData, SaveName) Values ('1','{MakeString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted)}','{files.Last()}')";
-            MySqlCommand cmd = new MySqlCommand(command, mySqlConnection);
-            mySqlConnection.Open();
-            MySqlDataReader mySqlDataReader = cmd.ExecuteReader();
-            mySqlConnection.Close();
-        }
 
-        public static void NewHero(MySqlConnection mySqlConnection, List<string> folders, List<Hero> heroes, List<Hero> npcs)
-        {
-            Hero playerHero = FindHero(heroes, npcs);
             try
             {
-                int userId = GetUserId(folders);
-                string command = $"Insert into sabpat702.hero (Name, DEF, MDEF, HP, SP, MP, EXP, LVL, Weapon, Armor, Class, Skill, Magic, Passive, UserId, Race)";
+                string command = $"Insert into sabpat702.save_game (HeroId, SaveData, SaveName) Values ('{HeroId}','{MakeString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted, HeroId)}','{files.Last().Substring(0, files.Last().Length - 4)}')";
+                MySqlCommand cmd = new MySqlCommand(command, mySqlConnection);
+                mySqlConnection.Open();
+                cmd.ExecuteNonQuery();
+                mySqlConnection.Close();
             }
             catch (Exception error)
             {
@@ -270,12 +265,95 @@ namespace Dungeon_Valley_Explorer
             }
         }
 
-        public static int GetUserId(List<string> folders)
+        public static int GetHeroId(MySqlConnection mySqlConnection, List<string> folders, List<Hero> heroes, List<Hero> npcs)
+        {
+            int HeroId = 0;
+            Hero playerHero = FindHero(heroes, npcs);
+            try
+            {
+                string command = $"Select sabpat702.hero.Id from sabpat702.hero inner join sabpat702.user on sabpat702.user.Id = sabpat702.hero.UserId Where sabpat702.user.UserName = '{folders.Last()}' And sabpat702.hero.Name = '{playerHero.HeroName}'";
+                MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    HeroId = mySqlDataReader.GetInt32(0);
+                }
+                mySqlConnection.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+            return HeroId;
+        }
+
+        public static void NewHero(MySqlConnection mySqlConnection, List<string> folders, List<Hero> heroes, List<Hero> npcs)
+        {
+            Hero playerHero = FindHero(heroes, npcs);
+            try
+            {
+                int userId = GetUserId(folders, mySqlConnection);
+                string command = $"Insert into sabpat702.hero (Name, DEF, MDEF, HP, SP, MP, EXP, LVL, Weapon, Armor, Class, Skill, Magic, Passive, UserId, Race) Values ('{playerHero.HeroName}','{playerHero.DEF}','{playerHero.MDEF}','{playerHero.HP}','{playerHero.SP}','{playerHero.MP}','{playerHero.Exp}','{playerHero.Lvl}','{playerHero.Weapons[0].WeaponName},{playerHero.Weapons[1].WeaponName},{playerHero.Weapons[2].WeaponName}','{playerHero.Armors[0].ArmorName},{playerHero.Armors[1].ArmorName},{playerHero.Armors[2].ArmorName},{playerHero.Armors[3].ArmorName}','{playerHero.heroClass}','";
+                foreach (Skill skill in playerHero.Skills)
+                {
+                    if (skill != playerHero.Skills.Last())
+                    {
+                        command += $"{skill.SkillName},";
+                    }
+                    else
+                    {
+                        command += $"{skill.SkillName}','";
+                    }
+                }
+                foreach (Magic magic in playerHero.Magics)
+                {
+                    if (magic != playerHero.Magics.Last())
+                    {
+                        command += $"{magic.MagicName},";
+                    }
+                    else
+                    {
+                        command += $"{magic.MagicName}','";
+                    }
+                }
+                foreach (Passive passive in playerHero.Passives)
+                {
+                    if (passive != playerHero.Passives.Last())
+                    {
+                        command += $"{passive.PassiveName},";
+                    }
+                    else
+                    {
+                        command += $"{passive.PassiveName}','";
+                    }
+                }
+                command += $"{userId}','{playerHero.Race.RaceName}')";
+                MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
+
+        public static int GetUserId(List<string> folders, MySqlConnection mySqlConnection)
         {
             int userId = new int();
             try
             {
-                string command = $"Select sabpat702.user.ID from sabpat702.user Where sabpat702.user.UserName = {folders.Last()}";
+                string command = $"Select sabpat702.user.ID from sabpat702.user Where sabpat702.user.UserName = '{folders.Last()}'";
+                MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    userId = mySqlDataReader.GetInt32(0);
+                }
+                mySqlConnection.Close();
             }
             catch (Exception error)
             {
@@ -297,14 +375,14 @@ namespace Dungeon_Valley_Explorer
             return playerHero;
         }
 
-        public static bool HeroExists(MySqlConnection mySqlConnection, List<string> folders, List<Hero> heroes, List<Hero> npcs)
+        public static bool HeroExists(MySqlConnection mySqlConnection, List<string> folders, List<Hero> heroes, List<Hero> npcs, bool NewHero)
         {
             bool result = false;
             Hero playerHero = FindHero(heroes, npcs);
             try
             {
                 List<string> playerHeroes = new List<string>();
-                string command = $"Select sabpat702.hero.Name from sabpat702.hero inner join sabpat702.user on sabpat702.user.Id = sabpat702.hero.UserId Where sabpat702.user.UserName = {folders.Last()}";
+                string command = $"Select sabpat702.hero.Name from sabpat702.hero inner join sabpat702.user on sabpat702.user.Id = sabpat702.hero.UserId Where sabpat702.user.UserName = '{folders.Last()}'";
                 MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
                 mySqlConnection.Open();
                 MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
@@ -314,7 +392,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 foreach (string heroName in playerHeroes)
                 {
-                    if (heroName == playerHero.HeroName)
+                    if (heroName == playerHero.HeroName && NewHero == false)
                     {
                         result = true;
                     }
