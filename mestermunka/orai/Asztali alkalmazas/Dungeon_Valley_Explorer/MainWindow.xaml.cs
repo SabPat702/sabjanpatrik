@@ -49,9 +49,9 @@ namespace Dungeon_Valley_Explorer
         List<Hero> party = new List<Hero>();
         Dictionary<string, bool> questsCompleted = new Dictionary<string,bool>();
         Dictionary<string, int> consumables = new Dictionary<string, int>();
-        bool tutorialComplete = false;
-        bool newHero = true;
-        int HeroId = 0;
+        bool tutorialCompleted = false;
+        bool newHero = false;
+        int HeroId = 1;
         int Gold = 0;
         int Experience = 0;
         Dictionary<string, bool> dungeonsCompleted = new Dictionary<string, bool>();
@@ -80,8 +80,8 @@ namespace Dungeon_Valley_Explorer
             Initializer.Initialize(folders, files);
             Initializer.GetProfilesFromDevice(folders, lbOptions, tempProfiles);
 
-            heroes.Add(new Hero("2@playerHero@10@10@100@20@20@0@1@TestWeapon,Unarmed,Unarmed@Test Helmet,Test Chestplate,Test Leggings,Test Boots@Fighter@Power Slash@Firebolt,Self care@Sword Proficiency@Human", Initializer.passives, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons));
-            party.Add(new Hero("2@playerHero@10@10@100@20@20@0@1@TestWeapon,Unarmed,Unarmed@Test Helmet,Test Chestplate,Test Leggings,Test Boots@Fighter@Power Slash@Firebolt,Self care@Sword Proficiency@Human", Initializer.passives, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons));
+            heroes.Add(new Hero("1@player@10@10@100@20@20@0@1@TestWeapon,Unarmed,Unarmed@Test Helmet,Test Chestplate,Test Leggings,Test Boots@Fighter@Power Slash@Firebolt,Self care@Sword Proficiency@Human", Initializer.passives, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons));
+            party.Add(new Hero("1@player@10@10@100@20@20@0@1@TestWeapon,Unarmed,Unarmed@Test Helmet,Test Chestplate,Test Leggings,Test Boots@Fighter@Power Slash@Firebolt,Self care@Sword Proficiency@Human", Initializer.passives, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons));
             questsCompleted.Add("test", false);
             consumables.Add("Test Item", 1);
             Gold = 123;
@@ -100,7 +100,7 @@ namespace Dungeon_Valley_Explorer
             armorsObtained.Add("Test Boots", true);
             consumablesUnlocked.Add("Test Item", true);
 
-            files.Add("Test.txt");
+            files.Add("first_save.txt");
             folders.Add("Patrik");
             EnterTown();
 
@@ -1153,13 +1153,10 @@ namespace Dungeon_Valley_Explorer
                 try
                 {
                     StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
-                    streamWriter.Write(Saving.MakeString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialComplete, HeroId));
+                    streamWriter.Write(Saving.MakeSaveString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted, HeroId));
                     streamWriter.Close();
 
-                    if (folders.Last() != "Offline")
-                    {
-                        Saving.InsertSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialComplete, HeroId, newHero);
-                    }
+                    Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, HeroId, newHero);
                 }
                 catch (Exception error)
                 {
@@ -1243,14 +1240,11 @@ namespace Dungeon_Valley_Explorer
             try
             {
                 StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
-                streamWriter.Write(Saving.MakeString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialComplete, HeroId));
+                streamWriter.Write(Saving.MakeSaveString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted, HeroId));
                 streamWriter.Close();
                 MessageBox.Show("Game saved successfully");
 
-                if (folders.Last() != "Offline")
-                {
-                    Saving.InsertSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialComplete, HeroId, newHero);
-                }
+                Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, HeroId, newHero);
             }
             catch (Exception error)
             {
@@ -1299,14 +1293,11 @@ namespace Dungeon_Valley_Explorer
             try
             {
                 StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
-                streamWriter.Write(Saving.MakeString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialComplete, HeroId));
+                streamWriter.Write(Saving.MakeSaveString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted, HeroId));
                 streamWriter.Close();
                 MessageBox.Show("Game saved successfully");
 
-                if (folders.Last() != "Offline")
-                {
-                    Saving.InsertSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialComplete, HeroId, newHero);
-                }
+                Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, HeroId, newHero);
             }
             catch (Exception error)
             {
