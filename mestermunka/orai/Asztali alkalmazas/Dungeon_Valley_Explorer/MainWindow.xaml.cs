@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using MySql.Data.MySqlClient;
 using Mysqlx;
 using Org.BouncyCastle.Bcpg;
+using BCrypt.Net;
 
 namespace Dungeon_Valley_Explorer
 {
