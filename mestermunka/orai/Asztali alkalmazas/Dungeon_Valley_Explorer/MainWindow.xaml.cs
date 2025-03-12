@@ -1275,7 +1275,9 @@ namespace Dungeon_Valley_Explorer
             }
             else if (files.Contains(tbInputArea.Text + ".txt"))
             {
-                MessageBox.Show("You can't name the save Weapon");
+                MessageBox.Show("You can't name the save the same as the files in the GameAssets folder");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(NewSaveNaming);
             }
             else
             {
@@ -1292,18 +1294,28 @@ namespace Dungeon_Valley_Explorer
             files.Add(tbInputArea.Text + ".txt");
             try
             {
-                StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
-                streamWriter.Write(Saving.MakeSaveString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted, HeroId));
-                streamWriter.Close();
-                MessageBox.Show("Game saved successfully");
+                if (Saving.SaveExist(mySqlConnection, folders, files) == false)
+                {
+                    StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
+                    streamWriter.Write(Saving.MakeSaveString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted, HeroId));
+                    streamWriter.Close();
+                    MessageBox.Show("Game saved successfully");
 
-                Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, HeroId, newHero);
+                    Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, HeroId, newHero);
+                    SaveGameExit();
+                }
+                else
+                {
+                    MessageBox.Show("You already have a save named like this in our database and maybe in your own profile folder and for our and your convenience we can't allow you to have a duplicate file name");
+                    btInput.Click += new RoutedEventHandler(NewSaveNaming);
+                    tbInputArea.Text = "";
+                }
             }
             catch (Exception error)
             {
                 MessageBox.Show(error.Message);
+                SaveGameExit();
             }
-            SaveGameExit();
         }
 
         public void ExplainNewSaveNaming()
