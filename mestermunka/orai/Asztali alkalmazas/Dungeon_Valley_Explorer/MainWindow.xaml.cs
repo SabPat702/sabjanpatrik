@@ -81,7 +81,7 @@ namespace Dungeon_Valley_Explorer
             Initializer.Initialize(folders, files);
             Initializer.GetProfilesFromDevice(folders, lbOptions, tempProfiles);
 
-            heroes.Add(new Hero("1@player@10@10@100@20@20@0@1@TestWeapon,Unarmed,Unarmed@Test Helmet,Test Chestplate,Test Leggings,Test Boots@Fighter@Power Slash@Firebolt,Self care@Sword Proficiency@Human", Initializer.passives, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons));
+            /*heroes.Add(new Hero("1@player@10@10@100@20@20@0@1@TestWeapon,Unarmed,Unarmed@Test Helmet,Test Chestplate,Test Leggings,Test Boots@Fighter@Power Slash@Firebolt,Self care@Sword Proficiency@Human", Initializer.passives, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons));
             party.Add(new Hero("1@player@10@10@100@20@20@0@1@TestWeapon,Unarmed,Unarmed@Test Helmet,Test Chestplate,Test Leggings,Test Boots@Fighter@Power Slash@Firebolt,Self care@Sword Proficiency@Human", Initializer.passives, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons));
             questsCompleted.Add("test", false);
             consumables.Add("Test Item", 1);
@@ -103,9 +103,9 @@ namespace Dungeon_Valley_Explorer
 
             files.Add("first_save.txt");
             folders.Add("Patrik");
-            EnterTown();
+            EnterTown();*/
 
-            /*lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
+            lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
             lbDisplay.Items.Add("Tip: To check if you have all the game assets downloaded just delete the GameAssets folder and download everything again.");
             lbDisplay.Items.Add("Tip: To play with cloud saving you need to login to an account through the Select Profile option.");
             lbDisplay.Items.Add("Tip: To progress write text based on the options on the far left into the area at the bottom of the window or select an option on the far left then press the input button. (This can be the number or the option as well example:'1'. 'Offline play')");
@@ -116,7 +116,7 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("3. Add Profile");
             lbOptions.Items.Add("4. Options");
             
-            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);*/
+            btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
         }
 
         //Main menu starts here ----------------------------------------------------------------------------------------
@@ -165,6 +165,7 @@ namespace Dungeon_Valley_Explorer
             lbDisplay.Items.Add("Offline play allows you to play without an account on this computer.");
             lbDisplay.Items.Add("Select Profile allows you to select an already added profile to use the cloud save feature so that you can access your saves from different computers.");
             lbDisplay.Items.Add("Add Profile allows you to add a existing account from our database so that you can create saves that have access to cloud saving and get access to existing cloud saves.");
+            lbDisplay.Items.Add("Options allows you to change some things about the game like for example change the color from black to white.");
             btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
             tbInputArea.Text = "";
         }
@@ -898,9 +899,42 @@ namespace Dungeon_Valley_Explorer
         
         }
 
-        public void LoadExistingSave ()
+        public void LoadExistingSave()
         {
+            try
+            {
+                foreach(string oneline in File.ReadAllLines($@"{folders[9]}\{folders.Last()}\{files.Last()}"))
+                {
+                    string[] linecutter = oneline.Split('$');
+                    //HeroId = Convert.ToInt32(linecutter[0]);
+                    string[] heroescutter = linecutter[1].Split('%');
+                    foreach (string hero in heroescutter)
+                    {
+                        heroes.Add(new Hero(hero, Initializer.passives, Initializer.buffsDebuffs, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons));
+                    }
+                    for (int i = 0; i < heroescutter.Length; i++)
+                    {
+                        if (heroescutter[i].Split('@').Last() == "true")
+                        {
+                            party.Add(heroes[i]);
+                        }
+                    }
+                    string[] consumablescutter = linecutter[2].Split('%');
+                    foreach (string consumable in consumablescutter)
+                    {
+                        string[] itemcutter = consumable.Split('@');
+                        consumables.Add(itemcutter[0], Convert.ToInt32(itemcutter[1]));
+                    }
+                    Gold = Convert.ToInt32(linecutter[3]);
+                    Experience = Convert.ToInt32(linecutter[4]);
+                    string[] questscutter = linecutter[5].Split('%');
 
+                }
+            }
+            catch (Exception error )
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         private void lbOptions_SelectionChanged(object sender, SelectionChangedEventArgs e)

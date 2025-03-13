@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Dungeon_Valley_Explorer
@@ -72,7 +73,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -91,7 +92,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -110,7 +111,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -129,7 +130,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -148,7 +149,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -167,7 +168,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -186,7 +187,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -205,7 +206,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -224,7 +225,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                ;
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -243,7 +244,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -262,7 +263,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -281,7 +282,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -300,7 +301,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -319,7 +320,7 @@ namespace Dungeon_Valley_Explorer
             }
             catch (Exception error)
             {
-                
+                MessageBox.Show(error.Message);
             }
         }
     }

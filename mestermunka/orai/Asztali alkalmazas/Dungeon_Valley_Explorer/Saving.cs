@@ -368,9 +368,8 @@ namespace Dungeon_Valley_Explorer
             if (HeroExists(mySqlConnection, folders, heroes, npcs, newHero) == false)
             {
                 NewHero(mySqlConnection, folders, heroes, npcs);
-                HeroId = GetHeroId(mySqlConnection, folders, heroes, npcs);
             }
-
+            HeroId = GetHeroId(mySqlConnection, folders, heroes, npcs);
             try
             {
                 string command = $"Insert into sabpat702.save_game (HeroId, SaveData, SaveName) Values ('{HeroId}','{MakeSaveString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted, HeroId)}','{files.Last().Substring(0, files.Last().Length - 4)}')";
