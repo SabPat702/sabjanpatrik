@@ -520,7 +520,7 @@ namespace Dungeon_Valley_Explorer
 
         public void SelectProfileLogin()
         {
-            string command = $"Select UserName from user where Email = '{addEmail}' and Password = '{addPassword}' limit 1";
+            string command = $"Select UserName, Password from user where Email = '{addEmail}' limit 1";
             MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
             try
             {
@@ -529,7 +529,8 @@ namespace Dungeon_Valley_Explorer
                 bool foundProfile = false;
                 while (mySqlDataReader.Read())
                 {
-                    if (mySqlDataReader.GetString(0) == folders.Last())
+                    string hashedPassword = mySqlDataReader.GetString(1);
+                    if (mySqlDataReader.GetString(0) == folders.Last() && CheckHashedPassword(addPassword, hashedPassword) == true)
                     {
                         GetProfileSaves();
                         foundProfile = true;
@@ -792,7 +793,7 @@ namespace Dungeon_Valley_Explorer
 
         public void AddProfileGetProfile()
         {
-            string command = $"Select UserName from user where Email = '{addEmail}' and Password = '{addPassword}' limit 1";
+            string command = $"Select UserName, Password from user where Email = '{addEmail}' limit 1";
             MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
             try
             {
@@ -800,7 +801,11 @@ namespace Dungeon_Valley_Explorer
                 MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
                 while (mySqlDataReader.Read())
                 {
-                    folders.Add(mySqlDataReader.GetString(0));
+                    string hashedPassword = mySqlDataReader.GetString(1);
+                    if (CheckHashedPassword(addPassword, hashedPassword) == true)
+                    {
+                        folders.Add(mySqlDataReader.GetString(0));
+                    }
                 }
                 mySqlConnection.Close();
 
@@ -847,7 +852,7 @@ namespace Dungeon_Valley_Explorer
                     savesCount++;
                 }
 
-                if (files.Last() != "Weapons.txt")
+                if (files.Last() != files[13])
                 {
                     for (int i = 0; i < savesCount; i++)
                     {
@@ -891,6 +896,12 @@ namespace Dungeon_Valley_Explorer
         }
 
         //Profile adding ends here -------------------------------------------------------------------------------------
+
+        public bool CheckHashedPassword(string password, string hashedPassword)
+        {
+            bool verifyPassword = BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+            return verifyPassword;
+        }
 
         //Main menu ends here ------------------------------------------------------------------------------------------
 
