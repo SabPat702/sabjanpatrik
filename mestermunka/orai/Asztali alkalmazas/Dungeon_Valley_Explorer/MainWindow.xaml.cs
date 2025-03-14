@@ -62,7 +62,7 @@ namespace Dungeon_Valley_Explorer
         Dictionary<string, bool> armorsObtained = new Dictionary<string, bool>();
         Dictionary<string, bool> consumablesUnlocked = new Dictionary<string, bool>();
 
-
+        List<string> quests = new List<string> { "test"};
         List<string> physicalDamageTypes = new List<string> { "Blunt","Pierce","Slash"};
         List<string> magicalDamageTypes = new List<string> { "Fire"};
         bool skipDamageCalculation = false;
@@ -894,6 +894,8 @@ namespace Dungeon_Valley_Explorer
 
         //Main menu ends here ------------------------------------------------------------------------------------------
 
+        //Game data collection starts here -----------------------------------------------------------------------------
+
         public void CreateNewGame()
         { 
         
@@ -907,6 +909,52 @@ namespace Dungeon_Valley_Explorer
                 {
                     string[] linecutter = oneline.Split('$');
                     //HeroId = Convert.ToInt32(linecutter[0]);
+                    
+                    string[] consumablescutter = linecutter[2].Split('%');
+                    foreach (string consumable in consumablescutter)
+                    {
+                        string[] itemcutter = consumable.Split('@');
+                        consumables.Add(itemcutter[0], Convert.ToInt32(itemcutter[1]));
+                    }
+                    Gold = Convert.ToInt32(linecutter[3]);
+                    Experience = Convert.ToInt32(linecutter[4]);
+                    string[] questscutter = linecutter[5].Split('%');
+                    for (int i = 0; i < quests.Count; i++)
+                    {
+                        questsCompleted.Add(quests[i], Convert.ToBoolean(questscutter[i]));
+                    }
+                    string[] dungeonscutter = linecutter[6].Split('%');
+                    for (int i = 0; i < Initializer.dungeons.Count; i++)
+                    {
+                        dungeonsCompleted.Add(Initializer.dungeons[i].DungeonName, Convert.ToBoolean(dungeonscutter[i]));
+                    }
+                    string[] weaponsImprovementcutter = linecutter[7].Split('%');
+                    for (int i = 0; i < Initializer.weapons.Count; i++)
+                    {
+                        weaponsImproved.Add(Initializer.weapons[i].WeaponName, Convert.ToInt32(weaponsImprovementcutter[i]));
+                    }
+                    string[] armorsImprovementcutter = linecutter[8].Split('%');
+                    for (int i = 0; i < Initializer.armors.Count; i++)
+                    {
+                        armorsImproved.Add(Initializer.armors[i].ArmorName, Convert.ToInt32(armorsImprovementcutter[i]));
+                    }
+                    string[] weaponsObtainedcutter = linecutter[9].Split('%');
+                    for (int i = 0; i < Initializer.weapons.Count; i++)
+                    {
+                        weaponsObtained.Add(Initializer.weapons[i].WeaponName, Convert.ToBoolean(weaponsObtainedcutter[i]));
+                    }
+                    string[] armorsObtainedcutter = linecutter[10].Split('%');
+                    for (int i = 0; i < Initializer.armors.Count; i++)
+                    {
+                        armorsObtained.Add(Initializer.armors[i].ArmorName, Convert.ToBoolean(armorsObtainedcutter[i]));
+                    }
+                    string[] consumablesUnlockedcutter = linecutter[11].Split('%');
+                    for (int i = 0; i < Initializer.consumables.Count; i++)
+                    {
+                        consumablesUnlocked.Add(Initializer.consumables[i].ConsumableName, Convert.ToBoolean(consumablesUnlockedcutter[i]));
+                    }
+                    tutorialCompleted = Convert.ToBoolean(linecutter[12]);
+
                     string[] heroescutter = linecutter[1].Split('%');
                     foreach (string hero in heroescutter)
                     {
@@ -919,16 +967,6 @@ namespace Dungeon_Valley_Explorer
                             party.Add(heroes[i]);
                         }
                     }
-                    string[] consumablescutter = linecutter[2].Split('%');
-                    foreach (string consumable in consumablescutter)
-                    {
-                        string[] itemcutter = consumable.Split('@');
-                        consumables.Add(itemcutter[0], Convert.ToInt32(itemcutter[1]));
-                    }
-                    Gold = Convert.ToInt32(linecutter[3]);
-                    Experience = Convert.ToInt32(linecutter[4]);
-                    string[] questscutter = linecutter[5].Split('%');
-
                 }
             }
             catch (Exception error )
@@ -936,6 +974,8 @@ namespace Dungeon_Valley_Explorer
                 MessageBox.Show(error.Message);
             }
         }
+
+        //Game data collection ends here -------------------------------------------------------------------------------
 
         private void lbOptions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1188,10 +1228,10 @@ namespace Dungeon_Valley_Explorer
                 try
                 {
                     StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
-                    streamWriter.Write(Saving.MakeSaveString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted, HeroId));
+                    streamWriter.Write(Saving.MakeSaveString(mySqlConnection, folders, files, heroes, party, Initializer.npcs, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted));
                     streamWriter.Close();
 
-                    Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, HeroId, newHero);
+                    Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, newHero);
                 }
                 catch (Exception error)
                 {
@@ -1275,11 +1315,11 @@ namespace Dungeon_Valley_Explorer
             try
             {
                 StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
-                streamWriter.Write(Saving.MakeSaveString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted, HeroId));
+                streamWriter.Write(Saving.MakeSaveString(mySqlConnection, folders, files, heroes, party, Initializer.npcs, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted));
                 streamWriter.Close();
                 MessageBox.Show("Game saved successfully");
 
-                Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, HeroId, newHero);
+                Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, newHero);
             }
             catch (Exception error)
             {
@@ -1332,11 +1372,11 @@ namespace Dungeon_Valley_Explorer
                 if (Saving.SaveExist(mySqlConnection, folders, files) == false)
                 {
                     StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
-                    streamWriter.Write(Saving.MakeSaveString(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted, HeroId));
+                    streamWriter.Write(Saving.MakeSaveString(mySqlConnection, folders, files, heroes, party, Initializer.npcs, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted));
                     streamWriter.Close();
                     MessageBox.Show("Game saved successfully");
 
-                    Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, HeroId, newHero);
+                    Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, newHero);
                     SaveGameExit();
                 }
                 else
