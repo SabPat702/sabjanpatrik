@@ -62,6 +62,7 @@ namespace Dungeon_Valley_Explorer
         Dictionary<string, bool> armorsObtained = new Dictionary<string, bool>();
         Dictionary<string, bool> consumablesUnlocked = new Dictionary<string, bool>();
 
+        List<string> classes = new List<string> { "Fighter","Hunter","Wizard","Paladin","Bounty Hunter","Warlock"};
         List<string> quests = new List<string> { "test"};
         List<string> physicalDamageTypes = new List<string> { "Blunt","Pierce","Slash"};
         List<string> magicalDamageTypes = new List<string> { "Fire"};
@@ -69,6 +70,8 @@ namespace Dungeon_Valley_Explorer
         Random random = new Random();
         Target targetPrep = new Target();
         DamageSource damageSourcePrep = new DamageSource();
+
+        bool ShortDisplayNames = false;
 
         public MainWindow()
         {
@@ -88,6 +91,7 @@ namespace Dungeon_Valley_Explorer
             Gold = 123;
             Experience = 100;
             dungeonsCompleted.Add("Test Place", false);
+            weaponsImproved.Add("Unarmed", 0);
             weaponsImproved.Add("TestWeapon", 2);
             armorsImproved.Add("Test Helmet", 3);
             armorsImproved.Add("Test Chestplate", 0);
@@ -188,7 +192,8 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbOptions.Items.Add("1. Change Colors");
-            lbOptions.Items.Add("2. Back");
+            lbOptions.Items.Add("2. Shortened Names");
+            lbOptions.Items.Add("3. Back");
             lbDisplay.Items.Add("Currently you can only change from dark mode to light mode or vice versa.");
             btInput.Click += new RoutedEventHandler(MainMenuOptionsOptions);
         }
@@ -205,10 +210,14 @@ namespace Dungeon_Valley_Explorer
                     OptionsChangeColors();
                     break; 
                 case "2":
+                    break;
+                case "3":
                     ReturnToOfflineSelectProfileAddProfileOption();
                     break;
                 case "Change Colors":
                     OptionsChangeColors();
+                    break;
+                case "Shortened Names":
                     break;
                 case "Back":
                     ReturnToOfflineSelectProfileAddProfileOption();
@@ -223,8 +232,27 @@ namespace Dungeon_Valley_Explorer
         public void ExplainMainMenuOptionsOptions()
         {
             lbDisplay.Items.Add("Change colors will change everything from black to white and vice versa.");
+            lbDisplay.Items.Add("Shortened Names will make the friendly npcs and the hero use their first names when written onto a line. (Cuts off the name after the first 'Space' it finds)");
             lbDisplay.Items.Add("Back will take you back to the first option.");
             lbDisplay.Items.Add("There will also be more fun little things that can be change from here. (But these won't be priority)");
+            btInput.Click += new RoutedEventHandler(MainMenuOptionsOptions);
+            tbInputArea.Text = "";
+        }
+
+        public void OptionsShortenedNames()
+        {
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Change Colors");
+            lbOptions.Items.Add("2. Shortened Names");
+            lbOptions.Items.Add("3. Back");
+            if (ShortDisplayNames == false)
+            {
+                ShortDisplayNames = true;
+            }
+            else
+            {
+                ShortDisplayNames = false;
+            }
             btInput.Click += new RoutedEventHandler(MainMenuOptionsOptions);
             tbInputArea.Text = "";
         }
@@ -233,7 +261,8 @@ namespace Dungeon_Valley_Explorer
         {
             lbOptions.Items.Clear();
             lbOptions.Items.Add("1. Change Colors");
-            lbOptions.Items.Add("2. Back");
+            lbOptions.Items.Add("2. Shortened Names");
+            lbOptions.Items.Add("3. Back");
             if (lbDisplay.Background == Brushes.Black)
             {
                 lbDisplay.Background = Brushes.White;
@@ -281,8 +310,6 @@ namespace Dungeon_Valley_Explorer
             }
             else if (tbInputArea.Text == "1" || tbInputArea.Text == "New Game")
             {
-                lbOptions.Items.Clear();
-
                 // This needs to be finished later ---------------------------------------------------------------------
                 CreateNewGame();
             }
@@ -305,18 +332,19 @@ namespace Dungeon_Valley_Explorer
 
                         // This needs to be finished later -------------------------------------------------------------
                         LoadExistingSave();
-
+                        EnterTown();
                     }
                     else
                     {
                         try
                         {
-                            int savesIndex = Convert.ToInt32(tbInputArea.Text) - 2;
+                            int savesIndex = Convert.ToInt32(tbInputArea.Text) - 3;
                             files.Add(tempSaves[savesIndex]);
                             lbOptions.Items.Clear();
 
                             // This needs to be finished later ---------------------------------------------------------
                             LoadExistingSave();
+                            EnterTown();
                         }
                         catch
                         {
@@ -548,6 +576,7 @@ namespace Dungeon_Valley_Explorer
                 {
                     lbDisplay.Items.Add("Please select a save from the left or start a new game.");
                     lbOptions.Items.Clear();
+                    tempSaves.Clear();
                     lbOptions.Items.Add("1. New Game");
                     lbOptions.Items.Add("2. Log out");
                     GetProfileSaves();
@@ -593,7 +622,6 @@ namespace Dungeon_Valley_Explorer
             }
             else if (tbInputArea.Text == "1" || tbInputArea.Text == "New Game")
             {
-                lbOptions.Items.Clear();
 
                 // This needs to be finished later ---------------------------------------------------------------------
                 CreateNewGame();
@@ -618,18 +646,19 @@ namespace Dungeon_Valley_Explorer
 
                         // This needs to be finished later -------------------------------------------------------------
                         LoadExistingSave();
-
+                        EnterTown();
                     }
                     else
                     {
                         try
                         {
-                            int profileIndex = Convert.ToInt32(tbInputArea.Text) - 2;
-                            folders.Add(tempProfiles[profileIndex]);
+                            int savesIndex = Convert.ToInt32(tbInputArea.Text) - 3;
+                            files.Add(tempSaves[savesIndex]);
                             lbOptions.Items.Clear();
 
                             // This needs to be finished later ---------------------------------------------------------
                             LoadExistingSave();
+                            EnterTown();
                         }
                         catch
                         {
@@ -831,7 +860,7 @@ namespace Dungeon_Valley_Explorer
             { 
                 MessageBox.Show(error.Message);
             }
-
+            Initializer.GetProfilesFromDevice(folders, lbOptions, tempProfiles);
             ReturnToOfflineSelectProfileAddProfileOption();
         }
 
@@ -905,11 +934,92 @@ namespace Dungeon_Valley_Explorer
 
         //Main menu ends here ------------------------------------------------------------------------------------------
 
-        //Game data collection starts here -----------------------------------------------------------------------------
+        //Game starting starts here ------------------------------------------------------------------------------------
 
         public void CreateNewGame()
-        { 
-        
+        {
+            lbOptions.Items.Clear();
+            tbInputArea.Text = "";
+
+            lbDisplay.Items.Add("Before starting the game you need to make a character of your own.");
+            lbDisplay.Items.Add("The first step is to choose a class for yourself and keep in mind that you can't change this choice for a long time.");
+            for (int i = 1; i <= classes.Count; i++)
+            {
+                lbOptions.Items.Add($"{i} {classes[i-1]}");
+            }
+            btInput.Click += new RoutedEventHandler(NewGameClassSelection);
+        }
+
+        public void NewGameClassSelection(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(NewGameClassSelection);
+            if (tbInputArea.Text == "?")
+            {
+                ExplainNewGameClassSelection();
+                btInput.Click += new RoutedEventHandler(NewGameClassSelection);
+            }
+            else
+            {
+                if (classes.Contains(tbInputArea.Text) == true || (tbInputArea.Text.Contains("1") == true || tbInputArea.Text.Contains("2") == true || tbInputArea.Text.Contains("3") == true || tbInputArea.Text.Contains("4") == true || tbInputArea.Text.Contains("5") == true || tbInputArea.Text.Contains("6") == true || tbInputArea.Text.Contains("7") == true || tbInputArea.Text.Contains("8") == true || tbInputArea.Text.Contains("9") == true || tbInputArea.Text.Contains("0") == true))
+                {
+                    if (classes.Contains(tbInputArea.Text) == true)
+                    {
+                        Hero newPlayerHero = new Hero();
+                        newPlayerHero.heroClass = tbInputArea.Text;
+                        NewGameCharacterBackground(newPlayerHero);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            Hero newPlayerHero = new Hero();
+                            int classIndex = Convert.ToInt32(tbInputArea.Text);
+                            newPlayerHero.heroClass = classes[classIndex];
+                            NewGameCharacterBackground(newPlayerHero);
+                        }
+                        catch (Exception error)
+                        {
+                            MessageBox.Show(error.Message);
+                            btInput.Click += new RoutedEventHandler(NewGameClassSelection);
+                            tbInputArea.Text = "";
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(NewGameClassSelection);
+                    tbInputArea.Text = "";
+                }
+            }
+        }
+
+        public void ExplainNewGameClassSelection()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("Each class option will determine your characters basic role in the game as well as your starting stats.");
+            lbDisplay.Items.Add("'Back' and other options of the same nature will no longer exist for a lot of options so keep in mind that you will not be able to cancel and back out of options if you don't see that option on the left.");
+            lbOptions.Items.Clear();
+            for (int i = 1; i <= classes.Count; i++)
+            {
+                lbOptions.Items.Add($"{i} {classes[i - 1]}");
+            }
+        }
+
+        public void NewGameCharacterBackground(Hero newPlayerHero)
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbDisplay.Items.Add("Next you will choose a background for your character. This is a passive that your character will recieve.");
+            lbOptions.Items.Add("1. Adventurer");
+            lbOptions.Items.Add("2. Noble");
+            lbOptions.Items.Add("3. Merchant");
+            btInput.Click += new RoutedEventHandler(NewGameCharacterBackground);
+        }
+
+        public void NewGameCharacterBackground(object sender, RoutedEventArgs e)
+        {
+
         }
 
         public void LoadExistingSave()
@@ -969,7 +1079,7 @@ namespace Dungeon_Valley_Explorer
                     string[] heroescutter = linecutter[1].Split('%');
                     foreach (string hero in heroescutter)
                     {
-                        heroes.Add(new Hero(hero, Initializer.passives, Initializer.buffsDebuffs, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons));
+                        heroes.Add(new Hero(hero, Initializer.passives, Initializer.buffsDebuffs, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons, ShortDisplayNames));
                     }
                     for (int i = 0; i < heroescutter.Length; i++)
                     {
@@ -986,7 +1096,7 @@ namespace Dungeon_Valley_Explorer
             }
         }
 
-        //Game data collection ends here -------------------------------------------------------------------------------
+        //Game starting ends here --------------------------------------------------------------------------------------
 
         private void lbOptions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

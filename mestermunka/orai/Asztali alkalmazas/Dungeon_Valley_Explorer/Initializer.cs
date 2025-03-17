@@ -28,6 +28,7 @@ namespace Dungeon_Valley_Explorer
 
         public static List<string> GetProfilesFromDevice(List<string> folders, ListBox lbOptions, List<string> tempProfiles)
         {
+            tempProfiles.Clear();
             string[] seged = Directory.GetDirectories($@"{folders[9]}");
             for (int i = 0; i < seged.Count(); i++)
             {

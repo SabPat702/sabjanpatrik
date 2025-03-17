@@ -34,6 +34,7 @@ namespace Dungeon_Valley_Explorer
         public bool Guard { get; set; }
         public int Lvl { get; set; }
         public int Exp { get; set; }
+        public string DisplayName { get; set; }
 
         public Hero(string oneLine, List<Passive> passives, List<Skill> skills, List<Magic> magics, List<Race> races, List<Armor> armors, List<Weapon> weapons)
         {
@@ -141,7 +142,7 @@ namespace Dungeon_Valley_Explorer
             MDEF = InMDEF;
         }
 
-        public Hero(string oneLine, List<Passive> passives, List<BuffDebuff> buffDebuffs, List<Skill> skills, List<Magic> magics, List<Race> races, List<Armor> armors, List<Weapon> weapons)
+        public Hero(string oneLine, List<Passive> passives, List<BuffDebuff> buffDebuffs, List<Skill> skills, List<Magic> magics, List<Race> races, List<Armor> armors, List<Weapon> weapons, bool ShortDisplayNames)
         {
             Weapons = new Weapon[3];
             Armors = new Armor[4];
@@ -255,6 +256,15 @@ namespace Dungeon_Valley_Explorer
 
             DEF = InDEF;
             MDEF = InMDEF;
+
+            if (ShortDisplayNames == true)
+            {
+                DisplayName = HeroName.Split(' ')[0];
+            }
+            else
+            {
+                DisplayName = HeroName;
+            }
         }
 
         public Hero()

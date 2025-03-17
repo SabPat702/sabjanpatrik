@@ -1,0 +1,1 @@
+1$1@player@24@24@100@20@20@0@1@TestWeapon,Unarmed,Unarmed@Test Helmet,Test Chestplate,Test Leggings,Test Boots@Power Slash@Firebolt,Self care@Sword Proficiency@@Fighter@Human@True$Test Item@1$123$100$False$False$0%2$3%0%0%0$True%True$True%True%True%True$True$False
