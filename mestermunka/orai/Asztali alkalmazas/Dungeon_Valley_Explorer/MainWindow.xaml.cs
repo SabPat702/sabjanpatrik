@@ -1033,22 +1033,22 @@ namespace Dungeon_Valley_Explorer
             switch (newPlayerHero.heroClass)
             {
                 case "Fighter":
-                    Hero.SetFighter(newPlayerHero);
+                    Hero.SetClassFighter(newPlayerHero);
                     break;
                 case "Hunter":
-                    Hero.SetHunter(newPlayerHero);
+                    Hero.SetClassHunter(newPlayerHero);
                     break;
                 case "Wizard":
-                    Hero.SetWizard(newPlayerHero);
+                    Hero.SetClassWizard(newPlayerHero);
                     break;
                 case "Paladin":
-                    Hero.SetPaladin(newPlayerHero);
+                    Hero.SetClassPaladin(newPlayerHero);
                     break;
                 case "Bounty Hunter":
-                    Hero.SetBountyHunter(newPlayerHero);
+                    Hero.SetClassBountyHunter(newPlayerHero);
                     break;
                 case "Warlock":
-                    Hero.SetWarlock(newPlayerHero);
+                    Hero.SetClassWarlock(newPlayerHero);
                     break;
             }
         }
@@ -1122,7 +1122,7 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
             lbDisplay.Items.Add("Each background will act as a passive bonus for the character.");
             lbDisplay.Items.Add("Adventurer will give you a small stat buff, rest bonus and a experience gain bonus.");
-            lbDisplay.Items.Add("Noble will give you starting gold and discounts in shops.");
+            lbDisplay.Items.Add("Noble will give you starting gold, higher starting MP and discounts in shops.");
             lbDisplay.Items.Add("Merchant will give you a passive gold gain based on your level and merchants will offer more items for sale.");
             lbDisplay.Items.Add("Blacksmith gives you a blunt damage bonus and gives you the ability to upgrade armors and weapons at the blacksmith with a heavy discount but a with a small chance to fail.");
             btInput.Click += new RoutedEventHandler(NewGameCharacterBackgroundSelection);
@@ -1130,7 +1130,23 @@ namespace Dungeon_Valley_Explorer
 
         public void NewGameSetBackground(string background)
         {
-
+            switch (background)
+            {
+                case "Adventurer":
+                    Hero.SetBackgroundAdventurer(newPlayerHero);
+                    break;
+                case "Noble":
+                    Hero.SetBackgroundNoble(newPlayerHero);
+                    Gold += 300;
+                    break;
+                case "Merchant":
+                    Hero.SetBackgroundMerchant(newPlayerHero);
+                    Gold += 10;
+                    break;
+                case "Blacksmith":
+                    Hero.SetBackgroundBlacksmith(newPlayerHero);
+                    break;
+            }
         }
 
         public void LoadExistingSave()

@@ -278,7 +278,7 @@ namespace Dungeon_Valley_Explorer
             Armors = new Armor[4];
         }
 
-        public static Hero SetFighter(Hero newPlayerHero)
+        public static Hero SetClassFighter(Hero newPlayerHero)
         {
             newPlayerHero.InHP = 20;
             newPlayerHero.HP = newPlayerHero.InHP;
@@ -371,10 +371,12 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            newPlayerHero.DEF = newPlayerHero.InDEF;
+            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             return newPlayerHero;
         }
 
-        public static Hero SetHunter(Hero newPlayerHero)
+        public static Hero SetClassHunter(Hero newPlayerHero)
         {
             newPlayerHero.InHP = 14;
             newPlayerHero.HP = newPlayerHero.InHP;
@@ -467,10 +469,12 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            newPlayerHero.DEF = newPlayerHero.InDEF;
+            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             return newPlayerHero;
         }
 
-        public static Hero SetWizard(Hero newPlayerHero)
+        public static Hero SetClassWizard(Hero newPlayerHero)
         {
             newPlayerHero.InHP = 10;
             newPlayerHero.HP = newPlayerHero.InHP;
@@ -563,10 +567,12 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            newPlayerHero.DEF = newPlayerHero.InDEF;
+            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             return newPlayerHero;
         }
 
-        public static Hero SetPaladin(Hero newPlayerHero)
+        public static Hero SetClassPaladin(Hero newPlayerHero)
         {
             newPlayerHero.InHP = 25;
             newPlayerHero.HP = newPlayerHero.InHP;
@@ -690,10 +696,12 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            newPlayerHero.DEF = newPlayerHero.InDEF;
+            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             return newPlayerHero;
         }
 
-        public static Hero SetBountyHunter(Hero newPlayerHero)
+        public static Hero SetClassBountyHunter(Hero newPlayerHero)
         {
             newPlayerHero.InHP = 16;
             newPlayerHero.HP = newPlayerHero.InHP;
@@ -802,10 +810,12 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            newPlayerHero.DEF = newPlayerHero.InDEF;
+            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             return newPlayerHero;
         }
 
-        public static Hero SetWarlock(Hero newPlayerHero)
+        public static Hero SetClassWarlock(Hero newPlayerHero)
         {
             newPlayerHero.InHP = 10;
             newPlayerHero.HP = newPlayerHero.InHP;
@@ -896,6 +906,68 @@ namespace Dungeon_Valley_Explorer
                 {
                     newPlayerHero.Magics.Add(magic);
                     break;
+                }
+            }
+            newPlayerHero.DEF = newPlayerHero.InDEF;
+            newPlayerHero.MDEF = newPlayerHero.InMDEF;
+            return newPlayerHero;
+        }
+
+        public static Hero SetBackgroundAdventurer(Hero newPlayerHero)
+        {
+            foreach (Passive passive in Initializer.passives)
+            {
+                if (passive.PassiveName == "Adventurer")
+                {
+                    newPlayerHero.Passives.Add(passive);
+                }
+            }
+            newPlayerHero.InHP = newPlayerHero.InHP + 1;
+            newPlayerHero.MaxHP = newPlayerHero.InHP;
+            newPlayerHero.HP = newPlayerHero.InHP;
+            newPlayerHero.InSP = newPlayerHero.InSP + 1;
+            newPlayerHero.MaxSP = newPlayerHero.InSP;
+            newPlayerHero.SP = newPlayerHero.InSP;
+            newPlayerHero.InMP = newPlayerHero.InMP + 1;
+            newPlayerHero.MaxMP = newPlayerHero.InMP;
+            newPlayerHero.MP = newPlayerHero.InMP;
+            return newPlayerHero;
+        }
+
+        public static Hero SetBackgroundNoble(Hero newPlayerHero)
+        {
+            foreach (Passive passive in Initializer.passives)
+            {
+                if (passive.PassiveName == "Noble")
+                {
+                    newPlayerHero.Passives.Add(passive);
+                }
+            }
+            newPlayerHero.InMP = newPlayerHero.InMP + 5;
+            newPlayerHero.MaxMP = newPlayerHero.InMP;
+            newPlayerHero.MP = newPlayerHero.InMP;
+            return newPlayerHero;
+        }
+
+        public static Hero SetBackgroundMerchant(Hero newPlayerHero)
+        {
+            foreach (Passive passive in Initializer.passives)
+            {
+                if (passive.PassiveName == "Merchant")
+                {
+                    newPlayerHero.Passives.Add(passive);
+                }
+            }
+            return newPlayerHero;
+        }
+
+        public static Hero SetBackgroundBlacksmith(Hero newPlayerHero)
+        {
+            foreach (Passive passive in Initializer.passives)
+            {
+                if (passive.PassiveName == "Blacksmith")
+                {
+                    newPlayerHero.Passives.Add(passive);
                 }
             }
             return newPlayerHero;
