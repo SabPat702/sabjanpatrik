@@ -277,5 +277,548 @@ namespace Dungeon_Valley_Explorer
             Race = new Race();
             Armors = new Armor[4];
         }
+
+        public static Hero SetFighter(Hero newPlayerHero)
+        {
+            newPlayerHero.InHP = 20;
+            newPlayerHero.HP = newPlayerHero.InHP;
+            newPlayerHero.MaxHP = newPlayerHero.InHP;
+            newPlayerHero.InDEF = 1;
+            newPlayerHero.InMDEF = 0;
+            newPlayerHero.InMP = 5;
+            newPlayerHero.MaxMP = newPlayerHero.InMP;
+            newPlayerHero.MP = newPlayerHero.InMP;
+            newPlayerHero.InSP = 12;
+            newPlayerHero.MaxSP = newPlayerHero.InSP;
+            newPlayerHero.SP = newPlayerHero.InSP;
+            newPlayerHero.Exp = 0;
+            newPlayerHero.Lvl = 1;
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "Worn Leather Chestpiece")
+                {
+                    newPlayerHero.Armors[1] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "Old Travel Boots")
+                {
+                    newPlayerHero.Armors[3] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "None")
+                {
+                    newPlayerHero.Armors[0] = armor;
+                    newPlayerHero.Armors[2] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in newPlayerHero.Armors)
+            {
+                newPlayerHero.InDEF = newPlayerHero.InDEF + armor.DEF;
+                newPlayerHero.InMDEF = newPlayerHero.InMDEF + armor.MDEF;
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Rusty Longsword")
+                {
+                    newPlayerHero.Weapons[0] = weapon;
+                    break;
+                }
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Broken Spear")
+                {
+                    newPlayerHero.Weapons[1] = weapon;
+                    break;
+                }
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Unarmed")
+                {
+                    newPlayerHero.Weapons[2] = weapon;
+                    break;
+                }
+            }
+            foreach (Skill skill in Initializer.skills)
+            {
+                if (skill.SkillName == "Powerful Cut")
+                {
+                    newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            foreach (Skill skill in Initializer.skills)
+            {
+                if (skill.SkillName == "Powerful Stab")
+                {
+                    newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            return newPlayerHero;
+        }
+
+        public static Hero SetHunter(Hero newPlayerHero)
+        {
+            newPlayerHero.InHP = 14;
+            newPlayerHero.HP = newPlayerHero.InHP;
+            newPlayerHero.MaxHP = newPlayerHero.InHP;
+            newPlayerHero.InDEF = 0;
+            newPlayerHero.InMDEF = 0;
+            newPlayerHero.InMP = 6;
+            newPlayerHero.MaxMP = newPlayerHero.InMP;
+            newPlayerHero.MP = newPlayerHero.InMP;
+            newPlayerHero.InSP = 14;
+            newPlayerHero.MaxSP = newPlayerHero.InSP;
+            newPlayerHero.SP = newPlayerHero.InSP;
+            newPlayerHero.Exp = 0;
+            newPlayerHero.Lvl = 1;
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "Dirty Cloak")
+                {
+                    newPlayerHero.Armors[1] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "Old Travel Boots")
+                {
+                    newPlayerHero.Armors[3] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "None")
+                {
+                    newPlayerHero.Armors[0] = armor;
+                    newPlayerHero.Armors[2] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in newPlayerHero.Armors)
+            {
+                newPlayerHero.InDEF = newPlayerHero.InDEF + armor.DEF;
+                newPlayerHero.InMDEF = newPlayerHero.InMDEF + armor.MDEF;
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Short Bow")
+                {
+                    newPlayerHero.Weapons[0] = weapon;
+                    break;
+                }
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Dagger")
+                {
+                    newPlayerHero.Weapons[1] = weapon;
+                    break;
+                }
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Unarmed")
+                {
+                    newPlayerHero.Weapons[2] = weapon;
+                    break;
+                }
+            }
+            foreach (Skill skill in Initializer.skills)
+            {
+                if (skill.SkillName == "Powerful Shot")
+                {
+                    newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            foreach (Skill skill in Initializer.skills)
+            {
+                if (skill.SkillName == "Powerful Cut")
+                {
+                    newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            return newPlayerHero;
+        }
+
+        public static Hero SetWizard(Hero newPlayerHero)
+        {
+            newPlayerHero.InHP = 10;
+            newPlayerHero.HP = newPlayerHero.InHP;
+            newPlayerHero.MaxHP = newPlayerHero.InHP;
+            newPlayerHero.InDEF = 0;
+            newPlayerHero.InMDEF = 2;
+            newPlayerHero.InMP = 12;
+            newPlayerHero.MaxMP = newPlayerHero.InMP;
+            newPlayerHero.MP = newPlayerHero.InMP;
+            newPlayerHero.InSP = 6;
+            newPlayerHero.MaxSP = newPlayerHero.InSP;
+            newPlayerHero.SP = newPlayerHero.InSP;
+            newPlayerHero.Exp = 0;
+            newPlayerHero.Lvl = 1;
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "Mana Touched Rag")
+                {
+                    newPlayerHero.Armors[1] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "Old Travel Boots")
+                {
+                    newPlayerHero.Armors[3] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "None")
+                {
+                    newPlayerHero.Armors[0] = armor;
+                    newPlayerHero.Armors[2] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in newPlayerHero.Armors)
+            {
+                newPlayerHero.InDEF = newPlayerHero.InDEF + armor.DEF;
+                newPlayerHero.InMDEF = newPlayerHero.InMDEF + armor.MDEF;
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Travel Staff")
+                {
+                    newPlayerHero.Weapons[0] = weapon;
+                    break;
+                }
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Dagger")
+                {
+                    newPlayerHero.Weapons[1] = weapon;
+                    break;
+                }
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Unarmed")
+                {
+                    newPlayerHero.Weapons[2] = weapon;
+                    break;
+                }
+            }
+            foreach (Skill skill in Initializer.skills)
+            {
+                if (skill.SkillName == "Knock Away")
+                {
+                    newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            return newPlayerHero;
+        }
+
+        public static Hero SetPaladin(Hero newPlayerHero)
+        {
+            newPlayerHero.InHP = 25;
+            newPlayerHero.HP = newPlayerHero.InHP;
+            newPlayerHero.MaxHP = newPlayerHero.InHP;
+            newPlayerHero.InDEF = 2;
+            newPlayerHero.InMDEF = 2;
+            newPlayerHero.InMP = 8;
+            newPlayerHero.MaxMP = newPlayerHero.InMP;
+            newPlayerHero.MP = newPlayerHero.InMP;
+            newPlayerHero.InSP = 10;
+            newPlayerHero.MaxSP = newPlayerHero.InSP;
+            newPlayerHero.SP = newPlayerHero.InSP;
+            newPlayerHero.Exp = 0;
+            newPlayerHero.Lvl = 1;
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "Rusting Chainmail")
+                {
+                    newPlayerHero.Armors[1] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "Worn Leather Knee Pads")
+                {
+                    newPlayerHero.Armors[2] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "Old Travel Boots")
+                {
+                    newPlayerHero.Armors[3] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "None")
+                {
+                    newPlayerHero.Armors[0] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in newPlayerHero.Armors)
+            {
+                newPlayerHero.InDEF = newPlayerHero.InDEF + armor.DEF;
+                newPlayerHero.InMDEF = newPlayerHero.InMDEF + armor.MDEF;
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Rusty Longsword")
+                {
+                    newPlayerHero.Weapons[0] = weapon;
+                    break;
+                }
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Wooden Shield")
+                {
+                    newPlayerHero.Weapons[1] = weapon;
+                    break;
+                }
+            }
+            foreach (SpecialEffect specialEffect in Initializer.specialEffects)
+            {
+                if (specialEffect.SpecialEffectName == "Shield")
+                {
+                    newPlayerHero.InDEF = newPlayerHero.InDEF + newPlayerHero.Weapons[1].ATK;
+                    break;
+                }
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Unarmed")
+                {
+                    newPlayerHero.Weapons[2] = weapon;
+                    break;
+                }
+            }
+            foreach (Skill skill in Initializer.skills)
+            {
+                if (skill.SkillName == "Powerful Cut")
+                {
+                    newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            foreach (Skill skill in Initializer.skills)
+            {
+                if (skill.SkillName == "Powerful Stab")
+                {
+                    newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            foreach (Skill skill in Initializer.skills)
+            {
+                if (skill.SkillName == "Taunt")
+                {
+                    newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            return newPlayerHero;
+        }
+
+        public static Hero SetBountyHunter(Hero newPlayerHero)
+        {
+            newPlayerHero.InHP = 16;
+            newPlayerHero.HP = newPlayerHero.InHP;
+            newPlayerHero.MaxHP = newPlayerHero.InHP;
+            newPlayerHero.InDEF = 1;
+            newPlayerHero.InMDEF = 0;
+            newPlayerHero.InMP = 6;
+            newPlayerHero.MaxMP = newPlayerHero.InMP;
+            newPlayerHero.MP = newPlayerHero.InMP;
+            newPlayerHero.InSP = 15;
+            newPlayerHero.MaxSP = newPlayerHero.InSP;
+            newPlayerHero.SP = newPlayerHero.InSP;
+            newPlayerHero.Exp = 0;
+            newPlayerHero.Lvl = 1;
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "Dirty Cloak")
+                {
+                    newPlayerHero.Armors[1] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "Old Travel Boots")
+                {
+                    newPlayerHero.Armors[3] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "None")
+                {
+                    newPlayerHero.Armors[0] = armor;
+                    newPlayerHero.Armors[2] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in newPlayerHero.Armors)
+            {
+                newPlayerHero.InDEF = newPlayerHero.InDEF + armor.DEF;
+                newPlayerHero.InMDEF = newPlayerHero.InMDEF + armor.MDEF;
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Rusty Longsword")
+                {
+                    newPlayerHero.Weapons[0] = weapon;
+                    break;
+                }
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Short Bow")
+                {
+                    newPlayerHero.Weapons[1] = weapon;
+                    break;
+                }
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Unarmed")
+                {
+                    newPlayerHero.Weapons[2] = weapon;
+                    break;
+                }
+            }
+            foreach (Skill skill in Initializer.skills)
+            {
+                if (skill.SkillName == "Powerful Cut")
+                {
+                    newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            foreach (Skill skill in Initializer.skills)
+            {
+                if (skill.SkillName == "Powerful Stab")
+                {
+                    newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            foreach (Skill skill in Initializer.skills)
+            {
+                if (skill.SkillName == "Powerful Shot")
+                {
+                    newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            foreach (Skill skill in Initializer.skills)
+            {
+                if (skill.SkillName == "Mark Bounty")
+                {
+                    newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            return newPlayerHero;
+        }
+
+        public static Hero SetWarlock(Hero newPlayerHero)
+        {
+            newPlayerHero.InHP = 10;
+            newPlayerHero.HP = newPlayerHero.InHP;
+            newPlayerHero.MaxHP = newPlayerHero.InHP;
+            newPlayerHero.InDEF = 0;
+            newPlayerHero.InMDEF = 2;
+            newPlayerHero.InMP = 12;
+            newPlayerHero.MaxMP = newPlayerHero.InMP;
+            newPlayerHero.MP = newPlayerHero.InMP;
+            newPlayerHero.InSP = 6;
+            newPlayerHero.MaxSP = newPlayerHero.InSP;
+            newPlayerHero.SP = newPlayerHero.InSP;
+            newPlayerHero.Exp = 0;
+            newPlayerHero.Lvl = 1;
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "Mana Touched Rag")
+                {
+                    newPlayerHero.Armors[1] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "Old Travel Boots")
+                {
+                    newPlayerHero.Armors[3] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armor.ArmorName == "None")
+                {
+                    newPlayerHero.Armors[0] = armor;
+                    newPlayerHero.Armors[2] = armor;
+                    break;
+                }
+            }
+            foreach (Armor armor in newPlayerHero.Armors)
+            {
+                newPlayerHero.InDEF = newPlayerHero.InDEF + armor.DEF;
+                newPlayerHero.InMDEF = newPlayerHero.InMDEF + armor.MDEF;
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Travel Staff")
+                {
+                    newPlayerHero.Weapons[0] = weapon;
+                    break;
+                }
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Dagger")
+                {
+                    newPlayerHero.Weapons[1] = weapon;
+                    break;
+                }
+            }
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weapon.WeaponName == "Unarmed")
+                {
+                    newPlayerHero.Weapons[2] = weapon;
+                    break;
+                }
+            }
+            return newPlayerHero;
+        }
     }
 }

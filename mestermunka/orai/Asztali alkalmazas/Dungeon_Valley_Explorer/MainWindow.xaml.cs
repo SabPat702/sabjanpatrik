@@ -45,6 +45,7 @@ namespace Dungeon_Valley_Explorer
         string addEmail = "";
         string addPassword = "";
 
+        Hero newPlayerHero = new Hero();
 
         List<Hero> heroes = new List<Hero>();
         List<Hero> party = new List<Hero>();
@@ -940,57 +941,115 @@ namespace Dungeon_Valley_Explorer
         {
             lbOptions.Items.Clear();
             tbInputArea.Text = "";
-
+            lbDisplay.Items.Add("'Back' and other options of the same nature will no longer exist for a lot of options so keep in mind that you will not be able to cancel and back out of options if you don't see that option on the left.");
             lbDisplay.Items.Add("Before starting the game you need to make a character of your own.");
             lbDisplay.Items.Add("The first step is to choose a class for yourself and keep in mind that you can't change this choice for a long time.");
-            for (int i = 1; i <= classes.Count; i++)
-            {
-                lbOptions.Items.Add($"{i} {classes[i-1]}");
-            }
+            lbOptions.Items.Add("1. Fighter");
+            lbOptions.Items.Add("2. Hunter");
+            lbOptions.Items.Add("3. Wizard");
+            lbOptions.Items.Add("4. Paladin");
+            lbOptions.Items.Add("5. Bounty Hunter");
+            lbOptions.Items.Add("6. Warlock");
             btInput.Click += new RoutedEventHandler(NewGameClassSelection);
         }
 
         public void NewGameClassSelection(object sender, RoutedEventArgs e)
         {
             btInput.Click -= new RoutedEventHandler(NewGameClassSelection);
-            if (tbInputArea.Text == "?")
+            switch (tbInputArea.Text)
             {
-                ExplainNewGameClassSelection();
-                btInput.Click += new RoutedEventHandler(NewGameClassSelection);
-            }
-            else
-            {
-                if (classes.Contains(tbInputArea.Text) == true || (tbInputArea.Text.Contains("1") == true || tbInputArea.Text.Contains("2") == true || tbInputArea.Text.Contains("3") == true || tbInputArea.Text.Contains("4") == true || tbInputArea.Text.Contains("5") == true || tbInputArea.Text.Contains("6") == true || tbInputArea.Text.Contains("7") == true || tbInputArea.Text.Contains("8") == true || tbInputArea.Text.Contains("9") == true || tbInputArea.Text.Contains("0") == true))
-                {
-                    if (classes.Contains(tbInputArea.Text) == true)
-                    {
-                        Hero newPlayerHero = new Hero();
-                        newPlayerHero.heroClass = tbInputArea.Text;
-                        NewGameCharacterBackground(newPlayerHero);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            Hero newPlayerHero = new Hero();
-                            int classIndex = Convert.ToInt32(tbInputArea.Text);
-                            newPlayerHero.heroClass = classes[classIndex];
-                            NewGameCharacterBackground(newPlayerHero);
-                        }
-                        catch (Exception error)
-                        {
-                            MessageBox.Show(error.Message);
-                            btInput.Click += new RoutedEventHandler(NewGameClassSelection);
-                            tbInputArea.Text = "";
-                        }
-                    }
-                }
-                else
-                {
+                case "?":
+                    ExplainNewGameClassSelection();
+                    break;
+                case "1":
+                    newPlayerHero.heroClass = "Fighter";
+                    NewGameSetClass();
+                    NewGameCharacterBackground();
+                    break;
+                case "Fighter":
+                    newPlayerHero.heroClass = "Fighter";
+                    NewGameSetClass();
+                    NewGameCharacterBackground();
+                    break;
+                case "2":
+                    newPlayerHero.heroClass = "Hunter";
+                    NewGameSetClass();
+                    NewGameCharacterBackground();
+                    break;
+                case "Hunter":
+                    newPlayerHero.heroClass = "Hunter";
+                    NewGameSetClass();
+                    NewGameCharacterBackground();
+                    break;
+                case "3":
+                    newPlayerHero.heroClass = "Wizard";
+                    NewGameSetClass();
+                    NewGameCharacterBackground();
+                    break;
+                case "Wizard":
+                    newPlayerHero.heroClass = "Wizard";
+                    NewGameSetClass();
+                    NewGameCharacterBackground();
+                    break;
+                case "4":
+                    newPlayerHero.heroClass = "Paladin";
+                    NewGameSetClass();
+                    NewGameCharacterBackground();
+                    break;
+                case "Paladin":
+                    newPlayerHero.heroClass = "Paladin";
+                    NewGameSetClass();
+                    NewGameCharacterBackground();
+                    break;
+                case "5":
+                    newPlayerHero.heroClass = "Bounty Hunter";
+                    NewGameSetClass();
+                    NewGameCharacterBackground();
+                    break;
+                case "Bounty Hunter":
+                    newPlayerHero.heroClass = "Bounty Hunter";
+                    NewGameSetClass();
+                    NewGameCharacterBackground();
+                    break;
+                case "6":
+                    newPlayerHero.heroClass = "Warlock";
+                    NewGameSetClass();
+                    NewGameCharacterBackground();
+                    break;
+                case "Warlock":
+                    newPlayerHero.heroClass = "Warlock";
+                    NewGameSetClass();
+                    NewGameCharacterBackground();
+                    break;
+                default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
                     btInput.Click += new RoutedEventHandler(NewGameClassSelection);
-                    tbInputArea.Text = "";
-                }
+                    break;
+            }
+        }
+
+        public void NewGameSetClass()
+        {
+            switch (newPlayerHero.heroClass)
+            {
+                case "Fighter":
+                    Hero.SetFighter(newPlayerHero);
+                    break;
+                case "Hunter":
+                    Hero.SetHunter(newPlayerHero);
+                    break;
+                case "Wizard":
+                    Hero.SetWizard(newPlayerHero);
+                    break;
+                case "Paladin":
+                    Hero.SetPaladin(newPlayerHero);
+                    break;
+                case "Bounty Hunter":
+                    Hero.SetBountyHunter(newPlayerHero);
+                    break;
+                case "Warlock":
+                    Hero.SetWarlock(newPlayerHero);
+                    break;
             }
         }
 
@@ -998,15 +1057,16 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbDisplay.Items.Add("Each class option will determine your characters basic role in the game as well as your starting stats.");
-            lbDisplay.Items.Add("'Back' and other options of the same nature will no longer exist for a lot of options so keep in mind that you will not be able to cancel and back out of options if you don't see that option on the left.");
-            lbOptions.Items.Clear();
-            for (int i = 1; i <= classes.Count; i++)
-            {
-                lbOptions.Items.Add($"{i} {classes[i - 1]}");
-            }
+            lbDisplay.Items.Add("Fighter is a basic melee class that focuses on a balanced build with a focus on physical damage output.");
+            lbDisplay.Items.Add("Hunter is a basic ranged class that focuses on a more frail build with a focus on physical damage output with devastating crits.");
+            lbDisplay.Items.Add("Wizard is a basic magic class that focuses on magic versatility with a focus on versatile use of magic for both offense and support.");
+            lbDisplay.Items.Add("Paladin is a slightly more advanced class that focuses on tanking and bursts of damage they rely on heavy defense and mostly holy magic.");
+            lbDisplay.Items.Add("Bounty Hunter is a more advanced class that focuses on marking and targeting enemies they work alone but are stronger with a team.");
+            lbDisplay.Items.Add("Warlock is a slightly more advanced class that focuses on destructive magic they use powerful magic at the cost of survivability.");
+            btInput.Click += new RoutedEventHandler(NewGameClassSelection);
         }
 
-        public void NewGameCharacterBackground(Hero newPlayerHero)
+        public void NewGameCharacterBackground()
         {
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
@@ -1014,12 +1074,34 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("1. Adventurer");
             lbOptions.Items.Add("2. Noble");
             lbOptions.Items.Add("3. Merchant");
-            btInput.Click += new RoutedEventHandler(NewGameCharacterBackground);
+            lbOptions.Items.Add("4. Blacksmith");
+            btInput.Click += new RoutedEventHandler(NewGameCharacterBackgroundSelection);
         }
 
-        public void NewGameCharacterBackground(object sender, RoutedEventArgs e)
+        public void NewGameCharacterBackgroundSelection(object sender, RoutedEventArgs e)
         {
+            btInput.Click -= new RoutedEventHandler(NewGameCharacterBackgroundSelection);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainNewGameCharacterBackgroundSelection();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(NewGameCharacterBackgroundSelection);
+                    break;
+            }
+        }
 
+        public void ExplainNewGameCharacterBackgroundSelection()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("Each background will act as a passive bonus for the character.");
+            lbDisplay.Items.Add("Adventurer will give you a small stat buff, rest bonus and a experience gain bonus.");
+            lbDisplay.Items.Add("Noble will give you starting gold and discounts in shops.");
+            lbDisplay.Items.Add("Merchant will give you a passive gold gain based on your level and merchants will offer more items for sale.");
+            lbDisplay.Items.Add("Blacksmith gives you a blunt damage bonus and gives you the ability to upgrade armors and weapons at the blacksmith with a heavy discount but a with a small chance to fail.");
+            btInput.Click += new RoutedEventHandler(NewGameCharacterBackgroundSelection);
         }
 
         public void LoadExistingSave()
