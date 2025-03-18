@@ -363,6 +363,14 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            foreach (Magic magic in Initializer.magics)
+            {
+                if (magic.MagicName == "Self Care")
+                {
+                    newPlayerHero.Magics.Add(magic);
+                    break;
+                }
+            }
             return newPlayerHero;
         }
 
@@ -451,6 +459,14 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            foreach (Magic magic in Initializer.magics)
+            {
+                if (magic.MagicName == "Self Care")
+                {
+                    newPlayerHero.Magics.Add(magic);
+                    break;
+                }
+            }
             return newPlayerHero;
         }
 
@@ -528,6 +544,22 @@ namespace Dungeon_Valley_Explorer
                 if (skill.SkillName == "Knock Away")
                 {
                     newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            foreach (Magic magic in Initializer.magics)
+            {
+                if (magic.MagicName == "Self Care")
+                {
+                    newPlayerHero.Magics.Add(magic);
+                    break;
+                }
+            }
+            foreach (Magic magic in Initializer.magics)
+            {
+                if (magic.MagicName == "Firebolt")
+                {
+                    newPlayerHero.Magics.Add(magic);
                     break;
                 }
             }
@@ -642,6 +674,22 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            foreach (Magic magic in Initializer.magics)
+            {
+                if (magic.MagicName == "Self Care")
+                {
+                    newPlayerHero.Magics.Add(magic);
+                    break;
+                }
+            }
+            foreach (Magic magic in Initializer.magics)
+            {
+                if (magic.MagicName == "Divine Smite")
+                {
+                    newPlayerHero.Magics.Add(magic);
+                    break;
+                }
+            }
             return newPlayerHero;
         }
 
@@ -746,6 +794,14 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            foreach (Magic magic in Initializer.magics)
+            {
+                if (magic.MagicName == "Self Care")
+                {
+                    newPlayerHero.Magics.Add(magic);
+                    break;
+                }
+            }
             return newPlayerHero;
         }
 
@@ -815,6 +871,30 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Unarmed")
                 {
                     newPlayerHero.Weapons[2] = weapon;
+                    break;
+                }
+            }
+            foreach (Skill skill in Initializer.skills)
+            {
+                if (skill.SkillName == "Knock Away")
+                {
+                    newPlayerHero.Skills.Add(skill);
+                    break;
+                }
+            }
+            foreach (Magic magic in Initializer.magics)
+            {
+                if (magic.MagicName == "Self Care")
+                {
+                    newPlayerHero.Magics.Add(magic);
+                    break;
+                }
+            }
+            foreach (Magic magic in Initializer.magics)
+            {
+                if (magic.MagicName == "Firebolt")
+                {
+                    newPlayerHero.Magics.Add(magic);
                     break;
                 }
             }

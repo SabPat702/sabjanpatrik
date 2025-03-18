@@ -1086,6 +1086,30 @@ namespace Dungeon_Valley_Explorer
                 case "?":
                     ExplainNewGameCharacterBackgroundSelection();
                     break;
+                case "1":
+                    NewGameSetBackground("Adventurer");
+                    break;
+                case "Adventurer":
+                    NewGameSetBackground("Adventurer");
+                    break;
+                case "2":
+                    NewGameSetBackground("Noble");
+                    break;
+                case "Noble":
+                    NewGameSetBackground("Noble");
+                    break;
+                case "3":
+                    NewGameSetBackground("Merchant");
+                    break;
+                case "Merchant":
+                    NewGameSetBackground("Merchant");
+                    break;
+                case "4":
+                    NewGameSetBackground("Blacksmith");
+                    break;
+                case "Blacksmith":
+                    NewGameSetBackground("Blacksmith");
+                    break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
                     btInput.Click += new RoutedEventHandler(NewGameCharacterBackgroundSelection);
@@ -1102,6 +1126,11 @@ namespace Dungeon_Valley_Explorer
             lbDisplay.Items.Add("Merchant will give you a passive gold gain based on your level and merchants will offer more items for sale.");
             lbDisplay.Items.Add("Blacksmith gives you a blunt damage bonus and gives you the ability to upgrade armors and weapons at the blacksmith with a heavy discount but a with a small chance to fail.");
             btInput.Click += new RoutedEventHandler(NewGameCharacterBackgroundSelection);
+        }
+
+        public void NewGameSetBackground(string background)
+        {
+
         }
 
         public void LoadExistingSave()
