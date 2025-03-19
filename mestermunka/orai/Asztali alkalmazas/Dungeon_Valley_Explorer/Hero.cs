@@ -142,7 +142,7 @@ namespace Dungeon_Valley_Explorer
             MDEF = InMDEF;
         }
 
-        public Hero(string oneLine, List<Passive> passives, List<BuffDebuff> buffDebuffs, List<Skill> skills, List<Magic> magics, List<Race> races, List<Armor> armors, List<Weapon> weapons, bool ShortDisplayNames)
+        public Hero(string oneLine, List<Passive> passives, List<BuffDebuff> buffDebuffs, List<Skill> skills, List<Magic> magics, List<Race> races, List<Armor> armors, List<Weapon> weapons, bool ShortDisplayNames, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved)
         {
             Weapons = new Weapon[3];
             Armors = new Armor[4];
@@ -177,10 +177,11 @@ namespace Dungeon_Valley_Explorer
                     if (weapon == weapons[i].WeaponName)
                     {
                         Weapons[weaponcounter] = weapons[i];
+                        weaponsImproved.TryGetValue(weapon, out int improvement);
+                        Weapons[weaponcounter].ATK += improvement;
                         weaponcounter++;
                     }
                 }
-
             }
             string[] armorscutter = linecutter[10].Split(',');
             int armorcounter = 0;
@@ -191,6 +192,9 @@ namespace Dungeon_Valley_Explorer
                     if (armor == armors[i].ArmorName)
                     {
                         Armors[armorcounter] = armors[i];
+                        armorsImproved.TryGetValue(armor, out int improvement);
+                        Armors[armorcounter].DEF += improvement;
+                        Armors[armorcounter].MDEF += improvement;
                         armorcounter++;
                     }
                 }

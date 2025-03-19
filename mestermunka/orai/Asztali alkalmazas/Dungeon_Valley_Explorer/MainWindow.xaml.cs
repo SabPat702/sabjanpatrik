@@ -83,6 +83,7 @@ namespace Dungeon_Valley_Explorer
                 Downloader.Download(folders, files, mySqlConnection);
             }
             Initializer.Initialize(folders, files);
+            ExplainNewGameCharacterRaceSelection();
             Initializer.GetProfilesFromDevice(folders, lbOptions, tempProfiles);
 
             /*heroes.Add(new Hero("1@player@10@10@100@20@20@0@1@TestWeapon,Unarmed,Unarmed@Test Helmet,Test Chestplate,Test Leggings,Test Boots@Fighter@Power Slash@Firebolt,Self care@Sword Proficiency@Human", Initializer.passives, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons));
@@ -937,6 +938,8 @@ namespace Dungeon_Valley_Explorer
 
         //Game starting starts here ------------------------------------------------------------------------------------
 
+        //New Game starts here -----------------------------------------------------------------------------------------
+
         public void CreateNewGame()
         {
             lbOptions.Items.Clear();
@@ -950,85 +953,85 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("4. Paladin");
             lbOptions.Items.Add("5. Bounty Hunter");
             lbOptions.Items.Add("6. Warlock");
-            btInput.Click += new RoutedEventHandler(NewGameClassSelection);
+            btInput.Click += new RoutedEventHandler(NewGameCharacterClassSelection);
         }
 
-        public void NewGameClassSelection(object sender, RoutedEventArgs e)
+        public void NewGameCharacterClassSelection(object sender, RoutedEventArgs e)
         {
-            btInput.Click -= new RoutedEventHandler(NewGameClassSelection);
+            btInput.Click -= new RoutedEventHandler(NewGameCharacterClassSelection);
             switch (tbInputArea.Text)
             {
                 case "?":
-                    ExplainNewGameClassSelection();
+                    ExplainNewGameCharacterClassSelection();
                     break;
                 case "1":
                     newPlayerHero.heroClass = "Fighter";
-                    NewGameSetClass();
+                    NewGameSetCharacterClass();
                     NewGameCharacterBackground();
                     break;
                 case "Fighter":
                     newPlayerHero.heroClass = "Fighter";
-                    NewGameSetClass();
+                    NewGameSetCharacterClass();
                     NewGameCharacterBackground();
                     break;
                 case "2":
                     newPlayerHero.heroClass = "Hunter";
-                    NewGameSetClass();
+                    NewGameSetCharacterClass();
                     NewGameCharacterBackground();
                     break;
                 case "Hunter":
                     newPlayerHero.heroClass = "Hunter";
-                    NewGameSetClass();
+                    NewGameSetCharacterClass();
                     NewGameCharacterBackground();
                     break;
                 case "3":
                     newPlayerHero.heroClass = "Wizard";
-                    NewGameSetClass();
+                    NewGameSetCharacterClass();
                     NewGameCharacterBackground();
                     break;
                 case "Wizard":
                     newPlayerHero.heroClass = "Wizard";
-                    NewGameSetClass();
+                    NewGameSetCharacterClass();
                     NewGameCharacterBackground();
                     break;
                 case "4":
                     newPlayerHero.heroClass = "Paladin";
-                    NewGameSetClass();
+                    NewGameSetCharacterClass();
                     NewGameCharacterBackground();
                     break;
                 case "Paladin":
                     newPlayerHero.heroClass = "Paladin";
-                    NewGameSetClass();
+                    NewGameSetCharacterClass();
                     NewGameCharacterBackground();
                     break;
                 case "5":
                     newPlayerHero.heroClass = "Bounty Hunter";
-                    NewGameSetClass();
+                    NewGameSetCharacterClass();
                     NewGameCharacterBackground();
                     break;
                 case "Bounty Hunter":
                     newPlayerHero.heroClass = "Bounty Hunter";
-                    NewGameSetClass();
+                    NewGameSetCharacterClass();
                     NewGameCharacterBackground();
                     break;
                 case "6":
                     newPlayerHero.heroClass = "Warlock";
-                    NewGameSetClass();
+                    NewGameSetCharacterClass();
                     NewGameCharacterBackground();
                     break;
                 case "Warlock":
                     newPlayerHero.heroClass = "Warlock";
-                    NewGameSetClass();
+                    NewGameSetCharacterClass();
                     NewGameCharacterBackground();
                     break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
-                    btInput.Click += new RoutedEventHandler(NewGameClassSelection);
+                    btInput.Click += new RoutedEventHandler(NewGameCharacterClassSelection);
                     break;
             }
         }
 
-        public void NewGameSetClass()
+        public void NewGameSetCharacterClass()
         {
             switch (newPlayerHero.heroClass)
             {
@@ -1053,7 +1056,7 @@ namespace Dungeon_Valley_Explorer
             }
         }
 
-        public void ExplainNewGameClassSelection()
+        public void ExplainNewGameCharacterClassSelection()
         {
             tbInputArea.Text = "";
             lbDisplay.Items.Add("Each class option will determine your characters basic role in the game as well as your starting stats.");
@@ -1063,7 +1066,7 @@ namespace Dungeon_Valley_Explorer
             lbDisplay.Items.Add("Paladin is a slightly more advanced class that focuses on tanking and bursts of damage they rely on heavy defense and mostly holy magic.");
             lbDisplay.Items.Add("Bounty Hunter is a more advanced class that focuses on marking and targeting enemies they work alone but are stronger with a team.");
             lbDisplay.Items.Add("Warlock is a slightly more advanced class that focuses on destructive magic they use powerful magic at the cost of survivability.");
-            btInput.Click += new RoutedEventHandler(NewGameClassSelection);
+            btInput.Click += new RoutedEventHandler(NewGameCharacterClassSelection);
         }
 
         public void NewGameCharacterBackground()
@@ -1087,28 +1090,36 @@ namespace Dungeon_Valley_Explorer
                     ExplainNewGameCharacterBackgroundSelection();
                     break;
                 case "1":
-                    NewGameSetBackground("Adventurer");
+                    NewGameSetCharacterBackground("Adventurer");
+                    NewGameCharacterRace();
                     break;
                 case "Adventurer":
-                    NewGameSetBackground("Adventurer");
+                    NewGameSetCharacterBackground("Adventurer");
+                    NewGameCharacterRace();
                     break;
                 case "2":
-                    NewGameSetBackground("Noble");
+                    NewGameSetCharacterBackground("Noble");
+                    NewGameCharacterRace();
                     break;
                 case "Noble":
-                    NewGameSetBackground("Noble");
+                    NewGameSetCharacterBackground("Noble");
+                    NewGameCharacterRace();
                     break;
                 case "3":
-                    NewGameSetBackground("Merchant");
+                    NewGameSetCharacterBackground("Merchant");
+                    NewGameCharacterRace();
                     break;
                 case "Merchant":
-                    NewGameSetBackground("Merchant");
+                    NewGameSetCharacterBackground("Merchant");
+                    NewGameCharacterRace();
                     break;
                 case "4":
-                    NewGameSetBackground("Blacksmith");
+                    NewGameSetCharacterBackground("Blacksmith");
+                    NewGameCharacterRace();
                     break;
                 case "Blacksmith":
-                    NewGameSetBackground("Blacksmith");
+                    NewGameSetCharacterBackground("Blacksmith");
+                    NewGameCharacterRace();
                     break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
@@ -1128,7 +1139,7 @@ namespace Dungeon_Valley_Explorer
             btInput.Click += new RoutedEventHandler(NewGameCharacterBackgroundSelection);
         }
 
-        public void NewGameSetBackground(string background)
+        public void NewGameSetCharacterBackground(string background)
         {
             switch (background)
             {
@@ -1148,6 +1159,191 @@ namespace Dungeon_Valley_Explorer
                     break;
             }
         }
+
+        public void NewGameCharacterRace()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("Now you will choose a race for your character. This affects mostly your damage resistances.");
+            lbOptions.Items.Add("1. Human");
+            lbOptions.Items.Add("2. Elf");
+            lbOptions.Items.Add("3. Dwarf");
+            lbOptions.Items.Add("4. Halfling");
+            btInput.Click += new RoutedEventHandler(NewGameCharacterRaceSelection);
+        }
+
+        public void NewGameCharacterRaceSelection(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(NewGameCharacterRaceSelection);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainNewGameCharacterRaceSelection();
+                    break;
+                case "1":
+                    break;
+                case "Human":
+                    break;
+                case "2":
+                    break;
+                case "Elf":
+                    break;
+                case "3":
+                    break;
+                case "Dwarf":
+                    break;
+                case "4":
+                    break;
+                case "Halfling":
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(NewGameCharacterRaceSelection);
+                    break;
+            }
+        }
+
+        public void ExplainNewGameCharacterRaceSelection()
+        {
+            tbInputArea.Text = "";
+            foreach (Race race in Initializer.races)
+            {
+                if (race.RaceName == "Human" || race.RaceName == "Elf" || race.RaceName == "Dwarf" || race.RaceName == "Halfling")
+                {
+                    if (race.Fatal.Contains("None"))
+                    {
+                        race.Fatal.Clear();
+                    }
+                    if (race.Weak.Contains("None"))
+                    {
+                        race.Weak.Clear();
+                    }
+                    if (race.Resist.Contains("None"))
+                    {
+                        race.Resist.Clear();
+                    }
+                    if (race.Endure.Contains("None"))
+                    {
+                        race.Endure.Clear();
+                    }
+                    if (race.Nulls.Contains("None"))
+                    {
+                        race.Nulls.Clear();
+                    }
+                    string output = $"The {race.RaceName} has ";
+                    if (race.Fatal.Count() > 0)
+                    {
+                        output += $"{race.Fatal.Count()} Fatal damage resistances (";
+                        int resistanceCounter = 0;
+                        foreach (string resistance in  race.Fatal)
+                        {
+                            if (resistanceCounter < race.Fatal.Count() - 1)
+                            {
+                                output += $"{resistance},";
+                            }
+                            else
+                            {
+                                output += $"{resistance}), ";
+                            }
+                            resistanceCounter++;
+                        }
+                    }
+                    else
+                    {
+                        output += $"0 Fatal damage resistances, ";
+                    }
+                    if (race.Weak.Count() > 0)
+                    {
+                        output += $"{race.Weak.Count()} Weak damage resistances (";
+                        int resistanceCounter = 0;
+                        foreach (string resistance in race.Weak)
+                        {
+                            if (resistanceCounter < race.Weak.Count() - 1)
+                            {
+                                output += $"{resistance},";
+                            }
+                            else
+                            {
+                                output += $"{resistance}), ";
+                            }
+                            resistanceCounter++;
+                        }
+                    }
+                    else
+                    {
+                        output += $"0 Weak damage resistances, ";
+                    }
+                    if (race.Resist.Count() > 0)
+                    {
+                        output += $"{race.Resist.Count()} Resisted damage resistances (";
+                        int resistanceCounter = 0;
+                        foreach (string resistance in race.Resist)
+                        {
+                            if (resistanceCounter < race.Resist.Count() - 1)
+                            {
+                                output += $"{resistance},";
+                            }
+                            else
+                            {
+                                output += $"{resistance}), ";
+                            }
+                            resistanceCounter++;
+                        }
+                    }
+                    else
+                    {
+                        output += $"0 Resisted damage resistances, ";
+                    }
+                    if (race.Endure.Count() > 0)
+                    {
+                        output += $"{race.Endure.Count()} Endured damage resistances (";
+                        int resistanceCounter = 0;
+                        foreach (string resistance in race.Endure)
+                        {
+                            if (resistanceCounter < race.Endure.Count() - 1)
+                            {
+                                output += $"{resistance},";
+                            }
+                            else
+                            {
+                                output += $"{resistance}), ";
+                            }
+                            resistanceCounter++;
+                        }
+                    }
+                    else
+                    {
+                        output += $"0 Endured damage resistances, ";
+                    }
+                    if (race.Nulls.Count() > 0)
+                    {
+                        output += $"{race.Nulls.Count()} Null damage resistances (";
+                        int resistanceCounter = 0;
+                        foreach (string resistance in race.Nulls)
+                        {
+                            if (resistanceCounter < race.Nulls.Count() - 1)
+                            {
+                                output += $"{resistance},";
+                            }
+                            else
+                            {
+                                output += $"{resistance}) ";
+                            }
+                            resistanceCounter++;
+                        }
+                    }
+                    else
+                    {
+                        output += $"0 Null damage resistances ";
+                    }
+                    lbDisplay.Items.Add(output);
+                }
+            }
+            btInput.Click += new RoutedEventHandler(NewGameCharacterRaceSelection);
+        }
+
+        //New Game ends here -------------------------------------------------------------------------------------------
+
+        //Load Save starts here ----------------------------------------------------------------------------------------
 
         public void LoadExistingSave()
         {
@@ -1206,7 +1402,7 @@ namespace Dungeon_Valley_Explorer
                     string[] heroescutter = linecutter[1].Split('%');
                     foreach (string hero in heroescutter)
                     {
-                        heroes.Add(new Hero(hero, Initializer.passives, Initializer.buffsDebuffs, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons, ShortDisplayNames));
+                        heroes.Add(new Hero(hero, Initializer.passives, Initializer.buffsDebuffs, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons, ShortDisplayNames, weaponsImproved, armorsImproved));
                     }
                     for (int i = 0; i < heroescutter.Length; i++)
                     {
@@ -1222,6 +1418,8 @@ namespace Dungeon_Valley_Explorer
                 MessageBox.Show(error.Message);
             }
         }
+
+        //Load Save ends here ------------------------------------------------------------------------------------------
 
         //Game starting ends here --------------------------------------------------------------------------------------
 
