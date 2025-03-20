@@ -17,6 +17,7 @@ using MySql.Data.MySqlClient;
 using Mysqlx;
 using Org.BouncyCastle.Bcpg;
 using BCrypt.Net;
+using System.Diagnostics;
 
 namespace Dungeon_Valley_Explorer
 {
@@ -83,7 +84,6 @@ namespace Dungeon_Valley_Explorer
                 Downloader.Download(folders, files, mySqlConnection);
             }
             Initializer.Initialize(folders, files);
-            ExplainNewGameCharacterRaceSelection();
             Initializer.GetProfilesFromDevice(folders, lbOptions, tempProfiles);
 
             /*heroes.Add(new Hero("1@player@10@10@100@20@20@0@1@TestWeapon,Unarmed,Unarmed@Test Helmet,Test Chestplate,Test Leggings,Test Boots@Fighter@Power Slash@Firebolt,Self care@Sword Proficiency@Human", Initializer.passives, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons));
@@ -108,7 +108,7 @@ namespace Dungeon_Valley_Explorer
             consumablesUnlocked.Add("Test Item", true);
 
             files.Add("first_save.txt");
-            folders.Add("Patrik");
+            folders.Add("Patrik05");
             EnterTown();*/
 
             lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
@@ -194,7 +194,7 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbOptions.Items.Add("1. Change Colors");
-            lbOptions.Items.Add("2. Shortened Names");
+            lbOptions.Items.Add($"2. Shortened Names ({ShortDisplayNames})");
             lbOptions.Items.Add("3. Back");
             lbDisplay.Items.Add("Currently you can only change from dark mode to light mode or vice versa.");
             btInput.Click += new RoutedEventHandler(MainMenuOptionsOptions);
@@ -212,6 +212,7 @@ namespace Dungeon_Valley_Explorer
                     OptionsChangeColors();
                     break; 
                 case "2":
+                    OptionsShortenedNames();
                     break;
                 case "3":
                     ReturnToOfflineSelectProfileAddProfileOption();
@@ -220,6 +221,7 @@ namespace Dungeon_Valley_Explorer
                     OptionsChangeColors();
                     break;
                 case "Shortened Names":
+                    OptionsShortenedNames();
                     break;
                 case "Back":
                     ReturnToOfflineSelectProfileAddProfileOption();
@@ -234,7 +236,7 @@ namespace Dungeon_Valley_Explorer
         public void ExplainMainMenuOptionsOptions()
         {
             lbDisplay.Items.Add("Change colors will change everything from black to white and vice versa.");
-            lbDisplay.Items.Add("Shortened Names will make the friendly npcs and the hero use their first names when written onto a line. (Cuts off the name after the first 'Space' it finds)");
+            lbDisplay.Items.Add("Shortened Names will make the friendly npcs and the hero use their first names when written onto a line. The true and false next to it shows the current state of the option. (Cuts off the name after the first 'Space' it finds)");
             lbDisplay.Items.Add("Back will take you back to the first option.");
             lbDisplay.Items.Add("There will also be more fun little things that can be change from here. (But these won't be priority)");
             btInput.Click += new RoutedEventHandler(MainMenuOptionsOptions);
@@ -244,9 +246,6 @@ namespace Dungeon_Valley_Explorer
         public void OptionsShortenedNames()
         {
             lbOptions.Items.Clear();
-            lbOptions.Items.Add("1. Change Colors");
-            lbOptions.Items.Add("2. Shortened Names");
-            lbOptions.Items.Add("3. Back");
             if (ShortDisplayNames == false)
             {
                 ShortDisplayNames = true;
@@ -255,6 +254,9 @@ namespace Dungeon_Valley_Explorer
             {
                 ShortDisplayNames = false;
             }
+            lbOptions.Items.Add("1. Change Colors");
+            lbOptions.Items.Add($"2. Shortened Names ({ShortDisplayNames})");
+            lbOptions.Items.Add("3. Back");
             btInput.Click += new RoutedEventHandler(MainMenuOptionsOptions);
             tbInputArea.Text = "";
         }
@@ -1180,20 +1182,36 @@ namespace Dungeon_Valley_Explorer
                     ExplainNewGameCharacterRaceSelection();
                     break;
                 case "1":
+                    NewGameSetCharacterRace("Human");
+                    NewGameCharacterName();
                     break;
                 case "Human":
+                    NewGameSetCharacterRace("Human");
+                    NewGameCharacterName();
                     break;
                 case "2":
+                    NewGameSetCharacterRace("Elf");
+                    NewGameCharacterName();
                     break;
                 case "Elf":
+                    NewGameSetCharacterRace("Elf");
+                    NewGameCharacterName();
                     break;
                 case "3":
+                    NewGameSetCharacterRace("Dwarf");
+                    NewGameCharacterName();
                     break;
                 case "Dwarf":
+                    NewGameSetCharacterRace("Dwarf");
+                    NewGameCharacterName();
                     break;
                 case "4":
+                    NewGameSetCharacterRace("Halfling");
+                    NewGameCharacterName();
                     break;
                 case "Halfling":
+                    NewGameSetCharacterRace("Halfling");
+                    NewGameCharacterName();
                     break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
@@ -1338,7 +1356,144 @@ namespace Dungeon_Valley_Explorer
                     lbDisplay.Items.Add(output);
                 }
             }
+            lbDisplay.Items.Add("Humans receive increased exp gain, Elves receive extra mana, mana regen and darksight that makes them better for traps.");
+            lbDisplay.Items.Add("Dwarves receive extra health and defense, Halflinges receive less health but are immune to some debuffs and benefit more from crits.");
             btInput.Click += new RoutedEventHandler(NewGameCharacterRaceSelection);
+        }
+
+        public void NewGameSetCharacterRace(string race)
+        {
+            switch (race)
+            {
+                case "Human":
+                    Hero.SetRaceHuman(newPlayerHero);
+                    break;
+                case "Elf":
+                    Hero.SetRaceElf(newPlayerHero);
+                    break;
+                case "Dwarf":
+                    Hero.SetRaceDwarf(newPlayerHero);
+                    break;
+                case "Halfling":
+                    Hero.SetRaceHalfling(newPlayerHero);
+                    break;
+            }
+        }
+
+        public void NewGameCharacterName()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbDisplay.Items.Add("The final touch is to name your character. With the shortened names option after the first space input the name will be cut off while it is used in text.");
+            lbDisplay.Items.Add("The name can only be 100 characters long at most and you can't have repeat names in our cloud saves because it is going to overwrite the old one when saving, but this is not a problem with offline play.");
+            lbDisplay.Items.Add("In a future update we will make a workaround for this.");
+            try
+            {
+                if (folders.Last() != folders[10])
+                {
+                    string names = "";
+                    int namesCount = 0;
+                    int namesCounter = 0;
+                    string command = $"Select Count(sabpat702.hero.Name) from sabpat702.hero inner join sabpat702.user on sabpat702.user.Id = sabpat702.hero.UserId Where sabpat702.user.UserName = '{folders.Last()}'";
+                    MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
+                    mySqlConnection.Open();
+                    MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                    while (mySqlDataReader.Read())
+                    {
+                        namesCount = mySqlDataReader.GetInt32(0);
+                    }
+                    mySqlConnection.Close();
+                    command = $"Select sabpat702.hero.Name from sabpat702.hero inner join sabpat702.user on sabpat702.user.Id = sabpat702.hero.UserId Where sabpat702.user.UserName = '{folders.Last()}'";
+                    MySqlCommand mySqlCommand2 = new MySqlCommand(command, mySqlConnection);
+                    mySqlConnection.Open();
+                    MySqlDataReader mySqlDataReader2 = mySqlCommand2.ExecuteReader();
+                    while (mySqlDataReader2.Read())
+                    {
+                        if (namesCounter < namesCount - 1)
+                        {
+                            names += $"{mySqlDataReader2.GetString(0)},";
+                        }
+                        else
+                        {
+                            names += $"{mySqlDataReader2.GetString(0)}";
+                        }
+                    }
+                    mySqlConnection.Close();
+                    lbDisplay.Items.Add($"The currently used names: {names}");
+                }
+            }
+            catch
+            {
+
+            }
+            btInput.Click += new RoutedEventHandler(NewGameCharacterNameNaming);
+        }
+
+        public void NewGameCharacterNameNaming(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(NewGameCharacterNameNaming);
+            if (tbInputArea.Text == "")
+            {
+                MessageBox.Show("Please give a name to the character using the textbox at the bottom of the screen.");
+                btInput.Click += new RoutedEventHandler(NewGameCharacterNameNaming);
+            }
+            else if (tbInputArea.Text.Length > 100)
+            {
+                MessageBox.Show($"The name is too long to be used. (it is over 100 characters by {tbInputArea.Text.Length - 100} character(s))");
+                btInput.Click += new RoutedEventHandler(NewGameCharacterNameNaming);
+            }
+            else
+            {
+                newPlayerHero.HeroName = tbInputArea.Text;
+                if (ShortDisplayNames == false)
+                {
+                    newPlayerHero.DisplayName = tbInputArea.Text;
+                }
+                else
+                {
+                    newPlayerHero.DisplayName = tbInputArea.Text.Split(' ')[0];
+                }
+                NewGameCharacterConfirm();
+            }
+        }
+
+        public void NewGameCharacterConfirm()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"Are you sure you want this character? (name:{newPlayerHero.HeroName},display name:{newPlayerHero.DisplayName},class:{newPlayerHero.heroClass},race:{newPlayerHero.Race.RaceName},background:{newPlayerHero.Background})");
+            lbOptions.Items.Add("1. Yes");
+            lbOptions.Items.Add("2. No");
+            lbOptions.Items.Add("3. Change Name");
+            btInput.Click += new RoutedEventHandler(NewGameCharacterConfirming);
+        }
+
+        public void NewGameCharacterConfirming(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(NewGameCharacterConfirming);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    tbInputArea.Text = "";
+                    lbDisplay.Items.Add("There is nithing to explain here.");
+                    btInput.Click += new RoutedEventHandler(NewGameCharacterConfirming);
+                    break;
+                case "1":
+                    break;
+                case "Yes":
+                    break;
+                case "2":
+                    break;
+                case "No":
+                    break;
+                case "3":
+                    break;
+                case "Change Name":
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(NewGameCharacterConfirming);
+                    break;
+            }
         }
 
         //New Game ends here -------------------------------------------------------------------------------------------

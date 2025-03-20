@@ -1,2 +1,7 @@
 1@Unarmed@No weapons here@2@Blunt@1@1,1@None@Melee@Melee@0@False
-2@TestWeapon@A weapon for testing.@20@Slash@10@2@Piercing Blade@Melee@Melee@20@False
+2@Rusty Longsword@A rusty longsword that was probably picked up from the side of the road.@8@Slash@4@1,5@None@Melee@Melee@0@False
+3@Broken Spear@A long spear broken in half that now is used as a short spear.@6@Pierce@10@1,5@None@Melee@Melee@0@False
+4@Short Bow@A short bow with short range and small power behind each shot.@6@Pierce@10@2@None@Ranged@Ranged@0@False
+5@Dagger@A small dagger easily hidden but not that strong and effective in frontal combat.@4@Pierce@15@1,5@None@Melee@Melee@0@False
+6@Travel Staff@A staff made with traveling in mind. Not that useful for fighting.@4@Blunt@4@1,5@None@Melee@Melee@0@False
+7@Wooden Shield@A small shield made of wood.@2@Blunt@1@1,1@Shield@Melee@Melee@0@False

@@ -1,3 +1,9 @@
 1@None@Not so special now are we.@Nothing
-2@Sword Proficiency@Sword strikes are a little bit stronger.@Damage Calculation
-3@Test Passive@A passive ability for testing purpose.@Nothing
+2@Adventurer@Adventurers are self made explorers of the land and its dungeons. They complete quests small and big for rewards from the guilds.@Level Up,Experience Gain,Rest
+3@Noble@Nobles are the ruling class of society. They use their lineage to keep themselves in power and strong in therms of magic.@Shop Payment
+4@Merchant@Merchants are the ones responsible for keeping the money flowing out here in the valley as well as some supplies that can't be found here. Using their channels they can get gold anywhere but not any time.@Sleep,Shop Payment
+5@Blacksmith@Blacksmiths make the weapons, armors, tools and many more for the people and their massive bodies forged while forging are a force to be reckoned with.@Damage Calculation,Upgrade Weapon,Upgrade Armor
+6@Human@Humans are both adaptive and quick learners.@Experience Gain
+7@Elf@Elves have darksight and great mana affinity.@Turn End,Trap Triggered,Initiative Roll
+8@Dwarf@Dwarves are physically quite robust and are better at forging than anyone.@Upgrade Weapon,Upgrade Armor,DEF Calculation
+9@Halfling@Halflinges are small and brave. They are hard to stop as they are arogant.@Debuff Recieved,After Crit

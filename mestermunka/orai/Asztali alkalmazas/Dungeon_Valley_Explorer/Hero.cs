@@ -34,6 +34,7 @@ namespace Dungeon_Valley_Explorer
         public bool Guard { get; set; }
         public int Lvl { get; set; }
         public int Exp { get; set; }
+        public string Background { get; set; }
         public string DisplayName { get; set; }
 
         public Hero(string oneLine, List<Passive> passives, List<Skill> skills, List<Magic> magics, List<Race> races, List<Armor> armors, List<Weapon> weapons)
@@ -131,15 +132,16 @@ namespace Dungeon_Valley_Explorer
                 }
             }
 
+            DEF = InDEF;
+            MDEF = InMDEF;
 
             foreach (Armor armor in Armors)
             {
-                InDEF = InDEF + armor.DEF;
-                InMDEF = InMDEF + armor.MDEF;
+                DEF += armor.DEF;
+                MDEF += armor.MDEF;
             }
 
-            DEF = InDEF;
-            MDEF = InMDEF;
+            Background = linecutter[16];
         }
 
         public Hero(string oneLine, List<Passive> passives, List<BuffDebuff> buffDebuffs, List<Skill> skills, List<Magic> magics, List<Race> races, List<Armor> armors, List<Weapon> weapons, bool ShortDisplayNames, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved)
@@ -252,14 +254,14 @@ namespace Dungeon_Valley_Explorer
                 }
             }
 
-            foreach (Armor armor in Armors)
-            {
-                InDEF = InDEF + armor.DEF;
-                InMDEF = InMDEF + armor.MDEF;
-            }
-
             DEF = InDEF;
             MDEF = InMDEF;
+
+            foreach (Armor armor in Armors)
+            {
+                DEF += armor.DEF;
+                MDEF += armor.MDEF;
+            }
 
             if (ShortDisplayNames == true)
             {
@@ -269,6 +271,8 @@ namespace Dungeon_Valley_Explorer
             {
                 DisplayName = HeroName;
             }
+
+            Background = linecutter[17];
         }
 
         public Hero()
@@ -281,6 +285,8 @@ namespace Dungeon_Valley_Explorer
             Race = new Race();
             Armors = new Armor[4];
         }
+
+        //Character classes --------------------------------------------------------------------------------------------
 
         public static Hero SetClassFighter(Hero newPlayerHero)
         {
@@ -322,10 +328,12 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            newPlayerHero.DEF = newPlayerHero.InDEF;
+            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             foreach (Armor armor in newPlayerHero.Armors)
             {
-                newPlayerHero.InDEF = newPlayerHero.InDEF + armor.DEF;
-                newPlayerHero.InMDEF = newPlayerHero.InMDEF + armor.MDEF;
+                newPlayerHero.DEF += armor.DEF;
+                newPlayerHero.MDEF += armor.MDEF;
             }
             foreach (Weapon weapon in Initializer.weapons)
             {
@@ -375,8 +383,6 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
-            newPlayerHero.DEF = newPlayerHero.InDEF;
-            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             return newPlayerHero;
         }
 
@@ -420,10 +426,12 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            newPlayerHero.DEF = newPlayerHero.InDEF;
+            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             foreach (Armor armor in newPlayerHero.Armors)
             {
-                newPlayerHero.InDEF = newPlayerHero.InDEF + armor.DEF;
-                newPlayerHero.InMDEF = newPlayerHero.InMDEF + armor.MDEF;
+                newPlayerHero.DEF += armor.DEF;
+                newPlayerHero.MDEF += armor.MDEF;
             }
             foreach (Weapon weapon in Initializer.weapons)
             {
@@ -473,8 +481,6 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
-            newPlayerHero.DEF = newPlayerHero.InDEF;
-            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             return newPlayerHero;
         }
 
@@ -518,10 +524,12 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            newPlayerHero.DEF = newPlayerHero.InDEF;
+            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             foreach (Armor armor in newPlayerHero.Armors)
             {
-                newPlayerHero.InDEF = newPlayerHero.InDEF + armor.DEF;
-                newPlayerHero.InMDEF = newPlayerHero.InMDEF + armor.MDEF;
+                newPlayerHero.DEF += armor.DEF;
+                newPlayerHero.MDEF += armor.MDEF;
             }
             foreach (Weapon weapon in Initializer.weapons)
             {
@@ -571,8 +579,6 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
-            newPlayerHero.DEF = newPlayerHero.InDEF;
-            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             return newPlayerHero;
         }
 
@@ -623,10 +629,12 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            newPlayerHero.DEF = newPlayerHero.InDEF;
+            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             foreach (Armor armor in newPlayerHero.Armors)
             {
-                newPlayerHero.InDEF = newPlayerHero.InDEF + armor.DEF;
-                newPlayerHero.InMDEF = newPlayerHero.InMDEF + armor.MDEF;
+                newPlayerHero.DEF += armor.DEF;
+                newPlayerHero.MDEF += armor.MDEF;
             }
             foreach (Weapon weapon in Initializer.weapons)
             {
@@ -700,8 +708,6 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
-            newPlayerHero.DEF = newPlayerHero.InDEF;
-            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             return newPlayerHero;
         }
 
@@ -745,10 +751,12 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            newPlayerHero.DEF = newPlayerHero.InDEF;
+            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             foreach (Armor armor in newPlayerHero.Armors)
             {
-                newPlayerHero.InDEF = newPlayerHero.InDEF + armor.DEF;
-                newPlayerHero.InMDEF = newPlayerHero.InMDEF + armor.MDEF;
+                newPlayerHero.DEF += armor.DEF;
+                newPlayerHero.MDEF += armor.MDEF;
             }
             foreach (Weapon weapon in Initializer.weapons)
             {
@@ -814,8 +822,6 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
-            newPlayerHero.DEF = newPlayerHero.InDEF;
-            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             return newPlayerHero;
         }
 
@@ -859,10 +865,12 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
+            newPlayerHero.DEF = newPlayerHero.InDEF;
+            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             foreach (Armor armor in newPlayerHero.Armors)
             {
-                newPlayerHero.InDEF = newPlayerHero.InDEF + armor.DEF;
-                newPlayerHero.InMDEF = newPlayerHero.InMDEF + armor.MDEF;
+                newPlayerHero.DEF += armor.DEF;
+                newPlayerHero.MDEF += armor.MDEF;
             }
             foreach (Weapon weapon in Initializer.weapons)
             {
@@ -912,10 +920,12 @@ namespace Dungeon_Valley_Explorer
                     break;
                 }
             }
-            newPlayerHero.DEF = newPlayerHero.InDEF;
-            newPlayerHero.MDEF = newPlayerHero.InMDEF;
             return newPlayerHero;
         }
+
+        //Character classes --------------------------------------------------------------------------------------------
+
+        //Character backgrounds ----------------------------------------------------------------------------------------
 
         public static Hero SetBackgroundAdventurer(Hero newPlayerHero)
         {
@@ -935,6 +945,7 @@ namespace Dungeon_Valley_Explorer
             newPlayerHero.InMP = newPlayerHero.InMP + 1;
             newPlayerHero.MaxMP = newPlayerHero.InMP;
             newPlayerHero.MP = newPlayerHero.InMP;
+            newPlayerHero.Background = "Adventurer";
             return newPlayerHero;
         }
 
@@ -950,6 +961,7 @@ namespace Dungeon_Valley_Explorer
             newPlayerHero.InMP = newPlayerHero.InMP + 5;
             newPlayerHero.MaxMP = newPlayerHero.InMP;
             newPlayerHero.MP = newPlayerHero.InMP;
+            newPlayerHero.Background = "Noble";
             return newPlayerHero;
         }
 
@@ -962,6 +974,7 @@ namespace Dungeon_Valley_Explorer
                     newPlayerHero.Passives.Add(passive);
                 }
             }
+            newPlayerHero.Background = "Merchant";
             return newPlayerHero;
         }
 
@@ -974,7 +987,99 @@ namespace Dungeon_Valley_Explorer
                     newPlayerHero.Passives.Add(passive);
                 }
             }
+            newPlayerHero.Background = "Blacksmith";
             return newPlayerHero;
         }
+
+        //Character backgrounds ----------------------------------------------------------------------------------------
+
+        //Character races ----------------------------------------------------------------------------------------------
+
+        public static Hero SetRaceHuman(Hero newPlayerHero)
+        {
+            foreach (Race race in Initializer.races)
+            {
+                if (race.RaceName == "Human")
+                {
+                    newPlayerHero.Race = race;
+                }
+            }
+            foreach (Passive passive in Initializer.passives)
+            {
+                if (passive.PassiveName == "Human")
+                {
+                    newPlayerHero.Passives.Add(passive);
+                }
+            }
+            return newPlayerHero;
+        }
+
+        public static Hero SetRaceElf(Hero newPlayerHero)
+        {
+            foreach (Race race in Initializer.races)
+            {
+                if (race.RaceName == "Elf")
+                {
+                    newPlayerHero.Race = race;
+                }
+            }
+            foreach (Passive passive in Initializer.passives)
+            {
+                if (passive.PassiveName == "Elf")
+                {
+                    newPlayerHero.Passives.Add(passive);
+                }
+            }
+            newPlayerHero.InMP += 2;
+            newPlayerHero.MaxMP = newPlayerHero.InMP;
+            newPlayerHero.MP = newPlayerHero.InMP;
+            return newPlayerHero;
+        }
+
+        public static Hero SetRaceDwarf(Hero newPlayerHero)
+        {
+            foreach (Race race in Initializer.races)
+            {
+                if (race.RaceName == "Dwarf")
+                {
+                    newPlayerHero.Race = race;
+                }
+            }
+            foreach (Passive passive in Initializer.passives)
+            {
+                if (passive.PassiveName == "Dwarf")
+                {
+                    newPlayerHero.Passives.Add(passive);
+                }
+            }
+            newPlayerHero.InHP += 4;
+            newPlayerHero.MaxHP = newPlayerHero.InHP;
+            newPlayerHero.HP = newPlayerHero.InHP;
+            newPlayerHero.DEF += 1;
+            return newPlayerHero;
+        }
+
+        public static Hero SetRaceHalfling(Hero newPlayerHero)
+        {
+            foreach (Race race in Initializer.races)
+            {
+                if (race.RaceName == "Halfling")
+                {
+                    newPlayerHero.Race = race;
+                }
+            }
+            foreach (Passive passive in Initializer.passives)
+            {
+                if (passive.PassiveName == "Halfling")
+                {
+                    newPlayerHero.Passives.Add(passive);
+                }
+            }
+            newPlayerHero.InHP -= 2;
+            newPlayerHero.MaxHP = newPlayerHero.InHP;
+            newPlayerHero.HP = newPlayerHero.InHP;
+            return newPlayerHero;
+        }
+        //Character races ----------------------------------------------------------------------------------------------
     }
 }

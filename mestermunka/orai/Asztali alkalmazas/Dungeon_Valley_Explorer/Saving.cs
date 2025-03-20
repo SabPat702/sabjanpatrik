@@ -220,6 +220,8 @@ namespace Dungeon_Valley_Explorer
             output += "@";
             output += hero.Race.RaceName;
             output += "@";
+            output += hero.Background;
+            output += "@";
 
             foreach (Hero partyMember in party)
             {
@@ -416,7 +418,7 @@ namespace Dungeon_Valley_Explorer
             try
             {
                 int userId = GetUserId(folders, mySqlConnection);
-                string command = $"Insert into sabpat702.hero (Name, DEF, MDEF, HP, SP, MP, EXP, LVL, Weapon, Armor, Class, Skill, Magic, Passive, UserId, Race) Values ('{playerHero.HeroName}','{playerHero.DEF}','{playerHero.MDEF}','{playerHero.HP}','{playerHero.SP}','{playerHero.MP}','{playerHero.Exp}','{playerHero.Lvl}','{playerHero.Weapons[0].WeaponName},{playerHero.Weapons[1].WeaponName},{playerHero.Weapons[2].WeaponName}','{playerHero.Armors[0].ArmorName},{playerHero.Armors[1].ArmorName},{playerHero.Armors[2].ArmorName},{playerHero.Armors[3].ArmorName}','{playerHero.heroClass}','";
+                string command = $"Insert into sabpat702.hero (Name, DEF, MDEF, HP, SP, MP, EXP, LVL, Weapon, Armor, Class, Skill, Magic, Passive, UserId, Race, Background) Values ('{playerHero.HeroName}','{playerHero.DEF}','{playerHero.MDEF}','{playerHero.HP}','{playerHero.SP}','{playerHero.MP}','{playerHero.Exp}','{playerHero.Lvl}','{playerHero.Weapons[0].WeaponName},{playerHero.Weapons[1].WeaponName},{playerHero.Weapons[2].WeaponName}','{playerHero.Armors[0].ArmorName},{playerHero.Armors[1].ArmorName},{playerHero.Armors[2].ArmorName},{playerHero.Armors[3].ArmorName}','{playerHero.heroClass}','";
                 foreach (Skill skill in playerHero.Skills)
                 {
                     if (skill != playerHero.Skills.Last())
@@ -450,7 +452,7 @@ namespace Dungeon_Valley_Explorer
                         command += $"{passive.PassiveName}','";
                     }
                 }
-                command += $"{userId}','{playerHero.Race.RaceName}')";
+                command += $"{userId}','{playerHero.Race.RaceName}','{playerHero.Background}')";
                 MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
                 mySqlConnection.Open();
                 mySqlCommand.ExecuteNonQuery();

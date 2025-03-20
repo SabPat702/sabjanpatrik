@@ -1,3 +1,5 @@
 1@None@Not so special now are we.@Nothing
-2@Piercing Blade@A blade that can even cut armor. (Ignores a set amount of defense(DEF))@Damage Calculation
-3@Burn@Sets your targets ablaze.@Give Buff or Debuff
+2@Shield@A shield gives you its ATK as DEF when equipped.@Weapon Equip
+3@Taunt@Changes the focus of a creature to this one.@Skill Use,Magic Use,Basic Attack
+4@Mark@A mark of death that makes the creature take more damage.@Skill Use,Magic Use,Basic Attack
+5@Burn@Sets the target on fire.@Skill Use,Magic Use,Basic Attack,Environment Hazard

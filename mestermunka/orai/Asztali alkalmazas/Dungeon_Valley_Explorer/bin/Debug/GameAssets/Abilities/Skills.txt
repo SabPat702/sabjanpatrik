@@ -1,4 +1,6 @@
-1@Basic Strike@A basic strike from the monster@Blunt@10@2@None@Melee@0@0
-2@Advanced Strike@An advanced striking technique from a monster.@Blunt@15@2,2@None@Melee@0@0
-3@Shield@A basic defensive ability that raises the users defense.@None@0@0@None@None@5@2
-4@Power Slash@A powerful cut.@Slash@20@3@None@Melee@3@2
+1@Powerful Cut@A powerful cut.@Slash@20@3@None@Melee@2@2
+2@Powerful Stab@A powerful stab.@Pierce@25@2,5@None@Melee@2@2
+3@Powerful Shot@A powerful shot.@Pierce@20@3@None@Ranged@2@2
+4@Knock Away@A weak strike that forces the enemy to move backwards.@Blunt@1@2@None@Melee@1@2
+6@Taunt@Makes an enemy focus you on its turn.@None@0@0@Taunt@Both@3@4
+7@Mark Bounty@Marks an enemy and makes them take extra damage.@None@0@0@Mark@Both@1@4
