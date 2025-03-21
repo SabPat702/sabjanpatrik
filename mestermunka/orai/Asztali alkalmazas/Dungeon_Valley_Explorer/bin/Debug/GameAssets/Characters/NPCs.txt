@@ -1,1 +1,1 @@
-1@Gregor@10@10@100@20@20@0@1@Dagger,Short Bow,Unarmed@None,Worn Leather Chestpiece,Worn Leather Knee Pads,Old Travel Boots@Fighter@Powerful Slash,Powerful Shot,Powerful Stab@Firebolt,Self care@Adventurer,Human@Human
+1@Gregor@10@10@100@20@20@0@1@Dagger,Short Bow,Unarmed@None,Worn Leather Chestpiece,Worn Leather Knee Pads,Old Travel Boots@Fighter@Powerful Slash,Powerful Shot,Powerful Stab@Firebolt,Self care@Adventurer,Human@Human@Adventurer

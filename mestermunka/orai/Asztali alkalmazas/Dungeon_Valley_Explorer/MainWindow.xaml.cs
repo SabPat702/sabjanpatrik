@@ -52,7 +52,6 @@ namespace Dungeon_Valley_Explorer
         List<Hero> party = new List<Hero>();
         Dictionary<string, bool> questsCompleted = new Dictionary<string,bool>();
         Dictionary<string, int> consumables = new Dictionary<string, int>();
-        bool tutorialCompleted = false;
         bool newHero = false;
         int Gold = 0;
         int Experience = 0;
@@ -1164,6 +1163,7 @@ namespace Dungeon_Valley_Explorer
         public void NewGameCharacterRace()
         {
             tbInputArea.Text = "";
+            lbOptions.Items.Clear();
             lbDisplay.Items.Add("Now you will choose a race for your character. This affects mostly your damage resistances.");
             lbOptions.Items.Add("1. Human");
             lbOptions.Items.Add("2. Elf");
@@ -1477,8 +1477,10 @@ namespace Dungeon_Valley_Explorer
                     btInput.Click += new RoutedEventHandler(NewGameCharacterConfirming);
                     break;
                 case "1":
+                    NewGameStart();
                     break;
                 case "Yes":
+                    NewGameStart();
                     break;
                 case "2":
                     RestartNewGame();
@@ -1521,6 +1523,8 @@ namespace Dungeon_Valley_Explorer
 
         public void NewGameStart()
         {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
             heroes.Add(newPlayerHero);
             party.Add(newPlayerHero);
             foreach (Weapon weapon in Initializer.weapons)
@@ -1554,6 +1558,43 @@ namespace Dungeon_Valley_Explorer
             {
                 questsCompleted.Add(quest, false);
             }
+            lbDisplay.Items.Add("Do you want to do the tutorial?");
+            lbOptions.Items.Add("1. Yes");
+            lbOptions.Items.Add("2. No");
+            btInput.Click += new RoutedEventHandler(StartNewGameTutorialQuestion);
+        }
+
+        public void StartNewGameTutorialQuestion(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(StartNewGameTutorialQuestion);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    MessageBox.Show("There is nothing to explain here.");
+                    btInput.Click += new RoutedEventHandler(StartNewGameTutorialQuestion);
+                    break;
+                case "1":
+                    StartTutorial();
+                    break;
+                case "Yes":
+                    StartTutorial();
+                    break;
+                case "2":
+                    EnterTown();
+                    break;
+                case "No":
+                    EnterTown();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(StartNewGameTutorialQuestion);
+                    break;
+            }
+        }
+
+        public void StartTutorial()
+        {
+            //Finish this later ----------------------------------------------------------------------------------------
         }
 
         //New Game ends here -------------------------------------------------------------------------------------------
@@ -1612,7 +1653,6 @@ namespace Dungeon_Valley_Explorer
                     {
                         consumablesUnlocked.Add(Initializer.consumables[i].ConsumableName, Convert.ToBoolean(consumablesUnlockedcutter[i]));
                     }
-                    tutorialCompleted = Convert.ToBoolean(linecutter[12]);
 
                     string[] heroescutter = linecutter[1].Split('%');
                     foreach (string hero in heroescutter)
@@ -1626,6 +1666,7 @@ namespace Dungeon_Valley_Explorer
                             party.Add(heroes[i]);
                         }
                     }
+                    EnterTown();
                 }
             }
             catch (Exception error )
@@ -1889,10 +1930,10 @@ namespace Dungeon_Valley_Explorer
                 try
                 {
                     StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
-                    streamWriter.Write(Saving.MakeSaveString(mySqlConnection, folders, files, heroes, party, Initializer.npcs, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted));
+                    streamWriter.Write(Saving.MakeSaveString(mySqlConnection, folders, files, heroes, party, Initializer.npcs, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked));
                     streamWriter.Close();
 
-                    Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, newHero);
+                    Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, newHero);
                 }
                 catch (Exception error)
                 {
@@ -1976,11 +2017,11 @@ namespace Dungeon_Valley_Explorer
             try
             {
                 StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
-                streamWriter.Write(Saving.MakeSaveString(mySqlConnection, folders, files, heroes, party, Initializer.npcs, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted));
+                streamWriter.Write(Saving.MakeSaveString(mySqlConnection, folders, files, heroes, party, Initializer.npcs, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked));
                 streamWriter.Close();
                 MessageBox.Show("Game saved successfully");
 
-                Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, newHero);
+                Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, newHero);
             }
             catch (Exception error)
             {
@@ -2033,11 +2074,11 @@ namespace Dungeon_Valley_Explorer
                 if (Saving.SaveExist(mySqlConnection, folders, files) == false)
                 {
                     StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files.Last()}");
-                    streamWriter.Write(Saving.MakeSaveString(mySqlConnection, folders, files, heroes, party, Initializer.npcs, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted));
+                    streamWriter.Write(Saving.MakeSaveString(mySqlConnection, folders, files, heroes, party, Initializer.npcs, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked));
                     streamWriter.Close();
                     MessageBox.Show("Game saved successfully");
 
-                    Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, newHero);
+                    Saving.SavingStart(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, newHero);
                     SaveGameExit();
                 }
                 else

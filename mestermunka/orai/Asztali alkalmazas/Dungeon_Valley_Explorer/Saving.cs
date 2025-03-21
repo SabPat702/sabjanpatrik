@@ -15,22 +15,22 @@ namespace Dungeon_Valley_Explorer
 {
     static class Saving
     {
-        public static void SavingStart(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked, MySqlConnection mySqlConnection, List<Hero> npcs, bool tutorialCompleted, bool newHero)
+        public static void SavingStart(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked, MySqlConnection mySqlConnection, List<Hero> npcs, bool newHero)
         {
             if (folders.Last() != folders[10])
             {
                 if (SaveExist(mySqlConnection, folders, files) == true)
                 {
-                    UpdateSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted);
+                    UpdateSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs);
                 }
                 else
                 {
-                    InsertSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, tutorialCompleted, newHero);
+                    InsertSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs, newHero);
                 }
             }
         }
 
-        public static void UpdateSave(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked, MySqlConnection mySqlConnection, List<Hero> npcs, bool tutorialCompleted)
+        public static void UpdateSave(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked, MySqlConnection mySqlConnection, List<Hero> npcs)
         {
             int HeroId = 0;
             Hero playerHero = FindHero(heroes, npcs);
@@ -38,7 +38,7 @@ namespace Dungeon_Valley_Explorer
             int SaveId = GetSaveId(mySqlConnection, folders, files);
             try
             {
-                string command = $"Update sabpat702.save_game set sabpat702.save_game.SaveData = '{MakeSaveString(mySqlConnection, folders, files, heroes, party, npcs, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted)}' Where (sabpat702.save_game.Id = '{SaveId}')";
+                string command = $"Update sabpat702.save_game set sabpat702.save_game.SaveData = '{MakeSaveString(mySqlConnection, folders, files, heroes, party, npcs, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked)}' Where (sabpat702.save_game.Id = '{SaveId}')";
                 MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
                 mySqlConnection.Open();
                 mySqlCommand.ExecuteNonQuery();
@@ -238,7 +238,7 @@ namespace Dungeon_Valley_Explorer
             return output;
         }
 
-        public static string MakeSaveString(MySqlConnection mySqlConnection, List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, List<Hero> npcs, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked, bool tutorialCompleted)
+        public static string MakeSaveString(MySqlConnection mySqlConnection, List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, List<Hero> npcs, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked)
         {
             int HeroId = GetHeroId(mySqlConnection, folders, heroes, npcs);
             string output = $"{HeroId}$";
@@ -362,12 +362,10 @@ namespace Dungeon_Valley_Explorer
 
                 consumablesUnlockedCounter++;
             }
-            output += "$";
-            output += tutorialCompleted;
             return output;
         }
 
-        public static void InsertSave(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked, MySqlConnection mySqlConnection, List<Hero> npcs, bool tutorialCompleted, bool newHero)
+        public static void InsertSave(List<string> folders, List<string> files, List<Hero> heroes, List<Hero> party, Dictionary<string, bool> questsCompleted, Dictionary<string, int> consumables, int Gold, int Experience, Dictionary<string, bool> dungeonsCompleted, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved, Dictionary<string, bool> weaponsObtained, Dictionary<string, bool> armorsObtained, Dictionary<string, bool> consumablesUnlocked, MySqlConnection mySqlConnection, List<Hero> npcs, bool newHero)
         {
             int HeroId = 0;
             if (HeroExists(mySqlConnection, folders, heroes, npcs, newHero) == false)
@@ -377,7 +375,7 @@ namespace Dungeon_Valley_Explorer
             HeroId = GetHeroId(mySqlConnection, folders, heroes, npcs);
             try
             {
-                string command = $"Insert into sabpat702.save_game (HeroId, SaveData, SaveName) Values ('{HeroId}','{MakeSaveString(mySqlConnection, folders, files, heroes, party, npcs, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, tutorialCompleted)}','{files.Last().Substring(0, files.Last().Length - 4)}')";
+                string command = $"Insert into sabpat702.save_game (HeroId, SaveData, SaveName) Values ('{HeroId}','{MakeSaveString(mySqlConnection, folders, files, heroes, party, npcs, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked)}','{files.Last().Substring(0, files.Last().Length - 4)}')";
                 MySqlCommand cmd = new MySqlCommand(command, mySqlConnection);
                 mySqlConnection.Open();
                 cmd.ExecuteNonQuery();
