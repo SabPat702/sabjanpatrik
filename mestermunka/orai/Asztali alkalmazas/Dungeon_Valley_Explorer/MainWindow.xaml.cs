@@ -1608,7 +1608,6 @@ namespace Dungeon_Valley_Explorer
                 foreach(string oneline in File.ReadAllLines($@"{folders[9]}\{folders.Last()}\{files.Last()}"))
                 {
                     string[] linecutter = oneline.Split('$');
-                    //HeroId = Convert.ToInt32(linecutter[0]);
                     
                     string[] consumablescutter = linecutter[2].Split('%');
                     foreach (string consumable in consumablescutter)
@@ -1666,7 +1665,6 @@ namespace Dungeon_Valley_Explorer
                             party.Add(heroes[i]);
                         }
                     }
-                    EnterTown();
                 }
             }
             catch (Exception error )
@@ -1874,11 +1872,12 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbDisplay.Items.Add("GAME: You have entered the town and now you can save and modify your party and your items.");
-            MainTownLBOptions();
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count-1]);
+            MainTownOptions();
             btInput.Click += new RoutedEventHandler(MainTownOption);
         }
 
-        public void MainTownLBOptions()
+        public void MainTownOptions()
         {
             lbOptions.Items.Add("1. Quit Game");
             lbOptions.Items.Add("2. Save Game");
@@ -2008,7 +2007,7 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
-            MainTownLBOptions();
+            MainTownOptions();
             btInput.Click += new RoutedEventHandler(MainTownOption);
         }
 
