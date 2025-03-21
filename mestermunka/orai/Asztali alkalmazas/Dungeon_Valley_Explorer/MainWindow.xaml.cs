@@ -54,7 +54,6 @@ namespace Dungeon_Valley_Explorer
         Dictionary<string, int> consumables = new Dictionary<string, int>();
         bool tutorialCompleted = false;
         bool newHero = false;
-        int HeroId = 1;
         int Gold = 0;
         int Experience = 0;
         Dictionary<string, bool> dungeonsCompleted = new Dictionary<string, bool>();
@@ -1474,7 +1473,7 @@ namespace Dungeon_Valley_Explorer
             {
                 case "?":
                     tbInputArea.Text = "";
-                    lbDisplay.Items.Add("There is nithing to explain here.");
+                    lbDisplay.Items.Add("There is nothing to explain here.");
                     btInput.Click += new RoutedEventHandler(NewGameCharacterConfirming);
                     break;
                 case "1":
@@ -1482,17 +1481,78 @@ namespace Dungeon_Valley_Explorer
                 case "Yes":
                     break;
                 case "2":
+                    RestartNewGame();
                     break;
                 case "No":
+                    RestartNewGame();
                     break;
                 case "3":
+                    tbInputArea.Text = "";
+                    lbOptions.Items.Clear();
+                    btInput.Click += new RoutedEventHandler(NewGameCharacterNameNaming);
                     break;
                 case "Change Name":
+                    tbInputArea.Text = "";
+                    lbOptions.Items.Clear();
+                    btInput.Click += new RoutedEventHandler(NewGameCharacterNameNaming);
                     break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
                     btInput.Click += new RoutedEventHandler(NewGameCharacterConfirming);
                     break;
+            }
+        }
+
+        public void RestartNewGame()
+        {
+            lbOptions.Items.Clear();
+            newPlayerHero.Passives.Clear();
+            newPlayerHero.BuffsDebuffs.Clear();
+            newPlayerHero.Skills.Clear();
+            newPlayerHero.Magics.Clear();
+            lbOptions.Items.Add("1. Fighter");
+            lbOptions.Items.Add("2. Hunter");
+            lbOptions.Items.Add("3. Wizard");
+            lbOptions.Items.Add("4. Paladin");
+            lbOptions.Items.Add("5. Bounty Hunter");
+            lbOptions.Items.Add("6. Warlock");
+            btInput.Click += new RoutedEventHandler(NewGameCharacterClassSelection);
+        }
+
+        public void NewGameStart()
+        {
+            heroes.Add(newPlayerHero);
+            party.Add(newPlayerHero);
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                weaponsImproved.Add(weapon.WeaponName, 0);
+                weaponsObtained.Add(weapon.WeaponName, false);
+            }
+            foreach(Weapon weapon in heroes[0].Weapons)
+            {
+                weaponsObtained[weapon.WeaponName] = true;
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                armorsImproved.Add(armor.ArmorName, 0);
+                armorsObtained.Add(armor.ArmorName, false);
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
+                armorsObtained[armor.ArmorName] = true;
+            }
+            foreach (Consumable consumable in Initializer.consumables)
+            {
+                consumables.Add(consumable.ConsumableName, 0);
+                consumablesUnlocked.Add(consumable.ConsumableName, false);
+            }
+            foreach (Dungeon dungeon in Initializer.dungeons)
+            {
+                dungeonsCompleted.Add(dungeon.DungeonName, false);
+            }
+            foreach (string quest in quests)
+            {
+                questsCompleted.Add(quest, false);
             }
         }
 
