@@ -2320,7 +2320,31 @@ namespace Dungeon_Valley_Explorer
             }
             else
             {
+                List<string> purchasableWeaponsName = new List<string>(purchasableWeapons.Select(x => x.WeaponName));
+                if (purchasableWeaponsName.Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+                {
+                    if (purchasableWeaponsName.Contains(tbInputArea.Text) == true)
+                    {
 
+                    }
+                    else
+                    {
+                        try
+                        {
+
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                }
+                else
+                {
+                    tbInputArea.Text = "";
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(BlacksmithBuyWeaponChooseWeapon);
+                }
             }
         }
 
