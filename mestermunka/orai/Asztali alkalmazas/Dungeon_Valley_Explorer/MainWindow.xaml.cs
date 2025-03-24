@@ -73,6 +73,9 @@ namespace Dungeon_Valley_Explorer
 
         bool ShortDisplayNames = false;
 
+
+        List<Weapon> purchasableWeapons = new List<Weapon>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -110,10 +113,15 @@ namespace Dungeon_Valley_Explorer
             EnterTown();*/
 
             lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Tip: To check if you have all the game assets downloaded just delete the GameAssets folder and download everything again.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Tip: To play with cloud saving you need to login to an account through the Select Profile option.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Tip: To progress write text based on the options on the far left into the area at the bottom of the window or select an option on the far left then press the input button. (This can be the number or the option as well example:'1'. 'Offline play')");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Tip: To learn more about most options you can type '?' to get a short explanation.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
 
             lbOptions.Items.Add("1. Offline play");
             lbOptions.Items.Add("2. Select Profile");
@@ -167,9 +175,13 @@ namespace Dungeon_Valley_Explorer
         public void ExplainOfflineLoginAddProfileOption()
         {
             lbDisplay.Items.Add("Offline play allows you to play without an account on this computer.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Select Profile allows you to select an already added profile to use the cloud save feature so that you can access your saves from different computers.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Add Profile allows you to add a existing account from our database so that you can create saves that have access to cloud saving and get access to existing cloud saves.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Options allows you to change some things about the game like for example change the color from black to white.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
             tbInputArea.Text = "";
         }
@@ -195,6 +207,7 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add($"2. Shortened Names ({ShortDisplayNames})");
             lbOptions.Items.Add("3. Back");
             lbDisplay.Items.Add("Currently you can only change from dark mode to light mode or vice versa.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(MainMenuOptionsOptions);
         }
 
@@ -234,9 +247,13 @@ namespace Dungeon_Valley_Explorer
         public void ExplainMainMenuOptionsOptions()
         {
             lbDisplay.Items.Add("Change colors will change everything from black to white and vice versa.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Shortened Names will make the friendly npcs and the hero use their first names when written onto a line. The true and false next to it shows the current state of the option. (Cuts off the name after the first 'Space' it finds)");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Back will take you back to the first option.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("There will also be more fun little things that can be change from here. (But these won't be priority)");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(MainMenuOptionsOptions);
             tbInputArea.Text = "";
         }
@@ -296,6 +313,7 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbDisplay.Items.Add("Please select a save from the left or start a new game.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbOptions.Items.Add("1. New Game");
             lbOptions.Items.Add("2. Back");
             GetProfileSaves();
@@ -312,7 +330,6 @@ namespace Dungeon_Valley_Explorer
             }
             else if (tbInputArea.Text == "1" || tbInputArea.Text == "New Game")
             {
-                // This needs to be finished later ---------------------------------------------------------------------
                 CreateNewGame();
             }
             else if (tbInputArea.Text == "2" || tbInputArea.Text == "Back")
@@ -331,9 +348,6 @@ namespace Dungeon_Valley_Explorer
                     {
                         files.Add(tbInputArea.Text);
                         lbOptions.Items.Clear();
-
-                        // This needs to be finished later -------------------------------------------------------------
-                        LoadExistingSave();
                         EnterTown();
                     }
                     else
@@ -343,8 +357,6 @@ namespace Dungeon_Valley_Explorer
                             int savesIndex = Convert.ToInt32(tbInputArea.Text) - 3;
                             files.Add(tempSaves[savesIndex]);
                             lbOptions.Items.Clear();
-
-                            // This needs to be finished later ---------------------------------------------------------
                             LoadExistingSave();
                             EnterTown();
                         }
@@ -368,8 +380,11 @@ namespace Dungeon_Valley_Explorer
         public void ExplainOfflinePlayChooseSave()
         {
             lbDisplay.Items.Add("New game will start a new game that you can use through Offline play later and load from your local saves");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Back will take you back to the first option.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("All other options are saves from your local Offline folder.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             tbInputArea.Text = "";
         }
 
@@ -388,13 +403,13 @@ namespace Dungeon_Valley_Explorer
             if (lbOptions.Items.IsEmpty == true)
             {
                 lbDisplay.Items.Add("There are no profiles added to the game yet, please add a profile through the Add Profile option to add a profile or choose Offline play and play using the local saves.");
-
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                 ReturnToOfflineSelectProfileAddProfileOption();
             }
             else
             {
                 lbDisplay.Items.Add("Please select a profile from the left.");
-
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                 btInput.Click += new RoutedEventHandler(SelectProfileChooseProfile);
             }
         }
@@ -416,6 +431,7 @@ namespace Dungeon_Valley_Explorer
                         
                         folders.Add(tbInputArea.Text);
                         lbDisplay.Items.Add("Will you login with this profile? You can also write 'Back' to cancel.");
+                        lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                         lbOptions.Items.Clear();
                         lbOptions.Items.Add("1. Login");
                         lbOptions.Items.Add("2. Back");
@@ -429,6 +445,7 @@ namespace Dungeon_Valley_Explorer
                             int profileIndex = Convert.ToInt32(tbInputArea.Text)-1;
                             folders.Add(tempProfiles[profileIndex]);
                             lbDisplay.Items.Add("Will you login with this profile? You can also write 'Back' to cancel.");
+                            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                             lbOptions.Items.Clear();
                             lbOptions.Items.Add("1. Login");
                             lbOptions.Items.Add("2. Back");
@@ -455,6 +472,7 @@ namespace Dungeon_Valley_Explorer
         public void ExplainSelectProfileChooseProfile()
         {
             lbDisplay.Items.Add("Each option is a profile added to the game, and by choosing one of them you can login to them and use cloud saving to access saves from our database from anywhere.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             tbInputArea.Text = "";
         }
 
@@ -470,6 +488,7 @@ namespace Dungeon_Valley_Explorer
                     tbInputArea.Text = "";
                     lbOptions.Items.Clear();
                     lbDisplay.Items.Add("To login to a profile you will have to first write down your email then write down your password into the textbox and click the input button after both the email and the password. (You can also write 'Back' to go back.).");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     btInput.Click += new RoutedEventHandler(SelectProfileEmail);
                     break;
                 case "2":
@@ -483,6 +502,7 @@ namespace Dungeon_Valley_Explorer
                     tbInputArea.Text = "";
                     lbOptions.Items.Clear();
                     lbDisplay.Items.Add("To login to a profile you will have to first write down your email then write down your password into the textbox and click the input button after both the email and the password. (You can also write 'Back' to go back.).");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     btInput.Click += new RoutedEventHandler(SelectProfileEmail);
                     break;
                 case "Back":
@@ -502,7 +522,9 @@ namespace Dungeon_Valley_Explorer
         public void ExplainSelectProfileLoginOrBack()
         {
             lbDisplay.Items.Add("Login will allow you to try and access saves that have cloud save compatibility.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Back will take you back to the first option.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             tbInputArea.Text = "";
             btInput.Click += new RoutedEventHandler(SelectProfileLoginOrBack);
         }
@@ -527,6 +549,7 @@ namespace Dungeon_Valley_Explorer
             {
                 addEmail = tbInputArea.Text;
                 lbDisplay.Items.Add("Now please write down the password.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                 btInput.Click += new RoutedEventHandler(SelectProfilePassword);
                 tbInputArea.Text = "";
             }
@@ -570,6 +593,7 @@ namespace Dungeon_Valley_Explorer
                 if (lbOptions.Items.IsEmpty == true && foundProfile == true)
                 {
                     lbDisplay.Items.Add("No saves were detected for this profile please start a new game and get to the town to create a cloud save for later use.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     lbOptions.Items.Add("1. New Game");
                     lbOptions.Items.Add("2. Log out");
                     btInput.Click += new RoutedEventHandler(SelectProfileCreateSave);
@@ -577,6 +601,7 @@ namespace Dungeon_Valley_Explorer
                 else if (foundProfile == true)
                 {
                     lbDisplay.Items.Add("Please select a save from the left or start a new game.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     lbOptions.Items.Clear();
                     tempSaves.Clear();
                     lbOptions.Items.Add("1. New Game");
@@ -624,8 +649,6 @@ namespace Dungeon_Valley_Explorer
             }
             else if (tbInputArea.Text == "1" || tbInputArea.Text == "New Game")
             {
-
-                // This needs to be finished later ---------------------------------------------------------------------
                 CreateNewGame();
             }
             else if (tbInputArea.Text == "2" || tbInputArea.Text == "Log out")
@@ -645,8 +668,6 @@ namespace Dungeon_Valley_Explorer
                     {
                         files.Add(tbInputArea.Text);
                         lbOptions.Items.Clear();
-
-                        // This needs to be finished later -------------------------------------------------------------
                         LoadExistingSave();
                         EnterTown();
                     }
@@ -657,8 +678,6 @@ namespace Dungeon_Valley_Explorer
                             int savesIndex = Convert.ToInt32(tbInputArea.Text) - 3;
                             files.Add(tempSaves[savesIndex]);
                             lbOptions.Items.Clear();
-
-                            // This needs to be finished later ---------------------------------------------------------
                             LoadExistingSave();
                             EnterTown();
                         }
@@ -682,8 +701,11 @@ namespace Dungeon_Valley_Explorer
         public void ExplainSelectProfileChooseSave()
         {
             lbDisplay.Items.Add("New game will start a new game that you can use for cloud saves later and load from here as well.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Log out will take you back to the first option and remove the selected profile selection meaning you will have to login to it again.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("All other options are saves from your selected profile.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             tbInputArea.Text = "";
         }
 
@@ -697,7 +719,6 @@ namespace Dungeon_Valley_Explorer
                     btInput.Click += new RoutedEventHandler(SelectProfileCreateSave);
                     break;
                 case "1":
-                    // This needs to be finished later -----------------------------------------------------------------
                     CreateNewGame();
                     break;
                 case "2":
@@ -708,7 +729,6 @@ namespace Dungeon_Valley_Explorer
                     ReturnToOfflineSelectProfileAddProfileOption();
                     break;
                 case "New game":
-                    // This needs to be finished later -----------------------------------------------------------------
                     CreateNewGame();
                     break;
                 case "Log out":
@@ -728,7 +748,9 @@ namespace Dungeon_Valley_Explorer
         public void ExplainSelectProfileCreateSave()
         {
             lbDisplay.Items.Add("New game will start a new game that you can use for cloud saves later and load from here as well.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Log out will take you back to the first option and remove the selected profile selection meaning you will have to login to it again.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             tbInputArea.Text = "";
         }
 
@@ -740,6 +762,7 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbDisplay.Items.Add("To add a profile you will have to first write down your email then write down your password into the textbox and click the input button after both the email and the password. (You can also write 'Back' to go back.).");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(AddProfileEmail);
             lbOptions.Items.Clear();
         }
@@ -764,6 +787,7 @@ namespace Dungeon_Valley_Explorer
             {
                 addEmail = tbInputArea.Text;
                 lbDisplay.Items.Add("Now please write down the password.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                 btInput.Click += new RoutedEventHandler(AddProfilePassword);
                 tbInputArea.Text = "";
             }
@@ -780,6 +804,7 @@ namespace Dungeon_Valley_Explorer
                 default:
                     addPassword = tbInputArea.Text;
                     lbDisplay.Items.Add($"Are you sure you want to add this profile? (Email: {addEmail},Password: {addPassword})");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     tbInputArea.Text = "";
                     lbOptions.Items.Add("1. Yes");
                     lbOptions.Items.Add("2. No");
@@ -920,8 +945,11 @@ namespace Dungeon_Valley_Explorer
         public void ExplainAddProfileConfirm()
         {
             lbDisplay.Items.Add("Yes will try to get the profile from our and then download all saves that exist there.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("No will cancel the Add Profile process and give you the previous 3 options.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Change informatoin will send you back to the email adding step.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(AddProfileConfirm);
             tbInputArea.Text = "";
         }
@@ -945,8 +973,11 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Clear();
             tbInputArea.Text = "";
             lbDisplay.Items.Add("'Back' and other options of the same nature will no longer exist for a lot of options so keep in mind that you will not be able to cancel and back out of options if you don't see that option on the left.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Before starting the game you need to make a character of your own.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("The first step is to choose a class for yourself and keep in mind that you can't change this choice for a long time.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbOptions.Items.Add("1. Fighter");
             lbOptions.Items.Add("2. Hunter");
             lbOptions.Items.Add("3. Wizard");
@@ -1060,12 +1091,19 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbDisplay.Items.Add("Each class option will determine your characters basic role in the game as well as your starting stats.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Fighter is a basic melee class that focuses on a balanced build with a focus on physical damage output.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Hunter is a basic ranged class that focuses on a more frail build with a focus on physical damage output with devastating crits.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Wizard is a basic magic class that focuses on magic versatility with a focus on versatile use of magic for both offense and support.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Paladin is a slightly more advanced class that focuses on tanking and bursts of damage they rely on heavy defense and mostly holy magic.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Bounty Hunter is a more advanced class that focuses on marking and targeting enemies they work alone but are stronger with a team.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Warlock is a slightly more advanced class that focuses on destructive magic they use powerful magic at the cost of survivability.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(NewGameCharacterClassSelection);
         }
 
@@ -1074,6 +1112,7 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbDisplay.Items.Add("Next you will choose a background for your character. This is a passive that your character will recieve.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbOptions.Items.Add("1. Adventurer");
             lbOptions.Items.Add("2. Noble");
             lbOptions.Items.Add("3. Merchant");
@@ -1132,10 +1171,15 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbDisplay.Items.Add("Each background will act as a passive bonus for the character.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Adventurer will give you a small stat buff, rest bonus and a experience gain bonus.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Noble will give you starting gold, higher starting MP and discounts in shops.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Merchant will give you a passive gold gain based on your level and merchants will offer more items for sale.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Blacksmith gives you a blunt damage bonus and gives you the ability to upgrade armors and weapons at the blacksmith with a heavy discount but a with a small chance to fail.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(NewGameCharacterBackgroundSelection);
         }
 
@@ -1165,6 +1209,7 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbDisplay.Items.Add("Now you will choose a race for your character. This affects mostly your damage resistances.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbOptions.Items.Add("1. Human");
             lbOptions.Items.Add("2. Elf");
             lbOptions.Items.Add("3. Dwarf");
@@ -1353,10 +1398,13 @@ namespace Dungeon_Valley_Explorer
                         output += $"0 Null damage resistances ";
                     }
                     lbDisplay.Items.Add(output);
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                 }
             }
             lbDisplay.Items.Add("Humans receive increased exp gain, Elves receive extra mana, mana regen and darksight that makes them better for traps.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Dwarves receive extra health and defense, Halflinges receive less health but are immune to some debuffs and benefit more from crits.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(NewGameCharacterRaceSelection);
         }
 
@@ -1384,8 +1432,11 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbDisplay.Items.Add("The final touch is to name your character. With the shortened names option after the first space input the name will be cut off while it is used in text.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("The name can only be 100 characters long at most and you can't have repeat names in our cloud saves because it is going to overwrite the old one when saving, but this is not a problem with offline play.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("In a future update we will make a workaround for this.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             try
             {
                 if (folders.Last() != folders[10])
@@ -1419,6 +1470,7 @@ namespace Dungeon_Valley_Explorer
                     }
                     mySqlConnection.Close();
                     lbDisplay.Items.Add($"The currently used names: {names}");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                 }
             }
             catch
@@ -1460,6 +1512,7 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbDisplay.Items.Add($"Are you sure you want this character? (name:{newPlayerHero.HeroName},display name:{newPlayerHero.DisplayName},class:{newPlayerHero.heroClass},race:{newPlayerHero.Race.RaceName},background:{newPlayerHero.Background})");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbOptions.Items.Add("1. Yes");
             lbOptions.Items.Add("2. No");
             lbOptions.Items.Add("3. Change Name");
@@ -1474,6 +1527,7 @@ namespace Dungeon_Valley_Explorer
                 case "?":
                     tbInputArea.Text = "";
                     lbDisplay.Items.Add("There is nothing to explain here.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     btInput.Click += new RoutedEventHandler(NewGameCharacterConfirming);
                     break;
                 case "1":
@@ -1559,6 +1613,7 @@ namespace Dungeon_Valley_Explorer
                 questsCompleted.Add(quest, false);
             }
             lbDisplay.Items.Add("Do you want to do the tutorial?");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbOptions.Items.Add("1. Yes");
             lbOptions.Items.Add("2. No");
             btInput.Click += new RoutedEventHandler(StartNewGameTutorialQuestion);
@@ -1595,6 +1650,7 @@ namespace Dungeon_Valley_Explorer
         public void StartTutorial()
         {
             //Finish this later ----------------------------------------------------------------------------------------
+            EnterTown();
         }
 
         //New Game ends here -------------------------------------------------------------------------------------------
@@ -1881,7 +1937,10 @@ namespace Dungeon_Valley_Explorer
         {
             lbOptions.Items.Add("1. Quit Game");
             lbOptions.Items.Add("2. Save Game");
-            lbOptions.Items.Add("3. ");
+            lbOptions.Items.Add("3. Blacksmith");
+            lbOptions.Items.Add("4. Tavern");
+            lbOptions.Items.Add("5. Adventurers Guild");
+            lbOptions.Items.Add("6. Enter Dungeon");
         }
 
         public void MainTownOption(object sender, RoutedEventArgs e)
@@ -1895,14 +1954,32 @@ namespace Dungeon_Valley_Explorer
                 case "1":
                     QuitGame();
                     break;
-                case "2":
-                    SaveGame();
-                    break;
                 case "Quit Game":
                     QuitGame();
                     break;
+                case "2":
+                    SaveGame();
+                    break;
                 case "Save Game":
                     SaveGame();
+                    break;
+                case "3":
+                    BlacksmithEnter();
+                    break;
+                case "Blacksmith":
+                    BlacksmithEnter();
+                    break;
+                case "4":
+                    break;
+                case "Tavern":
+                    break;
+                case "5":
+                    break;
+                case "Adventurers Guild":
+                    break;
+                case "6":
+                    break;
+                case "Enter Dungeon":
                     break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
@@ -1913,9 +1990,18 @@ namespace Dungeon_Valley_Explorer
 
         public void ExplainMainTownOption()
         {
-            lbDisplay.Items.Add("EXPLANATION: Guit Game will close the game without saving if you are playing through the New Game option, but will save automatically if you have loaded an existing save to play.");
-            lbDisplay.Items.Add("EXPLANATION: Save Game will allow you to save the game without closing the game and it will allow you to create a new save as well so that you can avoid overwriting an existing save.");
-            lbDisplay.Items.Add("EXPLANATION: ");
+            lbDisplay.Items.Add("EXPLANATION: The Guit Game option will close the game without saving if you are playing through the New Game option, but will save automatically if you have loaded an existing save to play.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbDisplay.Items.Add("EXPLANATION: The Save Game option will allow you to save the game without closing the game and it will allow you to create a new save as well so that you can avoid overwriting an existing save.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbDisplay.Items.Add("EXPLANATION: The Blacksmith can help you make new pieces of armors and weapons for your explorations and he can also upgrade any existing weapons and armors that you have so that they can become stronger.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbDisplay.Items.Add("EXPLANATION: The Tavern is where you can claim the obtained experience for your characters so that they can level up and become stronger. You may also buy meals that give a buff to your party.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbDisplay.Items.Add("EXPLANATION: The Adventurers Guild is where you can change your party composition (who is in the party and where) and start some of the quests.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbDisplay.Items.Add("EXPLANATION: The Enter Dungeon option is how you enter a dungeon to explore and fight in. Quests cand also be undertaken from here when found and started somewhere else in the game.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             tbInputArea.Text = "";
             btInput.Click += new RoutedEventHandler(MainTownOption);
         }
@@ -1949,6 +2035,7 @@ namespace Dungeon_Valley_Explorer
             if (files.Last() != files[13])
             {
                 lbDisplay.Items.Add($"GAME: Will you overwrite the current save ({files.Last()}) or create a new save?");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                 lbOptions.Items.Add("1. Overwrite Save");
                 lbOptions.Items.Add("2. New Save");
                 lbOptions.Items.Add("3. Cancel");
@@ -1957,6 +2044,7 @@ namespace Dungeon_Valley_Explorer
             else
             {
                 lbDisplay.Items.Add("GAME: To save the game you first need to give a name to the save.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                 SaveGameNewSave();
             }
         }
@@ -1998,8 +2086,11 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbDisplay.Items.Add("EXPLANATION: Overwrite Save will swap out the contents of the save that you opened in the beginning.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("EXPLANATION: New Save will create a new text file in the current profile and create a save in that new file for later use.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("EXPLANATION: Cancel will stop the Save Game process and take you back to the town.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(SaveGameNewOrNot);
         }
 
@@ -2034,6 +2125,7 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbDisplay.Items.Add("GAME: While writing a name for the save do keep in mind that the name will be given the '.txt' extension to make it a text file. (you can't name it '1', 'Cancel' or any file that is in the GameAssets folder)");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbOptions.Items.Add("1. Cancel");
             btInput.Click += new RoutedEventHandler(NewSaveNaming);
         }
@@ -2098,10 +2190,168 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbDisplay.Items.Add("EXPLANATION: Cancel will stop the Save Game process and take you back to the town.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(NewSaveNaming);
         }
 
         //Saving ends here ---------------------------------------------------------------------------------------------
+
+        //Blacksmith starts here ---------------------------------------------------------------------------------------
+
+        public void BlacksmithEnter()
+        {
+            lbOptions.Items.Clear();
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("Blacksmith: Welcome customer and how can I help you today?");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbOptions.Items.Add("1. Buy Weapon");
+            lbOptions.Items.Add("2. Buy Armor");
+            lbOptions.Items.Add("3. Improve Weapon");
+            lbOptions.Items.Add("4. Improve Armor");
+            lbOptions.Items.Add("5. Change Equipment");
+            lbOptions.Items.Add("6. Leave");
+            btInput.Click += new RoutedEventHandler(BlacksmithMainOption);
+        }
+
+        public void BlacksmithMainOption(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(BlacksmithMainOption);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainBlacksmithMainOption();
+                    break;
+                case "1":
+                    BlacksmithBuyWeapon();
+                    break;
+                case "Buy Weapon":
+                    BlacksmithBuyWeapon();
+                    break;
+                case "2":
+                    break;
+                case "Buy Armor":
+                    break;
+                case "3":
+                    break;
+                case "Improve Weapon":
+                    break;
+                case "4":
+                    break;
+                case "Improve Armor":
+                    break;
+                case "5":
+                    break;
+                case "Change Equipment":
+                    break;
+                case "6":
+                    BlacksmithLeave();
+                    break;
+                case "Leave":
+                    BlacksmithLeave();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(BlacksmithMainOption);
+                    break;
+            }
+        }
+
+        public void ExplainBlacksmithMainOption()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("EXPLANATION: Buy Weapon allows you to look at the unowned weapons that you can buy and then decide on buying or not buying from the weapons.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbDisplay.Items.Add("EXPLANATION: Buy Armor allows you to look at the unowned armors that you can buy and then decide on buying or not buying from the armors.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbDisplay.Items.Add("EXPLANATION: Improve Weapon allows you to look at the owned weapons and improve their ATK stat.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbDisplay.Items.Add("EXPLANATION: Improve Armor allows you to look at the owned armors and improve their DEF and MDEF stat.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbDisplay.Items.Add("EXPLANATION: Change Equipment allows you to change each piece of weapon or armor equipped on a character and change it to another one.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbDisplay.Items.Add("EXPLANATION: Leave allows you to leave the blacksmith alone to do his business.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(BlacksmithMainOption);
+        }
+
+        //Buy Weapon starts here ---------------------------------------------------------------------------------------
+
+        public void BlacksmithBuyWeaponWeapons()
+        {
+            int counter = 2;
+            purchasableWeapons.Clear();
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weaponsObtained[weapon.WeaponName] == false && weapon.Price > 0)
+                {
+                    lbOptions.Items.Add($"{counter}. {weapon.WeaponName}");
+                    counter++;
+                    purchasableWeapons.Add(weapon);
+                }
+            }
+        }
+
+        public void BlacksmithBuyWeapon()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            lbDisplay.Items.Add("Blacksmith: Here...");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            BlacksmithBuyWeaponWeapons();
+            lbDisplay.Items.Add("Blacksmith: ... is the list. Anything that catches your eyes?");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(BlacksmithBuyWeaponChooseWeapon);
+        }
+        
+        public void BlacksmithBuyWeaponChooseWeapon(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(BlacksmithBuyWeaponChooseWeapon);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: You can cancel the process by using the Cancel option or first inspect a weapon then buy said weapon by selecting one of the available weapons from the left.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(BlacksmithBuyWeaponChooseWeapon);
+            }
+            else if (tbInputArea.Text == "1" ||  tbInputArea.Text == "Cancel")
+            {
+                BlacksmithMainOptionReEntry();
+            }
+            else
+            {
+
+            }
+        }
+
+        //Buy Weapon ends here -----------------------------------------------------------------------------------------
+
+        public void BlacksmithMainOptionReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Buy Weapon");
+            lbOptions.Items.Add("2. Buy Armor");
+            lbOptions.Items.Add("3. Improve Weapon");
+            lbOptions.Items.Add("4. Improve Armor");
+            lbOptions.Items.Add("5. Change Equipment");
+            lbOptions.Items.Add("6. Leave");
+            lbDisplay.Items.Add("Blacksmith: Nothing interesting i assume, but not to worry there is always more!");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(BlacksmithMainOption);
+        }
+
+        public void BlacksmithLeave()
+        {
+            lbDisplay.Items.Add("Blacksmith: I hope we will see each other again and stay safe out there now!");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbOptions.Items.Clear();
+            tbInputArea.Text = "";
+            MainTownOptions();
+            btInput.Click += new RoutedEventHandler(MainTownOption);
+        }
+
+        //Blacksmith ends here -----------------------------------------------------------------------------------------
 
         //Town ends here -----------------------------------------------------------------------------------------------
     }
