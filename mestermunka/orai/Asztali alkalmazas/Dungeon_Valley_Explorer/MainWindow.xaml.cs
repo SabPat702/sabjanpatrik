@@ -75,7 +75,11 @@ namespace Dungeon_Valley_Explorer
 
 
         List<Weapon> purchasableWeapons = new List<Weapon>();
-
+        Weapon buyWeaponSelectedWeapon = new Weapon();
+        List<Armor> purchasableArmors = new List<Armor>();
+        Armor buyArmorSelectedArmor = new Armor();
+        List<Weapon> improvableWeapons = new List<Weapon>();
+        Weapon improveWeaponSelectedWeapon = new Weapon();
         public MainWindow()
         {
             InitializeComponent();
@@ -1687,11 +1691,14 @@ namespace Dungeon_Valley_Explorer
                     for (int i = 0; i < Initializer.weapons.Count; i++)
                     {
                         weaponsImproved.Add(Initializer.weapons[i].WeaponName, Convert.ToInt32(weaponsImprovementcutter[i]));
+                        Initializer.weapons[i].ATK += Convert.ToInt32(weaponsImprovementcutter[i]);
                     }
                     string[] armorsImprovementcutter = linecutter[8].Split('%');
                     for (int i = 0; i < Initializer.armors.Count; i++)
                     {
                         armorsImproved.Add(Initializer.armors[i].ArmorName, Convert.ToInt32(armorsImprovementcutter[i]));
+                        Initializer.armors[i].DEF += Convert.ToInt32(armorsImprovementcutter[i]);
+                        Initializer.armors[i].MDEF += Convert.ToInt32(armorsImprovementcutter[i]);
                     }
                     string[] weaponsObtainedcutter = linecutter[9].Split('%');
                     for (int i = 0; i < Initializer.weapons.Count; i++)
@@ -2228,12 +2235,16 @@ namespace Dungeon_Valley_Explorer
                     BlacksmithBuyWeapon();
                     break;
                 case "2":
+                    BlacksmithBuyArmor();
                     break;
                 case "Buy Armor":
+                    BlacksmithBuyArmor();
                     break;
                 case "3":
+                    BlacksmithImproveWeapon();
                     break;
                 case "Improve Weapon":
+                    BlacksmithImproveWeapon();
                     break;
                 case "4":
                     break;
@@ -2316,6 +2327,7 @@ namespace Dungeon_Valley_Explorer
             }
             else if (tbInputArea.Text == "1" ||  tbInputArea.Text == "Cancel")
             {
+                purchasableWeapons.Clear();
                 BlacksmithMainOptionReEntry();
             }
             else
@@ -2325,17 +2337,30 @@ namespace Dungeon_Valley_Explorer
                 {
                     if (purchasableWeaponsName.Contains(tbInputArea.Text) == true)
                     {
-
+                        foreach(Weapon weapon in purchasableWeapons)
+                        {
+                            if (weapon.WeaponName == tbInputArea.Text)
+                            {
+                                buyWeaponSelectedWeapon = weapon;
+                            }
+                        }
+                        tbInputArea.Text = "";
+                        BlacksmithBuyWeaponChosenWeapon();
                     }
                     else
                     {
                         try
                         {
-
+                            int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                            buyWeaponSelectedWeapon = purchasableWeapons[index];
+                            tbInputArea.Text = "";
+                            BlacksmithBuyWeaponChosenWeapon();
                         }
                         catch
                         {
-
+                            tbInputArea.Text = "";
+                            MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                            btInput.Click += new RoutedEventHandler(BlacksmithBuyWeaponChooseWeapon);
                         }
                     }
                 }
@@ -2348,8 +2373,419 @@ namespace Dungeon_Valley_Explorer
             }
         }
 
+        public void BlacksmithBuyWeaponChosenWeapon()
+        {
+            string output = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            lbOptions.Items.Add("2. Buy");
+            lbDisplay.Items.Add($"Weapon:{buyWeaponSelectedWeapon.WeaponName} ATK:{buyWeaponSelectedWeapon.ATK} Crit:{buyWeaponSelectedWeapon.CritChance}% {buyWeaponSelectedWeapon.CritDamage}x Damage type:{buyWeaponSelectedWeapon.DamageType} Range:{buyWeaponSelectedWeapon.Range} Skill compatibility:{buyWeaponSelectedWeapon.SkillCompatibility} Unique:{buyWeaponSelectedWeapon.Unique} Price:{buyWeaponSelectedWeapon.Price}");
+            for (int i = 0; i < buyWeaponSelectedWeapon.SpecialEffects.Count; i++)
+            {
+                if (i < buyWeaponSelectedWeapon.SpecialEffects.Count - 1)
+                {
+                    output += buyWeaponSelectedWeapon.SpecialEffects[i].SpecialEffectName + ",";
+                }
+                else
+                {
+                    output += buyWeaponSelectedWeapon.SpecialEffects[i];
+                }
+            }
+            lbDisplay.Items.Add($"Special effects:{output}");
+            lbDisplay.Items.Add($"Description:{buyWeaponSelectedWeapon.Description}");
+            lbDisplay.Items.Add($"Current gold:{Gold}");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(BlacksmithBuyWeaponChosenWeaponBuyOrCancel);
+        }
+
+        public void BlacksmithBuyWeaponChosenWeaponBuyOrCancel(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(BlacksmithBuyWeaponChosenWeaponBuyOrCancel);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    lbDisplay.Items.Add("Blacksmith: You buying or not?");
+                    btInput.Click += new RoutedEventHandler(BlacksmithBuyWeaponChosenWeaponBuyOrCancel);
+                    break;
+                case "1":
+                    lbDisplay.Items.Add("Blacksmith: Not what you're looking for? Then just look around some more.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    BlacksmithBuyWeaponChooseWeaponReEntry();
+                    break;
+                case "Cancel":
+                    lbDisplay.Items.Add("Blacksmith: Not what you're looking for? Then just look around some more.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    BlacksmithBuyWeaponChooseWeaponReEntry();
+                    break;
+                case "2":
+                    BlacksmithBuyWeaponChosenWeaponBought();
+                    break;
+                case "Buy":
+                    BlacksmithBuyWeaponChosenWeaponBought();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(BlacksmithBuyWeaponChosenWeaponBuyOrCancel);
+                    break;
+            }
+        }
+
+        public void BlacksmithBuyWeaponChosenWeaponBought()
+        {
+            if (Gold - buyWeaponSelectedWeapon.Price >= 0)
+            {
+                weaponsObtained[buyWeaponSelectedWeapon.WeaponName] = true;
+                lbDisplay.Items.Add("Blacksmith: A fine choice! I am sure it won't disappoint you later.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                purchasableWeapons.Remove(buyWeaponSelectedWeapon);
+            }
+            else
+            {
+                lbDisplay.Items.Add("Blacksmith: I'm afraid you can't afford this right now. Why not look at something else?");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            }
+            BlacksmithBuyWeaponChooseWeaponReEntry();
+        }
+
+        public void BlacksmithBuyWeaponChooseWeaponReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            BlacksmithBuyWeaponWeapons();
+            btInput.Click += new RoutedEventHandler(BlacksmithBuyWeaponChooseWeapon);
+        }
+
         //Buy Weapon ends here -----------------------------------------------------------------------------------------
 
+        //Buy Armor starts here ----------------------------------------------------------------------------------------
+
+        public void BlacksmithBuyArmorArmors()
+        {
+            int counter = 2;
+            purchasableArmors.Clear();
+            foreach (Armor armor in Initializer.armors)
+            {
+                if (armorsObtained[armor.ArmorName] == false && armor.Price > 0)
+                {
+                    lbOptions.Items.Add($"{counter}. {armor.ArmorName}");
+                    counter++;
+                    purchasableArmors.Add(armor);
+                }
+            }
+        }
+
+        public void BlacksmithBuyArmor()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            lbDisplay.Items.Add("Blacksmith: Here...");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            BlacksmithBuyArmorArmors();
+            lbDisplay.Items.Add("Blacksmith: ... is the list. Anything that catches your eyes?");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(BlacksmithBuyArmorChooseArmor);
+        }
+
+        public void BlacksmithBuyArmorChooseArmor(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(BlacksmithBuyArmorChooseArmor);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: You can cancel the process by using the Cancel option or first inspect an armor then buy said armor by selecting one of the available armors from the left.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(BlacksmithBuyArmorChooseArmor);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                purchasableArmors.Clear();
+                BlacksmithMainOptionReEntry();
+            }
+            else
+            {
+                List<string> purchasableArmorsName = new List<string>(purchasableArmors.Select(x => x.ArmorName));
+                if (purchasableArmorsName.Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+                {
+                    if (purchasableArmorsName.Contains(tbInputArea.Text) == true)
+                    {
+                        foreach (Armor armor in purchasableArmors)
+                        {
+                            if (armor.ArmorName == tbInputArea.Text)
+                            {
+                                buyArmorSelectedArmor = armor;
+                            }
+                        }
+                        tbInputArea.Text = "";
+                        BlacksmithBuyArmorChosenArmor();
+                    }
+                    else
+                    {
+                        try
+                        {
+                            int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                            buyArmorSelectedArmor = purchasableArmors[index];
+                            tbInputArea.Text = "";
+                            BlacksmithBuyArmorChosenArmor();
+                        }
+                        catch
+                        {
+                            tbInputArea.Text = "";
+                            MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                            btInput.Click += new RoutedEventHandler(BlacksmithBuyArmorChooseArmor);
+                        }
+                    }
+                }
+                else
+                {
+                    tbInputArea.Text = "";
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(BlacksmithBuyArmorChooseArmor);
+                }
+            }
+        }
+
+        public void BlacksmithBuyArmorChosenArmor()
+        {
+            string output = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            lbOptions.Items.Add("2. Buy");
+            lbDisplay.Items.Add($"Armor:{buyArmorSelectedArmor.ArmorName} DEF:{buyArmorSelectedArmor.DEF} MDEF:{buyArmorSelectedArmor.MDEF} Slot:{buyArmorSelectedArmor.Type} Unique:{buyArmorSelectedArmor.Unique} Price:{buyArmorSelectedArmor.Price}");
+            for (int i = 0; i < buyArmorSelectedArmor.SpecialEffects.Count; i++)
+            {
+                if (i < buyArmorSelectedArmor.SpecialEffects.Count - 1)
+                {
+                    output += buyArmorSelectedArmor.SpecialEffects[i].SpecialEffectName + ",";
+                }
+                else
+                {
+                    output += buyArmorSelectedArmor.SpecialEffects[i];
+                }
+            }
+            lbDisplay.Items.Add($"Special effects:{output}");
+            lbDisplay.Items.Add($"Description:{buyArmorSelectedArmor.Description}");
+            lbDisplay.Items.Add($"Current gold:{Gold}");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(BlacksmithBuyArmorChosenArmorBuyOrCancel);
+        }
+
+        public void BlacksmithBuyArmorChosenArmorBuyOrCancel(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(BlacksmithBuyArmorChosenArmorBuyOrCancel);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    lbDisplay.Items.Add("Blacksmith: You buying or not?");
+                    btInput.Click += new RoutedEventHandler(BlacksmithBuyArmorChosenArmorBuyOrCancel);
+                    break;
+                case "1":
+                    lbDisplay.Items.Add("Blacksmith: Not what you're looking for? Then just look around some more.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    BlacksmithBuyArmorChooseArmorReEntry();
+                    break;
+                case "Cancel":
+                    lbDisplay.Items.Add("Blacksmith: Not what you're looking for? Then just look around some more.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    BlacksmithBuyArmorChooseArmorReEntry();
+                    break;
+                case "2":
+                    BlacksmithBuyArmorChosenArmorBought();
+                    break;
+                case "Buy":
+                    BlacksmithBuyArmorChosenArmorBought();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(BlacksmithBuyArmorChosenArmorBuyOrCancel);
+                    break;
+            }
+        }
+
+        public void BlacksmithBuyArmorChosenArmorBought()
+        {
+            if (Gold - buyArmorSelectedArmor.Price >= 0)
+            {
+                armorsObtained[buyArmorSelectedArmor.ArmorName] = true;
+                lbDisplay.Items.Add("Blacksmith: A fine choice! I am sure it won't disappoint you later.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                purchasableArmors.Remove(buyArmorSelectedArmor);
+            }
+            else
+            {
+                lbDisplay.Items.Add("Blacksmith: I'm afraid you can't afford this right now. Why not look at something else?");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            }
+            BlacksmithBuyArmorChooseArmorReEntry();
+        }
+
+        public void BlacksmithBuyArmorChooseArmorReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            BlacksmithBuyArmorArmors();
+            btInput.Click += new RoutedEventHandler(BlacksmithBuyArmorChooseArmor);
+        }
+
+        //Buy Armor ends here ------------------------------------------------------------------------------------------
+
+        //Improve Weapon starts here -----------------------------------------------------------------------------------
+
+        public void BlacksmithImproveWeaponWeapons()
+        {
+            int counter = 2;
+            improvableWeapons.Clear();
+            foreach (Weapon weapon in Initializer.weapons)
+            {
+                if (weaponsObtained[weapon.WeaponName] == true && weapon.WeaponName != "Unarmed")
+                {
+                    lbOptions.Items.Add($"{counter}. {weapon.WeaponName}");
+                    counter++;
+                    improvableWeapons.Add(weapon);
+                }
+            }
+        }
+
+        public void BlacksmithImproveWeapon()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            lbDisplay.Items.Add("Blacksmith: Here...");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            BlacksmithImproveWeaponWeapons();
+            lbDisplay.Items.Add("Blacksmith: ... is the list. What do you want me to improve?");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(BlacksmithImproveWeaponChooseWeapon);
+        }
+
+        public void BlacksmithImproveWeaponChooseWeapon(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(BlacksmithImproveWeaponChooseWeapon);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: You can cancel the process by using the Cancel option or first inspect a weapon then improve said weapon by selecting one of the available weapons from the left.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(BlacksmithImproveWeaponChooseWeapon);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                improvableWeapons.Clear();
+                BlacksmithMainOptionReEntry();
+            }
+            else
+            {
+                List<string> improvableWeaponsName = new List<string>(improvableWeapons.Select(x => x.WeaponName));
+                if (improvableWeaponsName.Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+                {
+                    if (improvableWeaponsName.Contains(tbInputArea.Text) == true)
+                    {
+                        foreach (Weapon weapon in improvableWeapons)
+                        {
+                            if (weapon.WeaponName == tbInputArea.Text)
+                            {
+                                improveWeaponSelectedWeapon = weapon;
+                            }
+                        }
+                        tbInputArea.Text = "";
+                        BlacksmithImproveWeaponChosenWeapon();
+                    }
+                    else
+                    {
+                        try
+                        {
+                            int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                            improveWeaponSelectedWeapon = improvableWeapons[index];
+                            tbInputArea.Text = "";
+                            BlacksmithImproveWeaponChosenWeapon();
+                        }
+                        catch
+                        {
+                            tbInputArea.Text = "";
+                            MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                            btInput.Click += new RoutedEventHandler(BlacksmithImproveWeaponChooseWeapon);
+                        }
+                    }
+                }
+                else
+                {
+                    tbInputArea.Text = "";
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(BlacksmithImproveWeaponChooseWeapon);
+                }
+            }
+        }
+
+        public void BlacksmithImproveWeaponChosenWeapon()
+        {
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            lbOptions.Items.Add("2. Improve");
+            lbDisplay.Items.Add($"Weapon:{improveWeaponSelectedWeapon.WeaponName} ATK:{improveWeaponSelectedWeapon.ATK + weaponsImproved[improveWeaponSelectedWeapon.WeaponName]} Improvements:{weaponsImproved[improveWeaponSelectedWeapon.WeaponName]} Price:{(weaponsImproved[improveWeaponSelectedWeapon.WeaponName] + 1) * improveWeaponSelectedWeapon.ATK}");
+            lbDisplay.Items.Add($"Current gold:{Gold}");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(BlacksmithImproveWeaponChosenWeaponImproveOrCancel);
+        }
+
+        public void BlacksmithImproveWeaponChosenWeaponImproveOrCancel(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(BlacksmithImproveWeaponChosenWeaponImproveOrCancel);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    lbDisplay.Items.Add("Blacksmith: You want it improved or not?");
+                    btInput.Click += new RoutedEventHandler(BlacksmithImproveWeaponChosenWeaponImproveOrCancel);
+                    break;
+                case "1":
+                    lbDisplay.Items.Add("Blacksmith: I can understand. It is a commitment after all sticking to one weapon.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    BlacksmithImproveWeaponChooseWeaponReEntry();
+                    break;
+                case "Cancel":
+                    lbDisplay.Items.Add("Blacksmith: I can understand. It is a commitment after all sticking to one weapon.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    BlacksmithImproveWeaponChooseWeaponReEntry();
+                    break;
+                case "2":
+                    BlacksmithImproveWeaponChosenWeaponImproved();
+                    break;
+                case "Improve":
+                    BlacksmithImproveWeaponChosenWeaponImproved();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(BlacksmithImproveWeaponChosenWeaponImproveOrCancel);
+                    break;
+            }
+        }
+
+        public void BlacksmithImproveWeaponChosenWeaponImproved()
+        {
+            if (Gold - (weaponsImproved[improveWeaponSelectedWeapon.WeaponName] + 1) * improveWeaponSelectedWeapon.ATK >= 0)
+            {
+                weaponsImproved[improveWeaponSelectedWeapon.WeaponName]++;
+                lbDisplay.Items.Add("Blacksmith: A fine choice! I am sure it won't disappoint you later.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+
+            }
+            else
+            {
+                lbDisplay.Items.Add("Blacksmith: I'm afraid you can't afford this right now. Why not look at something else?");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            }
+            BlacksmithImproveWeaponChooseWeaponReEntry();
+        }
+
+        public void BlacksmithImproveWeaponChooseWeaponReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            BlacksmithImproveWeaponWeapons();
+            btInput.Click += new RoutedEventHandler(BlacksmithImproveWeaponChooseWeapon);
+        }
+
+        //Improve Weapon ends here -------------------------------------------------------------------------------------
         public void BlacksmithMainOptionReEntry()
         {
             tbInputArea.Text = "";
