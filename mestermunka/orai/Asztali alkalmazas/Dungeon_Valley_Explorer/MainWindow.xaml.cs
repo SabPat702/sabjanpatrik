@@ -74,6 +74,7 @@ namespace Dungeon_Valley_Explorer
         bool ShortDisplayNames = false;
 
 
+        //Town Blacksmith variables ------------------------------------------------------------------------------------
         List<Weapon> purchasableWeapons = new List<Weapon>();
         Weapon buyWeaponSelectedWeapon = new Weapon();
         List<Armor> purchasableArmors = new List<Armor>();
@@ -82,6 +83,14 @@ namespace Dungeon_Valley_Explorer
         Weapon improveWeaponSelectedWeapon = new Weapon();
         List<Armor> improvableArmors = new List<Armor>();
         Armor improveArmorSelectedArmor = new Armor();
+        Hero selectedHero = new Hero();
+        Weapon selectedWeapon = new Weapon();
+        List<Weapon> selectableNewWeapons = new List<Weapon>();
+        Weapon selectedNewWeapon = new Weapon();
+        Armor selectedArmor = new Armor();
+        List<Armor> selectableNewArmors = new List<Armor>();
+        Armor selectedNewArmor = new Armor();
+        //Town Blacksmith variables ------------------------------------------------------------------------------------
         public MainWindow()
         {
             InitializeComponent();
@@ -2255,8 +2264,10 @@ namespace Dungeon_Valley_Explorer
                     BlacksmithImproveArmor();
                     break;
                 case "5":
+                    BlacksmithChangeEquipmentFirstStep();
                     break;
                 case "Change Equipment":
+                    BlacksmithChangeEquipmentFirstStep();
                     break;
                 case "6":
                     BlacksmithLeave();
@@ -2362,7 +2373,6 @@ namespace Dungeon_Valley_Explorer
                         }
                         catch
                         {
-                            tbInputArea.Text = "";
                             MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
                             btInput.Click += new RoutedEventHandler(BlacksmithBuyWeaponChooseWeapon);
                         }
@@ -2370,7 +2380,6 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    tbInputArea.Text = "";
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
                     btInput.Click += new RoutedEventHandler(BlacksmithBuyWeaponChooseWeapon);
                 }
@@ -2534,7 +2543,6 @@ namespace Dungeon_Valley_Explorer
                         }
                         catch
                         {
-                            tbInputArea.Text = "";
                             MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
                             btInput.Click += new RoutedEventHandler(BlacksmithBuyArmorChooseArmor);
                         }
@@ -2542,7 +2550,6 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    tbInputArea.Text = "";
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
                     btInput.Click += new RoutedEventHandler(BlacksmithBuyArmorChooseArmor);
                 }
@@ -2706,7 +2713,6 @@ namespace Dungeon_Valley_Explorer
                         }
                         catch
                         {
-                            tbInputArea.Text = "";
                             MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
                             btInput.Click += new RoutedEventHandler(BlacksmithImproveWeaponChooseWeapon);
                         }
@@ -2714,7 +2720,6 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    tbInputArea.Text = "";
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
                     btInput.Click += new RoutedEventHandler(BlacksmithImproveWeaponChooseWeapon);
                 }
@@ -2874,7 +2879,6 @@ namespace Dungeon_Valley_Explorer
                         }
                         catch
                         {
-                            tbInputArea.Text = "";
                             MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
                             btInput.Click += new RoutedEventHandler(BlacksmithImproveArmorChooseArmor);
                         }
@@ -2882,7 +2886,6 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    tbInputArea.Text = "";
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
                     btInput.Click += new RoutedEventHandler(BlacksmithImproveArmorChooseArmor);
                 }
@@ -2897,10 +2900,640 @@ namespace Dungeon_Valley_Explorer
             lbDisplay.Items.Add($"Armor:{improveArmorSelectedArmor.ArmorName} DEF:{improveArmorSelectedArmor.DEF} MDEF:{improveArmorSelectedArmor.MDEF} Improvements:{armorsImproved[improveArmorSelectedArmor.ArmorName]} Price:{(armorsImproved[improveArmorSelectedArmor.ArmorName] + 1) * ((improveArmorSelectedArmor.DEF + improveArmorSelectedArmor.MDEF) / 2)}");
             lbDisplay.Items.Add($"Current gold:{Gold}");
             lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
-            //btInput.Click += new RoutedEventHandler(BlacksmithImproveWeaponChosenWeaponImproveOrCancel);
+            btInput.Click += new RoutedEventHandler(BlacksmithImproveArmorChosenArmorImproveOrCancel);
+        }
+
+        public void BlacksmithImproveArmorChosenArmorImproveOrCancel(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(BlacksmithImproveArmorChosenArmorImproveOrCancel);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    lbDisplay.Items.Add("Blacksmith: You want it improved or not?");
+                    btInput.Click += new RoutedEventHandler(BlacksmithImproveArmorChosenArmorImproveOrCancel);
+                    break;
+                case "1":
+                    lbDisplay.Items.Add("Blacksmith: I can understand. It is a commitment after all sticking to one armor.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    BlacksmithImproveArmorChooseArmorReEntry();
+                    break;
+                case "Cancel":
+                    lbDisplay.Items.Add("Blacksmith: I can understand. It is a commitment after all sticking to one armor.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    BlacksmithImproveArmorChooseArmorReEntry();
+                    break;
+                case "2":
+                    BlacksmithImproveArmorChosenArmorImproved();
+                    break;
+                case "Improve":
+                    BlacksmithImproveArmorChosenArmorImproved();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(BlacksmithImproveArmorChosenArmorImproveOrCancel);
+                    break;
+            }
+        }
+
+        public void BlacksmithImproveArmorChosenArmorImproved()
+        {
+            int cost = 0;
+            if ((improveArmorSelectedArmor.DEF + improveArmorSelectedArmor.MDEF) / 2 < 0)
+            {
+                cost = ((improveArmorSelectedArmor.DEF + improveArmorSelectedArmor.MDEF) / 2) * -1;
+            }
+            else if ((improveArmorSelectedArmor.DEF + improveArmorSelectedArmor.MDEF) / 2 == 0)
+            {
+                cost = (armorsImproved[improveArmorSelectedArmor.ArmorName] + 1) * 12;
+            }
+            else
+            {
+                cost = (improveArmorSelectedArmor.DEF + improveArmorSelectedArmor.MDEF) / 2;
+            }
+
+            if (Gold - (armorsImproved[improveArmorSelectedArmor.ArmorName] + 1) * cost >= 0)
+            {
+                armorsImproved[improveArmorSelectedArmor.ArmorName]++;
+                lbDisplay.Items.Add("Blacksmith: A fine choice! I am sure it won't disappoint you later.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                Initializer.armors[improveArmorSelectedArmor.Id - 1].DEF += 1;
+                Initializer.armors[improveArmorSelectedArmor.Id - 1].MDEF += 1;
+                foreach (Hero hero in heroes)
+                {
+                    foreach (Armor armor in hero.Armors)
+                    {
+                        if (armor.ArmorName == improveArmorSelectedArmor.ArmorName)
+                        {
+                            armor.DEF += 1;
+                            armor.MDEF += 1;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                lbDisplay.Items.Add("Blacksmith: I'm afraid you can't afford this right now. Why not look at something else?");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            }
+            BlacksmithImproveArmorChooseArmorReEntry();
+        }
+
+        public void BlacksmithImproveArmorChooseArmorReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            BlacksmithImproveArmorArmors();
+            btInput.Click += new RoutedEventHandler(BlacksmithImproveArmorChooseArmor);
         }
 
         //Improve Armor ends here --------------------------------------------------------------------------------------
+
+        //Change Equipment starts here ---------------------------------------------------------------------------------
+
+        public void BlacksmithChangeEquipmentPartyMembers()
+        {
+            for (int i = 0; i < party.Count; i++)
+            {
+                lbOptions.Items.Add($"{i+2}. {party[i].HeroName}");
+            }
+        }
+
+        public void BlacksmithChangeEquipmentFirstStep()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbDisplay.Items.Add("GAME: First choose whose equipment you want to change.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbOptions.Items.Add("1. Cancel");
+            BlacksmithChangeEquipmentPartyMembers();
+            btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChoosePartyMember);
+        }
+
+        public void BlacksmithChangeEquipmentChoosePartyMember(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(BlacksmithChangeEquipmentChoosePartyMember);
+            List<string> partyMembers = new List<string>(party.Select(x => x.HeroName));
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: To change equipment first choose a party member or exit by using the cancel option");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChoosePartyMember);
+            }
+            else if (tbInputArea.Text == "1" ||  tbInputArea.Text == "Cancel")
+            {
+                BlacksmithMainOptionReEntry();
+            }
+            else if (partyMembers.Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (partyMembers.Contains(tbInputArea.Text) == true)
+                {
+                    foreach (Hero hero in party)
+                    {
+                        if (hero.HeroName == tbInputArea.Text)
+                        {
+                            selectedHero = hero;
+                        }
+                    }
+                    BlacksmithChangeEquipmentSecondStep();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        selectedHero = party[index];
+                        BlacksmithChangeEquipmentSecondStep();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChoosePartyMember);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChoosePartyMember);
+            }
+        }
+
+        public void BlacksmithChangeEquipmentSecondStep()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbDisplay.Items.Add("GAME: Second choose what equipment you want to change.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbOptions.Items.Add("1. Weapons");
+            lbOptions.Items.Add("2. Armors");
+            lbOptions.Items.Add("3. Cancel");
+            btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChooseEquipmentType);
+        }
+
+        public void BlacksmithChangeEquipmentChooseEquipmentType(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(BlacksmithChangeEquipmentChooseEquipmentType);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    tbInputArea.Text = "";
+                    lbDisplay.Items.Add("EXPLANATION: By choosing 'Weapons' or 'Armors' you can choose what equipment you want to change afterwards. You can also change which party member you want to modify by using the cancel option.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChooseEquipmentType);
+                    break;
+                case "1":
+                    BlacksmithChangeWeapon();
+                    break;
+                case "Weapons":
+                    BlacksmithChangeWeapon();
+                    break;
+                case "2":
+                    BlacksmithChangeArmor();
+                    break;
+                case "Armors":
+                    BlacksmithChangeArmor();
+                    break;
+                case "3":
+                    BlacksmithChangeEquipmentChoosePartyMemberReEntry();
+                    break;
+                case "Cancel":
+                    BlacksmithChangeEquipmentChoosePartyMemberReEntry();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChooseEquipmentType);
+                    break;
+            }
+        }
+
+        public void BlacksmithChangeEquipmentChoosePartyMemberReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            BlacksmithChangeEquipmentPartyMembers();
+            btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChoosePartyMember);
+        }
+
+        //Change Equipment Weapon starts here --------------------------------------------------------------------------
+
+        public void BlacksmithChangeWeaponDisplayWeaponStats()
+        {
+            string output = "";
+            lbDisplay.Items.Add($"1. Weapon:{selectedHero.Weapons[0].WeaponName} ATK:{selectedHero.Weapons[0].ATK} Crit:{selectedHero.Weapons[0].CritChance}% {selectedHero.Weapons[0].CritDamage}x Damage type:{selectedHero.Weapons[0].DamageType} Range:{selectedHero.Weapons[0].Range} Skill compatibility:{selectedHero.Weapons[0].SkillCompatibility} Unique:{selectedHero.Weapons[0].Unique}");
+            for (int i = 0; i < selectedHero.Weapons[0].SpecialEffects.Count; i++)
+            {
+                if (i < selectedHero.Weapons[0].SpecialEffects.Count - 1)
+                {
+                    output += selectedHero.Weapons[0].SpecialEffects[i].SpecialEffectName + ",";
+                }
+                else
+                {
+                    output += selectedHero.Weapons[0].SpecialEffects[i];
+                }
+            }
+            lbDisplay.Items.Add($"Special effects:{output}");
+            lbDisplay.Items.Add($"Description:{selectedHero.Weapons[0].Description}");
+            lbDisplay.Items.Add($"2. Weapon:{selectedHero.Weapons[1].WeaponName} ATK:{selectedHero.Weapons[1].ATK} Crit:{selectedHero.Weapons[1].CritChance}% {selectedHero.Weapons[1].CritDamage}x Damage type:{selectedHero.Weapons[1].DamageType} Range:{selectedHero.Weapons[1].Range} Skill compatibility:{selectedHero.Weapons[1].SkillCompatibility} Unique:{selectedHero.Weapons[1].Unique}");
+            for (int i = 0; i < selectedHero.Weapons[1].SpecialEffects.Count; i++)
+            {
+                if (i < selectedHero.Weapons[1].SpecialEffects.Count - 1)
+                {
+                    output += selectedHero.Weapons[1].SpecialEffects[i].SpecialEffectName + ",";
+                }
+                else
+                {
+                    output += selectedHero.Weapons[1].SpecialEffects[i];
+                }
+            }
+            lbDisplay.Items.Add($"Special effects:{output}");
+            lbDisplay.Items.Add($"Description:{selectedHero.Weapons[1].Description}");
+            lbDisplay.Items.Add($"3. Weapon:{selectedHero.Weapons[2].WeaponName} ATK:{selectedHero.Weapons[2].ATK} Crit:{selectedHero.Weapons[2].CritChance}% {selectedHero.Weapons[2].CritDamage}x Damage type:{selectedHero.Weapons[2].DamageType} Range:{selectedHero.Weapons[2].Range} Skill compatibility:{selectedHero.Weapons[2].SkillCompatibility} Unique:{selectedHero.Weapons[2].Unique}");
+            for (int i = 0; i < selectedHero.Weapons[2].SpecialEffects.Count; i++)
+            {
+                if (i < selectedHero.Weapons[2].SpecialEffects.Count - 1)
+                {
+                    output += selectedHero.Weapons[2].SpecialEffects[i].SpecialEffectName + ",";
+                }
+                else
+                {
+                    output += selectedHero.Weapons[2].SpecialEffects[i];
+                }
+            }
+            lbDisplay.Items.Add($"Special effects:{output}");
+            lbDisplay.Items.Add($"Description:{selectedHero.Weapons[2].Description}");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+        }
+
+        public void BlacksmithChangeWeapon()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add($"1. {selectedHero.Weapons[0].WeaponName}");
+            lbOptions.Items.Add($"2. {selectedHero.Weapons[1].WeaponName}");
+            lbOptions.Items.Add($"3. {selectedHero.Weapons[2].WeaponName}");
+            lbOptions.Items.Add("4. Cancel");
+            lbDisplay.Items.Add("GAME: Choose which weapon you want to change");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            BlacksmithChangeWeaponDisplayWeaponStats();
+            btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponChooseWeapon);
+        }
+
+        public void BlacksmithChangeWeaponChooseWeapon(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(BlacksmithChangeWeaponChooseWeapon);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: By choosing a weapon you can then choose a different weapon to replace.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            }
+            else if (tbInputArea.Text == "4" || tbInputArea.Text == "Cancel")
+            {
+                BlacksmithChangeEquipmentChooseEquipmentTypeReEntry();
+            }
+            else if (tbInputArea.Text == selectedHero.Weapons[0].WeaponName || tbInputArea.Text == selectedHero.Weapons[1].WeaponName || tbInputArea.Text == selectedHero.Weapons[2].WeaponName)
+            {
+                foreach (Weapon weapon in selectedHero.Weapons)
+                {
+                    if (weapon.WeaponName == tbInputArea.Text)
+                    {
+                        selectedWeapon = weapon;
+                    }
+                }
+
+            }
+            else if (tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3"))
+            {
+                try
+                {
+                    int index = Convert.ToInt32(tbInputArea.Text) - 1;
+                    selectedWeapon = selectedHero.Weapons[index];
+
+                }
+                catch
+                {
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponChooseWeapon);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponChooseWeapon);
+            }
+        }
+
+        public void BlacksmithChangeEquipmentChooseEquipmentTypeReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Weapons");
+            lbOptions.Items.Add("2. Armors");
+            lbOptions.Items.Add("3. Cancel");
+            btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChooseEquipmentType);
+        }
+
+        public void BlacksmithChangerWeaponNewWeaponWeapons()
+        {
+            selectableNewWeapons.Clear();
+            for (int i = 0; i < Initializer.weapons.Count; i++)
+            {
+                if (weaponsObtained[Initializer.weapons[i].WeaponName] == true)
+                {
+                    lbOptions.Items.Add($"{i+2}. {Initializer.weapons[i].WeaponName}");
+                    selectableNewWeapons.Add(Initializer.weapons[i]);
+                }
+            }
+        }
+
+        public void BlacksmithChangeWeaponNewWeapon()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            BlacksmithChangerWeaponNewWeaponWeapons();
+            btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponChooseNewWeapon);
+        }
+
+        public void BlacksmithChangeWeaponChooseNewWeapon(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(BlacksmithChangeWeaponChooseNewWeapon);
+            List<string> selectableNewWeaponsName = new List<string>(selectableNewWeapons.Select(x => x.WeaponName));
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: From here you can choose a new weapon then you get to see it's stats and make the decision to change to this new weapon or cancel and go back to the previous weapon choosing option.");
+                btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponChooseNewWeapon);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                selectableNewWeapons.Clear();
+                BlacksmithChangeWeaponChooseWeaponReEntry();
+            }
+            else if (selectableNewWeaponsName.Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (selectableNewWeaponsName.Contains(tbInputArea.Text) == true)
+                {
+                    foreach (Weapon weapon in selectableNewWeapons)
+                    {
+                        if (weapon.WeaponName == tbInputArea.Text)
+                        {
+                            selectedNewWeapon = weapon;
+                        }
+                    }
+
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        selectedNewWeapon = selectableNewWeapons[index];
+
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponChooseNewWeapon);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponChooseNewWeapon);
+            }
+        }
+
+        public void BlacksmithChangeWeaponChooseWeaponReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add($"1. {selectedHero.Weapons[0].WeaponName}");
+            lbOptions.Items.Add($"2. {selectedHero.Weapons[1].WeaponName}");
+            lbOptions.Items.Add($"3. {selectedHero.Weapons[2].WeaponName}");
+            lbOptions.Items.Add("4. Cancel");
+            btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponChooseWeapon);
+        }
+
+        public void BlacksmithChangeWeaponNewWeaponNewWeaponStats()
+        {
+            string output = "";
+            lbDisplay.Items.Add($"New Weapon:{selectedNewWeapon.WeaponName} ATK:{selectedNewWeapon.ATK} Crit:{selectedNewWeapon.CritChance}% {selectedNewWeapon.CritDamage}x Damage type:{selectedNewWeapon.DamageType} Range:{selectedNewWeapon.Range} Skill compatibility:{selectedNewWeapon.SkillCompatibility} Unique:{selectedNewWeapon.Unique}");
+            for (int i = 0; i < selectedNewWeapon.SpecialEffects.Count; i++)
+            {
+                if (i < selectedNewWeapon.SpecialEffects.Count - 1)
+                {
+                    output += selectedNewWeapon.SpecialEffects[i].SpecialEffectName + ",";
+                }
+                else
+                {
+                    output += selectedNewWeapon.SpecialEffects[i];
+                }
+            }
+            lbDisplay.Items.Add($"Special effects:{output}");
+            lbDisplay.Items.Add($"Description:{selectedNewWeapon.Description}");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+        }
+
+        public void BlacksmithChangeWeaponNewWeaponNewWeapon()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Confirm");
+            lbOptions.Items.Add("2. Cancel");
+            BlacksmithChangeWeaponNewWeaponNewWeaponStats();
+            btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponNewWeaponChangeConfirmOrCancel);
+        }
+
+        public void BlacksmithChangeWeaponNewWeaponChangeConfirmOrCancel(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(BlacksmithChangeWeaponNewWeaponChangeConfirmOrCancel);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    tbInputArea.Text = "";
+                    lbDisplay.Items.Add($"EXPLANATION: Confirm will replace the currently selected weapon ({selectedWeapon.WeaponName}) from the currently selected party member ({selectedHero.HeroName}). Or you can cancel with the cancel option.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponNewWeaponChangeConfirmOrCancel);
+                    break;
+                case "1":
+                    BlacksmithChangeWeaponNewWeaponChangeConfirmed();
+                    break;
+                case "Confirm":
+                    BlacksmithChangeWeaponNewWeaponChangeConfirmed();
+                    break;
+                case "2":
+                    BlacksmithChangeWeaponChooseNewWeaponReEntry();
+                    break;
+                case "Cancel":
+                    BlacksmithChangeWeaponChooseNewWeaponReEntry();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponNewWeaponChangeConfirmOrCancel);
+                    break;
+            }
+        }
+
+        public void BlacksmithChangeWeaponNewWeaponChangeConfirmed()
+        {
+            bool equipable = true;
+            if (selectedNewWeapon.Unique == true)
+            {
+                foreach (Hero hero in heroes)
+                {
+                    foreach (Weapon weapon in hero.Weapons)
+                    {
+                        if (weapon.WeaponName == selectedNewWeapon.WeaponName)
+                        {
+                            MessageBox.Show($"This is a unique weapon and someone else already has it equipped ({hero.HeroName})");
+                            BlacksmithChangeWeaponChooseNewWeaponReEntry();
+                            equipable = false;
+                        }
+                    }
+                }
+                if (equipable == true)
+                {
+                    for (int i = 0; i < party.Count(); i++)
+                    {
+                        if (party[i] == selectedHero)
+                        {
+                            for (int j = 0; j < party[i].Weapons.Count(); i++)
+                            {
+                                if (party[i].Weapons[j] == selectedWeapon)
+                                {
+                                    party[i].Weapons[j] = selectedNewWeapon;
+                                }
+                            }
+                        }
+                    }
+                    tbInputArea.Text = "";
+                    lbOptions.Items.Clear();
+                    lbOptions.Items.Add("1. Weapons");
+                    lbOptions.Items.Add("2. Armors");
+                    lbOptions.Items.Add("3. Cancel");
+                    selectableNewWeapons.Clear();
+                    btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChooseEquipmentType);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < party.Count(); i++)
+                {
+                    if (party[i] == selectedHero)
+                    {
+                        for (int j = 0; j < party[i].Weapons.Count(); i++)
+                        {
+                            if (party[i].Weapons[j] == selectedWeapon)
+                            {
+                                party[i].Weapons[j] = selectedNewWeapon;
+                            }
+                        }
+                    }
+                }
+                tbInputArea.Text = "";
+                lbOptions.Items.Clear();
+                lbOptions.Items.Add("1. Weapons");
+                lbOptions.Items.Add("2. Armors");
+                lbOptions.Items.Add("3. Cancel");
+                selectableNewWeapons.Clear();
+                btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChooseEquipmentType);
+            }
+        }
+
+        public void BlacksmithChangeWeaponChooseNewWeaponReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            BlacksmithChangerWeaponNewWeaponWeapons();
+            btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponChooseNewWeapon);
+        }
+
+        //Change Equipment Weapon ends here ----------------------------------------------------------------------------
+
+        //Change Equipment Armor starts here --------------------------------------------------------------------------
+
+        public void BlacksmithChangeArmorDisplayArmorStats()
+        {
+            string output = "";
+            lbDisplay.Items.Add($"1. Armor:{selectedHero.Armors[0].ArmorName} DEF:{selectedHero.Armors[0].DEF} MDEF:{selectedHero.Armors[0].MDEF} Slot:{selectedHero.Armors[0].Type} Unique:{selectedHero.Armors[0].Unique}");
+            for (int i = 0; i < selectedHero.Armors[0].SpecialEffects.Count; i++)
+            {
+                if (i < selectedHero.Armors[0].SpecialEffects.Count - 1)
+                {
+                    output += selectedHero.Armors[0].SpecialEffects[i].SpecialEffectName + ",";
+                }
+                else
+                {
+                    output += selectedHero.Armors[0].SpecialEffects[i];
+                }
+            }
+            lbDisplay.Items.Add($"Special effects:{output}");
+            lbDisplay.Items.Add($"Description:{selectedHero.Armors[0].Description}");
+            lbDisplay.Items.Add($"2. Armor:{selectedHero.Armors[1].ArmorName} DEF:{selectedHero.Armors[1].DEF} MDEF:{selectedHero.Armors[1].MDEF} Slot:{selectedHero.Armors[1].Type} Unique:{selectedHero.Armors[1].Unique}");
+            for (int i = 0; i < selectedHero.Armors[1].SpecialEffects.Count; i++)
+            {
+                if (i < selectedHero.Armors[1].SpecialEffects.Count - 1)
+                {
+                    output += selectedHero.Armors[1].SpecialEffects[i].SpecialEffectName + ",";
+                }
+                else
+                {
+                    output += selectedHero.Armors[1].SpecialEffects[i];
+                }
+            }
+            lbDisplay.Items.Add($"Special effects:{output}");
+            lbDisplay.Items.Add($"Description:{selectedHero.Armors[1].Description}");
+            lbDisplay.Items.Add($"3. Armor:{selectedHero.Armors[0].ArmorName} DEF:{selectedHero.Armors[0].DEF} MDEF:{selectedHero.Armors[0].MDEF} Slot:{selectedHero.Armors[0].Type} Unique:{selectedHero.Armors[0].Unique}");
+            for (int i = 0; i < selectedHero.Armors[0].SpecialEffects.Count; i++)
+            {
+                if (i < selectedHero.Armors[0].SpecialEffects.Count - 1)
+                {
+                    output += selectedHero.Armors[0].SpecialEffects[i].SpecialEffectName + ",";
+                }
+                else
+                {
+                    output += selectedHero.Armors[0].SpecialEffects[i];
+                }
+            }
+            lbDisplay.Items.Add($"Special effects:{output}");
+            lbDisplay.Items.Add($"Description:{selectedHero.Armors[0].Description}");
+            lbDisplay.Items.Add($"4. Armor:{selectedHero.Armors[0].ArmorName} DEF:{selectedHero.Armors[0].DEF} MDEF:{selectedHero.Armors[0].MDEF} Slot:{selectedHero.Armors[0].Type} Unique:{selectedHero.Armors[0].Unique}");
+            for (int i = 0; i < selectedHero.Armors[0].SpecialEffects.Count; i++)
+            {
+                if (i < selectedHero.Armors[0].SpecialEffects.Count - 1)
+                {
+                    output += selectedHero.Armors[0].SpecialEffects[i].SpecialEffectName + ",";
+                }
+                else
+                {
+                    output += selectedHero.Armors[0].SpecialEffects[i];
+                }
+            }
+            lbDisplay.Items.Add($"Special effects:{output}");
+            lbDisplay.Items.Add($"Description:{selectedHero.Armors[0].Description}");
+        }
+
+        public void BlacksmithChangeArmor()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add($"1. {selectedHero.Armors[0].ArmorName}");
+            lbOptions.Items.Add($"2. {selectedHero.Armors[1].ArmorName}");
+            lbOptions.Items.Add($"3. {selectedHero.Armors[2].ArmorName}");
+            lbOptions.Items.Add($"4. {selectedHero.Armors[3].ArmorName}");
+            lbOptions.Items.Add("5. Cancel");
+            lbDisplay.Items.Add("GAME: Choose which armor you want to change");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            BlacksmithChangeArmorDisplayArmorStats();
+            //btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponChooseWeapon);
+        }
+
+        //Change Equipment Armor ends here ----------------------------------------------------------------------------
+
+        //Change Equipment ends here -----------------------------------------------------------------------------------
         public void BlacksmithMainOptionReEntry()
         {
             tbInputArea.Text = "";
