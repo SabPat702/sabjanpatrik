@@ -54,5 +54,26 @@ namespace Dungeon_Valley_Explorer
         {
             SpecialEffects = new List<SpecialEffect>();
         }
+
+        public static Hero EquipWeaponCheck(Hero selectedHero)
+        {
+            foreach (Weapon weapon in selectedHero.Weapons)
+            {
+                foreach (SpecialEffect specialEffect in weapon.SpecialEffects)
+                {
+                    switch (specialEffect.SpecialEffectName)
+                    {
+                        case "Shield":
+                            selectedHero.DEF = selectedHero.InDEF;
+                            selectedHero.DEF += weapon.ATK;
+                            break;
+                        default: 
+                            break;
+                    }
+                }
+            }
+            return selectedHero;
+        } 
+
     }
 }

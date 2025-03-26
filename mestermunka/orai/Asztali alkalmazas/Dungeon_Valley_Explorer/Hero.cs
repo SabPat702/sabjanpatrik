@@ -656,7 +656,7 @@ namespace Dungeon_Valley_Explorer
             {
                 if (specialEffect.SpecialEffectName == "Shield")
                 {
-                    newPlayerHero.InDEF = newPlayerHero.InDEF + newPlayerHero.Weapons[1].ATK;
+                    newPlayerHero.DEF = newPlayerHero.DEF + newPlayerHero.Weapons[1].ATK;
                     break;
                 }
             }

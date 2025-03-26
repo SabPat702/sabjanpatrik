@@ -1,7 +1,0 @@
-1@None@No armor just clothes, skin and body hair.@0@0@None@5@0@False
-2@Worn Leather Chestpiece@A worn set of leather that is used for protection.@1@0@None@2@0@False
-3@Old Travel Boots@A pair of old boots made for walking in the countryside that has seen better days.@1@0@None@4@0@False
-4@Dirty Cloak@A long cloak that was dragged through everything a journey can find.@1@0@None@2@0@False
-5@Mana Touched Rag@A rag like cloak with a faint sense of magic within.@0@1@None@2@0@False
-6@Worn Leather Knee Pads@An old pair of leather knee pads.@1@0@None@3@0@False
-7@Rusting Chainmail@An old piece of weak and rusting armor.@2@0@None@2@0@False

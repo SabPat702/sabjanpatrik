@@ -1601,19 +1601,25 @@ namespace Dungeon_Valley_Explorer
                 weaponsImproved.Add(weapon.WeaponName, 0);
                 weaponsObtained.Add(weapon.WeaponName, false);
             }
-            foreach(Weapon weapon in heroes[0].Weapons)
-            {
-                weaponsObtained[weapon.WeaponName] = true;
-            }
+            weaponsObtained["Unarmed"] = true;
+            weaponsObtained["Rusty Longsword"] = true;
+            weaponsObtained["Broken Spear"] = true;
+            weaponsObtained["Short Bow"] = true;
+            weaponsObtained["Dagger"] = true;
+            weaponsObtained["Travel Staff"] = true;
+            weaponsObtained["Wooden Shield"] = true;
             foreach (Armor armor in Initializer.armors)
             {
                 armorsImproved.Add(armor.ArmorName, 0);
                 armorsObtained.Add(armor.ArmorName, false);
             }
-            foreach (Armor armor in Initializer.armors)
-            {
-                armorsObtained[armor.ArmorName] = true;
-            }
+            armorsObtained["None"] = true;
+            armorsObtained["Worn Leather Chestpiece"] = true;
+            armorsObtained["Old Travel Boots"] = true;
+            armorsObtained["Dirty Cloak"] = true;
+            armorsObtained["Mana Touched Rag"] = true;
+            armorsObtained["Worn Leather Knee Pads"] = true;
+            armorsObtained["Rusting Chainmail"] = true;
             foreach (Consumable consumable in Initializer.consumables)
             {
                 consumables.Add(consumable.ConsumableName, 0);
@@ -1943,6 +1949,8 @@ namespace Dungeon_Valley_Explorer
 
         public void EnterTown()
         {
+            heroes.Add(Initializer.npcs[0]);
+            Gold += 1000;
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbDisplay.Items.Add("GAME: You have entered the town and now you can save and modify your party and your items.");
@@ -3394,7 +3402,9 @@ namespace Dungeon_Valley_Explorer
                             {
                                 if (party[i].Weapons[j] == selectedWeapon)
                                 {
+
                                     party[i].Weapons[j] = selectedNewWeapon;
+                                    party[i] = Weapon.EquipWeaponCheck(party[i]);
                                 }
                             }
                         }
@@ -3418,7 +3428,9 @@ namespace Dungeon_Valley_Explorer
                         {
                             if (party[i].Weapons[j] == selectedWeapon)
                             {
+
                                 party[i].Weapons[j] = selectedNewWeapon;
+                                party[i] = Weapon.EquipWeaponCheck(party[i]);
                             }
                         }
                     }
