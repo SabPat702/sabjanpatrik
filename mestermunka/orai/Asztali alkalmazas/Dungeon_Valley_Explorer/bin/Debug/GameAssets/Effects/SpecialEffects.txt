@@ -1,5 +1,5 @@
 1@None@Not so special now are we.@Nothing
-2@Shield@A shield gives you its ATK as DEF when equipped.@Weapon Equip
+2@Shield@A shield gives you its ATK as DEF when equipped.@Weapon Equip,DEF Calculation
 3@Taunt@Changes the focus of a creature to this one.@Skill Use,Magic Use,Basic Attack
 4@Mark@A mark of death that makes the creature take more damage.@Skill Use,Magic Use,Basic Attack
 5@Burn@Sets the target on fire.@Skill Use,Magic Use,Basic Attack,Environment Hazard

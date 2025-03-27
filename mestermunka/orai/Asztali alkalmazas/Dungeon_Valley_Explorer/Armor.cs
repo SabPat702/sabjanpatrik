@@ -47,5 +47,22 @@ namespace Dungeon_Valley_Explorer
             Price = Convert.ToInt32(linecutter[7]);
             Unique = Convert.ToBoolean(linecutter[8]);
         }
+
+
+        public static Hero EquipArmorCheck(Hero selectedHero, int armorIndex)
+        {
+            for (int i = 0; i < selectedHero.Armors[armorIndex].SpecialEffects.Count; i++)
+            {
+                if (selectedHero.Armors[armorIndex].SpecialEffects[i].Affect.Contains("Armor Equip"))
+                {
+                    switch (selectedHero.Armors[armorIndex].SpecialEffects[i].SpecialEffectName)
+                    {
+                        default:
+                            break;
+                    }
+                }
+            }
+            return selectedHero;
+        }
     }
 }

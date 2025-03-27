@@ -5,5 +5,5 @@
 5@Blacksmith@Blacksmiths make the weapons, armors, tools and many more for the people and their massive bodies forged while forging are a force to be reckoned with.@Damage Calculation,Upgrade Weapon,Upgrade Armor
 6@Human@Humans are both adaptive and quick learners.@Experience Gain
 7@Elf@Elves have darksight and great mana affinity.@Turn End,Trap Triggered,Initiative Roll
-8@Dwarf@Dwarves are physically quite robust and are better at forging than anyone.@Upgrade Weapon,Upgrade Armor,DEF Calculation
+8@Dwarf@Dwarves are physically quite robust and are better at forging than anyone.@Upgrade Weapon,Upgrade Armor
 9@Halfling@Halflinges are small and brave. They are hard to stop as they are arogant.@Debuff Recieved,After Crit

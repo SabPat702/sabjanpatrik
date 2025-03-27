@@ -55,25 +55,23 @@ namespace Dungeon_Valley_Explorer
             SpecialEffects = new List<SpecialEffect>();
         }
 
-        public static Hero EquipWeaponCheck(Hero selectedHero)
+        public static Hero EquipWeaponCheck(Hero selectedHero, int weaponIndex)
         {
-            foreach (Weapon weapon in selectedHero.Weapons)
+            for (int i = 0; i < selectedHero.Weapons[weaponIndex].SpecialEffects.Count; i++)
             {
-                foreach (SpecialEffect specialEffect in weapon.SpecialEffects)
+                if (selectedHero.Weapons[weaponIndex].SpecialEffects[i].Affect.Contains("Weapon Equip"))
                 {
-                    switch (specialEffect.SpecialEffectName)
+                    switch (selectedHero.Weapons[weaponIndex].SpecialEffects[i].SpecialEffectName)
                     {
                         case "Shield":
-                            selectedHero.DEF = selectedHero.InDEF;
-                            selectedHero.DEF += weapon.ATK;
+                            selectedHero.DEF += selectedHero.Weapons[weaponIndex].ATK;
                             break;
-                        default: 
+                        default:
                             break;
                     }
                 }
             }
             return selectedHero;
-        } 
-
+        }
     }
 }

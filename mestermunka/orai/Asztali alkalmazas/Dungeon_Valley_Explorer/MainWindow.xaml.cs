@@ -1951,6 +1951,8 @@ namespace Dungeon_Valley_Explorer
         {
             heroes.Add(Initializer.npcs[0]);
             Gold += 1000;
+            weaponsObtained["Family Lance"] = true;
+            armorsObtained["Bejeweled Helmet"] = true;
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbDisplay.Items.Add("GAME: You have entered the town and now you can save and modify your party and your items.");
@@ -2409,7 +2411,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    output += buyWeaponSelectedWeapon.SpecialEffects[i];
+                    output += buyWeaponSelectedWeapon.SpecialEffects[i].SpecialEffectName;
                 }
             }
             lbDisplay.Items.Add($"Special effects:{output}");
@@ -2453,8 +2455,27 @@ namespace Dungeon_Valley_Explorer
 
         public void BlacksmithBuyWeaponChosenWeaponBought()
         {
-            if (Gold - buyWeaponSelectedWeapon.Price >= 0)
+            int cost = buyWeaponSelectedWeapon.Price;
+            foreach (Passive passive in party[0].Passives)
             {
+                if (passive.Affect.Contains("Shop Payment"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Noble":
+                            cost = Convert.ToInt32(cost * 0.9);
+                            break;
+                        case "Merchant":
+                            cost = Convert.ToInt32(cost * 0.75);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            if (Gold - cost >= 0)
+            {
+                Gold -= cost;
                 weaponsObtained[buyWeaponSelectedWeapon.WeaponName] = true;
                 lbDisplay.Items.Add("Blacksmith: A fine choice! I am sure it won't disappoint you later.");
                 lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
@@ -2472,6 +2493,7 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
             BlacksmithBuyWeaponWeapons();
             btInput.Click += new RoutedEventHandler(BlacksmithBuyWeaponChooseWeapon);
         }
@@ -2579,7 +2601,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    output += buyArmorSelectedArmor.SpecialEffects[i];
+                    output += buyArmorSelectedArmor.SpecialEffects[i].SpecialEffectName;
                 }
             }
             lbDisplay.Items.Add($"Special effects:{output}");
@@ -2623,8 +2645,27 @@ namespace Dungeon_Valley_Explorer
 
         public void BlacksmithBuyArmorChosenArmorBought()
         {
-            if (Gold - buyArmorSelectedArmor.Price >= 0)
+            int cost = buyArmorSelectedArmor.Price;
+            foreach (Passive passive in party[0].Passives)
             {
+                if (passive.Affect.Contains("Shop Payment"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Noble":
+                            cost = Convert.ToInt32(cost * 0.9);
+                            break;
+                        case "Merchant":
+                            cost = Convert.ToInt32(cost * 0.75);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            if (Gold - cost >= 0)
+            {
+                Gold -= cost;
                 armorsObtained[buyArmorSelectedArmor.ArmorName] = true;
                 lbDisplay.Items.Add("Blacksmith: A fine choice! I am sure it won't disappoint you later.");
                 lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
@@ -2642,6 +2683,7 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
             BlacksmithBuyArmorArmors();
             btInput.Click += new RoutedEventHandler(BlacksmithBuyArmorChooseArmor);
         }
@@ -2779,8 +2821,44 @@ namespace Dungeon_Valley_Explorer
 
         public void BlacksmithImproveWeaponChosenWeaponImproved()
         {
-            if (Gold - (weaponsImproved[improveWeaponSelectedWeapon.WeaponName] + 1) * improveWeaponSelectedWeapon.ATK >= 0)
+            int successRate = 100;
+            int cost = (weaponsImproved[improveWeaponSelectedWeapon.WeaponName] + 1) * improveWeaponSelectedWeapon.ATK;
+            foreach (Passive passive in party[0].Passives)
             {
+                if (passive.Affect.Contains("Shop Payment"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Noble":
+                            cost = Convert.ToInt32(cost * 0.9);
+                            break;
+                        case "Merchant":
+                            cost = Convert.ToInt32(cost * 0.75);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (passive.Affect.Contains("Upgrade Weapon"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Blacksmith":
+                            cost = Convert.ToInt32(cost * 0.2);
+                            successRate = random.Next(0, 100);
+                            break;
+                        case "Dwarf":
+                            successRate = 100;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            if (Gold - cost >= 0 && successRate > 10)
+            {
+                Gold -= cost;
                 weaponsImproved[improveWeaponSelectedWeapon.WeaponName]++;
                 lbDisplay.Items.Add("Blacksmith: A fine choice! I am sure it won't disappoint you later.");
                 lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
@@ -2808,6 +2886,7 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
             BlacksmithImproveWeaponWeapons();
             btInput.Click += new RoutedEventHandler(BlacksmithImproveWeaponChooseWeapon);
         }
@@ -2945,6 +3024,7 @@ namespace Dungeon_Valley_Explorer
 
         public void BlacksmithImproveArmorChosenArmorImproved()
         {
+            int successRate = 100;
             int cost = 0;
             if ((improveArmorSelectedArmor.DEF + improveArmorSelectedArmor.MDEF) / 2 < 0)
             {
@@ -2958,9 +3038,44 @@ namespace Dungeon_Valley_Explorer
             {
                 cost = (improveArmorSelectedArmor.DEF + improveArmorSelectedArmor.MDEF) / 2;
             }
+            cost = cost * (armorsImproved[improveArmorSelectedArmor.ArmorName] + 1);
 
-            if (Gold - (armorsImproved[improveArmorSelectedArmor.ArmorName] + 1) * cost >= 0)
+            foreach (Passive passive in party[0].Passives)
             {
+                if (passive.Affect.Contains("Shop Payment"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Noble":
+                            cost = Convert.ToInt32(cost * 0.9);
+                            break;
+                        case "Merchant":
+                            cost = Convert.ToInt32(cost * 0.75);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (passive.Affect.Contains("Upgrade Armor"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Blacksmith":
+                            cost = Convert.ToInt32(cost * 0.2);
+                            successRate = random.Next(0, 100);
+                            break;
+                        case "Dwarf":
+                            successRate = 100;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            if (Gold - cost >= 0 && successRate > 10)
+            {
+                Gold -= cost;
                 armorsImproved[improveArmorSelectedArmor.ArmorName]++;
                 lbDisplay.Items.Add("Blacksmith: A fine choice! I am sure it won't disappoint you later.");
                 lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
@@ -2990,6 +3105,7 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
             BlacksmithImproveArmorArmors();
             btInput.Click += new RoutedEventHandler(BlacksmithImproveArmorChooseArmor);
         }
@@ -3138,7 +3254,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    output += selectedHero.Weapons[0].SpecialEffects[i];
+                    output += selectedHero.Weapons[0].SpecialEffects[i].SpecialEffectName;
                 }
             }
             lbDisplay.Items.Add($"Special effects:{output}");
@@ -3152,7 +3268,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    output += selectedHero.Weapons[1].SpecialEffects[i];
+                    output += selectedHero.Weapons[1].SpecialEffects[i].SpecialEffectName;
                 }
             }
             lbDisplay.Items.Add($"Special effects:{output}");
@@ -3166,7 +3282,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    output += selectedHero.Weapons[2].SpecialEffects[i];
+                    output += selectedHero.Weapons[2].SpecialEffects[i].SpecialEffectName;
                 }
             }
             lbDisplay.Items.Add($"Special effects:{output}");
@@ -3236,12 +3352,14 @@ namespace Dungeon_Valley_Explorer
         public void BlacksmithChangerWeaponNewWeaponWeapons()
         {
             selectableNewWeapons.Clear();
-            for (int i = 0; i < Initializer.weapons.Count; i++)
+            int counter = 0;
+            foreach (Weapon weapon in Initializer.weapons)
             {
-                if (weaponsObtained[Initializer.weapons[i].WeaponName] == true)
+                if (weaponsObtained[weapon.WeaponName] == true)
                 {
-                    lbOptions.Items.Add($"{i+2}. {Initializer.weapons[i].WeaponName}");
-                    selectableNewWeapons.Add(Initializer.weapons[i]);
+                    lbOptions.Items.Add($"{counter + 2}. {weapon.WeaponName}");
+                    selectableNewWeapons.Add(weapon);
+                    counter++;
                 }
             }
         }
@@ -3398,13 +3516,14 @@ namespace Dungeon_Valley_Explorer
                     {
                         if (party[i] == selectedHero)
                         {
-                            for (int j = 0; j < party[i].Weapons.Count(); i++)
+                            for (int j = 0; j < party[i].Weapons.Count(); j++)
                             {
                                 if (party[i].Weapons[j] == selectedWeapon)
                                 {
-
+                                    party[i].Weapons[j] = Initializer.weapons[0];
+                                    party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                     party[i].Weapons[j] = selectedNewWeapon;
-                                    party[i] = Weapon.EquipWeaponCheck(party[i]);
+                                    party[i] = Weapon.EquipWeaponCheck(party[i], j);
                                 }
                             }
                         }
@@ -3424,13 +3543,14 @@ namespace Dungeon_Valley_Explorer
                 {
                     if (party[i] == selectedHero)
                     {
-                        for (int j = 0; j < party[i].Weapons.Count(); i++)
+                        for (int j = 0; j < party[i].Weapons.Count(); j++)
                         {
                             if (party[i].Weapons[j] == selectedWeapon)
                             {
-
+                                party[i].Weapons[j] = Initializer.weapons[0];
+                                party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                 party[i].Weapons[j] = selectedNewWeapon;
-                                party[i] = Weapon.EquipWeaponCheck(party[i]);
+                                party[i] = Weapon.EquipWeaponCheck(party[i], j);
                             }
                         }
                     }
@@ -3470,7 +3590,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    output += selectedHero.Armors[0].SpecialEffects[i];
+                    output += selectedHero.Armors[0].SpecialEffects[i].SpecialEffectName;
                 }
             }
             lbDisplay.Items.Add($"Special effects:{output}");
@@ -3484,7 +3604,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    output += selectedHero.Armors[1].SpecialEffects[i];
+                    output += selectedHero.Armors[1].SpecialEffects[i].SpecialEffectName;
                 }
             }
             lbDisplay.Items.Add($"Special effects:{output}");
@@ -3498,7 +3618,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    output += selectedHero.Armors[2].SpecialEffects[i];
+                    output += selectedHero.Armors[2].SpecialEffects[i].SpecialEffectName;
                 }
             }
             lbDisplay.Items.Add($"Special effects:{output}");
@@ -3512,7 +3632,7 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    output += selectedHero.Armors[3].SpecialEffects[i];
+                    output += selectedHero.Armors[3].SpecialEffects[i].SpecialEffectName;
                 }
             }
             lbDisplay.Items.Add($"Special effects:{output}");
@@ -3556,7 +3676,7 @@ namespace Dungeon_Valley_Explorer
                         selectedArmor = armor;
                     }
                 }
-
+                BlacksmithChangeArmorNewArmor();
             }
             else if (tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4"))
             {
@@ -3564,7 +3684,7 @@ namespace Dungeon_Valley_Explorer
                 {
                     int index = Convert.ToInt32(tbInputArea.Text) - 1;
                     selectedArmor = selectedHero.Armors[index];
-
+                    BlacksmithChangeArmorNewArmor();
                 }
                 catch
                 {
@@ -3582,17 +3702,19 @@ namespace Dungeon_Valley_Explorer
         public void BlacksmithChangerArmorNewArmorArmors()
         {
             selectableNewArmors.Clear();
-            for (int i = 0; i < Initializer.armors.Count; i++)
+            int counter = 0;
+            foreach (Armor armor in Initializer.armors)
             {
-                if (armorsObtained[Initializer.armors[i].ArmorName] == true && selectedArmor.Type == 5)
+                if(armorsObtained[armor.ArmorName] == true && selectedArmor.Type == 5)
                 {
-                    lbOptions.Items.Add($"{i + 2}. {Initializer.armors[i].ArmorName}");
-                    selectableNewArmors.Add(Initializer.armors[i]);
+                    lbOptions.Items.Add($"{counter + 2}. {armor.ArmorName}");
+                    selectableNewArmors.Add(armor);
+                    counter++;
                 }
-                else if (armorsObtained[Initializer.armors[i].ArmorName] == true && Initializer.armors[i].Type == selectedArmor.Type)
+                else if (armorsObtained[armor.ArmorName] == true && armor.Type == selectedArmor.Type)
                 {
-                    lbOptions.Items.Add($"{i + 2}. {Initializer.armors[i].ArmorName}");
-                    selectableNewArmors.Add(Initializer.armors[i]);
+                    lbOptions.Items.Add($"{counter + 2}. {armor.ArmorName}");
+                    selectableNewArmors.Add(armor);
                 }
             }
         }
@@ -3749,11 +3871,14 @@ namespace Dungeon_Valley_Explorer
                     {
                         if (party[i] == selectedHero)
                         {
-                            for (int j = 0; j < party[i].Armors.Count(); i++)
+                            for (int j = 0; j < party[i].Armors.Count(); j++)
                             {
                                 if (party[i].Armors[j] == selectedArmor)
                                 {
+                                    party[i].Armors[j] = Initializer.armors[0];
+                                    party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                     party[i].Armors[j] = selectedNewArmor;
+                                    party[i] = Armor.EquipArmorCheck(party[i], j);
                                 }
                             }
                         }
@@ -3773,11 +3898,14 @@ namespace Dungeon_Valley_Explorer
                 {
                     if (party[i] == selectedHero)
                     {
-                        for (int j = 0; j < party[i].Armors.Count(); i++)
+                        for (int j = 0; j < party[i].Armors.Count(); j++)
                         {
                             if (party[i].Armors[j] == selectedArmor)
                             {
+                                party[i].Armors[j] = Initializer.armors[0];
+                                party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                 party[i].Armors[j] = selectedNewArmor;
+                                party[i] = Armor.EquipArmorCheck(party[i], j);
                             }
                         }
                     }

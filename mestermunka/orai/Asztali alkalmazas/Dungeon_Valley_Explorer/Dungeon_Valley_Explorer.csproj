@@ -120,6 +120,7 @@
     <Compile Include="Downloader.cs" />
     <Compile Include="Dungeon.cs" />
     <Compile Include="EnvironmentHazard.cs" />
+    <Compile Include="HeroStatCalculation.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="Magic.cs" />
     <Compile Include="MainMenu.cs" />

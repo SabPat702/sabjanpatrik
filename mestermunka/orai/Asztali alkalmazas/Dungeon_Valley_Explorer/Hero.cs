@@ -1055,7 +1055,8 @@ namespace Dungeon_Valley_Explorer
             newPlayerHero.InHP += 4;
             newPlayerHero.MaxHP = newPlayerHero.InHP;
             newPlayerHero.HP = newPlayerHero.InHP;
-            newPlayerHero.DEF += 1;
+            newPlayerHero.InDEF += 1;
+            newPlayerHero.DEF += newPlayerHero.InDEF;
             return newPlayerHero;
         }
 
