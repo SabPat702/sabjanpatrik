@@ -23,7 +23,7 @@ const KezdoLap = () => {
 
             {/* Hero/Informational Section */}
             <section className="Informational text-center">
-                <h3>Welcome to Dungeon Explorer!</h3>
+                <h3>Welcome to Dungeon Valley Explorer!</h3>
                 <p className="lead mx-auto Welcome">
                     This is our very first game project, created by a small, passionate three-member team. While it may not have the best graphics yet,
                     our goal is to create a fun and engaging experience. We appreciate your support and feedback as we continue improving!

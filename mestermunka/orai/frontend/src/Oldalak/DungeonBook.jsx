@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import '../css/DungeonBook.css';
 
 const DungeonBook = () => {
-    const [page, setPage] = useState(1);
+    const [currentSpread, setCurrentSpread] = useState(0); // Kettesével számoljuk az oldalakat
     const [isFlipping, setIsFlipping] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [dragState, setDragState] = useState({ isDragging: false, startX: 0, dragDirection: null, rotation: 0 });
@@ -25,43 +25,25 @@ const DungeonBook = () => {
         {
             title: "Monsters and the races",
             content:
-                        `Races play a special role in the game, as they have many characteristics.
-                        Each race has a name and detailed description within the game.
-                        These races can deal lethal damage in the game, so be cautious around them.
-                        However, some races deal weaker damage, and while they still have resistance, their attacks are less dangerous.
-                        The damage levels are: neutralizing/null < endured/tolerant < resistant < weak < deadly/fatal.
-                        These are the levels of damage different races can deal.`
+                        `Races play a special role in the game, as they have many characteristics. Each race has a name and detailed description within the game. These races can deal lethal damage in the game, so be cautious around them. However, some races deal weaker damage, and while they still have resistance, their attacks are less dangerous. The damage levels are: neutralizing/null < endured/tolerant < resistant < weak < deadly/fatal. These are the levels of damage different races can deal.`
         },
         {
             content: 
-            `Monsters also play an important role in the game, as they are the enemies you fight against.
-            Monsters have health, physical protection, and magical protection.
-            Their offensive power varies, and they have abilities that they use during combat.
-            Monsters also have their own species and behaviors, which influence how they act during combat.
-            They appear in various locations with varying strengths!
-            At this point, AI comes into play, determining the thinking and behavior of monsters.
-            The AI must randomly choose one of the available behaviors for monsters in combat.`,
+            `Monsters also play an important role in the game, as they are the enemies you fight against. Monsters have health, physical protection, and magical protection. Their offensive power varies, and they have abilities that they use during combat. Monsters also have their own species and behaviors, which influence how they act during combat. They appear in various locations with varying strengths! At this point, AI comes into play, determining the thinking and behavior of monsters. The AI must randomly choose one of the available behaviors for monsters in combat.`,
         }, 
         {
             title: "Dungeon and the Environmental Hazards",
             content: 
-                    ` Environmental hazards are important factors in the game, as no one wants to lose health unnecessarily.
-                    Environmental hazards can include ravines, traps, thorny bushes, or lava. These are just a few examples of the dangers that can be encountered.
-                    Environmental hazards have attack power, damage types, critical attack chances, and attack multipliers.
-                    Some hazards also have special abilities, which are hidden in specific locations.`
+                    `Environmental hazards are important factors in the game, as no one wants to lose health unnecessarily. Environmental hazards can include ravines, traps, thorny bushes, or lava. These are just a few examples of the dangers that can be encountered. Environmental hazards have attack power, damage types, critical attack chances, and attack multipliers. Some hazards also have special abilities, which are hidden in specific locations.`
         },
         {
             content:
-                    `Dungeon exploration is a core part of the game, contributing to its complexity and difficulty.
-                    You can progress forward, backward, or even leave the dungeon during exploration.
-                    You may also decide to leave the dungeon if you choose to stop exploring. Going backward represents rest.
-                    If you move forward, you won’t know what you might encounter. Only after exploring all areas in the dungeon can you complete it.
-                    If you leave the dungeon, you retain experience and money, but any progress related to the mission will be lost, and you'll have to start over.
-                    The rest feature can only be used once per dungeon, allowing you to regain health and magic points.
-                    However, resting does not guarantee safety, as you may lose money, items, or potions, or even be attacked.
-                    If you decide to retreat before resting, the risk of these events is reduced. However, enemies may reappear in previously discovered rooms.`
+                    `Dungeon exploration is a core part of the game, contributing to its complexity and difficulty. You can progress forward, backward, or even leave the dungeon during exploration. You may also decide to leave the dungeon if you choose to stop exploring. Going backward represents rest. If you move forward, you won’t know what you might encounter. Only after exploring all areas in the dungeon can you complete it. If you leave the dungeon, you retain experience and money, but any progress related to the mission will be lost, and you'll have to start over. The rest feature can only be used once per dungeon, allowing you to regain health and magic points. However, resting does not guarantee safety, as you may lose money, items, or potions, or even be attacked. If you decide to retreat before resting, the risk of these events is reduced. However, enemies may reappear in previously discovered rooms.`
         },
 
+        {
+            content: ``,
+        },
         {
             title: "Skill and Magic",
             content:    `Skills are unique abilities in the game.
@@ -113,21 +95,23 @@ const DungeonBook = () => {
         }
     ];
 
-    const nextPage = () => {
-        if (page < pages.length && !isFlipping) {
+    const totalSpreads = Math.ceil((pages.length + 1) / 2); // +1 az üres első oldal miatt
+
+    const nextSpread = () => {
+        if (currentSpread < totalSpreads - 1 && !isFlipping) {
             setIsFlipping(true);
             setTimeout(() => {
-                setPage(page + 1);
+                setCurrentSpread(currentSpread + 1);
                 setIsFlipping(false);
             }, 600);
         }
     };
 
-    const prevPage = () => {
-        if (page > 1 && !isFlipping) {
+    const prevSpread = () => {
+        if (currentSpread > 0 && !isFlipping) {
             setIsFlipping(true);
             setTimeout(() => {
-                setPage(page - 1);
+                setCurrentSpread(currentSpread - 1);
                 setIsFlipping(false);
             }, 600);
         }
@@ -137,7 +121,6 @@ const DungeonBook = () => {
         setIsOpen(!isOpen);
     };
 
-    // Drag handling (ez változatlan marad, csak röviden jelzem)
     const handleDragStart = (e) => {
         if (!isOpen || isFlipping) return;
         const clientX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
@@ -153,6 +136,27 @@ const DungeonBook = () => {
 
     const handleDragMove = (e) => { /* ... */ };
     const handleDragEnd = (e) => { /* ... */ };
+
+    // Bal és jobb oldal indexeinek kiszámítása
+    const getPageContent = () => {
+        if (currentSpread === 0) {
+            // Első terjedelem: bal oldal üres, jobb oldal az első tartalom
+            return {
+                left: null, // Üres oldal
+                right: pages[0] // Introduction
+            };
+        } else {
+            // További terjedelmek: két oldal tartalommal
+            const leftIndex = (currentSpread * 2) - 1; // Pl. spread 1 -> pages[1]
+            const rightIndex = leftIndex + 1; // Pl. spread 1 -> pages[2]
+            return {
+                left: pages[leftIndex] || null,
+                right: pages[rightIndex] || null
+            };
+        }
+    };
+
+    const { left, right } = getPageContent();
 
     return (
         <div className="dungeon-book-container">
@@ -180,20 +184,25 @@ const DungeonBook = () => {
                     {isOpen && (
                         <>
                             <div className="page left-page">
-                                {page > 1 ? (
+                                {left ? (
                                     <>
-                                        <h2>{pages[page - 2].title}</h2>
-                                        <p>{pages[page - 2].content}</p>
+                                        {left.title && <h2>{left.title}</h2>}
+                                        <p>{left.content}</p>
                                     </>
                                 ) : (
                                     <div className="empty-page"> </div>
                                 )}
                             </div>
                             <div className="page right-page">
-                                <h2>{pages[page - 1].title}</h2>
-                                <p>{pages[page - 1].content}</p>
+                                {right ? (
+                                    <>
+                                        {right.title && <h2>{right.title}</h2>}
+                                        <p>{right.content}</p>
+                                    </>
+                                ) : (
+                                    <div className="empty-page"> </div>
+                                )}
                             </div>
-                            {/* Flipping page overlay (ez is változatlan marad) */}
                         </>
                     )}
                 </div>
@@ -203,8 +212,8 @@ const DungeonBook = () => {
                     <button onClick={toggleBook}>Open Book</button>
                 ) : (
                     <>
-                        <button onClick={prevPage} disabled={page === 1 || isFlipping}>Previous</button>
-                        <button onClick={nextPage} disabled={page === pages.length || isFlipping}>Next</button>
+                        <button onClick={prevSpread} disabled={currentSpread === 0 || isFlipping}>Previous</button>
+                        <button onClick={nextSpread} disabled={currentSpread === totalSpreads - 1 || isFlipping}>Next</button>
                         <button onClick={toggleBook}>Close Book</button>
                     </>
                 )}
