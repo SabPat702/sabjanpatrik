@@ -3885,7 +3885,6 @@ namespace Dungeon_Valley_Explorer
                                     party[i].Armors[j] = Initializer.armors[0];
                                     party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                     party[i].Armors[j] = selectedNewArmor;
-                                    party[i].Armors[j].Type = selectedArmor.Type;
                                     party[i] = Armor.EquipArmorCheck(party[i], j);
                                 }
                             }
@@ -3913,7 +3912,6 @@ namespace Dungeon_Valley_Explorer
                                 party[i].Armors[j] = Initializer.armors[0];
                                 party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                 party[i].Armors[j] = selectedNewArmor;
-                                party[i].Armors[j].Type = selectedArmor.Type;
                                 party[i] = Armor.EquipArmorCheck(party[i], j);
                             }
                         }

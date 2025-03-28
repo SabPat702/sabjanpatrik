@@ -326,6 +326,9 @@ namespace Dungeon_Valley_Explorer
                     newPlayerHero.Armors[0] = armor;
                     break;
                 }
+            }
+            foreach(Armor armor in Initializer.armors)
+            {
                 if (armor.ArmorName == "None (Leggings)")
                 {
                     newPlayerHero.Armors[2] = armor;
@@ -428,6 +431,9 @@ namespace Dungeon_Valley_Explorer
                     newPlayerHero.Armors[0] = armor;
                     break;
                 }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
                 if (armor.ArmorName == "None (Leggings)")
                 {
                     newPlayerHero.Armors[2] = armor;
@@ -530,6 +536,9 @@ namespace Dungeon_Valley_Explorer
                     newPlayerHero.Armors[0] = armor;
                     break;
                 }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
                 if (armor.ArmorName == "None (Leggings)")
                 {
                     newPlayerHero.Armors[2] = armor;
@@ -761,6 +770,9 @@ namespace Dungeon_Valley_Explorer
                     newPlayerHero.Armors[0] = armor;
                     break;
                 }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
                 if (armor.ArmorName == "None (Leggings)")
                 {
                     newPlayerHero.Armors[2] = armor;
@@ -879,6 +891,9 @@ namespace Dungeon_Valley_Explorer
                     newPlayerHero.Armors[0] = armor;
                     break;
                 }
+            }
+            foreach (Armor armor in Initializer.armors)
+            {
                 if (armor.ArmorName == "None (Leggings)")
                 {
                     newPlayerHero.Armors[2] = armor;
