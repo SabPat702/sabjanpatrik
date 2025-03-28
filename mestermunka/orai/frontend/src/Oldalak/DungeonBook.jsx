@@ -38,60 +38,31 @@ const DungeonBook = () => {
         },
         {
             content:
-                    `Dungeon exploration is a core part of the game, contributing to its complexity and difficulty. You can progress forward, backward, or even leave the dungeon during exploration. You may also decide to leave the dungeon if you choose to stop exploring. Going backward represents rest. If you move forward, you won’t know what you might encounter. Only after exploring all areas in the dungeon can you complete it. If you leave the dungeon, you retain experience and money, but any progress related to the mission will be lost, and you'll have to start over. The rest feature can only be used once per dungeon, allowing you to regain health and magic points. However, resting does not guarantee safety, as you may lose money, items, or potions, or even be attacked. If you decide to retreat before resting, the risk of these events is reduced. However, enemies may reappear in previously discovered rooms.`
+                    `Dungeon exploration is a core part of the game, contributing to its complexity and difficulty. You can progress forward, backward, or even leave the dungeon during exploration. You may also decide to leave the dungeon if you choose to stop exploring. Going backward represents rest. If you move forward, you won’t know what you might encounter. Only after exploring all areas in the dungeon can you complete it. If you leave the dungeon, you retain experience and money, but any progress related to the mission will be lost, and you'll have to start over.`,
         },
-
-        {
-            content: ``,
-        },
+                    {
+                        content: `The rest feature can only be used once per dungeon, allowing you to regain health and magic points. However, resting does not guarantee safety, as you may lose money, items, or potions, or even be attacked. If you decide to retreat before resting, the risk of these events is reduced. However, enemies may reappear in previously discovered rooms.`,
+                    },
         {
             title: "Skill and Magic",
-            content:    `Skills are unique abilities in the game.
-                        These skills have a critical attack chance, which is enhanced by a multiplier.
-                        Each skill has special effects, and there is a range beyond which it cannot reach. Using
-                        these skills may come at a cost, and their reload times may be extended.
-                        Magic plays an important role in the game. It has its own detailed description, but there
-                        are a few key points to know.
-                        Magic has attack and damage values, and different types of magic exist.
-                        Magic can also perform critical attacks, with multipliers under certain circumstances.
-                        Magic has a range and cannot reach infinity, and it also has special effects.
-                        Finally, magic takes time to recharge. `,          
+            content:    `Skills are unique abilities in the game. These skills have a critical attack chance, which is enhanced by a multiplier. Each skill has special effects, and there is a range beyond which it cannot reach. Using these skills may come at a cost, and their reload times may be extended. Magic plays an important role in the game. It has its own detailed description, but there are a few key points to know. Magic has attack and damage values, and different types of magic exist. Magic can also perform critical attacks, with multipliers under certain circumstances. Magic has a range and cannot reach infinity, and it also has special effects. Finally, magic takes time to recharge`,          
+        },
+        {
+            content: ` `,
         },
         {
             title: "Consumables, Armor, Weapons, Special Effects, Passive, Buffs/Debuffs",
-            content: ` There are detailed descriptions of the items you can use in the game, and some additional points worth noting.
-                        Items have special abilities, but they require in-game currency to use.
-                        You do not need to pay real money; instead, you use money earned in the game.
-                        Weapons are vital in the game. The strength of a weapon depends on its type and its ability to deal damage.
-                        Some weapons can deal critical damage, which can be amplified by a special multiplier.
-                        Each weapon has a unique effect on opponents, and their range differs—swords and spears, for example, have different lengths.
-                        Weapons can be combined with abilities, creating powerful combinations.
-                        Weapons also cost in-game money.
-                        The game includes special effects that influence abilities.
-                        There are temporary effects, triggered by specific objects or situations, that may
-                        help or hinder your progress.
-                        Some effects are always active, making them less noticeable, but they can still have an
-                        impact on gameplay. `,
+            content: ` There are detailed descriptions of the items you can use in the game, and some additional points worth noting. Items have special abilities, but they require in-game currency to use. You do not need to pay real money; instead, you use money earned in the game. Weapons are vital in the game. The strength of a weapon depends on its type and its ability to deal damage. Some weapons can deal critical damage, which can be amplified by a special multiplier.`,
+        },
+        {
+            content: `Each weapon has a unique effect on opponents, and their range differs—swords and spears, for example, have different lengths. Weapons can be combined with abilities, creating powerful combinations. Weapons also cost in-game money. The game includes special effects that influence abilities. There are temporary effects, triggered by specific objects or situations, that may help or hinder your progress. Some effects are always active, making them less noticeable, but they can still have an impact on gameplay.`
         },
         {
             title: "The NPC's of the city",
-            content: ` There are different NPCs located throughout the city.
-                        At the Blacksmith, you can upgrade your own and your teammates' armor and weaponry, or have new items made.
-                        However, the Blacksmith cannot make weapons or armor without limits. You will need to pay for these upgrades, and there are restrictions on how often they can be done.
-                        At the Alchemist, you can obtain various potions for yourself and your teammates.
-                        The Alchemist is initially closed and will only open at a later stage in the game.
-                        In the Pub, you can buy food and drinks from the innkeeper, which provide temporary buffs to
-                        the hero or the whole team.
-                        You can only level up after resting at the Pub, but until then, your accumulated experience
-                        will not be utilized.
-                        At the Merchant, you can sell items such as potions or equipment, or find special items that
-                        are not available elsewhere.
-                        The Merchant’s business can be supported or improved by completing quests, allowing you to
-                        access a larger selection of items and even receive discounts.
-                        The Merchant is initially locked and will only become available after a later mission.
-                        There is a special place where heroes can change their team, replacing adventurers with
-                        others who fit into the game's story, or even recruit weaker adventurers if the player
-                        doesn't want to use them or hasn't unlocked them as usable characters. `,
+            content: ` There are different NPCs located throughout the city. At the Blacksmith, you can upgrade your own and your teammates' armor and weaponry, or have new items made. However, the Blacksmith cannot make weapons or armor without limits. You will need to pay for these upgrades, and there are restrictions on how often they can be done. At the Alchemist, you can obtain various potions for yourself and your teammates. The Alchemist is initially closed and will only open at a later stage in the game. In the Pub, you can buy food and drinks from the innkeeper, which provide temporary buffs to the hero or the whole team.`,
+        },
+        {
+            content: `You can only level up after resting at the Pub, but until then, your accumulated experience will not be utilized. At the Merchant, you can sell items such as potions or equipment, or find special items that are not available elsewhere. The Merchant’s business can be supported or improved by completing quests, allowing you to access a larger selection of items and even receive discounts. The Merchant is initially locked and will only become available after a later mission. There is a special place where heroes can change their team, replacing adventurers with others who fit into the game's story, or even recruit weaker adventurers if the player doesn't want to use them or hasn't unlocked them as usable characters.`,
         }
     ];
 
@@ -171,9 +142,6 @@ const DungeonBook = () => {
                 onTouchMove={handleDragMove}
                 onTouchEnd={handleDragEnd}
             >
-                <div className="book-spine">
-                    <h2>Dungeon Valley Explorer</h2>
-                </div>
                 <div className="book-inner">
                     {!isOpen && (
                         <div className="book-cover">

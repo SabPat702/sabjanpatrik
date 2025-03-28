@@ -3545,27 +3545,35 @@ namespace Dungeon_Valley_Explorer
                     {
                         if (party[i].Weapons.Contains(selectedNewWeapon))
                         {
-
+                            equipable = false;
                         }
-                        for (int j = 0; j < party[i].Weapons.Count(); j++)
+                        if (equipable == true)
                         {
-                            if (party[i].Weapons[j] == selectedWeapon)
+                            for (int j = 0; j < party[i].Weapons.Count(); j++)
                             {
-                                party[i].Weapons[j] = Initializer.weapons[0];
-                                party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
-                                party[i].Weapons[j] = selectedNewWeapon;
-                                party[i] = Weapon.EquipWeaponCheck(party[i], j);
+                                if (party[i].Weapons[j] == selectedWeapon)
+                                {
+                                    party[i].Weapons[j] = Initializer.weapons[0];
+                                    party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
+                                    party[i].Weapons[j] = selectedNewWeapon;
+                                    party[i] = Weapon.EquipWeaponCheck(party[i], j);
+                                }
                             }
+                            tbInputArea.Text = "";
+                            lbOptions.Items.Clear();
+                            lbOptions.Items.Add("1. Weapons");
+                            lbOptions.Items.Add("2. Armors");
+                            lbOptions.Items.Add("3. Cancel");
+                            selectableNewWeapons.Clear();
+                            btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChooseEquipmentType);
+                        }
+                        else
+                        {
+                            MessageBox.Show("You already have a copy of this weapon equipped and you can't equip another copy.");
+                            BlacksmithChangeWeaponChooseNewWeaponReEntry();
                         }
                     }
                 }
-                tbInputArea.Text = "";
-                lbOptions.Items.Clear();
-                lbOptions.Items.Add("1. Weapons");
-                lbOptions.Items.Add("2. Armors");
-                lbOptions.Items.Add("3. Cancel");
-                selectableNewWeapons.Clear();
-                btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChooseEquipmentType);
             }
         }
 
@@ -3877,7 +3885,6 @@ namespace Dungeon_Valley_Explorer
                                     party[i].Armors[j] = Initializer.armors[0];
                                     party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                     party[i].Armors[j] = selectedNewArmor;
-                                    party[i].Armors[j].Type = selectedArmor.Type;
                                     party[i] = Armor.EquipArmorCheck(party[i], j);
                                 }
                             }
@@ -3905,7 +3912,6 @@ namespace Dungeon_Valley_Explorer
                                 party[i].Armors[j] = Initializer.armors[0];
                                 party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                 party[i].Armors[j] = selectedNewArmor;
-                                party[i].Armors[j].Type = selectedArmor.Type;
                                 party[i] = Armor.EquipArmorCheck(party[i], j);
                             }
                         }
