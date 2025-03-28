@@ -3518,11 +3518,12 @@ namespace Dungeon_Valley_Explorer
                         {
                             for (int j = 0; j < party[i].Weapons.Count(); j++)
                             {
-                                if (party[i].Weapons[j] == selectedWeapon)
+                                if (party[i].Weapons[j].Slot == selectedWeapon.Slot)
                                 {
                                     party[i].Weapons[j] = Initializer.weapons[0];
                                     party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                     party[i].Weapons[j] = selectedNewWeapon;
+                                    party[i].Weapons[j].Slot = selectedWeapon.Slot;
                                     party[i] = Weapon.EquipWeaponCheck(party[i], j);
                                 }
                             }
@@ -3545,11 +3546,12 @@ namespace Dungeon_Valley_Explorer
                     {
                         for (int j = 0; j < party[i].Weapons.Count(); j++)
                         {
-                            if (party[i].Weapons[j] == selectedWeapon)
+                            if (party[i].Weapons[j].Slot == selectedWeapon.Slot)
                             {
                                 party[i].Weapons[j] = Initializer.weapons[0];
                                 party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                 party[i].Weapons[j] = selectedNewWeapon;
+                                party[i].Weapons[j].Slot = selectedWeapon.Slot;
                                 party[i] = Weapon.EquipWeaponCheck(party[i], j);
                             }
                         }
@@ -3715,6 +3717,7 @@ namespace Dungeon_Valley_Explorer
                 {
                     lbOptions.Items.Add($"{counter + 2}. {armor.ArmorName}");
                     selectableNewArmors.Add(armor);
+                    counter++;
                 }
             }
         }
@@ -3873,11 +3876,12 @@ namespace Dungeon_Valley_Explorer
                         {
                             for (int j = 0; j < party[i].Armors.Count(); j++)
                             {
-                                if (party[i].Armors[j] == selectedArmor)
+                                if (party[i].Armors[j].Type == selectedArmor.Type)
                                 {
                                     party[i].Armors[j] = Initializer.armors[0];
                                     party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                     party[i].Armors[j] = selectedNewArmor;
+                                    party[i].Armors[j].Type = selectedArmor.Type;
                                     party[i] = Armor.EquipArmorCheck(party[i], j);
                                 }
                             }
@@ -3900,11 +3904,12 @@ namespace Dungeon_Valley_Explorer
                     {
                         for (int j = 0; j < party[i].Armors.Count(); j++)
                         {
-                            if (party[i].Armors[j] == selectedArmor)
+                            if (party[i].Armors[j].Type == selectedArmor.Type)
                             {
                                 party[i].Armors[j] = Initializer.armors[0];
                                 party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                 party[i].Armors[j] = selectedNewArmor;
+                                party[i].Armors[j].Type = selectedArmor.Type;
                                 party[i] = Armor.EquipArmorCheck(party[i], j);
                             }
                         }

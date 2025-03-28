@@ -274,6 +274,7 @@ namespace Dungeon_Valley_Explorer
                         }
                     }
                 }
+                hero.DEF += armor.DEF;
             }
 
             return hero;
@@ -333,6 +334,7 @@ namespace Dungeon_Valley_Explorer
                         }
                     }
                 }
+                hero.MDEF += armor.MDEF;
             }
 
             return hero;

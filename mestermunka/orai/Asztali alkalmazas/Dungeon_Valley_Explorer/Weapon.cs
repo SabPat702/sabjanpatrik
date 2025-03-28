@@ -20,6 +20,7 @@ namespace Dungeon_Valley_Explorer
         public string SkillCompatibility { get; set; }
         public int Price { get; set; }
         public bool Unique { get; set; }
+        public int Slot { get; set; }
 
 
         public Weapon(string oneLine, List<SpecialEffect> specialEffects)
@@ -48,11 +49,13 @@ namespace Dungeon_Valley_Explorer
             SkillCompatibility = linecutter[9];
             Price = Convert.ToInt32(linecutter[10]);
             Unique = Convert.ToBoolean(linecutter[11]);
+            Slot = 0;
         }
 
         public Weapon()
         {
             SpecialEffects = new List<SpecialEffect>();
+            Slot = 0;
         }
 
         public static Hero EquipWeaponCheck(Hero selectedHero, int weaponIndex)
