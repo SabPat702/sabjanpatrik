@@ -62,7 +62,7 @@ CREATE TABLE `armor` (
   `Unique` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,7 +71,7 @@ CREATE TABLE `armor` (
 
 LOCK TABLES `armor` WRITE;
 /*!40000 ALTER TABLE `armor` DISABLE KEYS */;
-INSERT INTO `armor` VALUES (1,'None','No armor just clothes, skin and body hair.',0,0,'None',5,0,0),(2,'Worn Leather Chestpiece','A worn set of leather that is used for protection.',1,0,'None',2,0,0),(3,'Old Travel Boots','A pair of old boots made for walking in the countryside that has seen better days.',1,0,'None',4,0,0),(4,'Dirty Cloak','A long cloak that was dragged through everything a journey can find.',1,0,'None',2,0,0),(5,'Mana Touched Rag','A rag like cloak with a faint sense of magic within.',0,1,'None',2,0,0),(6,'Worn Leather Knee Pads','An old pair of leather knee pads.',1,0,'None',3,0,0),(7,'Rusting Chainmail','An old piece of weak and rusting armor.',2,0,'None',2,0,0);
+INSERT INTO `armor` VALUES (1,'None (Helmet)','No armor just clothes, skin and body hair.',0,0,'None',1,0,0),(2,'None (Chestplate)','No armor just clothes, skin and body hair.',0,0,'None',2,0,0),(3,'None (Leggings)','No armor just clothes, skin and body hair.',0,0,'None',3,0,0),(4,'None (Boots)','No armor just clothes, skin and body hair.',0,0,'None',4,0,0),(5,'Mana Touched Rag','A rag like cloak with a faint sense of magic within.',0,1,'None',2,0,0),(6,'Worn Leather Knee Pads','An old pair of leather knee pads.',1,0,'None',3,0,0),(7,'Rusting Chainmail','An old piece of weak and rusting armor.',2,0,'None',2,0,0),(8,'Worn Leather Chestpiece','A worn set of leather that is used for protection.',1,0,'None',2,0,0),(9,'Old Travel Boots','A pair of old boots made for walking in the countryside that has seen better days.',1,0,'None',4,0,0),(10,'Dirty Cloak','A long cloak that was dragged through everything a journey can find.',1,0,'None',2,0,0),(11,'Iron Chestplate','A basic piece of protection made of iron.',15,0,'None',2,100,0),(12,'Bejeweled Helmet','A fancy iron helmet.',4,0,'None',1,200,1);
 /*!40000 ALTER TABLE `armor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -283,7 +283,6 @@ CREATE TABLE `hero` (
 
 LOCK TABLES `hero` WRITE;
 /*!40000 ALTER TABLE `hero` DISABLE KEYS */;
-INSERT INTO `hero` VALUES (9,'Greg',2,0,14,14,8,0,1,'Short Bow,Dagger,Unarmed','None,Dirty Cloak,None,Old Travel Boots','Hunter','Powerful Shot,Powerful Cut','Self Care','Merchant,Elf',14,'Elf','Merchant');
 /*!40000 ALTER TABLE `hero` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -396,7 +395,7 @@ CREATE TABLE `npc` (
 
 LOCK TABLES `npc` WRITE;
 /*!40000 ALTER TABLE `npc` DISABLE KEYS */;
-INSERT INTO `npc` VALUES (1,'Gregor','Adventure Buddy',10,10,100,20,20,0,1,'Dagger,Short Bow,Unarmed','None,Worn Leather Chestpiece,Worn Leather Knee Pads,Old Travel Boots','Fighter','Powerful Slash,Powerful Shot,Powerful Stab','Firebolt,Self care','Adventurer,Human','Human','Adventurer');
+INSERT INTO `npc` VALUES (1,'Gregor','Adventure Buddy',10,10,100,20,20,0,1,'Dagger,Short Bow,Family Lance','Bejeweled Helmet,Worn Leather Chestpiece,Worn Leather Knee Pads,Old Travel Boots','Fighter','Powerful Slash,Powerful Shot,Powerful Stab','Firebolt,Self care','Adventurer,Human','Human','Adventurer');
 /*!40000 ALTER TABLE `npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -423,7 +422,7 @@ CREATE TABLE `passive` (
 
 LOCK TABLES `passive` WRITE;
 /*!40000 ALTER TABLE `passive` DISABLE KEYS */;
-INSERT INTO `passive` VALUES (1,'None','Not so special now are we.','Nothing'),(2,'Adventurer','Adventurers are self made explorers of the land and its dungeons. They complete quests small and big for rewards from the guilds.','Level Up,Experience Gain,Rest'),(3,'Noble','Nobles are the ruling class of society. They use their lineage to keep themselves in power and strong in therms of magic.','Shop Payment'),(4,'Merchant','Merchants are the ones responsible for keeping the money flowing out here in the valley as well as some supplies that can\'t be found here. Using their channels they can get gold anywhere but not any time.','Sleep,Shop Payment'),(5,'Blacksmith','Blacksmiths make the weapons, armors, tools and many more for the people and their massive bodies forged while forging are a force to be reckoned with.','Damage Calculation,Upgrade Weapon,Upgrade Armor'),(6,'Human','Humans are both adaptive and quick learners.','Experience Gain'),(7,'Elf','Elves have darksight and great mana affinity.','Turn End,Trap Triggered,Initiative Roll'),(8,'Dwarf','Dwarves are physically quite robust and are better at forging than anyone.','Upgrade Weapon,Upgrade Armor,DEF Calculation'),(9,'Halfling','Halflinges are small and brave. They are hard to stop as they are arogant.','Debuff Recieved,After Crit');
+INSERT INTO `passive` VALUES (1,'None','Not so special now are we.','Nothing'),(2,'Adventurer','Adventurers are self made explorers of the land and its dungeons. They complete quests small and big for rewards from the guilds.','Level Up,Experience Gain,Rest'),(3,'Noble','Nobles are the ruling class of society. They use their lineage to keep themselves in power and strong in therms of magic.','Shop Payment'),(4,'Merchant','Merchants are the ones responsible for keeping the money flowing out here in the valley as well as some supplies that can\'t be found here. Using their channels they can get gold anywhere but not any time.','Sleep,Shop Payment'),(5,'Blacksmith','Blacksmiths make the weapons, armors, tools and many more for the people and their massive bodies forged while forging are a force to be reckoned with.','Damage Calculation,Upgrade Weapon,Upgrade Armor'),(6,'Human','Humans are both adaptive and quick learners.','Experience Gain'),(7,'Elf','Elves have darksight and great mana affinity.','Turn End,Trap Triggered,Initiative Roll'),(8,'Dwarf','Dwarves are physically quite robust and are better at forging than anyone.','Upgrade Weapon,Upgrade Armor'),(9,'Halfling','Halflinges are small and brave. They are hard to stop as they are arogant.','Debuff Recieved,After Crit');
 /*!40000 ALTER TABLE `passive` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -513,7 +512,6 @@ CREATE TABLE `save_game` (
 
 LOCK TABLES `save_game` WRITE;
 /*!40000 ALTER TABLE `save_game` DISABLE KEYS */;
-INSERT INTO `save_game` VALUES (9,'9$0@Greg@0@0@14@14@8@0@1@Short Bow,Dagger,Unarmed@None,Dirty Cloak,None,Old Travel Boots@Powerful Shot,Powerful Cut@Self Care@Merchant,Elf@@Hunter@Elf@Merchant@$Test Item@0$10$0$False$False$0%0%0%0%0%0%0$0%0%0%0%0%0%0$True%False%False%True%True%False%False$True%True%True%True%True%True%True$False','Test',12);
 /*!40000 ALTER TABLE `save_game` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -572,7 +570,7 @@ CREATE TABLE `special_effect` (
 
 LOCK TABLES `special_effect` WRITE;
 /*!40000 ALTER TABLE `special_effect` DISABLE KEYS */;
-INSERT INTO `special_effect` VALUES (1,'None','Not so special now are we.','Nothing'),(2,'Shield','A shield gives you its ATK as DEF when equipped.','Weapon Equip'),(3,'Taunt','Changes the focus of a creature to this one.','Skill Use,Magic Use,Basic Attack'),(4,'Mark','A mark of death that makes the creature take more damage.','Skill Use,Magic Use,Basic Attack'),(5,'Burn','Sets the target on fire.','Skill Use,Magic Use,Basic Attack,Environment Hazard');
+INSERT INTO `special_effect` VALUES (1,'None','Not so special now are we.','Nothing'),(2,'Shield','A shield gives you its ATK as DEF when equipped.','Weapon Equip,DEF Calculation'),(3,'Taunt','Changes the focus of a creature to this one.','Skill Use,Magic Use,Basic Attack'),(4,'Mark','A mark of death that makes the creature take more damage.','Skill Use,Magic Use,Basic Attack'),(5,'Burn','Sets the target on fire.','Skill Use,Magic Use,Basic Attack,Environment Hazard');
 /*!40000 ALTER TABLE `special_effect` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -590,7 +588,7 @@ CREATE TABLE `user` (
   `Email` varchar(100) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `UserName_UNIQUE` (`UserName`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -599,7 +597,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (5,'BenczeIstvan','Terem35_#','BenczeIstvan@gmail.com'),(13,'kemtam197','$2b$05$bA2nndYSmOQyrmNkFegQA.H5sIi6Wmk13KXOCoYA19oYoUrfPjtiS','kemtam197@hengersor.hu'),(14,'Patrik05','$2b$05$znU95Mg1XAOzLFXi8/emCu2WWTJzdN9MBsl/LOJfOSLJPnL/tz3qG','SabPat702@hengersor.hu');
+INSERT INTO `user` VALUES (5,'BenczeIstvan','Terem35_#','BenczeIstvan@gmail.com'),(13,'kemtam197','$2b$05$bA2nndYSmOQyrmNkFegQA.H5sIi6Wmk13KXOCoYA19oYoUrfPjtiS','kemtam197@hengersor.hu'),(14,'Patrik05','$2b$05$znU95Mg1XAOzLFXi8/emCu2WWTJzdN9MBsl/LOJfOSLJPnL/tz3qG','SabPat702@hengersor.hu'),(18,'Amon988','$2b$05$1qBtWkKAey4cgfUmwqJ2o.jFQDXjQZwuAQTq0QuiQKdvcmXN63pE.','totamo988@hengersor.hu'),(19,'Szekrenyes','$2b$05$Ebxc.5G6REbI2NQgqpQKh.jr7VIyjsdPo8ClB7cMT8y3sRatDmqNq','Szekrenyes@gmail.com');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -625,7 +623,7 @@ CREATE TABLE `weapon` (
   `Unigue` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -634,7 +632,7 @@ CREATE TABLE `weapon` (
 
 LOCK TABLES `weapon` WRITE;
 /*!40000 ALTER TABLE `weapon` DISABLE KEYS */;
-INSERT INTO `weapon` VALUES (1,'Unarmed','No weapons here',2,'Blunt',1,1.1,'None','Melee','Melee',0,0),(2,'Rusty Longsword','A rusty longsword that was probably picked up from the side of the road.',8,'Slash',4,1.5,'None','Melee','Melee',0,0),(3,'Broken Spear','A long spear broken in half that now is used as a short spear.',6,'Pierce',10,1.5,'None','Melee','Melee',0,0),(4,'Short Bow','A short bow with short range and small power behind each shot.',6,'Pierce',10,2.0,'None','Ranged','Ranged',0,0),(5,'Dagger','A small dagger easily hidden but not that strong and effective in frontal combat.',4,'Pierce',15,1.5,'None','Melee','Melee',0,0),(6,'Travel Staff','A staff made with traveling in mind. Not that useful for fighting.',4,'Blunt',4,1.5,'None','Melee','Melee',0,0),(7,'Wooden Shield','A small shield made of wood.',2,'Blunt',1,1.1,'Shield','Melee','Melee',0,0);
+INSERT INTO `weapon` VALUES (1,'Unarmed','No weapons here',2,'Blunt',1,1.1,'None','Melee','Melee',0,0),(2,'Rusty Longsword','A rusty longsword that was probably picked up from the side of the road.',8,'Slash',4,1.5,'None','Melee','Melee',0,0),(3,'Broken Spear','A long spear broken in half that now is used as a short spear.',6,'Pierce',10,1.5,'None','Melee','Melee',0,0),(4,'Short Bow','A short bow with short range and small power behind each shot.',6,'Pierce',10,2.0,'None','Ranged','Ranged',0,0),(5,'Dagger','A small dagger easily hidden but not that strong and effective in frontal combat.',4,'Pierce',15,1.5,'None','Melee','Melee',0,0),(6,'Travel Staff','A staff made with traveling in mind. Not that useful for fighting.',4,'Blunt',4,1.5,'None','Melee','Melee',0,0),(7,'Wooden Shield','A small shield made of wood.',2,'Blunt',1,1.1,'Shield','Melee','Melee',0,0),(8,'Short Sword','A basic sword made of iron that is short.',12,'Slash',10,2.0,'None','Melee','Melee',30,0),(9,'Family Lance','A family heirloom',10,'Pierce',15,2.0,'None','Both','Melee',40,1);
 /*!40000 ALTER TABLE `weapon` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -647,4 +645,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-21 14:16:22
+-- Dump completed on 2025-03-28 14:13:16
