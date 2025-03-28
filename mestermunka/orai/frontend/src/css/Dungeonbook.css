@@ -4,7 +4,7 @@
     align-items: center;
     flex-direction: column;
     min-height: 100vh;
-    background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), #2c2c2c; /* Fa textúra hozzáadása */
+    background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), #2c2c2c;
     background-blend-mode: overlay;
     font-family: 'Cinzel', serif;
     padding: 20px;
@@ -20,44 +20,20 @@
     transition: transform 1s ease;
 }
 
-/* Closed book state */
 .book.closed {
     transform: rotateY(-30deg) rotateX(10deg) scale(1);
 }
 
-/* Open book state */
 .book.open {
     transform: rotateY(0deg) rotateX(15deg);
     animation: openBook 1s ease-out forwards;
-}
-
-/* Book Spine */
-.book-spine {
-    position: absolute;
-    left: -40px;
-    top: 0;
-    width: 40px;
-    height: 100%;
-    background: linear-gradient(90deg, #3b2f2f, #5c4033);
-    border-radius: 5px 0 0 5px;
-    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.5);
-    transform: rotateY(-90deg);
-    transform-origin: right;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #d4af37;
-    font-size: 18px;
-    writing-mode: vertical-rl;
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .book-inner {
     display: flex;
     width: 100%;
     height: 100%;
-    background: none; /* Eltávolítjuk a kék hátteret */
+    background: none;
     border: 6px solid #1a252f;
     border-radius: 0 12px 12px 0;
     box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.6);
@@ -80,24 +56,21 @@
     position: absolute;
     z-index: 2;
     border-radius: 0 12px 12px 0;
-    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.3); /* Külső és belső árnyék */
-    border: 2px solid #1a252f; /* Vékony keret a valósághű hatás érdekében */
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.3);
+    border: 2px solid #1a252f;
 }
 
-.book-cover h1 {
-    font-size: 48px;
+.cover-logo {
+    max-width: 60%;
+    max-height: 60%;
+    object-fit: contain;
     margin-bottom: 20px;
-    border: 3px solid #d4af37;
-    padding: 10px 20px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
 }
 
 .book-cover p {
     font-size: 20px;
 }
 
-/* Pages */
 .page {
     flex: 1;
     padding: 30px;
@@ -110,7 +83,7 @@
     position: relative;
     transform-style: preserve-3d;
     cursor: grab;
-    text-align: left; /* Szöveg balra igazítása az oldalakon */
+    text-align: left;
 }
 
 .left-page {
@@ -122,16 +95,28 @@
     border-left: 3px solid #b39d6b;
     box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2), inset -5px 0 10px rgba(0, 0, 0, 0.1);
 }
-.flip-left {
-    transform: rotateY(180deg);
-    box-shadow: -10px 0 20px rgba(0, 0, 0, 0.3);
+
+.page-corner {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    z-index: 20;
+    cursor: pointer;
 }
 
-.flip-right {
-    transform: rotateY(-180deg);
-    box-shadow: 10px 0 20px rgba(0, 0, 0, 0.3);
+.page-corner-left {
+    top: 0;
+    right: 0;
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
 }
-/* Flipping page overlay */
+
+.page-corner-right {
+    top: 0;
+    left: 0;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
 .flipping-page {
     position: absolute;
     top: 0;
@@ -141,16 +126,27 @@
     transition: transform 0.6s ease;
     z-index: 10;
 }
+
 .right-page-flip {
     right: 0;
     transform-origin: left;
+    transform: rotateY(0deg);
 }
 
 .left-page-flip {
     left: 0;
     transform-origin: right;
+    transform: rotateY(0deg);
 }
-/* Flipping page overlay */
+
+.right-page-flip.flipping {
+    transform: rotateY(var(--rotation));
+}
+
+.left-page-flip.flipping {
+    transform: rotateY(var(--rotation));
+}
+
 .page-front,
 .page-back {
     position: absolute;
@@ -164,7 +160,7 @@
     font-size: 16px;
     color: #333;
     line-height: 1.6;
-    text-align: left; /* Szöveg balra igazítása a lapozási animációban is */
+    text-align: left;
 }
 
 .page-front {
@@ -174,6 +170,7 @@
 .page-back {
     transform: rotateY(180deg);
 }
+
 .right-page-flip .page-front {
     border-left: 3px solid #b39d6b;
     box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2), inset -5px 0 10px rgba(0, 0, 0, 0.1);
@@ -193,6 +190,7 @@
     border-left: 3px solid #b39d6b;
     box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2), inset -5px 0 10px rgba(0, 0, 0, 0.1);
 }
+
 .page h2 {
     font-size: 24px;
     font-weight: bold;
@@ -200,18 +198,21 @@
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-align: left; /* Cím balra igazítása */
+    text-align: left;
     border-bottom: 2px solid #b39d6b;
     padding-bottom: 10px;
 }
+
 .page:active {
-    cursor: grabbing; /* Change cursor while dragging */
+    cursor: grabbing;
 }
+
 .page p {
     white-space: pre-wrap;
     word-wrap: break-word;
     color: #4a4a4a;
-    text-align: left; /* Szöveg balra igazítása a bekezdésekben */
+    text-align: left;
+    font-size: 16.5px;
 }
 
 .empty-page {
@@ -219,7 +220,7 @@
     background: url('https://www.transparenttextures.com/patterns/paper-fibers.png'), #e8d5a5;
     background-blend-mode: overlay;
 }
-/* Navigation */
+
 .navigation {
     margin-top: 20px;
     display: flex;
@@ -251,7 +252,6 @@ button:hover:not(:disabled) {
     transform: scale(1.1);
 }
 
-/* Animations */
 @keyframes openBook {
     0% {
         transform: rotateY(-30deg) rotateX(10deg) scale(0.8);
@@ -278,4 +278,18 @@ button:hover:not(:disabled) {
 
 .book.open .book-inner::before {
     opacity: 1;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.book-logo {
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
 }

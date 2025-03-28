@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import '../css/DungeonBook.css';
+import logo from '/logo.jpg'
 
 const DungeonBook = () => {
     const [currentSpread, setCurrentSpread] = useState(0); // Kettesével számoljuk az oldalakat
@@ -16,12 +17,15 @@ const DungeonBook = () => {
         {
             title: "Hero:",
             content: 
-            `You are the main character that you control in the game, and here is what you should know about him: You can name your hero! The hero has physical protection, magical protection, health, ability, and experience (which you can accumulate through experience points). Of course, you also play as the hero, so you can track these attributes during the game.We receive different weapons and armor that can help us in battles. The hero’s abilities are not overlooked either. He has two types of abilities: One type is a specific skill, like better sword handling. The other type is a fantasy-based ability, such as a super-powerful blow or punch.`,            
+            `You are the main character that you control in the game, and here is what you should know about him: You can name your hero! The hero has physical protection, magical protection, health, ability, and experience (which you can accumulate through experience points). Of course, you also play as the hero, so you can track these attributes during the game.We receive different weapons and armor that can help us in battles. The hero’s abilities are not overlooked either. He has two types of abilities: One type is a specific skill, like better sword handling.`,            
         },
         {
             content: 
-            `The hero also has his own magic which can heal his life (Self-care/Heal). NPCs are important to the hero, as they assist him in several ways during the adventure. NPCs can give you small quests or special potions that provide temporary extra abilities. Each NPC has a name, a detailed description, health, physical protection, magical protection, and experience. NPCs (Non-Player Characters) also have different levels. They carry weapons and armor that they can use to help us. Like the hero, they each have their own abilities, and every NPC is unique! Some NPCs will join us as teammates and fight alongside us, but not all NPCs will do so. Some may only provide a charm or a small amount of help before we continue.`,
-        },                             
+            `The other type is a fantasy-based ability, such as a super-powerful blow or punch. The hero also has his own magic which can heal his life (Self-care/Heal). NPCs are important to the hero, as they assist him in several ways during the adventure. NPCs can give you small quests or special potions that provide temporary extra abilities. Each NPC has a name, a detailed description, health, physical protection, magical protection, and experience. NPCs (Non-Player Characters) also have different levels. They carry weapons and armor that they can use to help us. Like the hero, they each have their own abilities, and every NPC is unique! Some NPCs will join us as teammates and fight`,
+        },      
+        {
+            content: `alongside us, but not all NPCs will do so. Some may only provide a charm or a small amount of help before we continue.`,
+        },                    
         {
             title: "Monsters and the races",
             content:
@@ -45,10 +49,11 @@ const DungeonBook = () => {
                     },
         {
             title: "Skill and Magic",
-            content:    `Skills are unique abilities in the game. These skills have a critical attack chance, which is enhanced by a multiplier. Each skill has special effects, and there is a range beyond which it cannot reach. Using these skills may come at a cost, and their reload times may be extended. Magic plays an important role in the game. It has its own detailed description, but there are a few key points to know. Magic has attack and damage values, and different types of magic exist. Magic can also perform critical attacks, with multipliers under certain circumstances. Magic has a range and cannot reach infinity, and it also has special effects. Finally, magic takes time to recharge`,          
+            content: 
+                    `Skills are unique abilities in the game. These skills have a critical attack chance, which is enhanced by a multiplier. Each skill has special effects, and there is arange beyond which it cannot reach. Using these skills may come at a cost, and their reload times may be extended. Magic plays an important role in the game.It has its own detailed description, but there are a few key points to know. Magic has attack and damage values, and different types of magic exist. Magic can alsoperform critical attacks, with multipliers under certain circumstances. Magic has a range and cannot reach infinity, `,          
         },
         {
-            content: ` `,
+            content: `and it also has special effects. Finally, magic takes time to recharge, a process that can vary widely—some spells might refresh quickly, while others, particularly the most potent ones, could require a lengthy cooldown, demanding careful timing and resource management from the player`,
         },
         {
             title: "Consumables, Armor, Weapons, Special Effects, Passive, Buffs/Debuffs",
@@ -59,10 +64,13 @@ const DungeonBook = () => {
         },
         {
             title: "The NPC's of the city",
-            content: ` There are different NPCs located throughout the city. At the Blacksmith, you can upgrade your own and your teammates' armor and weaponry, or have new items made. However, the Blacksmith cannot make weapons or armor without limits. You will need to pay for these upgrades, and there are restrictions on how often they can be done. At the Alchemist, you can obtain various potions for yourself and your teammates. The Alchemist is initially closed and will only open at a later stage in the game. In the Pub, you can buy food and drinks from the innkeeper, which provide temporary buffs to the hero or the whole team.`,
+            content: ` There are different NPCs located throughout the city. At the Blacksmith, you can upgrade your own and your teammates' armor and weaponry, or have new items made. However, the Blacksmith cannot make weapons or armor without limits. You will need to pay for these upgrades, and there are restrictions on how often they can be done. At the Alchemist, you can obtain various potions for yourself and your teammates. The Alchemist is initially closed and will only open at a later stage in the game. In the Pub, you can buy food and drinks from the`,
         },
         {
-            content: `You can only level up after resting at the Pub, but until then, your accumulated experience will not be utilized. At the Merchant, you can sell items such as potions or equipment, or find special items that are not available elsewhere. The Merchant’s business can be supported or improved by completing quests, allowing you to access a larger selection of items and even receive discounts. The Merchant is initially locked and will only become available after a later mission. There is a special place where heroes can change their team, replacing adventurers with others who fit into the game's story, or even recruit weaker adventurers if the player doesn't want to use them or hasn't unlocked them as usable characters.`,
+            content: `innkeeper, which provide temporary buffs to the hero or the whole team. You can only level up after resting at the Pub, but until then, your accumulated experience will not be utilized. At the Merchant, you can sell items such as potions or equipment, or find special items that are not available elsewhere. The Merchant’s business can be supported or improved by completing quests, allowing you to access a larger selection of items and even receive discounts. The Merchant is initially locked and will only become available after a later mission. There is a special place where heroes can change their team, replacing adventurers with others who fit into the game's story,  `,
+        },
+        {
+            content: `or even recruit weaker adventurers, if the player doesn't want to use them or hasn't unlocked them as usable characters.`,
         }
     ];
 
@@ -111,9 +119,9 @@ const DungeonBook = () => {
     // Bal és jobb oldal indexeinek kiszámítása
     const getPageContent = () => {
         if (currentSpread === 0) {
-            // Első terjedelem: bal oldal üres, jobb oldal az első tartalom
+            // Első terjedelem: bal oldalon a logó, jobb oldalon az első tartalom
             return {
-                left: null, // Üres oldal
+                left: { isLogo: true }, // Logó jelzése
                 right: pages[0] // Introduction
             };
         } else {
@@ -152,15 +160,21 @@ const DungeonBook = () => {
                     {isOpen && (
                         <>
                             <div className="page left-page">
-                                {left ? (
-                                    <>
-                                        {left.title && <h2>{left.title}</h2>}
-                                        <p>{left.content}</p>
-                                    </>
-                                ) : (
-                                    <div className="empty-page"> </div>
-                                )}
-                            </div>
+    {left ? (
+        left.isLogo ? (
+            <div className="logo-container">
+                <img src={logo} alt="Dungeon Valley Explorer Logo" className="book-logo" />
+            </div>
+        ) : (
+            <>
+                {left.title && <h2>{left.title}</h2>}
+                <p>{left.content}</p>
+            </>
+        )
+    ) : (
+        <div className="empty-page"> </div>
+    )}
+</div>
                             <div className="page right-page">
                                 {right ? (
                                     <>
