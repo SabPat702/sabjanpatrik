@@ -72,7 +72,6 @@ namespace Dungeon_Valley_Explorer
                     if (weapon == weapons[i].WeaponName)
                     {
                         Weapons[weaponcounter] = weapons[i];
-                        Weapons[weaponcounter].Slot = weaponcounter;
                         weaponcounter++;
                     }
                 }
@@ -87,10 +86,6 @@ namespace Dungeon_Valley_Explorer
                     if (armor == armors[i].ArmorName)
                     {
                         Armors[armorcounter] = armors[i];
-                        if (armor == "None")
-                        {
-                            Armors[armorcounter].Type = armorcounter + 1;
-                        }
                         armorcounter++;
                     }
                 }
@@ -186,7 +181,6 @@ namespace Dungeon_Valley_Explorer
                         Weapons[weaponcounter] = weapons[i];
                         weaponsImproved.TryGetValue(weapon, out int improvement);
                         Weapons[weaponcounter].ATK += improvement;
-                        Weapons[weaponcounter].Slot = weaponcounter;
                         weaponcounter++;
                     }
                 }
@@ -203,10 +197,6 @@ namespace Dungeon_Valley_Explorer
                         armorsImproved.TryGetValue(armor, out int improvement);
                         Armors[armorcounter].DEF += improvement;
                         Armors[armorcounter].MDEF += improvement;
-                        if (armor == "None")
-                        {
-                            Armors[armorcounter].Type = armorcounter + 1;
-                        }
                         armorcounter++;
                     }
                 }
@@ -288,12 +278,12 @@ namespace Dungeon_Valley_Explorer
         public Hero()
         {
             Weapons = new Weapon[3];
+            Armors = new Armor[4];
             BuffsDebuffs = new List<BuffDebuff>();
             Passives = new List<Passive>();
             Skills = new List<Skill>();
             Magics = new List<Magic>();
             Race = new Race();
-            Armors = new Armor[4];
         }
 
         //Character classes --------------------------------------------------------------------------------------------
@@ -331,12 +321,14 @@ namespace Dungeon_Valley_Explorer
             }
             foreach (Armor armor in Initializer.armors)
             {
-                if (armor.ArmorName == "None")
+                if (armor.ArmorName == "None (Helmet)")
                 {
                     newPlayerHero.Armors[0] = armor;
-                    newPlayerHero.Armors[0].Type = 1;
+                    break;
+                }
+                if (armor.ArmorName == "None (Leggings)")
+                {
                     newPlayerHero.Armors[2] = armor;
-                    newPlayerHero.Armors[2].Type = 3;
                     break;
                 }
             }
@@ -352,7 +344,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Rusty Longsword")
                 {
                     newPlayerHero.Weapons[0] = weapon;
-                    newPlayerHero.Weapons[0].Slot = 0;
                     break;
                 }
             }
@@ -361,7 +352,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Broken Spear")
                 {
                     newPlayerHero.Weapons[1] = weapon;
-                    newPlayerHero.Weapons[1].Slot = 1;
                     break;
                 }
             }
@@ -370,7 +360,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Unarmed")
                 {
                     newPlayerHero.Weapons[2] = weapon;
-                    newPlayerHero.Weapons[2].Slot = 2;
                     break;
                 }
             }
@@ -434,12 +423,14 @@ namespace Dungeon_Valley_Explorer
             }
             foreach (Armor armor in Initializer.armors)
             {
-                if (armor.ArmorName == "None")
+                if (armor.ArmorName == "None (Helmet)")
                 {
                     newPlayerHero.Armors[0] = armor;
-                    newPlayerHero.Armors[0].Type = 1;
+                    break;
+                }
+                if (armor.ArmorName == "None (Leggings)")
+                {
                     newPlayerHero.Armors[2] = armor;
-                    newPlayerHero.Armors[2].Type = 3;
                     break;
                 }
             }
@@ -455,7 +446,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Short Bow")
                 {
                     newPlayerHero.Weapons[0] = weapon;
-                    newPlayerHero.Weapons[0].Slot = 0;
                     break;
                 }
             }
@@ -464,7 +454,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Dagger")
                 {
                     newPlayerHero.Weapons[1] = weapon;
-                    newPlayerHero.Weapons[1].Slot = 1;
                     break;
                 }
             }
@@ -473,7 +462,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Unarmed")
                 {
                     newPlayerHero.Weapons[2] = weapon;
-                    newPlayerHero.Weapons[2].Slot = 2;
                     break;
                 }
             }
@@ -537,12 +525,14 @@ namespace Dungeon_Valley_Explorer
             }
             foreach (Armor armor in Initializer.armors)
             {
-                if (armor.ArmorName == "None")
+                if (armor.ArmorName == "None (Helmet)")
                 {
                     newPlayerHero.Armors[0] = armor;
-                    newPlayerHero.Armors[0].Type = 1;
+                    break;
+                }
+                if (armor.ArmorName == "None (Leggings)")
+                {
                     newPlayerHero.Armors[2] = armor;
-                    newPlayerHero.Armors[2].Type = 3;
                     break;
                 }
             }
@@ -558,7 +548,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Travel Staff")
                 {
                     newPlayerHero.Weapons[0] = weapon;
-                    newPlayerHero.Weapons[0].Slot = 0;
                     break;
                 }
             }
@@ -567,7 +556,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Dagger")
                 {
                     newPlayerHero.Weapons[1] = weapon;
-                    newPlayerHero.Weapons[1].Slot = 1;
                     break;
                 }
             }
@@ -576,7 +564,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Unarmed")
                 {
                     newPlayerHero.Weapons[2] = weapon;
-                    newPlayerHero.Weapons[2].Slot = 2;
                     break;
                 }
             }
@@ -648,10 +635,9 @@ namespace Dungeon_Valley_Explorer
             }
             foreach (Armor armor in Initializer.armors)
             {
-                if (armor.ArmorName == "None")
+                if (armor.ArmorName == "None (Helmet)")
                 {
                     newPlayerHero.Armors[0] = armor;
-                    newPlayerHero.Armors[0].Type = 1;
                     break;
                 }
             }
@@ -667,7 +653,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Rusty Longsword")
                 {
                     newPlayerHero.Weapons[0] = weapon;
-                    newPlayerHero.Weapons[0].Slot = 0;
                     break;
                 }
             }
@@ -676,7 +661,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Wooden Shield")
                 {
                     newPlayerHero.Weapons[1] = weapon;
-                    newPlayerHero.Weapons[1].Slot = 1;
                     break;
                 }
             }
@@ -693,7 +677,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Unarmed")
                 {
                     newPlayerHero.Weapons[2] = weapon;
-                    newPlayerHero.Weapons[2].Slot = 2;
                     break;
                 }
             }
@@ -773,12 +756,14 @@ namespace Dungeon_Valley_Explorer
             }
             foreach (Armor armor in Initializer.armors)
             {
-                if (armor.ArmorName == "None")
+                if (armor.ArmorName == "None (Helmet)")
                 {
                     newPlayerHero.Armors[0] = armor;
-                    newPlayerHero.Armors[0].Type = 1;
+                    break;
+                }
+                if (armor.ArmorName == "None (Leggings)")
+                {
                     newPlayerHero.Armors[2] = armor;
-                    newPlayerHero.Armors[2].Type = 3;
                     break;
                 }
             }
@@ -794,7 +779,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Rusty Longsword")
                 {
                     newPlayerHero.Weapons[0] = weapon;
-                    newPlayerHero.Weapons[0].Slot = 0;
                     break;
                 }
             }
@@ -803,7 +787,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Short Bow")
                 {
                     newPlayerHero.Weapons[1] = weapon;
-                    newPlayerHero.Weapons[1].Slot = 1;
                     break;
                 }
             }
@@ -812,7 +795,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Unarmed")
                 {
                     newPlayerHero.Weapons[2] = weapon;
-                    newPlayerHero.Weapons[2].Slot = 2;
                     break;
                 }
             }
@@ -892,12 +874,14 @@ namespace Dungeon_Valley_Explorer
             }
             foreach (Armor armor in Initializer.armors)
             {
-                if (armor.ArmorName == "None")
+                if (armor.ArmorName == "None (Helmet)")
                 {
                     newPlayerHero.Armors[0] = armor;
-                    newPlayerHero.Armors[0].Type = 1;
+                    break;
+                }
+                if (armor.ArmorName == "None (Leggings)")
+                {
                     newPlayerHero.Armors[2] = armor;
-                    newPlayerHero.Armors[2].Type = 3;
                     break;
                 }
             }
@@ -913,7 +897,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Travel Staff")
                 {
                     newPlayerHero.Weapons[0] = weapon;
-                    newPlayerHero.Weapons[0].Slot = 0;
                     break;
                 }
             }
@@ -922,7 +905,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Dagger")
                 {
                     newPlayerHero.Weapons[1] = weapon;
-                    newPlayerHero.Weapons[1].Slot = 1;
                     break;
                 }
             }
@@ -931,7 +913,6 @@ namespace Dungeon_Valley_Explorer
                 if (weapon.WeaponName == "Unarmed")
                 {
                     newPlayerHero.Weapons[2] = weapon;
-                    newPlayerHero.Weapons[2].Slot = 2;
                     break;
                 }
             }
