@@ -13,6 +13,30 @@ const saltRounds = 5;
 app.use(bodyParser.json());
 app.use(cors());
 
+
+
+
+app.get("/", (req, res) => {
+    res.send("Fut a backend!");
+});
+
+const db = mysql2.createConnection({
+  user: "sabpat702",
+  host: "10.3.1.65",
+  password: "72587413702",
+  database:"sabpat702",
+  port: 3306
+})
+
+
+db.connect(err => {
+    if (err) {
+        console.error('Database connection failed:', err);
+    } else {
+        console.log('Connected to MySQL');
+    }
+});
+
 /*
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -37,31 +61,7 @@ const transporter = nodemailer.createTransport({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 });
-*/
-
-
-app.get("/", (req, res) => {
-    res.send("Fut a backend!");
-});
-
-const db = mysql2.createConnection({
-  user: "sabpat702",
-  host: "10.3.1.65",
-  password: "72587413702",
-  database:"sabpat702",
-  port: 3306
-})
-
-
-db.connect(err => {
-    if (err) {
-        console.error('Database connection failed:', err);
-    } else {
-        console.log('Connected to MySQL');
-    }
-});
-
-  
+*/ 
 
 
 // Felhasználók lekérdezése
