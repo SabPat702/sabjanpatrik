@@ -1,3 +1,4 @@
+/* ========== 1. Alap konténer és háttér ========== */
 .dungeon-book-container {
     display: flex;
     justify-content: center;
@@ -11,9 +12,10 @@
     perspective: 1500px;
 }
 
+/* ========== 2. Könyv (book) és borító (cover) ========== */
 .book {
     width: 80%;
-    max-width: 900px;
+    max-width: 750px;
     height: 620px;
     position: relative;
     transform-style: preserve-3d;
@@ -34,15 +36,13 @@
     width: 100%;
     height: 100%;
     background: none;
-    border: 6px solid #1a252f;
-    border-radius: 0 12px 12px 0;
-    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.6);
     position: relative;
     overflow: hidden;
+    transform-style: preserve-3d;
 }
 
 .book-cover {
-    width: 90%;
+    width: 70%;
     height: 100%;
     background: url('https://www.transparenttextures.com/patterns/leather.png'), linear-gradient(135deg, #3b4a5a, #2c3e50);
     display: flex;
@@ -60,17 +60,14 @@
     border: 2px solid #1a252f;
 }
 
-.cover-logo {
-    max-width: 60%;
-    max-height: 60%;
-    object-fit: contain;
-    margin-bottom: 20px;
-}
-
 .book-cover p {
     font-size: 20px;
+    margin-top: 10px;
+    color: #f1c40f;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+/* ========== 3. Oldalak (page) ========== */
 .page {
     flex: 1;
     padding: 30px;
@@ -82,111 +79,22 @@
     line-height: 1.6;
     position: relative;
     transform-style: preserve-3d;
-    cursor: grab;
+    cursor: default;
     text-align: left;
+    backface-visibility: hidden;
+    transition: transform 0.6s ease-out;
+    user-select: none;
+    overflow: hidden; /* Hide scrollbars */
 }
 
 .left-page {
+    transform-origin: left center;
     border-right: 3px solid #b39d6b;
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2), inset 5px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .right-page {
-    border-left: 3px solid #b39d6b;
-    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2), inset -5px 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.page-corner {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background: transparent;
-    z-index: 20;
-    cursor: pointer;
-}
-
-.page-corner-left {
-    top: 0;
-    right: 0;
-    clip-path: polygon(100% 0, 0 0, 100% 100%);
-}
-
-.page-corner-right {
-    top: 0;
-    left: 0;
-    clip-path: polygon(0 0, 100% 0, 0 100%);
-}
-
-.flipping-page {
-    position: absolute;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.6s ease;
-    z-index: 10;
-}
-
-.right-page-flip {
-    right: 0;
-    transform-origin: left;
-    transform: rotateY(0deg);
-}
-
-.left-page-flip {
-    left: 0;
-    transform-origin: right;
-    transform: rotateY(0deg);
-}
-
-.right-page-flip.flipping {
-    transform: rotateY(var(--rotation));
-}
-
-.left-page-flip.flipping {
-    transform: rotateY(var(--rotation));
-}
-
-.page-front,
-.page-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    padding: 30px;
-    background: url('https://www.transparenttextures.com/patterns/paper-fibers.png'), #e8d5a5;
-    background-blend-mode: overlay;
-    backface-visibility: hidden;
-    overflow-y: auto;
-    font-size: 16px;
-    color: #333;
-    line-height: 1.6;
-    text-align: left;
-}
-
-.page-front {
-    transform: rotateY(0deg);
-}
-
-.page-back {
-    transform: rotateY(180deg);
-}
-
-.right-page-flip .page-front {
-    border-left: 3px solid #b39d6b;
-    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2), inset -5px 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.right-page-flip .page-back {
-    border-right: 3px solid #b39d6b;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2), inset 5px 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.left-page-flip .page-front {
-    border-right: 3px solid #b39d6b;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2), inset 5px 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.left-page-flip .page-back {
+    transform-origin: right center;
     border-left: 3px solid #b39d6b;
     box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2), inset -5px 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -203,10 +111,6 @@
     padding-bottom: 10px;
 }
 
-.page:active {
-    cursor: grabbing;
-}
-
 .page p {
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -215,12 +119,36 @@
     font-size: 16.5px;
 }
 
-.empty-page {
-    height: 100%;
-    background: url('https://www.transparenttextures.com/patterns/paper-fibers.png'), #e8d5a5;
-    background-blend-mode: overlay;
+/* Lapozási sarkok */
+.page-corner {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 10;
 }
 
+.page-corner-left {
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(135deg, transparent 75%, rgba(0, 0, 0, 0.1) 75%);
+}
+
+.page-corner-right {
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(-135deg, transparent 75%, rgba(0, 0, 0, 0.1) 75%);
+}
+
+.page-corner:hover {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.page-corner:active {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* ========== 4. Navigációs gombok ========== */
 .navigation {
     margin-top: 20px;
     display: flex;
@@ -241,17 +169,12 @@ button {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
 button:hover:not(:disabled) {
     background-color: #e67e22;
     transform: scale(1.1);
 }
 
+/* ========== 5. Animációk és egyéb finomhangolások ========== */
 @keyframes openBook {
     0% {
         transform: rotateY(-30deg) rotateX(10deg) scale(0.8);
@@ -261,6 +184,15 @@ button:hover:not(:disabled) {
         transform: rotateY(0deg) rotateX(15deg) scale(1);
         opacity: 1;
     }
+}
+
+@keyframes flip {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(180deg); }
+}
+
+.page.flipping {
+    transform: rotateY(180deg);
 }
 
 .book-inner::before {
@@ -280,6 +212,13 @@ button:hover:not(:disabled) {
     opacity: 1;
 }
 
+/* ========== 6. Üres oldal és vizuális elemek ========== */
+.empty-page {
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/paper-fibers.png'), #e8d5a5;
+    background-blend-mode: overlay;
+}
+
 .logo-container {
     display: flex;
     justify-content: center;
@@ -292,4 +231,31 @@ button:hover:not(:disabled) {
     max-width: 80%;
     max-height: 80%;
     object-fit: contain;
+}
+
+.page-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+/*
+.page-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.page-content::-webkit-scrollbar-track {
+    background: #d4c4a1;
+}
+
+.page-content::-webkit-scrollbar-thumb {
+    background: #8B4513;
+    border-radius: 4px;
+}
+
+.page-content::-webkit-scrollbar-thumb:hover {
+    background: #6b3410;
+}
+*/
+.flipping {
+    animation: flip 0.6s ease-in-out;
 }

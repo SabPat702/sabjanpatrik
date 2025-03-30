@@ -1,12 +1,10 @@
 import React, { useState, useRef } from "react";
 import '../css/DungeonBook.css';
-import logo from '/logo.jpg'
+import logo from '/logo.jpg';
 
 const DungeonBook = () => {
-    const [currentSpread, setCurrentSpread] = useState(0); // Kettesével számoljuk az oldalakat
-    const [isFlipping, setIsFlipping] = useState(false);
+    const [currentSpread, setCurrentSpread] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
-    const [dragState, setDragState] = useState({ isDragging: false, startX: 0, dragDirection: null, rotation: 0 });
     const bookRef = useRef(null);
 
     const pages = [
@@ -16,11 +14,11 @@ const DungeonBook = () => {
         },
         {
             title: "Hero:",
-            content: 
-            `You are the main character that you control in the game, and here is what you should know about him: You can name your hero! The hero has physical protection, magical protection, health, ability, and experience (which you can accumulate through experience points). Of course, you also play as the hero, so you can track these attributes during the game.We receive different weapons and armor that can help us in battles. The hero’s abilities are not overlooked either. He has two types of abilities: One type is a specific skill, like better sword handling.`,            
+            content:
+            `You are the main character that you control in the game, and here is what you should know about him: You can name your hero! The hero has physical protection, magical protection, health, ability, and experience (which you can accumulate through experience points). Of course, you also play as the hero, so you can track these attributes during the game. We receive different weapons and armor that can help us in battles. The hero’s abilities are not overlooked either. He has two types of abilities: One type is a specific skill, like better sword handling.`,            
         },
         {
-            content: 
+            content:
             `The other type is a fantasy-based ability, such as a super-powerful blow or punch. The hero also has his own magic which can heal his life (Self-care/Heal). NPCs are important to the hero, as they assist him in several ways during the adventure. NPCs can give you small quests or special potions that provide temporary extra abilities. Each NPC has a name, a detailed description, health, physical protection, magical protection, and experience. NPCs (Non-Player Characters) also have different levels. They carry weapons and armor that they can use to help us. Like the hero, they each have their own abilities, and every NPC is unique! Some NPCs will join us as teammates and fight`,
         },      
         {
@@ -32,12 +30,12 @@ const DungeonBook = () => {
                         `Races play a special role in the game, as they have many characteristics. Each race has a name and detailed description within the game. These races can deal lethal damage in the game, so be cautious around them. However, some races deal weaker damage, and while they still have resistance, their attacks are less dangerous. The damage levels are: neutralizing/null < endured/tolerant < resistant < weak < deadly/fatal. These are the levels of damage different races can deal.`
         },
         {
-            content: 
+            content:
             `Monsters also play an important role in the game, as they are the enemies you fight against. Monsters have health, physical protection, and magical protection. Their offensive power varies, and they have abilities that they use during combat. Monsters also have their own species and behaviors, which influence how they act during combat. They appear in various locations with varying strengths! At this point, AI comes into play, determining the thinking and behavior of monsters. The AI must randomly choose one of the available behaviors for monsters in combat.`,
-        }, 
+        },
         {
             title: "Dungeon and the Environmental Hazards",
-            content: 
+            content:
                     `Environmental hazards are important factors in the game, as no one wants to lose health unnecessarily. Environmental hazards can include ravines, traps, thorny bushes, or lava. These are just a few examples of the dangers that can be encountered. Environmental hazards have attack power, damage types, critical attack chances, and attack multipliers. Some hazards also have special abilities, which are hidden in specific locations.`
         },
         {
@@ -49,8 +47,8 @@ const DungeonBook = () => {
                     },
         {
             title: "Skill and Magic",
-            content: 
-                    `Skills are unique abilities in the game. These skills have a critical attack chance, which is enhanced by a multiplier. Each skill has special effects, and there is arange beyond which it cannot reach. Using these skills may come at a cost, and their reload times may be extended. Magic plays an important role in the game.It has its own detailed description, but there are a few key points to know. Magic has attack and damage values, and different types of magic exist. Magic can alsoperform critical attacks, with multipliers under certain circumstances. Magic has a range and cannot reach infinity, `,          
+            content:
+                    `Skills are unique abilities in the game. These skills have a critical attack chance, which is enhanced by a multiplier. Each skill has special effects, and there is arange beyond which it cannot reach. Using these skills may come at a cost, and their reload times may be extended. Magic plays an important role in the game. It has its own detailed description, but there are a few key points to know. Magic has attack and damage values, and different types of magic exist. Magic can also perform critical attacks, with multipliers under certain circumstances. Magic has a range and cannot reach infinity, `,          
         },
         {
             content: `and it also has special effects. Finally, magic takes time to recharge, a process that can vary widely—some spells might refresh quickly, while others, particularly the most potent ones, could require a lengthy cooldown, demanding careful timing and resource management from the player`,
@@ -74,60 +72,35 @@ const DungeonBook = () => {
         }
     ];
 
-    const totalSpreads = Math.ceil((pages.length + 1) / 2); // +1 az üres első oldal miatt
+    const totalSpreads = Math.ceil((pages.length + 1) / 2);
 
-    const nextSpread = () => {
-        if (currentSpread < totalSpreads - 1 && !isFlipping) {
-            setIsFlipping(true);
-            setTimeout(() => {
-                setCurrentSpread(currentSpread + 1);
-                setIsFlipping(false);
-            }, 600);
-        }
+    // Bal sarokra kattintás: előző oldal
+    const handleLeftCornerClick = (e) => {
+        e.preventDefault();
+        if (!isOpen || currentSpread === 0) return;
+        setCurrentSpread(currentSpread - 1);
     };
 
-    const prevSpread = () => {
-        if (currentSpread > 0 && !isFlipping) {
-            setIsFlipping(true);
-            setTimeout(() => {
-                setCurrentSpread(currentSpread - 1);
-                setIsFlipping(false);
-            }, 600);
-        }
+    // Jobb sarokra kattintás: következő oldal
+    const handleRightCornerClick = (e) => {
+        e.preventDefault();
+        if (!isOpen || currentSpread >= totalSpreads - 1) return;
+        setCurrentSpread(currentSpread + 1);
     };
 
     const toggleBook = () => {
         setIsOpen(!isOpen);
     };
 
-    const handleDragStart = (e) => {
-        if (!isOpen || isFlipping) return;
-        const clientX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
-        const bookRect = bookRef.current.getBoundingClientRect();
-        const bookCenter = bookRect.left + bookRect.width / 2;
-        setDragState({
-            isDragging: true,
-            startX: clientX,
-            dragDirection: clientX < bookCenter ? "left" : "right",
-            rotation: 0,
-        });
-    };
-
-    const handleDragMove = (e) => { /* ... */ };
-    const handleDragEnd = (e) => { /* ... */ };
-
-    // Bal és jobb oldal indexeinek kiszámítása
     const getPageContent = () => {
         if (currentSpread === 0) {
-            // Első terjedelem: bal oldalon a logó, jobb oldalon az első tartalom
             return {
-                left: { isLogo: true }, // Logó jelzése
-                right: pages[0] // Introduction
+                left: { isLogo: true },
+                right: pages[0]
             };
         } else {
-            // További terjedelmek: két oldal tartalommal
-            const leftIndex = (currentSpread * 2) - 1; // Pl. spread 1 -> pages[1]
-            const rightIndex = leftIndex + 1; // Pl. spread 1 -> pages[2]
+            const leftIndex = (currentSpread * 2) - 1;
+            const rightIndex = leftIndex + 1;
             return {
                 left: pages[leftIndex] || null,
                 right: pages[rightIndex] || null
@@ -139,50 +112,49 @@ const DungeonBook = () => {
 
     return (
         <div className="dungeon-book-container">
-            <div
-                className={`book ${isOpen ? 'open' : 'closed'}`}
-                ref={bookRef}
-                onMouseDown={handleDragStart}
-                onMouseMove={handleDragMove}
-                onMouseUp={handleDragEnd}
-                onMouseLeave={handleDragEnd}
-                onTouchStart={handleDragStart}
-                onTouchMove={handleDragMove}
-                onTouchEnd={handleDragEnd}
-            >
+            <div className={`book ${isOpen ? 'open' : 'closed'}`} ref={bookRef}>
                 <div className="book-inner">
-                    {!isOpen && (
+                    {!isOpen ? (
                         <div className="book-cover">
                             <h1>Dungeon Valley Explorer</h1>
                             <p>A Text-Based Adventure</p>
                         </div>
-                    )}
-                    {isOpen && (
+                    ) : (
                         <>
                             <div className="page left-page">
-    {left ? (
-        left.isLogo ? (
-            <div className="logo-container">
-                <img src={logo} alt="Dungeon Valley Explorer Logo" className="book-logo" />
-            </div>
-        ) : (
-            <>
-                {left.title && <h2>{left.title}</h2>}
-                <p>{left.content}</p>
-            </>
-        )
-    ) : (
-        <div className="empty-page"> </div>
-    )}
-</div>
+                                {left ? (
+                                    left.isLogo ? (
+                                        <div className="logo-container">
+                                            <img src={logo} alt="Dungeon Valley Explorer Logo" className="book-logo" />
+                                        </div>
+                                    ) : (
+                                        <div className="page-content">
+                                            {left.title && <h2>{left.title}</h2>}
+                                            <p>{left.content}</p>
+                                            <div
+                                                className="page-corner page-corner-left"
+                                                onClick={handleLeftCornerClick}
+                                                onTouchStart={handleLeftCornerClick}
+                                            />
+                                        </div>
+                                    )
+                                ) : (
+                                    <div className="empty-page" />
+                                )}
+                            </div>
                             <div className="page right-page">
                                 {right ? (
-                                    <>
+                                    <div className="page-content">
                                         {right.title && <h2>{right.title}</h2>}
                                         <p>{right.content}</p>
-                                    </>
+                                        <div
+                                            className="page-corner page-corner-right"
+                                            onClick={handleRightCornerClick}
+                                            onTouchStart={handleRightCornerClick}
+                                        />
+                                    </div>
                                 ) : (
-                                    <div className="empty-page"> </div>
+                                    <div className="empty-page" />
                                 )}
                             </div>
                         </>
@@ -190,15 +162,7 @@ const DungeonBook = () => {
                 </div>
             </div>
             <div className="navigation">
-                {!isOpen ? (
-                    <button onClick={toggleBook}>Open Book</button>
-                ) : (
-                    <>
-                        <button onClick={prevSpread} disabled={currentSpread === 0 || isFlipping}>Previous</button>
-                        <button onClick={nextSpread} disabled={currentSpread === totalSpreads - 1 || isFlipping}>Next</button>
-                        <button onClick={toggleBook}>Close Book</button>
-                    </>
-                )}
+                <button onClick={toggleBook}>{isOpen ? 'Close Book' : 'Open Book'}</button>
             </div>
         </div>
     );
