@@ -91,6 +91,9 @@ namespace Dungeon_Valley_Explorer
         List<Armor> selectableNewArmors = new List<Armor>();
         Armor selectedNewArmor = new Armor();
         //Town Blacksmith variables ------------------------------------------------------------------------------------
+
+        bool canRest = true;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -1998,8 +2001,10 @@ namespace Dungeon_Valley_Explorer
                     BlacksmithEnter();
                     break;
                 case "4":
+                    TavernEnter();
                     break;
                 case "Tavern":
+                    TavernEnter();
                     break;
                 case "5":
                     break;
@@ -2456,7 +2461,7 @@ namespace Dungeon_Valley_Explorer
         public void BlacksmithBuyWeaponChosenWeaponBought()
         {
             int cost = buyWeaponSelectedWeapon.Price;
-            foreach (Passive passive in party[0].Passives)
+            foreach (Passive passive in heroes[0].Passives)
             {
                 if (passive.Affect.Contains("Shop Payment"))
                 {
@@ -2646,7 +2651,7 @@ namespace Dungeon_Valley_Explorer
         public void BlacksmithBuyArmorChosenArmorBought()
         {
             int cost = buyArmorSelectedArmor.Price;
-            foreach (Passive passive in party[0].Passives)
+            foreach (Passive passive in heroes[0].Passives)
             {
                 if (passive.Affect.Contains("Shop Payment"))
                 {
@@ -2823,7 +2828,7 @@ namespace Dungeon_Valley_Explorer
         {
             int successRate = 100;
             int cost = (weaponsImproved[improveWeaponSelectedWeapon.WeaponName] + 1) * improveWeaponSelectedWeapon.ATK;
-            foreach (Passive passive in party[0].Passives)
+            foreach (Passive passive in heroes[0].Passives)
             {
                 if (passive.Affect.Contains("Shop Payment"))
                 {
@@ -3040,7 +3045,7 @@ namespace Dungeon_Valley_Explorer
             }
             cost = cost * (armorsImproved[improveArmorSelectedArmor.ArmorName] + 1);
 
-            foreach (Passive passive in party[0].Passives)
+            foreach (Passive passive in heroes[0].Passives)
             {
                 if (passive.Affect.Contains("Shop Payment"))
                 {
@@ -3976,6 +3981,114 @@ namespace Dungeon_Valley_Explorer
         }
 
         //Blacksmith ends here -----------------------------------------------------------------------------------------
+
+        //Tavern starts here -------------------------------------------------------------------------------------------
+
+        public void TavernEnter()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Rest");
+            lbOptions.Items.Add("2. Order Food");
+            lbOptions.Items.Add("3. Leave");
+            lbDisplay.Items.Add("Tavernkeeper: Welcome dear customer! How can I help you today?");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(TavernChooseActivity);
+        }
+
+        public void TavernChooseActivity(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(TavernChooseActivity);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+
+                    break;
+                case "1":
+                    break;
+                case "Rest":
+                    break;
+                case "2":
+                    break;
+                case "Order Food":
+                    break;
+                case "3":
+                    TavernLeave();
+                    break;
+                case "Leave":
+                    TavernLeave();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(TavernChooseActivity);
+                    break;
+            }
+        }
+
+        public void ExplainTavernChooseActivity()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"EXPLANATION: Rest allows you to heal all your heroes and gives your acquired experience points to current party members divided to even numbers among the members. (current experience: {Experience})");
+            lbDisplay.Items.Add("EXPLANATION: Order Food allows you to pay for a meal that buffs the party for a single a day. (until the next rest in the tavern)");
+            lbDisplay.Items.Add("EXPLANATION: Leave allows you to leave the tavern.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(TavernChooseActivity);
+        }
+
+        //Tavern Rest starts here --------------------------------------------------------------------------------------
+
+        public void TavernRest()
+        {
+            tbInputArea.Text = "";
+            if (canRest == true)
+            {
+                lbOptions.Items.Clear();
+                canRest = false;
+                double experienceShare = 1 / party.Count;
+                foreach (Hero hero in party)
+                {
+                    double personalExperiencemodifier = 1;
+                    foreach (Passive passive in hero.Passives)
+                    {
+                        if (passive.Affect.Contains("Experience Gain"))
+                        {
+                            switch (passive.PassiveName)
+                            {
+                                case "Adventurer":
+                                    personalExperiencemodifier += 0.1;
+                                    break;
+                                case "Human":
+                                    personalExperiencemodifier += 0.1;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    hero.Exp += Convert.ToInt32(Experience * experienceShare);
+                }
+                Experience = 0;
+            }
+            else
+            {
+                lbDisplay.Items.Add("GAME: You are currently not tired enough to rest.");
+                btInput.Click += new RoutedEventHandler(TavernChooseActivity);
+            }
+        }
+
+        //Tavern Rest ends here ----------------------------------------------------------------------------------------
+
+        public void TavernLeave()
+        {
+            lbDisplay.Items.Add("Tavernkeeper: Hope to see you again before nightfall!");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbOptions.Items.Clear();
+            tbInputArea.Text = "";
+            MainTownOptions();
+            btInput.Click += new RoutedEventHandler(MainTownOption);
+        }
+
+        //Tavern ends here ---------------------------------------------------------------------------------------------
 
         //Town ends here -----------------------------------------------------------------------------------------------
     }

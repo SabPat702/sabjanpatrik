@@ -122,6 +122,7 @@
     <Compile Include="EnvironmentHazard.cs" />
     <Compile Include="HeroStatCalculation.cs" />
     <Compile Include="Initializer.cs" />
+    <Compile Include="LevelUp.cs" />
     <Compile Include="Magic.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Monster.cs" />

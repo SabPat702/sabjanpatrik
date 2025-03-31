@@ -7,3 +7,4 @@
 7@Wooden Shield@A small shield made of wood.@2@Blunt@1@1,1@Shield@Melee@Melee@0@False
 8@Short Sword@A basic sword made of iron that is short.@12@Slash@10@2@None@Melee@Melee@30@False
 9@Family Lance@A family heirloom@10@Pierce@15@2@None@Both@Melee@40@True
+10@Crossbow@A slower but stronger alternative to a bow that is easier to use.@12@Pierce@10@2@None@Ranged@Ranged@100@False
