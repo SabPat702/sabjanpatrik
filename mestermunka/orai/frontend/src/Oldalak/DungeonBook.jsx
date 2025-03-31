@@ -69,6 +69,22 @@ const DungeonBook = () => {
 
     const totalSpreads = Math.ceil((pages.length + 1) / 2);
 
+    const handleDragStart = (e) => {
+        e.preventDefault();
+        console.log("Drag started");
+    };
+    // Handle drag move
+    const handleDragMove = (e) => {
+        e.preventDefault();
+        console.log("Dragging...");
+    };
+
+    // Handle drag end
+    const handleDragEnd = (e) => {
+        e.preventDefault();
+        console.log("Drag ended");
+    };
+
     // Bal sarokra kattintás: előző oldal
     const handleLeftCornerClick = (e) => {
         e.preventDefault();
@@ -82,6 +98,8 @@ const DungeonBook = () => {
         if (!isOpen || currentSpread >= totalSpreads - 1) return;
         setCurrentSpread(currentSpread + 1);
     };
+
+
 
     const toggleBook = () => {
         setIsOpen(!isOpen);
@@ -108,6 +126,7 @@ const DungeonBook = () => {
     return (
         <div className="dungeon-book-container">
             <div
+            
                 className={`book ${isOpen ? 'open' : 'closed'}`}
                 ref={bookRef}
                 onMouseDown={handleDragStart}
@@ -117,6 +136,7 @@ const DungeonBook = () => {
                 onTouchStart={handleDragStart}
                 onTouchMove={handleDragMove}
                 onTouchEnd={handleDragEnd}
+                
             >
                 <div className="book-inner">
                     {!isOpen ? (

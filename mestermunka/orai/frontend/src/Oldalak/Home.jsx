@@ -5,7 +5,7 @@ import '../css/Web.css'; // Egyedi CSS import (az elérési út a projektedtől 
 import DungeonBook from './DungeonBook'; // DungeonBook komponens importálása
 
 const Home = () => {
-  const [username, setUsername] = useState("Felhasználó"); // Felhasználónév dinamikus megjelenítése
+  const [username, setUsername] = useState("Felhasználó"); // Default name if not found
   const [userId, setUserId] = useState(null); // ID kezdetben null
   const [isAccountVisible, setIsAccountVisible] = useState(false);
 
@@ -14,16 +14,21 @@ const Home = () => {
     return Math.floor(Math.random() * 1000000); // Generál egy véletlenszerű számot
   };
 
-  // Az ID beállítása a localStorage-ból, ha már van, különben generálás
+  // Az ID és a felhasználónév beállítása a localStorage-ból
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
+    const storedUsername = localStorage.getItem('username'); // Retrieve username from localStorage
+
     if (!storedUserId) {
-      // Ha nincs tárolt ID, generáljunk egyet és tároljuk el
       const newId = generateRandomId();
       localStorage.setItem('userId', newId);
       setUserId(newId);
     } else {
-      setUserId(storedUserId); // Ha van tárolt ID, akkor beállítjuk azt
+      setUserId(storedUserId);
+    }
+
+    if (storedUsername) {
+      setUsername(storedUsername); // Set username from localStorage
     }
   }, []);
 
@@ -32,17 +37,17 @@ const Home = () => {
     const confirmDelete = window.confirm("Biztosan törölni szeretnéd a fiókodat?");
     if (confirmDelete) {
       alert("Fiók sikeresen törölve.");
-      // Fiók törlés logika (pl. API hívás) itt
       setUsername(""); // Üres név, jelezve, hogy törölték a fiókot
       setUserId(null); // Üres ID
       localStorage.removeItem('userId'); // Tárolt ID törlése
+      localStorage.removeItem('username'); // Remove stored username
     }
   };
 
   // Kijelentkezés
   const handleLogout = () => {
     alert("Sikeres kijelentkezés!");
-    window.location.href = "/";
+    window.location.href = "/"; // Redirect to home page after logout
   };
 
   // A profil szerkesztése
@@ -57,7 +62,6 @@ const Home = () => {
           <a href="#">Dungeon Valley Explorer</a>
         </div>
         <div className="header-right d-flex"> {/* d-flex: Flexbox, hogy egymás mellett legyenek a gombok */}
-          
           {/* Felhasználói ikon menü */}
           <div className="dropdown">
             <button className="btn btn-secondary dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -72,9 +76,9 @@ const Home = () => {
               </li>
               <li><a className="dropdown-item" href="#" onClick={handleEditProfile}>Edit Profile</a></li>
               <li><a className="dropdown-item" href="#" onClick={handleLogout}>Log Out</a></li>
+              <li><a className="dropdown-item" href="#" onClick={handleDeleteAccount}>Delete Account</a></li>
             </ul>
           </div>
-
         </div>
       </div>
 
@@ -88,7 +92,7 @@ const Home = () => {
         <br />
         <br />
         <div className="row">
-         <DungeonBook/>
+          <DungeonBook />
         </div>
       </div>
     </>

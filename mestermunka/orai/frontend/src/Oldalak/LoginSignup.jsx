@@ -18,15 +18,11 @@ const LoginSignup = () => {
     const [showConfirmPassword, setConfirmPassword] = useState(false);
     const [passwordStrength, setPasswordStrength] = useState('');
     const [password, setPassword] = useState('');
-    const [passwordVisible, setPasswordVisible] = useState('');
-    const [showModal, setShowModal] = useState(false);
     const [username, setUsername] = useState('');
-
-
+    const [showModal, setShowModal] = useState(false);
 
     const registerLink = () => setAction('register');
     const loginLink = () => setAction('login');
-
 
     const handleRegisterSubmit = (e) => {
         e.preventDefault();
@@ -55,8 +51,7 @@ const LoginSignup = () => {
                     setUsername(username);
                     setShowModal(true);
                     setTimeout(() => {
-                        // Itt a sima URL átirányítás
-                        window.location.href = "/DungeonValleyExplorer";  // Ez a statikus HTML fájlra navigál
+                        window.location.href = "/DungeonValleyExplorer";
                     }, 2000);   
                 } else {
                     setErrorMessage(`Registration failed! Server says: ${data.message}`);
@@ -84,9 +79,9 @@ const LoginSignup = () => {
                 console.log(data);
                 if (data.message === "Login successful!") {
                     setSuccessMessage("Login successful! Redirecting...");
+                    setShowModal(true); // Added to show the modal
                     setTimeout(() => {
-                        // Itt a sima URL átirányítás
-                        window.location.href = "/DungeonValleyExplorer";  // Ez a statikus HTML fájlra navigál
+                        window.location.href = "/DungeonValleyExplorer";
                     }, 2000);
                 } else {
                     setErrorMessage("Invalid username or password!");
@@ -100,38 +95,65 @@ const LoginSignup = () => {
 
     const handlePasswordChange = (e) => {
         const inputPassword = e.target.value;
-
-        setPassword(prev => prev + inputPassword.slice(-1));
-        setPasswordVisible(inputPassword.slice(-1));
-
-        setTimeout(() => {
-            setPasswordVisible("•");
-        }, 500);
-
         setPassword(inputPassword);
         evaluatePasswordStrength(inputPassword);
     };
 
     const evaluatePasswordStrength = (password) => {
+        let score = 0;
         let strength = "";
         let color = '';
 
-        if (password.length > 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password) && /[^A-Za-z0-9]/.test(password)) {
-            strength = 'Strong';
-            color = 'green';
-        } else if (password.length > 6 && /[A-Z]/.test(password) && /[a-z]/.test(password)) {
-            strength = 'Medium';
-            color = 'orange';
+        // Length-based scoring
+        if (password.length < 6) {
+            strength = "Too Short";
+            color = "gray";
         } else {
-            strength = 'Weak';
-            color = 'red';
+            if (password.length >= 16) score += 4;
+            else if (password.length >= 12) score += 3;
+            else if (password.length >= 8) score += 2;
+            else if (password.length >= 6) score += 1;
+
+            // Character variety
+            if (/[A-Z]/.test(password)) score += 2; // Uppercase
+            if (/[a-z]/.test(password)) score += 2; // Lowercase
+            if (/\d/.test(password)) score += 2; // Numbers
+            if (/[^A-Za-z0-9]/.test(password)) score += 2; // Special characters
+
+            // Penalize repetition or predictable patterns
+            if (/(.)\1{2,}/.test(password)) score -= 3; // Repeated characters (e.g., "aaa")
+            if (/12|123|1234|4321|abcd|qwer/i.test(password)) score -= 4; // Common sequences
+
+            // Common passwords (expanded list)
+            const commonPasswords = [
+                "password", "123456", "qwerty", "abc123", "letmein", 
+                "admin", "welcome", "monkey", "football", "password123"
+            ];
+            if (commonPasswords.some(common => password.toLowerCase().includes(common))) score -= 5;
+
+            // Evaluate final score
+            if (score >= 11) {
+                strength = "Strong";
+                color = "green";
+            } else if (score >= 8) {
+                strength = "Medium";
+                color = "orange";
+            } else {
+                strength = "Weak";
+                color = "red";
+            }
         }
 
         setPasswordStrength(strength);
+
+        // Update password strength color
         const strengthElement = document.querySelector(".password-strength p");
         if (strengthElement) {
             strengthElement.style.color = color;
         }
+
+        // Debugging: Log the score for testing
+        console.log(`Password: ${password}, Score: ${score}, Strength: ${strength}`);
     };
 
     return (
@@ -166,13 +188,13 @@ const LoginSignup = () => {
                             </div>
                         </div>
                     )}
-                         {successMessage && (
-                            <div className="success-message">
-                                <p>{successMessage}</p>
-                            </div>
-                        )}
+                    {successMessage && (
+                        <div className="success-message">
+                            <p>{successMessage}</p>
+                        </div>
+                    )}
                 </div>
-                {/* Regisztrációs forma */}
+
                 <div className={`form-box register ${action === 'register' ? 'show' : ''}`}>
                     <form onSubmit={handleRegisterSubmit}>
                         <h1>Registration</h1>
@@ -183,16 +205,28 @@ const LoginSignup = () => {
                             <input type="email" name="email" placeholder="Email" required />
                         </div>
                         <div className="input-box password-box">
-                            <input type={showRegisterPassword ? "text" : "password"} name="password" placeholder="Password" value={password} onChange={handlePasswordChange} required />
+                            <input 
+                                type={showRegisterPassword ? "text" : "password"} 
+                                name="password" 
+                                placeholder="Password" 
+                                value={password} 
+                                onChange={handlePasswordChange} 
+                                required 
+                            />
                             <span className="toggle-icon" onClick={() => setShowRegisterPassword(!showRegisterPassword)}>
                                 {showRegisterPassword ? <FaEyeSlash /> : <FaEye />}
                             </span>
                         </div>
                         <div className="password-strength">
-                            {password && <p className={passwordStrength.toLowerCase()}>{`Password strength: ${passwordStrength}`}</p>}
+                            {password && <p>{`Password strength: ${passwordStrength}`}</p>}
                         </div>
                         <div className="input-box password-box">
-                            <input type={showConfirmPassword ? "text" : "password"} name="password_again" placeholder="Password again" required />
+                            <input 
+                                type={showConfirmPassword ? "text" : "password"} 
+                                name="password_again" 
+                                placeholder="Password again" 
+                                required 
+                            />
                             <span className="toggle-icon" onClick={() => setConfirmPassword(!showConfirmPassword)}>
                                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                             </span>
@@ -206,11 +240,11 @@ const LoginSignup = () => {
                             <p>Already have an account? <a href="#" onClick={loginLink}>Login</a></p>
                         </div>
                     </form>
-                    {showModal &&(
+                    {showModal && (
                         <div className="modal-overlay">
                             <div className="modal-content">
                                 <h2>Dear {username}, thank you for registering!</h2>
-                                <button onClick={() => setShowModal(false)}></button>
+                                <button onClick={() => setShowModal(false)}>Close</button>
                             </div>
                         </div>
                     )}
