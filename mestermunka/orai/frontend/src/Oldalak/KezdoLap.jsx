@@ -48,7 +48,8 @@ const KezdoLap = () => {
                 </div>
                 </section>
             {/* Friendly Community Section */}
-            <section className="row align-items-center flex-row-reverse mb-5">
+            <section className="combined-section container">
+            <div className="row align-items-center mb-4 guide-section">
                 <div className="col-md-6 info-block">
                     <h2>A Friendly Community</h2>
                     <ul>
@@ -58,6 +59,7 @@ const KezdoLap = () => {
                 </div>
                 <div className="col-md-6 text-center">
                     <img src="/electonicbook.png" alt="Friendly Community" className="img-fluid kep" />
+                </div>
                 </div>
             </section>
         </div>

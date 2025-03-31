@@ -7,28 +7,22 @@ body {
   background-size: cover; /* Alap háttérkép */
 }
 
-
-
-#logoutButton{
-  border-radius: 35px;
-}
-li{
-  color: gray;
-  font-weight: bolder;
-}
-p{
+p {
   font-weight: bolder;
   font-size: medium;
   color: gray;
 }
 
-#castle {
-  width: 100%;
-  max-height: 100vh;
-  object-fit: cover;
+li {
+  color: gray;
+  font-weight: bolder;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
   display: block;
   margin: 0 auto;
-  filter: sepia(0.4); /* Opcionálisan szűrjük */
 }
 
 /* Fejléc */
@@ -90,11 +84,13 @@ p{
 }
 
 /* Képek beállítása */
-img {
-  max-width: 100%;
-  height: auto;
+#castle {
+  width: 100%;
+  max-height: 100vh;
+  object-fit: cover;
   display: block;
   margin: 0 auto;
+  filter: sepia(0.4); /* Opcionálisan szűrjük */
 }
 
 #guides {
@@ -121,6 +117,27 @@ img {
   font-size: 30px;
 }
 
+/* Web.css */
+.download-section {
+  text-align: center; /* Középre igazítás */
+  margin-bottom: 20px; /* Tér a DungeonBook előtt */
+}
+
+.download-btn {
+  padding: 10px 20px;
+  background-color: #4caf50; /* Zöld háttér */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #45a049; /* Sötétebb zöld hover esetén */
+}
+
 /* Mobil nézet  */
 @media (max-width: 768px) {
   .row {
@@ -136,4 +153,9 @@ img {
       float: none;
       margin-top: 20px;
   }
+}
+
+/* Logout gomb */
+#logoutButton {
+  border-radius: 35px;
 }

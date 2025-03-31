@@ -175,10 +175,7 @@ const LoginSignup = () => {
                         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                         <div className="register-link">
                             <p>Don't have an account? <a href="#" onClick={registerLink}>Register</a></p>
-                        </div>
-                        <div className="forgot-password">
-                            <p>Forgot Password?  <Link to="/forgot-password">Click here!</Link></p>
-                        </div>
+                        </div>   
                     </form>
                     {showModal && (
                         <div className="modal-overlay">
@@ -231,10 +228,6 @@ const LoginSignup = () => {
                                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                             </span>
                         </div>
-                        <label className="checkbox-container">
-                            <input type="checkbox" required />
-                            <p>I agree to the <a href="">terms & conditions</a></p>
-                        </label>
                         <button type="submit">Register</button>
                         <div className="register-link">
                             <p>Already have an account? <a href="#" onClick={loginLink}>Login</a></p>

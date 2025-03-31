@@ -39,7 +39,6 @@ const transporter = nodemailer.createTransport({
 });
 */
 
-
 app.get("/", (req, res) => {
     res.send("Fut a backend!");
 });
@@ -60,9 +59,6 @@ db.connect(err => {
         console.log('Connected to MySQL');
     }
 });
-
-  
-
 
 // Felhasználók lekérdezése
 app.get('/signup', (req, res) => {
@@ -132,7 +128,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-
+/*
 app.post('/forgot-password', (req, res) => {
     const { email } = req.body;
   
@@ -171,7 +167,7 @@ app.post('/forgot-password', (req, res) => {
       });
     });
   });
-  
+  */
 app.listen(3001, () => {
     console.log("Server is running on port 3001");
 });
