@@ -35,23 +35,18 @@ const DungeonBook = () => {
         },
         {
             title: "Dungeon and the Environmental Hazards",
-            content:
-                    `Environmental hazards are important factors in the game, as no one wants to lose health unnecessarily. Environmental hazards can include ravines, traps, thorny bushes, or lava. These are just a few examples of the dangers that can be encountered. Environmental hazards have attack power, damage types, critical attack chances, and attack multipliers. Some hazards also have special abilities, which are hidden in specific locations.`
+            content: 
+                    `Environmental hazards are important factors in the game, as no one wants to lose health unnecessarily. Environmental hazards can include ravines, traps, thorny bushes, or lava. These are just a few examples of the dangers that can be encountered. Environmental hazards have attack power, damage types, critical attack chances, and attack multipliers. Some hazards also have special abilities, which are hidden in specific locations. Dungeon exploration is a core part of the game, contributing to its complexity and difficulty. You can progress,`
         },
         {
             content:
-                    `Dungeon exploration is a core part of the game, contributing to its complexity and difficulty. You can progress forward, backward, or even leave the dungeon during exploration. You may also decide to leave the dungeon if you choose to stop exploring. Going backward represents rest. If you move forward, you won’t know what you might encounter. Only after exploring all areas in the dungeon can you complete it. If you leave the dungeon, you retain experience and money, but any progress related to the mission will be lost, and you'll have to start over.`,
+                    `forward, backward, or even leave the dungeon during exploration. You may also decide to leave the dungeon if you choose to stop exploring. Going backward represents rest. If you move forward, you won’t know what you might encounter. Only after exploring all areas in the dungeon can you complete it. If you leave the dungeon, you retain experience and money, but any progress related to the mission will be lost, and you'll have to start over. The rest feature can only be used once per dungeon, allowing you to regain health and magic points. However, resting does not guarantee safety, as you may lose money, items, or potions, or even be attacked. If you decide to retreat before resting, the risk of these events is reduced. However, enemies may reappear in previously discovered rooms.`
         },
-                    {
-                        content: `The rest feature can only be used once per dungeon, allowing you to regain health and magic points. However, resting does not guarantee safety, as you may lose money, items, or potions, or even be attacked. If you decide to retreat before resting, the risk of these events is reduced. However, enemies may reappear in previously discovered rooms.`,
-                    },
+
         {
             title: "Skill and Magic",
-            content:
-                    `Skills are unique abilities in the game. These skills have a critical attack chance, which is enhanced by a multiplier. Each skill has special effects, and there is arange beyond which it cannot reach. Using these skills may come at a cost, and their reload times may be extended. Magic plays an important role in the game. It has its own detailed description, but there are a few key points to know. Magic has attack and damage values, and different types of magic exist. Magic can also perform critical attacks, with multipliers under certain circumstances. Magic has a range and cannot reach infinity, `,          
-        },
-        {
-            content: `and it also has special effects. Finally, magic takes time to recharge, a process that can vary widely—some spells might refresh quickly, while others, particularly the most potent ones, could require a lengthy cooldown, demanding careful timing and resource management from the player`,
+            content:    
+                        `Skills are unique abilities in the game. These skills have a critical attack chance, which is enhanced by a    multiplier. Each skill has special effects, and there is a range beyond which it cannot reach. Using these skills may come at a cost, and their reload times may be extended. Magic plays an important role in the game. It has its own detailed description, but there are a few key points to know.Magic has attack and damage values, and different types of magic exist. Magic can also perform critical attacks, with multipliers under certain circumstances.Magic has a range and cannot reach infinity, and it also has special effects. Finally, magic takes time to recharge. `,          
         },
         {
             title: "Consumables, Armor, Weapons, Special Effects, Passive, Buffs/Debuffs",
@@ -74,6 +69,22 @@ const DungeonBook = () => {
 
     const totalSpreads = Math.ceil((pages.length + 1) / 2);
 
+    const handleDragStart = (e) => {
+        e.preventDefault();
+        console.log("Drag started");
+    };
+    // Handle drag move
+    const handleDragMove = (e) => {
+        e.preventDefault();
+        console.log("Dragging...");
+    };
+
+    // Handle drag end
+    const handleDragEnd = (e) => {
+        e.preventDefault();
+        console.log("Drag ended");
+    };
+
     // Bal sarokra kattintás: előző oldal
     const handleLeftCornerClick = (e) => {
         e.preventDefault();
@@ -87,6 +98,8 @@ const DungeonBook = () => {
         if (!isOpen || currentSpread >= totalSpreads - 1) return;
         setCurrentSpread(currentSpread + 1);
     };
+
+
 
     const toggleBook = () => {
         setIsOpen(!isOpen);
@@ -112,7 +125,19 @@ const DungeonBook = () => {
 
     return (
         <div className="dungeon-book-container">
-            <div className={`book ${isOpen ? 'open' : 'closed'}`} ref={bookRef}>
+            <div
+            
+                className={`book ${isOpen ? 'open' : 'closed'}`}
+                ref={bookRef}
+                onMouseDown={handleDragStart}
+                onMouseMove={handleDragMove}
+                onMouseUp={handleDragEnd}
+                onMouseLeave={handleDragEnd}
+                onTouchStart={handleDragStart}
+                onTouchMove={handleDragMove}
+                onTouchEnd={handleDragEnd}
+                
+            >
                 <div className="book-inner">
                     {!isOpen ? (
                         <div className="book-cover">
