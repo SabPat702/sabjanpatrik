@@ -1,12 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap import
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Bootstrap JavaScript importálása
 import '../css/Web.css'; // Egyedi CSS import (az elérési út a projektedtől függ)
 import DungeonBook from './DungeonBook'; // DungeonBook komponens importálása
 
-const App = () => {
+const Home = () => {
+  const [username, setUsername] = useState("Felhasználó"); // Felhasználónév dinamikus megjelenítése
+  const [userId, setUserId] = useState(null); // ID kezdetben null
+  const [isAccountVisible, setIsAccountVisible] = useState(false);
+
+  // Véletlenszerű ID generálása (csak egyszer)
+  const generateRandomId = () => {
+    return Math.floor(Math.random() * 1000000); // Generál egy véletlenszerű számot
+  };
+
+  // Az ID beállítása a localStorage-ból, ha már van, különben generálás
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    if (!storedUserId) {
+      // Ha nincs tárolt ID, generáljunk egyet és tároljuk el
+      const newId = generateRandomId();
+      localStorage.setItem('userId', newId);
+      setUserId(newId);
+    } else {
+      setUserId(storedUserId); // Ha van tárolt ID, akkor beállítjuk azt
+    }
+  }, []);
+
+  // Fiók törlése
+  const handleDeleteAccount = () => {
+    const confirmDelete = window.confirm("Biztosan törölni szeretnéd a fiókodat?");
+    if (confirmDelete) {
+      alert("Fiók sikeresen törölve.");
+      // Fiók törlés logika (pl. API hívás) itt
+      setUsername(""); // Üres név, jelezve, hogy törölték a fiókot
+      setUserId(null); // Üres ID
+      localStorage.removeItem('userId'); // Tárolt ID törlése
+    }
+  };
+
+  // Kijelentkezés
   const handleLogout = () => {
     alert("Sikeres kijelentkezés!");
     window.location.href = "/";
+  };
+
+  // A profil szerkesztése
+  const handleEditProfile = () => {
+    window.location.href = "/edit-profile"; // Például egy másik oldalra navigálás
   };
 
   return (
@@ -15,10 +56,25 @@ const App = () => {
         <div className="header-left">
           <a href="#">Dungeon Valley Explorer</a>
         </div>
-        <div className="header-right">
-          <button id="logoutButton" className="btn btn-danger" onClick={handleLogout}>
-            Logout
-          </button>
+        <div className="header-right d-flex"> {/* d-flex: Flexbox, hogy egymás mellett legyenek a gombok */}
+          
+          {/* Felhasználói ikon menü */}
+          <div className="dropdown">
+            <button className="btn btn-secondary dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <i className="bi bi-person-circle"></i> {/* Bootstrap ikon a felhasználóhoz */}
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="userMenuButton">
+              <li>
+                <a className="dropdown-item" href="#">
+                  <strong>{username}</strong> <br />
+                  User ID: {userId}
+                </a>
+              </li>
+              <li><a className="dropdown-item" href="#" onClick={handleEditProfile}>Edit Profile</a></li>
+              <li><a className="dropdown-item" href="#" onClick={handleLogout}>Log Out</a></li>
+            </ul>
+          </div>
+
         </div>
       </div>
 
@@ -39,4 +95,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Home;

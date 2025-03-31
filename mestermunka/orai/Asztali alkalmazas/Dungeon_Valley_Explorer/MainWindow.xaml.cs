@@ -3518,12 +3518,11 @@ namespace Dungeon_Valley_Explorer
                         {
                             for (int j = 0; j < party[i].Weapons.Count(); j++)
                             {
-                                if (party[i].Weapons[j].Slot == selectedWeapon.Slot)
+                                if (party[i].Weapons[j] == selectedWeapon)
                                 {
                                     party[i].Weapons[j] = Initializer.weapons[0];
                                     party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                     party[i].Weapons[j] = selectedNewWeapon;
-                                    party[i].Weapons[j].Slot = selectedWeapon.Slot;
                                     party[i] = Weapon.EquipWeaponCheck(party[i], j);
                                 }
                             }
@@ -3544,26 +3543,37 @@ namespace Dungeon_Valley_Explorer
                 {
                     if (party[i] == selectedHero)
                     {
-                        for (int j = 0; j < party[i].Weapons.Count(); j++)
+                        if (party[i].Weapons.Contains(selectedNewWeapon))
                         {
-                            if (party[i].Weapons[j].Slot == selectedWeapon.Slot)
+                            equipable = false;
+                        }
+                        if (equipable == true)
+                        {
+                            for (int j = 0; j < party[i].Weapons.Count(); j++)
                             {
-                                party[i].Weapons[j] = Initializer.weapons[0];
-                                party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
-                                party[i].Weapons[j] = selectedNewWeapon;
-                                party[i].Weapons[j].Slot = selectedWeapon.Slot;
-                                party[i] = Weapon.EquipWeaponCheck(party[i], j);
+                                if (party[i].Weapons[j] == selectedWeapon)
+                                {
+                                    party[i].Weapons[j] = Initializer.weapons[0];
+                                    party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
+                                    party[i].Weapons[j] = selectedNewWeapon;
+                                    party[i] = Weapon.EquipWeaponCheck(party[i], j);
+                                }
                             }
+                            tbInputArea.Text = "";
+                            lbOptions.Items.Clear();
+                            lbOptions.Items.Add("1. Weapons");
+                            lbOptions.Items.Add("2. Armors");
+                            lbOptions.Items.Add("3. Cancel");
+                            selectableNewWeapons.Clear();
+                            btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChooseEquipmentType);
+                        }
+                        else
+                        {
+                            MessageBox.Show("You already have a copy of this weapon equipped and you can't equip another copy.");
+                            BlacksmithChangeWeaponChooseNewWeaponReEntry();
                         }
                     }
                 }
-                tbInputArea.Text = "";
-                lbOptions.Items.Clear();
-                lbOptions.Items.Add("1. Weapons");
-                lbOptions.Items.Add("2. Armors");
-                lbOptions.Items.Add("3. Cancel");
-                selectableNewWeapons.Clear();
-                btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChooseEquipmentType);
             }
         }
 
@@ -3707,13 +3717,7 @@ namespace Dungeon_Valley_Explorer
             int counter = 0;
             foreach (Armor armor in Initializer.armors)
             {
-                if(armorsObtained[armor.ArmorName] == true && selectedArmor.Type == 5)
-                {
-                    lbOptions.Items.Add($"{counter + 2}. {armor.ArmorName}");
-                    selectableNewArmors.Add(armor);
-                    counter++;
-                }
-                else if (armorsObtained[armor.ArmorName] == true && armor.Type == selectedArmor.Type)
+                if (armorsObtained[armor.ArmorName] == true && armor.Type == selectedArmor.Type)
                 {
                     lbOptions.Items.Add($"{counter + 2}. {armor.ArmorName}");
                     selectableNewArmors.Add(armor);
@@ -3876,12 +3880,11 @@ namespace Dungeon_Valley_Explorer
                         {
                             for (int j = 0; j < party[i].Armors.Count(); j++)
                             {
-                                if (party[i].Armors[j].Type == selectedArmor.Type)
+                                if (party[i].Armors[j] == selectedArmor)
                                 {
                                     party[i].Armors[j] = Initializer.armors[0];
                                     party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                     party[i].Armors[j] = selectedNewArmor;
-                                    party[i].Armors[j].Type = selectedArmor.Type;
                                     party[i] = Armor.EquipArmorCheck(party[i], j);
                                 }
                             }
@@ -3909,7 +3912,6 @@ namespace Dungeon_Valley_Explorer
                                 party[i].Armors[j] = Initializer.armors[0];
                                 party[i] = HeroStatCalculation.HeroStatReCalculation(party[i]);
                                 party[i].Armors[j] = selectedNewArmor;
-                                party[i].Armors[j].Type = selectedArmor.Type;
                                 party[i] = Armor.EquipArmorCheck(party[i], j);
                             }
                         }

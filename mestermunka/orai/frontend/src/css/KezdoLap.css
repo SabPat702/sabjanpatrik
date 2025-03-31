@@ -200,3 +200,8 @@ li{
         width: 50%; /* Slightly larger on mobile for visibility, but still controlled */
     }
 }
+.prevent-select {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }

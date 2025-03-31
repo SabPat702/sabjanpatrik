@@ -7,7 +7,7 @@ const KezdoLap = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="kezdo-lap container-fluid p-0">
+        <div className="kezdo-lap container-fluid p-0 prevent-select">
             {/* Navigation Bar */}
             <header className="topnav d-flex justify-content-between align-items-center p-3">
                 <h1>Dungeon Valley Explorer</h1>
