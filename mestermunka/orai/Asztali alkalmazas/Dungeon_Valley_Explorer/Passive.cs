@@ -27,10 +27,20 @@ namespace Dungeon_Valley_Explorer
 
         }
 
+        //Sleep Passives start here ------------------------------------------------------------------------------------
+
+
+
+        //Sleep Passives end here --------------------------------------------------------------------------------------
+
+        //Combat Passives start here -----------------------------------------------------------------------------------
+
         public static int SwordProficiency(int damage)
         {
             damage = (int)Math.Round(damage * 1.2, 0);
             return damage;
         }
+
+        //Combat Passives end here -------------------------------------------------------------------------------------
     }
 }

@@ -1102,6 +1102,8 @@ namespace Dungeon_Valley_Explorer
                 case "Warlock":
                     Hero.SetClassWarlock(newPlayerHero);
                     break;
+                default:
+                    break;
             }
         }
 
@@ -1218,6 +1220,8 @@ namespace Dungeon_Valley_Explorer
                     break;
                 case "Blacksmith":
                     Hero.SetBackgroundBlacksmith(newPlayerHero);
+                    break;
+                default:
                     break;
             }
         }
@@ -1441,6 +1445,8 @@ namespace Dungeon_Valley_Explorer
                     break;
                 case "Halfling":
                     Hero.SetRaceHalfling(newPlayerHero);
+                    break;
+                default:
                     break;
             }
         }
@@ -4047,7 +4053,7 @@ namespace Dungeon_Valley_Explorer
                 double experienceShare = 1 / party.Count;
                 foreach (Hero hero in party)
                 {
-                    double personalExperiencemodifier = 1;
+                    double personalExperienceModifier = 1;
                     foreach (Passive passive in hero.Passives)
                     {
                         if (passive.Affect.Contains("Experience Gain"))
@@ -4055,19 +4061,34 @@ namespace Dungeon_Valley_Explorer
                             switch (passive.PassiveName)
                             {
                                 case "Adventurer":
-                                    personalExperiencemodifier += 0.1;
+                                    personalExperienceModifier += 0.1;
                                     break;
                                 case "Human":
-                                    personalExperiencemodifier += 0.1;
+                                    personalExperienceModifier += 0.1;
                                     break;
                                 default:
                                     break;
                             }
                         }
                     }
-                    hero.Exp += Convert.ToInt32(Experience * experienceShare);
+                    hero.Exp += Convert.ToInt32((Experience * experienceShare) * personalExperienceModifier);
+                    LevelUp.HeroLevelUp(hero);
                 }
                 Experience = 0;
+
+                foreach (Hero hero in heroes)
+                {
+                    foreach (Passive passive in hero.Passives)
+                    {
+                        if (passive.Affect.Contains("Sleep"))
+                        {
+
+                        }
+                    }
+                }
+
+                lbDisplay.Items.Add("GAME: You wake up refreshed.");
+                btInput.Click += new RoutedEventHandler(TavernChooseActivity);
             }
             else
             {
