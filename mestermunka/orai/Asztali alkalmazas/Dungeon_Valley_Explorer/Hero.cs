@@ -286,6 +286,19 @@ namespace Dungeon_Valley_Explorer
             Race = new Race();
         }
 
+        //Sleep --------------------------------------------------------------------------------------------------------
+
+        public static Hero Sleep(Hero hero)
+        {
+            HeroStatCalculation.HeroStatReCalculation(hero);
+            hero.HP = hero.MaxHP;
+            hero.MP = hero.MaxMP;
+            hero.SP = hero.MaxSP;
+            return hero;
+        }
+
+        //Sleep --------------------------------------------------------------------------------------------------------
+
         //Character classes --------------------------------------------------------------------------------------------
 
         public static Hero SetClassFighter(Hero newPlayerHero)

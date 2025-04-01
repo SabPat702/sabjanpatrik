@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Dungeon_Valley_Explorer
 {
@@ -35,6 +36,7 @@ namespace Dungeon_Valley_Explorer
                     default: 
                         break;
                 }
+                MessageBox.Show($"{hero.HeroName} leveled up reaching level 2!");
             }
             if (hero.Lvl == 2 && hero.Exp >= 1000)
             {
@@ -61,6 +63,7 @@ namespace Dungeon_Valley_Explorer
                     default:
                         break;
                 }
+                MessageBox.Show($"{hero.HeroName} leveled up reaching level 3!");
             }
             if (hero.Lvl == 3 && hero.Exp >= 4000)
             {
@@ -87,6 +90,7 @@ namespace Dungeon_Valley_Explorer
                     default:
                         break;
                 }
+                MessageBox.Show($"{hero.HeroName} leveled up reaching level 4!");
             }
             if (hero.Lvl == 4 && hero.Exp >= 10000)
             {
@@ -113,6 +117,7 @@ namespace Dungeon_Valley_Explorer
                     default:
                         break;
                 }
+                MessageBox.Show($"{hero.HeroName} leveled up reaching level 5!");
             }
             return hero;
         }
@@ -144,24 +149,109 @@ namespace Dungeon_Valley_Explorer
         public static Hero LevelUpFighterToLevelTwo(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 10;
+            hero.InMP += 3;
+            hero.InSP += 8;
+            hero.InDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpFighterToLevelThree(Hero hero)
         {
             hero.Lvl += 1;
+            hero.Lvl += 1;
+            hero.InHP += 12;
+            hero.InMP += 4;
+            hero.InSP += 10;
+            hero.InDEF += 1;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpFighterToLevelFour(Hero hero)
         {
             hero.Lvl += 1;
+            hero.Lvl += 1;
+            hero.InHP += 15;
+            hero.InMP += 5;
+            hero.InSP += 11;
+            hero.InDEF += 2;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpFighterToLevelFive(Hero hero)
         {
             hero.Lvl += 1;
+            hero.Lvl += 1;
+            hero.InHP += 20;
+            hero.InMP += 5;
+            hero.InSP += 12;
+            hero.InDEF += 2;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
@@ -194,24 +284,104 @@ namespace Dungeon_Valley_Explorer
         public static Hero LevelUpHunterToLevelTwo(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 6;
+            hero.InMP += 5;
+            hero.InSP += 9;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpHunterToLevelThree(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 8;
+            hero.InMP += 6;
+            hero.InSP += 10;
+            hero.InDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpHunterToLevelFour(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 10;
+            hero.InMP += 8;
+            hero.InSP += 12;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpHunterToLevelFive(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 12;
+            hero.InMP += 9;
+            hero.InSP += 14;
+            hero.InDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
@@ -244,24 +414,105 @@ namespace Dungeon_Valley_Explorer
         public static Hero LevelUpWizardToLevelTwo(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 5;
+            hero.InMP += 8;
+            hero.InSP += 2;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpWizardToLevelThree(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 7;
+            hero.InMP += 10;
+            hero.InSP += 3;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpWizardToLevelFour(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 9;
+            hero.InMP += 12;
+            hero.InSP += 4;
+            hero.InDEF += 1;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpWizardToLevelFive(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 10;
+            hero.InMP += 15;
+            hero.InSP += 5;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
@@ -294,24 +545,108 @@ namespace Dungeon_Valley_Explorer
         public static Hero LevelUpPaladinToLevelTwo(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 12;
+            hero.InMP += 4;
+            hero.InSP += 4;
+            hero.InDEF += 1;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpPaladinToLevelThree(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 15;
+            hero.InMP += 5;
+            hero.InSP += 5;
+            hero.InDEF += 1;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpPaladinToLevelFour(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 20;
+            hero.InMP += 5;
+            hero.InSP += 5;
+            hero.InDEF += 1;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpPaladinToLevelFive(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 24;
+            hero.InMP += 6;
+            hero.InSP += 6;
+            hero.InDEF += 2;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
@@ -344,24 +679,106 @@ namespace Dungeon_Valley_Explorer
         public static Hero LevelUpBountyHunterToLevelTwo(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 8;
+            hero.InMP += 4;
+            hero.InSP += 5;
+            hero.InDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpBountyHunterToLevelThree(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 9;
+            hero.InMP += 5;
+            hero.InSP += 7;
+            hero.InDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpBountyHunterToLevelFour(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 10;
+            hero.InMP += 6;
+            hero.InSP += 10;
+            hero.InDEF += 1;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpBountyHunterToLevelFive(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 12;
+            hero.InMP += 8;
+            hero.InSP += 11;
+            hero.InDEF += 1;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
@@ -394,24 +811,105 @@ namespace Dungeon_Valley_Explorer
         public static Hero LevelUpWarlockToLevelTwo(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 5;
+            hero.InMP += 8;
+            hero.InSP += 3;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpWarlockToLevelThree(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 7;
+            hero.InMP += 10;
+            hero.InSP += 4;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpWarlockToLevelFour(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 9;
+            hero.InMP += 12;
+            hero.InSP += 5;
+            hero.InDEF += 1;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
         public static Hero LevelUpWarlockToLevelFive(Hero hero)
         {
             hero.Lvl += 1;
+            hero.InHP += 10;
+            hero.InMP += 15;
+            hero.InSP += 6;
+            hero.InMDEF += 1;
+            foreach (Passive passive in hero.Passives)
+            {
+                if (passive.Affect.Contains("Level Up"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Adventurer":
+                            hero.InHP += 1;
+                            hero.InMP += 1;
+                            hero.InSP += 1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             return hero;
         }
 
