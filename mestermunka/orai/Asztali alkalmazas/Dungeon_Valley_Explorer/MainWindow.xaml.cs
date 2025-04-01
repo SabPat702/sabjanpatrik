@@ -288,10 +288,18 @@ namespace Dungeon_Valley_Explorer
             if (ShortDisplayNames == false)
             {
                 ShortDisplayNames = true;
+                foreach(Hero hero in Initializer.npcs)
+                {
+                    hero.DisplayName = hero.HeroName.Split(' ')[0];
+                }
             }
             else
             {
                 ShortDisplayNames = false;
+                foreach (Hero hero in Initializer.npcs)
+                {
+                    hero.DisplayName = hero.HeroName;
+                }
             }
             lbOptions.Items.Add("1. Change Colors");
             lbOptions.Items.Add($"2. Shortened Names ({ShortDisplayNames})");
@@ -1965,7 +1973,9 @@ namespace Dungeon_Valley_Explorer
         public void EnterTown()
         {
             heroes.Add(Initializer.npcs[0]);
+            party.Add(Initializer.npcs[0]);
             Gold += 1000;
+            Experience += 200;
             weaponsObtained["Family Lance"] = true;
             armorsObtained["Bejeweled Helmet"] = true;
             tbInputArea.Text = "";
@@ -4060,7 +4070,7 @@ namespace Dungeon_Valley_Explorer
             {
                 lbOptions.Items.Clear();
                 canRest = false;
-                double experienceShare = 1 / party.Count;
+                double experienceShare = Convert.ToDouble(1) / Convert.ToDouble(party.Count);
                 foreach (Hero hero in party)
                 {
                     double personalExperienceModifier = 1;
@@ -4104,7 +4114,9 @@ namespace Dungeon_Valley_Explorer
                     }
                     Hero.Sleep(hero);
                 }
-
+                lbOptions.Items.Add("1. Rest");
+                lbOptions.Items.Add("2. Order Food");
+                lbOptions.Items.Add("3. Leave");
                 lbDisplay.Items.Add("GAME: You wake up refreshed.");
                 btInput.Click += new RoutedEventHandler(TavernChooseActivity);
             }
@@ -4278,39 +4290,89 @@ namespace Dungeon_Valley_Explorer
                         MessageBox.Show("This hero has already been chosen to eat the meal.");
                         btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
                     }
-                    chosenHeroesToEat.Add(party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First());
-                    amountChosenFoodFeeds -= 1;
-                    if (amountChosenFoodFeeds == 0)
-                    {
-                        foreach (BuffDebuff buffDebuff in Initializer.buffsDebuffs)
-                        {
-                            if (buffDebuff.BuffDebuffName == chosenFood)
-                            {
-                                foreach (Hero hero in party)
-                                {
-                                    if (chosenHeroesToEat.Contains(hero))
-                                    {
-                                        hero.BuffsDebuffs.Add(buffDebuff);
-                                    }
-                                    chosenHeroesToEat.Clear();
-                                }
-                            }
-                        }
-                        lbOptions.Items.Clear();
-                        lbOptions.Items.Add("1. Cancel");
-                        lbOptions.Items.Add("2. Well Done Lamb Chops");
-                        lbOptions.Items.Add("3. Traditional Breakfast");
-                        lbOptions.Items.Add("4. Meat Platter");
-                        btInput.Click += new RoutedEventHandler(TavernChooseFood);
-                    }
                     else
                     {
-                        btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                        chosenHeroesToEat.Add(party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First());
+                        amountChosenFoodFeeds -= 1;
+                        if (amountChosenFoodFeeds == 0)
+                        {
+                            foreach (BuffDebuff buffDebuff in Initializer.buffsDebuffs)
+                            {
+                                if (buffDebuff.BuffDebuffName == chosenFood)
+                                {
+                                    foreach (Hero hero in party)
+                                    {
+                                        if (chosenHeroesToEat.Contains(hero))
+                                        {
+                                            hero.BuffsDebuffs.Add(buffDebuff);
+                                        }
+                                        chosenHeroesToEat.Clear();
+                                    }
+                                }
+                            }
+                            lbOptions.Items.Clear();
+                            lbOptions.Items.Add("1. Cancel");
+                            lbOptions.Items.Add("2. Well Done Lamb Chops");
+                            lbOptions.Items.Add("3. Traditional Breakfast");
+                            lbOptions.Items.Add("4. Meat Platter");
+                            btInput.Click += new RoutedEventHandler(TavernChooseFood);
+                        }
+                        else
+                        {
+                            lbDisplay.Items.Add($"GAME: You can still choose {amountChosenFoodFeeds} more hero(es).");
+                            btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                        }
                     }
                 }
                 else
                 {
-
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text)-1;
+                        if (chosenHeroesToEat.Contains(party[index]))
+                        {
+                            MessageBox.Show("This hero has already been chosen to eat the meal.");
+                            btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                        }
+                        else
+                        {
+                            chosenHeroesToEat.Add(party[index]);
+                            amountChosenFoodFeeds -= 1;
+                            if (amountChosenFoodFeeds == 0)
+                            {
+                                foreach (BuffDebuff buffDebuff in Initializer.buffsDebuffs)
+                                {
+                                    if (buffDebuff.BuffDebuffName == chosenFood)
+                                    {
+                                        foreach (Hero hero in party)
+                                        {
+                                            if (chosenHeroesToEat.Contains(hero))
+                                            {
+                                                hero.BuffsDebuffs.Add(buffDebuff);
+                                            }
+                                            chosenHeroesToEat.Clear();
+                                        }
+                                    }
+                                }
+                                lbOptions.Items.Clear();
+                                lbOptions.Items.Add("1. Cancel");
+                                lbOptions.Items.Add("2. Well Done Lamb Chops");
+                                lbOptions.Items.Add("3. Traditional Breakfast");
+                                lbOptions.Items.Add("4. Meat Platter");
+                                btInput.Click += new RoutedEventHandler(TavernChooseFood);
+                            }
+                            else
+                            {
+                                lbDisplay.Items.Add($"GAME: You can still choose {amountChosenFoodFeeds} more hero(es).");
+                                btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                    }
                 }
             }
             else
