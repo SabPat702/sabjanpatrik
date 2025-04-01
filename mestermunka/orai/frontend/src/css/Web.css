@@ -3,8 +3,7 @@ body {
   font-family: 'Cinzel', serif;
   margin: 0;
   padding: 0;
-  background: url('../src/Components/assets/kofal.jpg') repeat center center;
-  background-size: cover; /* Alap háttérkép */
+  background-size: cover;
 }
 
 p {
@@ -20,6 +19,7 @@ li {
 
 img {
   max-width: 100%;
+  width:100%;
   height: auto;
   display: block;
   margin: 0 auto;
@@ -30,14 +30,14 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px 20px; 
   background-color: #333;
   border-bottom: 1px solid #ddd;
 }
 
 .header-left a {
   font-weight: bold;
-  font-size: 24px;
+  font-size: 24px; /* Kisebb betűméret telefonon */
   text-decoration: none;
   color: #f1c40f;
   text-transform: uppercase;
@@ -50,9 +50,9 @@ img {
 .header-right button {
   background-color: #e74c3c;
   border: none;
-  padding: 10px 20px;
+  padding: 8px 20px; /* Kisebb padding telefonon */
   color: white;
-  font-size: 16px;
+  font-size: 14px; /* Kisebb betűméret */
   cursor: pointer;
   border-radius: 5px;
 }
@@ -61,40 +61,64 @@ img {
   background-color: #c0392b;
 }
 
+/* Dropdown menü finomhangolása */
+.dropdown-menu {
+  background-color: #333;
+  border: none;
+  min-width: 200px; /* Biztosítjuk, hogy a dropdown ne legyen túl keskeny */
+}
+
+.dropdown-item {
+  color: #f1c40f;
+  font-size: 14px; /* Kisebb betűméret telefonon */
+  padding: 8px 15px;
+}
+
+.dropdown-item:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+/* Háttérkép */
+.castle-background {
+  width: 100%;
+  overflow: hidden;
+}
+
+#castle {
+  width: 100%;
+  max-height: 50vh; /* A kép magassága kisebb telefonon */
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+  filter: sepia(0.4);
+}
+
 /* Main konténer */
 .main {
   text-align: center;
   margin-top: 20px;
-  padding: 30px;
+  padding: 20px; /* Kisebb padding telefonon */
   border-radius: 10px;
 }
 
 /* H1 és H2 */
 .main h1 {
-  font-size: 70px;
+  font-size: 40px; /* Kisebb betűméret telefonon */
   font-weight: bold;
   color: #f1c40f;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
 }
 
 .main h2 {
-  font-size: 60px;
+  font-size: 30px; /* Kisebb betűméret telefonon */
   color: lightgray;
   margin-top: 10px;
 }
 
 /* Képek beállítása */
-#castle {
-  width: 100%;
-  max-height: 100vh;
-  object-fit: cover;
-  display: block;
-  margin: 0 auto;
-  filter: sepia(0.4); /* Opcionálisan szűrjük */
-}
-
 #guides {
-  max-height: 290px;
+  max-height: 200px; /* Kisebb magasság telefonon */
   background-color: transparent;
   float: right;
   border-radius: 10px;
@@ -107,51 +131,131 @@ img {
   justify-content: center;
   max-width: 900px;
   margin: 0 auto;
-  gap: 20px;
+  gap: 15px; /* Kisebb gap telefonon */
 }
 
 /* A flex konténerek */
 .col-md-6 {
   flex: 1;
-  padding: 20px;
-  font-size: 30px;
+  padding: 15px; /* Kisebb padding telefonon */
+  font-size: 20px; /* Kisebb betűméret telefonon */
 }
 
-/* Web.css */
+/* Letöltési gomb */
 .download-section {
-  text-align: center; /* Középre igazítás */
-  margin-bottom: 20px; /* Tér a DungeonBook előtt */
+  text-align: center;
+  margin-bottom: 15px; /* Kisebb margó telefonon */
 }
 
 .download-btn {
-  padding: 10px 20px;
-  background-color: #4caf50; /* Zöld háttér */
+  padding: 8px 15px; /* Kisebb padding telefonon */
+  background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 14px; /* Kisebb betűméret telefonon */
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .download-btn:hover {
-  background-color: #45a049; /* Sötétebb zöld hover esetén */
+  background-color: #45a049;
 }
 
-/* Mobil nézet  */
+/* Mobil nézet */
 @media (max-width: 768px) {
+  .header {
+    padding: 8px 10px; /* Még kisebb padding telefonon */
+    flex-direction: column; /* A fejléc elemei egymás alá kerüljenek */
+    align-items: flex-start;
+  }
+
+  .header-left a {
+    font-size: 18px; /* Még kisebb betűméret */
+  }
+
+  .header-right {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .header-right button {
+    padding: 6px 12px; /* Még kisebb padding */
+    font-size: 12px; /* Még kisebb betűméret */
+  }
+
+  .main {
+    padding: 15px; /* Még kisebb padding */
+  }
+
+  .main h1 {
+    font-size: 30px; /* Még kisebb betűméret */
+  }
+
+  .main h2 {
+    font-size: 24px; /* Még kisebb betűméret */
+  }
+
   .row {
-      flex-direction: column;
-      text-align: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px; /* Még kisebb gap */
   }
 
   .col-md-6 {
-      width: 100%;
+    width: 100%;
+    padding: 10px; /* Még kisebb padding */
+    font-size: 16px; /* Még kisebb betűméret */
+  }
+
+  #castle {
+    max-height: 40vh; /* Még kisebb magasság telefonon */
   }
 
   #guides {
-      float: none;
-      margin-top: 20px;
+    float: none;
+    margin-top: 15px;
+    max-height: 150px; /* Még kisebb magasság */
+  }
+
+  .download-btn {
+    padding: 6px 12px; /* Még kisebb padding */
+    font-size: 12px; /* Még kisebb betűméret */
+  }
+
+  .download-section {
+    margin-bottom: 10px; /* Még kisebb margó */
+  }
+}
+
+/* Kisebb telefonok (pl. 576px alatt) */
+@media (max-width: 576px) {
+  .header-left a {
+    font-size: 16px;
+  }
+
+  .header-right button {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+
+  .main h1 {
+    font-size: 24px;
+  }
+
+  .main h2 {
+    font-size: 20px;
+  }
+
+  .col-md-6 {
+    font-size: 14px;
+  }
+
+  .download-btn {
+    padding: 5px 10px;
+    font-size: 10px;
   }
 }
 

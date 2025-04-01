@@ -126,7 +126,7 @@ const Home = () => {
           {/* Letöltési gomb hozzáadása */}
           <div className="download-section">
             <button className="download-btn" onClick={handleDownload}>
-              Download DungeonBook
+              Download Dungeon Valley Explorer
             </button>
           </div>
           <DungeonBook />

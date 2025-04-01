@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import '../css/DungeonBook.css';
 import logo from '/logo.jpg';
 import pages from '../../pages.json';
@@ -6,11 +6,22 @@ import pages from '../../pages.json';
 const DungeonBook = () => {
     const [currentSpread, setCurrentSpread] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     const bookRef = useRef(null);
 
-    const totalSpreads = Math.ceil((pages.length + 1) / 2); // +1 a logós kezdőlap miatt
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
 
-    // Lapozási logika egyszerűsítése
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const totalSpreads = Math.ceil((pages.length + 1) / 2);
+
     const goToPreviousSpread = () => {
         if (isOpen && currentSpread > 0) {
             setCurrentSpread(currentSpread - 1);
@@ -23,7 +34,6 @@ const DungeonBook = () => {
         }
     };
 
-    // Drag események (jelenleg csak logolnak, de később bővíthetők)
     const handleDragStart = (e) => {
         e.preventDefault();
         console.log("Drag started");
@@ -39,13 +49,11 @@ const DungeonBook = () => {
         console.log("Drag ended");
     };
 
-    // Könyv nyitása/zárása
     const toggleBook = () => {
         setIsOpen(!isOpen);
-        if (!isOpen) setCurrentSpread(0); // Ha kinyitjuk, visszaugrunk az elejére
+        if (!isOpen) setCurrentSpread(0);
     };
 
-    // Oldalak tartalmának meghatározása
     const getPageContent = () => {
         if (!isOpen) return { left: null, right: null };
 
@@ -66,7 +74,96 @@ const DungeonBook = () => {
 
     const { left, right } = getPageContent();
 
-    return (
+    // E-book nézet telefonra
+    const EbookView = () => {
+        const [currentPage, setCurrentPage] = useState(0);
+        const [touchStart, setTouchStart] = useState(null);
+        const [touchEnd, setTouchEnd] = useState(null);
+        const ebookRef = useRef(null);
+
+        const allPages = [{ isLogo: true }, ...pages];
+        const minSwipeDistance = 50;
+
+        const onTouchStart = (e) => {
+            e.stopPropagation(); // Esemény terjedésének megakadályozása
+            setTouchEnd(null);
+            setTouchStart(e.targetTouches[0].clientX);
+            // Görgetés letiltása az oldalon, amíg a swipe tart
+            document.body.style.overflow = 'hidden';
+        };
+
+        const onTouchMove = (e) => {
+            e.stopPropagation(); // Esemény terjedésének megakadályozása
+            setTouchEnd(e.targetTouches[0].clientX);
+        };
+
+        const onTouchEnd = (e) => {
+            e.stopPropagation(); // Esemény terjedésének megakadályozása
+            if (!touchStart || !touchEnd) return;
+            const distance = touchStart - touchEnd;
+            const isLeftSwipe = distance > minSwipeDistance;
+            const isRightSwipe = distance < -minSwipeDistance;
+
+            if (isLeftSwipe && currentPage < allPages.length - 1) {
+                setCurrentPage(currentPage + 1);
+            }
+            if (isRightSwipe && currentPage > 0) {
+                setCurrentPage(currentPage - 1);
+            }
+
+            // Görgetés visszaállítása
+            document.body.style.overflow = 'auto';
+        };
+
+        return (
+            <div className="ebook-container">
+                <div className="ebook-book" ref={ebookRef}>
+                    <div
+                        className="ebook-page"
+                        onTouchStart={onTouchStart}
+                        onTouchMove={onTouchMove}
+                        onTouchEnd={onTouchEnd}
+                    >
+                        {allPages[currentPage] ? (
+                            allPages[currentPage].isLogo ? (
+                                <div className="logo-container">
+                                    <img
+                                        src={logo}
+                                        alt="Dungeon Valley Explorer Logo"
+                                        className="book-logo"
+                                    />
+                                </div>
+                            ) : (
+                                <div className="page-content">
+                                    {allPages[currentPage].title && <h2>{allPages[currentPage].title}</h2>}
+                                    <p>{allPages[currentPage].content}</p>
+                                </div>
+                            )
+                        ) : (
+                            <div className="empty-page" />
+                        )}
+                    </div>
+                </div>
+                <div className="ebook-navigation">
+                    <button
+                        onClick={() => currentPage > 0 && setCurrentPage(currentPage - 1)}
+                        disabled={currentPage === 0}
+                    >
+                        Previous
+                    </button>
+                    <button
+                        onClick={() => currentPage < allPages.length - 1 && setCurrentPage(currentPage + 1)}
+                        disabled={currentPage === allPages.length - 1}
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
+        );
+    };
+
+    // Könyv nézet nagyobb eszközökre
+    const BookView = () => (
         <div className="dungeon-book-container">
             <div
                 className={`book ${isOpen ? 'open' : 'closed'}`}
@@ -142,6 +239,8 @@ const DungeonBook = () => {
             </div>
         </div>
     );
+
+    return isMobile ? <EbookView /> : <BookView />;
 };
 
 export default DungeonBook;
