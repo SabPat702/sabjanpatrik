@@ -3,3 +3,5 @@
 3@Shielded (Physical)@Shielded from all sources of physical damage.@Turn End
 4@Taunted@Can only target a taunting enemy.@Targeting
 5@Taunting@Taunted enemies can only target you.@Targeting
+6@Warm Food@The warmt of a previous meal fills your body.@Damage Calculation,Hp Calculation
+7@Hearty Meal@Your previous meal fills you with extra strength.@HP Calculation,Initiative Roll,Damage Calculation,Turn End

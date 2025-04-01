@@ -60,6 +60,14 @@ namespace Dungeon_Valley_Explorer
                 {
                     switch (buffDebuff.BuffDebuffName)
                     {
+                        case "Warm Food":
+                            hero.MaxHP += 2 * hero.Lvl;
+                            hero.HP += 2 * hero.Lvl;
+                            break;
+                        case "Hearty Meal":
+                            hero.MaxHP += 5 * hero.Lvl;
+                            hero.HP += 5 * hero.Lvl;
+                            break;
                         default:
                             break;
                     }

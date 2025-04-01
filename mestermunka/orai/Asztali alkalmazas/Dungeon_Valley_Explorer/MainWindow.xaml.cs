@@ -2029,12 +2029,16 @@ namespace Dungeon_Valley_Explorer
                     TavernEnter();
                     break;
                 case "5":
+                    AdventurersGuildEnter();
                     break;
                 case "Adventurers Guild":
+                    AdventurersGuildEnter();
                     break;
                 case "6":
+                    btInput.Click += new RoutedEventHandler(MainTownOption);
                     break;
                 case "Enter Dungeon":
+                    btInput.Click += new RoutedEventHandler(MainTownOption);
                     break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
@@ -4405,6 +4409,23 @@ namespace Dungeon_Valley_Explorer
         }
 
         //Tavern ends here ---------------------------------------------------------------------------------------------
+
+        //Adventurers Guild starts here --------------------------------------------------------------------------------
+
+        public void AdventurersGuildEnter()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Sort Party");
+            lbOptions.Items.Add("2. Quests");
+            lbOptions.Items.Add("3. Inspect Party Members");
+            lbOptions.Items.Add("4. Library");
+            lbOptions.Items.Add("5. Leave");
+            lbDisplay.Items.Add("Receptionist: Welcome to the local branch of the Adventurers Guild! How may I assist you today?");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+        }
+
+        //Adventurers Guild ends here ----------------------------------------------------------------------------------
 
         //Town ends here -----------------------------------------------------------------------------------------------
     }
