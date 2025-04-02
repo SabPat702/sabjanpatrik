@@ -95,4 +95,4 @@ C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalm
 C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalmazas\Dungeon_Valley_Explorer\obj\Debug\Dungeon_Valley_Explorer.pdb
 C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalmazas\Dungeon_Valley_Explorer\bin\Debug\BCrypt.Net-Next.dll
 C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalmazas\Dungeon_Valley_Explorer\bin\Debug\BCrypt.Net-Next.xml
-C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalmazas\Dungeon_Valley_Explorer\obj\Debug\Dungeon_.E7BB24DC.Up2Date
+C:\Users\SabPat702\Documents\GitHub\sabjanpatrik\mestermunka\orai\Asztali alkalmazas\Dungeon_Valley_Explorer\obj\Debug\Dungeon_Valley_Explorer.csproj.CopyComplete
