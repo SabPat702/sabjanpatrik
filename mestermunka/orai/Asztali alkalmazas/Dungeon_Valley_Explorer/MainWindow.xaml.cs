@@ -103,6 +103,8 @@ namespace Dungeon_Valley_Explorer
         //Adventurers Guild variables ----------------------------------------------------------------------------------
         Hero changeOrderFirstHero = new Hero();
         Hero changeOrderSecondHero = new Hero();
+        Hero changeHeroPartyHero = new Hero();
+        Hero changeHeroHeroesHero = new Hero();
         //Adventurers Guild variables ----------------------------------------------------------------------------------
         public MainWindow()
         {
@@ -4758,16 +4760,6 @@ namespace Dungeon_Valley_Explorer
             SortPartyChooseChangeReEntry();
         }
 
-        public void SortPartyChooseChangeReEntry()
-        {
-            tbInputArea.Text = "";
-            lbOptions.Items.Clear();
-            lbOptions.Items.Add("1. Change Order");
-            lbOptions.Items.Add("2. Change Heroes");
-            lbOptions.Items.Add("3. Cancel");
-            btInput.Click += new RoutedEventHandler(SortPartyChooseChange);
-        }
-
         //Sort Party Change Order ends here ----------------------------------------------------------------------------
 
         //Sort Party Change Heroes starts here -------------------------------------------------------------------------
@@ -4776,21 +4768,147 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < party.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {party[i].HeroName}");
+            }
+            lbDisplay.Items.Add("GAME: To change heroes select a hero from the party then select a hero from the heroes that are not in the party.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesPartyHero);
+        }
 
+        public void SortPartyChangeHeroesPartyHero(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SortPartyChangeHeroesPartyHero);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesPartyHero);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                SortPartyChooseChangeReEntry();
+            }
+            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
+            {
+                if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                {
+                    changeHeroPartyHero = party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First();
+                    SortPartyChangeHeroesTwo();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        changeHeroPartyHero = party[index];
+                        SortPartyChangeHeroesTwo();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesPartyHero);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesPartyHero);
+            }
+        }
+
+        public void SortPartyChangeHeroesTwo()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            lbOptions.Items.Add("2. Remove");
+            for (int i = 0; i < heroes.Count; i++)
+            {
+                if (party.Contains(heroes[i]) == false)
+                {
+                    lbOptions.Items.Add($"{i + 3}. {heroes[i].HeroName}");
+                }
+            }
+            btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesHeroesHero);
+        }
+
+        public void SortPartyChangeHeroesHeroesHero(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SortPartyChangeHeroesHeroesHero);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: Remove allows you to remove the selected hero from the party.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesHeroesHero);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                SortPartyChooseChangeReEntry();
+            }
+            else if (tbInputArea.Text == "2" || tbInputArea.Text == "Remove")
+            {
+                if (party.Count > 1)
+                {
+                    party.Remove(changeHeroPartyHero);
+                }
+                else
+                {
+                    MessageBox.Show("Can't remove: there is only one hero in the party.");
+                }
+                SortPartyChooseChangeReEntry();
+            }
+            else if (heroes.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (heroes.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                {
+                    changeHeroHeroesHero = heroes.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First();
+                    SortPartyChangeHeroesHeroChanging();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 3;
+                        changeHeroHeroesHero = heroes[index];
+                        SortPartyChangeHeroesHeroChanging();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesHeroesHero);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesHeroesHero);
+            }
+        }
+
+        public void SortPartyChangeHeroesHeroChanging()
+        {
+            int index = party.IndexOf(changeHeroPartyHero);
+            party[index] = changeHeroHeroesHero;
+            SortPartyChooseChangeReEntry();
         }
 
         //Sort Party Change Heroes ends here ---------------------------------------------------------------------------
 
-        public void AdventurersGuildMainOptionReEntry()
+        public void SortPartyChooseChangeReEntry()
         {
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
-            lbOptions.Items.Add("1. Sort Party");
-            lbOptions.Items.Add("2. Quests");
-            lbOptions.Items.Add("3. Inspect Party Members");
-            lbOptions.Items.Add("4. Library");
-            lbOptions.Items.Add("5. Leave");
-            btInput.Click += new RoutedEventHandler(AdventurersGuildMainOption);
+            lbOptions.Items.Add("1. Change Order");
+            lbOptions.Items.Add("2. Change Heroes");
+            lbOptions.Items.Add("3. Cancel");
+            btInput.Click += new RoutedEventHandler(SortPartyChooseChange);
         }
 
         //Sort Party ends here -----------------------------------------------------------------------------------------
@@ -4806,6 +4924,18 @@ namespace Dungeon_Valley_Explorer
         //Library starts here ------------------------------------------------------------------------------------------
 
         //Library ends here --------------------------------------------------------------------------------------------
+
+        public void AdventurersGuildMainOptionReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Sort Party");
+            lbOptions.Items.Add("2. Quests");
+            lbOptions.Items.Add("3. Inspect Party Members");
+            lbOptions.Items.Add("4. Library");
+            lbOptions.Items.Add("5. Leave");
+            btInput.Click += new RoutedEventHandler(AdventurersGuildMainOption);
+        }
 
         public void AdventurersGuildLeave()
         {
