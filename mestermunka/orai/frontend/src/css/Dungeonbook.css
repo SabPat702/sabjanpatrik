@@ -28,7 +28,7 @@
 
 .book.open {
     transform: rotateY(0deg) rotateX(15deg);
-    animation: openBook 1s ease-out forwards;
+    animation: none;
 }
 
 /*
@@ -137,7 +137,7 @@
 .page p {
     white-space: pre-wrap;
     word-wrap: break-word;
-    color: #4a4a4a;
+    color: black;
     text-align: left;
     font-size: 16.5px;
 }
@@ -215,7 +215,7 @@ button:hover:not(:disabled) {
 }
 
 .page.flipping {
-    transform: rotateY(180deg);
+    animation: flip 0.6s ease-in-out;
 }
 
 .book-inner::before {

@@ -30,9 +30,114 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px; 
+  padding: 10px 20px;
+  background-color: rgba(51, 51, 51, 0.8); /* Félig átlátszó háttér */
+  position: relative;
+  top: 10px; /* A margóhoz igazítjuk */
+  width: 600px;
+  max-width: calc(90% - 10px); /* A margókhoz igazítjuk */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  height: 50px;
+  border-radius: 25px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.header-left a {
+  font-weight: bold;
+  font-size: 24px; /* Kisebb betűméret telefonon */
+  text-decoration: none;
+  color: #f1c40f;
+  text-transform: uppercase;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
   background-color: #333;
-  border-bottom: 1px solid #ddd;
+  border: none;
+  min-width: 200px;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  color: #f1c40f;
+  font-size: 14px;
+  padding: 8px 15px;
+}
+
+.dropdown-item:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+/* A majdnem teljes képernyős háttér beállítása */
+.castle-background {
+  position: fixed; /* A háttér fixen a képernyőn marad */
+  top: -35px; /* A fejléc magassága (50px) + a fejléc top (10px) + egy kis extra tér (10px) */
+  left: 5px; /* 5px margó balról */
+  right: 5px; /* 5px margó jobbról */
+  bottom: 5px; /* 5px margó alul */
+  width: calc(100% - 10px); /* Szélesség - 10px (5px balra, 5px jobbra) */
+  height: calc(100vh - 75px); /* Magasság - (fejléc magassága + top + margó) */
+  z-index: -1; /* A háttér a tartalom alá kerül */
+  overflow: hidden;
+  border-radius: 50px;
+}
+.main {
+  position: relative;
+  text-align: center;
+  margin-top: 20vh;
+  padding: 20px;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Árnyék a jobb olvashatóság érdekében */
+}
+
+/* Mobil nézet */
+@media (max-width: 768px) {
+  .header {
+    padding: 8px 10px;
+    width: 90%; /* Mobil nézetben kicsit szélesebb */
+    max-width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 60px;
+  }
+
+  .header-left a {
+    font-size: 18px;
+  }
+
+  .header-right {
+    margin-top: 0;
+  }
+
+  .header-right button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  margin-right: 20px; /* Térköz a szöveg és a gomb között */
 }
 
 .header-left a {
@@ -45,6 +150,11 @@ img {
 
 .header-left a:hover {
   text-decoration: underline;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
 }
 
 .header-right button {
@@ -61,11 +171,18 @@ img {
   background-color: #c0392b;
 }
 
+.dropdown{
+  position: relative;
+}
 /* Dropdown menü finomhangolása */
 .dropdown-menu {
   background-color: #333;
   border: none;
   min-width: 200px; /* Biztosítjuk, hogy a dropdown ne legyen túl keskeny */
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
 }
 
 .dropdown-item {
@@ -81,16 +198,16 @@ img {
 
 /* Háttérkép */
 .castle-background {
-  width: 100%;
+  position: relative;
+  margin-top: 65px;
   overflow: hidden;
 }
 
 #castle {
   width: 100%;
-  max-height: 50vh; /* A kép magassága kisebb telefonon */
-  object-fit: cover;
+  height: 100%;
+  object-fit: cover; /* A kép arányosan kitölti a területet */
   display: block;
-  margin: 0 auto;
   filter: sepia(0.4);
 }
 
@@ -105,15 +222,15 @@ img {
 /* H1 és H2 */
 .main h1 {
   font-size: 40px; /* Kisebb betűméret telefonon */
-  font-weight: bold;
-  color: #f1c40f;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+  font-weight: bolder;
+  color: gray;
 }
 
 .main h2 {
   font-size: 30px; /* Kisebb betűméret telefonon */
-  color: lightgray;
+  color: gray;
   margin-top: 10px;
+  font-weight: bolder;
 }
 
 /* Képek beállítása */
@@ -168,6 +285,7 @@ img {
     padding: 8px 10px; /* Még kisebb padding telefonon */
     flex-direction: column; /* A fejléc elemei egymás alá kerüljenek */
     align-items: flex-start;
+    height: auto;
   }
 
   .header-left a {

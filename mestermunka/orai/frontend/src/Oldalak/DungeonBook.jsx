@@ -23,13 +23,13 @@ const DungeonBook = () => {
     const totalSpreads = Math.ceil((pages.length + 1) / 2);
 
     const goToPreviousSpread = () => {
-        if (isOpen && currentSpread > 0) {
+        if (currentSpread > 0) {
             setCurrentSpread(currentSpread - 1);
         }
     };
 
     const goToNextSpread = () => {
-        if (isOpen && currentSpread < totalSpreads - 1) {
+        if (currentSpread < totalSpreads - 1) {
             setCurrentSpread(currentSpread + 1);
         }
     };
