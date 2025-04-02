@@ -70,27 +70,28 @@ const LoginSignup = () => {
         const password = e.target.password.value;
 
         fetch('http://localhost:3001/login', {
-            method: 'POST',
+            method: 'POST',  // POST metódust használunk
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ username, password })  // A felhasználónevet és jelszót küldjük a szervernek
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                if (data.message === "Login successful!") {
-                    setSuccessMessage("Login successful! Redirecting...");
-                    setShowModal(true); // Added to show the modal
-                    setTimeout(() => {
-                        window.location.href = "/DungeonValleyExplorer";
-                    }, 2000);
-                } else {
-                    setErrorMessage("Invalid username or password!");
-                    console.error("Login failed:", data.message);
-                }
-            })
-            .catch(() => {
-                setErrorMessage("Error during login.");
-            });
+        .then(response => response.json())  // Az eredményt JSON formátumban dolgozzuk fel
+        .then(data => {
+            console.log(data);  // A válasz naplózása
+        
+            if (data.message === "Login successful!") {
+                setSuccessMessage("Login successful! Redirecting...");
+                setShowModal(true); // Modal megjelenítése
+                setTimeout(() => {
+                    window.location.href = "/DungeonValleyExplorer";  // Átirányítás másik oldalra
+                }, 2000);
+            } else {
+                setErrorMessage("Invalid username or password!");  // Hibaüzenet megjelenítése
+                console.error("Login failed:", data.message);
+            }
+        })
+        .catch(() => {
+            setErrorMessage("Error during login.");  // Hálózati hiba esetén
+        });        
     };
 
     const handlePasswordChange = (e) => {

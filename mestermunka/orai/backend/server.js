@@ -96,37 +96,44 @@ app.post('/signup', (req, res) => {
 
 // Bejelentkezés
 app.post('/login', (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    if (!username || !password) {
-        return res.status(400).json({ message: "Username and password are required!" });
-    }
+  // Ellenőrizzük, hogy mindkét mező (username és password) meg van-e adva
+  if (!username || !password) {
+      return res.status(400).json({ message: "Username and password are required!" });
+  }
 
-    const query = 'SELECT * FROM user WHERE Username = ?';
-    db.query(query, [username], (err, results) => {
-        if (err) {
-            console.error("Database error:", err);
-            return res.status(500).json({ message: "Error during login." });
-        }
+  // SQL lekérdezés a felhasználó keresésére
+  const query = 'SELECT * FROM user WHERE Username = ?';
+  db.query(query, [username], (err, results) => {
+      if (err) {
+          console.error("Database error:", err);
+          return res.status(500).json({ message: "Error during login." });
+      }
 
-        if (results.length === 0) {
-            return res.status(400).json({ message: "Invalid username or password." });
-        }
+      // Ha a felhasználó nem található
+      if (results.length === 0) {
+          return res.status(400).json({ message: "Invalid username or password." });
+      }
 
-        bcrypt.compare(password, results[0].Password, (err, match) => {
-            if (err) {
-                console.error("Bcrypt error:", err);
-                return res.status(500).json({ message: "Error while checking password." });
-            }
+      // Ellenőrizzük a jelszót a bcrypt segítségével
+      bcrypt.compare(password, results[0].Password, (err, match) => {
+          if (err) {
+              console.error("Bcrypt error:", err);
+              return res.status(500).json({ message: "Error while checking password." });
+          }
 
-            if (!match) {
-                return res.status(400).json({ message: "Invalid username or password." });
-            }
+          // Ha a jelszó nem egyezik
+          if (!match) {
+              return res.status(400).json({ message: "Invalid username or password." });
+          }
 
-            res.status(200).json({ message: "Login successful!" });
-        });
-    });
+          // Ha sikeres a bejelentkezés
+          res.status(200).json({ message: "Login successful!" });
+      });
+  });
 });
+
 
 /*
 app.post('/forgot-password', (req, res) => {
