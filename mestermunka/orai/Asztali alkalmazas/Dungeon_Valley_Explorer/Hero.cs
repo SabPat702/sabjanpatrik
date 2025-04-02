@@ -142,6 +142,7 @@ namespace Dungeon_Valley_Explorer
             }
 
             Background = linecutter[16];
+            DisplayName = HeroName;
         }
 
         public Hero(string oneLine, List<Passive> passives, List<BuffDebuff> buffDebuffs, List<Skill> skills, List<Magic> magics, List<Race> races, List<Armor> armors, List<Weapon> weapons, bool ShortDisplayNames, Dictionary<string, int> weaponsImproved, Dictionary<string, int> armorsImproved)
@@ -285,6 +286,19 @@ namespace Dungeon_Valley_Explorer
             Magics = new List<Magic>();
             Race = new Race();
         }
+
+        //Sleep --------------------------------------------------------------------------------------------------------
+
+        public static Hero Sleep(Hero hero)
+        {
+            HeroStatCalculation.HeroStatReCalculation(hero);
+            hero.HP = hero.MaxHP;
+            hero.MP = hero.MaxMP;
+            hero.SP = hero.MaxSP;
+            return hero;
+        }
+
+        //Sleep --------------------------------------------------------------------------------------------------------
 
         //Character classes --------------------------------------------------------------------------------------------
 

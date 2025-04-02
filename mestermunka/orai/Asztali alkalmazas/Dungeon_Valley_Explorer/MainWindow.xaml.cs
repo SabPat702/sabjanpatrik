@@ -92,7 +92,13 @@ namespace Dungeon_Valley_Explorer
         Armor selectedNewArmor = new Armor();
         //Town Blacksmith variables ------------------------------------------------------------------------------------
 
+        //Tavern variables ---------------------------------------------------------------------------------------------
         bool canRest = true;
+        string chosenFood = "";
+        int amountChosenFoodFeeds = 0;
+        int chosenFoodPrice = 0;
+        List<Hero> chosenHeroesToEat = new List<Hero>();
+        //Tavern variables ---------------------------------------------------------------------------------------------
 
         public MainWindow()
         {
@@ -282,10 +288,18 @@ namespace Dungeon_Valley_Explorer
             if (ShortDisplayNames == false)
             {
                 ShortDisplayNames = true;
+                foreach(Hero hero in Initializer.npcs)
+                {
+                    hero.DisplayName = hero.HeroName.Split(' ')[0];
+                }
             }
             else
             {
                 ShortDisplayNames = false;
+                foreach (Hero hero in Initializer.npcs)
+                {
+                    hero.DisplayName = hero.HeroName;
+                }
             }
             lbOptions.Items.Add("1. Change Colors");
             lbOptions.Items.Add($"2. Shortened Names ({ShortDisplayNames})");
@@ -1550,7 +1564,7 @@ namespace Dungeon_Valley_Explorer
             {
                 case "?":
                     tbInputArea.Text = "";
-                    lbDisplay.Items.Add("There is nothing to explain here.");
+                    MessageBox.Show("There is nothing to explain here.");
                     lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     btInput.Click += new RoutedEventHandler(NewGameCharacterConfirming);
                     break;
@@ -1959,7 +1973,9 @@ namespace Dungeon_Valley_Explorer
         public void EnterTown()
         {
             heroes.Add(Initializer.npcs[0]);
+            party.Add(Initializer.npcs[0]);
             Gold += 1000;
+            Experience += 200;
             weaponsObtained["Family Lance"] = true;
             armorsObtained["Bejeweled Helmet"] = true;
             tbInputArea.Text = "";
@@ -2013,12 +2029,16 @@ namespace Dungeon_Valley_Explorer
                     TavernEnter();
                     break;
                 case "5":
+                    AdventurersGuildEnter();
                     break;
                 case "Adventurers Guild":
+                    AdventurersGuildEnter();
                     break;
                 case "6":
+                    btInput.Click += new RoutedEventHandler(MainTownOption);
                     break;
                 case "Enter Dungeon":
+                    btInput.Click += new RoutedEventHandler(MainTownOption);
                     break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
@@ -4008,15 +4028,19 @@ namespace Dungeon_Valley_Explorer
             switch (tbInputArea.Text)
             {
                 case "?":
-
+                    ExplainTavernChooseActivity();
                     break;
                 case "1":
+                    TavernRest();
                     break;
                 case "Rest":
+                    TavernRest();
                     break;
                 case "2":
+                    TavernOrderFood();
                     break;
                 case "Order Food":
+                    TavernOrderFood();
                     break;
                 case "3":
                     TavernLeave();
@@ -4050,7 +4074,7 @@ namespace Dungeon_Valley_Explorer
             {
                 lbOptions.Items.Clear();
                 canRest = false;
-                double experienceShare = 1 / party.Count;
+                double experienceShare = Convert.ToDouble(1) / Convert.ToDouble(party.Count);
                 foreach (Hero hero in party)
                 {
                     double personalExperienceModifier = 1;
@@ -4082,11 +4106,21 @@ namespace Dungeon_Valley_Explorer
                     {
                         if (passive.Affect.Contains("Sleep"))
                         {
-
+                            switch (passive.PassiveName)
+                            {
+                                case "Merchant":
+                                    Gold += (hero.Lvl + 1) * 5;
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                     }
+                    Hero.Sleep(hero);
                 }
-
+                lbOptions.Items.Add("1. Rest");
+                lbOptions.Items.Add("2. Order Food");
+                lbOptions.Items.Add("3. Leave");
                 lbDisplay.Items.Add("GAME: You wake up refreshed.");
                 btInput.Click += new RoutedEventHandler(TavernChooseActivity);
             }
@@ -4099,6 +4133,271 @@ namespace Dungeon_Valley_Explorer
 
         //Tavern Rest ends here ----------------------------------------------------------------------------------------
 
+        //Tavern Order Food starts here --------------------------------------------------------------------------------
+
+        public void TavernOrderFood()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            lbOptions.Items.Add("2. Well Done Lamb Chops");
+            lbOptions.Items.Add("3. Traditional Breakfast");
+            lbOptions.Items.Add("4. Meat Platter");
+            lbDisplay.Items.Add("Tavernkeeper: Sorry about the small selection business been slow lately.");
+            btInput.Click += new RoutedEventHandler(TavernChooseFood);
+        }
+
+        public void TavernChooseFood(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(TavernChooseFood);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainTavernChooseFood();
+                    break;
+                case "1":
+                    TavernReEntry();
+                    break;
+                case "Cancel":
+                    TavernReEntry();
+                    break;
+                case "2":
+                    chosenFood = "Well Done Lamb Chops";
+                    amountChosenFoodFeeds = 2;
+                    chosenFoodPrice = 12;
+                    TavernHeroesToEatFood();
+                    break;
+                case "Well Done Lamb Chops":
+                    chosenFood = "Well Done Lamb Chops";
+                    amountChosenFoodFeeds = 2;
+                    chosenFoodPrice = 12;
+                    TavernHeroesToEatFood();
+                    break;
+                case "3":
+                    chosenFood = "Traditional Breakfast";
+                    amountChosenFoodFeeds = 1;
+                    chosenFoodPrice = 5;
+                    TavernHeroesToEatFood();
+                    break;
+                case "Traditional Breakfast":
+                    chosenFood = "Traditional Breakfast";
+                    amountChosenFoodFeeds = 1;
+                    chosenFoodPrice = 5;
+                    TavernHeroesToEatFood();
+                    break;
+                case "4":
+                    chosenFood = "Meat Platter";
+                    amountChosenFoodFeeds = 4;
+                    chosenFoodPrice = 35;
+                    TavernHeroesToEatFood();
+                    break;
+                case "Meat Platter":
+                    chosenFood = "Meat Platter";
+                    amountChosenFoodFeeds = 4;
+                    chosenFoodPrice = 35;
+                    TavernHeroesToEatFood();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(TavernChooseFood);
+                    break;
+            }
+        }
+
+        public void ExplainTavernChooseFood()
+        {
+            lbDisplay.Items.Add("EXPLANATION: Cancel allows you to leave the Order Food section of the tavern.");
+            lbDisplay.Items.Add("EXPLANATION: Well Done Lamb Chops is a meal for two people costing 12 gold that gives a Warm Food Buff for one Dungeon.");
+            lbDisplay.Items.Add("EXPLANATION: Traditional Breakfast is a meal for one person costing 5 gold that gives a Warm Food Buff for one Dungeon.");
+            lbDisplay.Items.Add("EXPLANATION: Meat Platter is a meal for the whole party costing 35 gold that gives a Hearty Meal Buff for one Dungeon.");
+            tbInputArea.Text = "";
+            btInput.Click += new RoutedEventHandler(TavernChooseFood);
+        }
+
+        public void TavernHeroesToEatFood()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            foreach (Passive passive in heroes[0].Passives)
+            {
+                if (passive.Affect.Contains("Shop Payment"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Noble":
+                            chosenFoodPrice = Convert.ToInt32(chosenFoodPrice * 0.9);
+                            break;
+                        case "Merchant":
+                            chosenFoodPrice = Convert.ToInt32(chosenFoodPrice * 0.75);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            if (Gold - chosenFoodPrice >= 0)
+            {
+                Gold -= chosenFoodPrice;
+                if (amountChosenFoodFeeds == 4)
+                {
+                    foreach (BuffDebuff buffDebuff in Initializer.buffsDebuffs)
+                    {
+                        if (buffDebuff.BuffDebuffName == chosenFood)
+                        {
+                            foreach (Hero hero in party)
+                            {
+                                hero.BuffsDebuffs.Add(buffDebuff);
+                            }
+                        }
+                    }
+                    lbOptions.Items.Add("1. Cancel");
+                    lbOptions.Items.Add("2. Well Done Lamb Chops");
+                    lbOptions.Items.Add("3. Traditional Breakfast");
+                    lbOptions.Items.Add("4. Meat Platter");
+                    btInput.Click += new RoutedEventHandler(TavernChooseFood);
+                }
+                else
+                {
+                    lbDisplay.Items.Add($"GAME: Choose who gets to eat the meal. (you can choose {amountChosenFoodFeeds} person/people)");
+                    for (int i = 0; i < party.Count; i++)
+                    {
+                        lbOptions.Items.Add($"{i+1} {party[i].HeroName}");
+                    }
+                    btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                }
+            }
+            else
+            {
+                lbOptions.Items.Add("1. Cancel");
+                lbOptions.Items.Add("2. Well Done Lamb Chops");
+                lbOptions.Items.Add("3. Traditional Breakfast");
+                lbOptions.Items.Add("4. Meat Platter");
+                lbDisplay.Items.Add("Tavernkeeper: I'm afraid you can't afford that right now.");
+                btInput.Click += new RoutedEventHandler(TavernChooseFood);
+            }
+        }
+
+        public void TavernChooseHeroToEatFood(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(TavernChooseHeroToEatFood);
+            if (tbInputArea.Text == "?")
+            {
+                MessageBox.Show("There is nothing to explain here.");
+                btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+            }
+            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4"))
+            {
+                if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                {
+                    if (chosenHeroesToEat.Contains(party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First()))
+                    {
+                        MessageBox.Show("This hero has already been chosen to eat the meal.");
+                        btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                    }
+                    else
+                    {
+                        chosenHeroesToEat.Add(party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First());
+                        amountChosenFoodFeeds -= 1;
+                        if (amountChosenFoodFeeds == 0)
+                        {
+                            foreach (BuffDebuff buffDebuff in Initializer.buffsDebuffs)
+                            {
+                                if (buffDebuff.BuffDebuffName == chosenFood)
+                                {
+                                    foreach (Hero hero in party)
+                                    {
+                                        if (chosenHeroesToEat.Contains(hero))
+                                        {
+                                            hero.BuffsDebuffs.Add(buffDebuff);
+                                        }
+                                        chosenHeroesToEat.Clear();
+                                    }
+                                }
+                            }
+                            lbOptions.Items.Clear();
+                            lbOptions.Items.Add("1. Cancel");
+                            lbOptions.Items.Add("2. Well Done Lamb Chops");
+                            lbOptions.Items.Add("3. Traditional Breakfast");
+                            lbOptions.Items.Add("4. Meat Platter");
+                            btInput.Click += new RoutedEventHandler(TavernChooseFood);
+                        }
+                        else
+                        {
+                            lbDisplay.Items.Add($"GAME: You can still choose {amountChosenFoodFeeds} more hero(es).");
+                            btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                        }
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text)-1;
+                        if (chosenHeroesToEat.Contains(party[index]))
+                        {
+                            MessageBox.Show("This hero has already been chosen to eat the meal.");
+                            btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                        }
+                        else
+                        {
+                            chosenHeroesToEat.Add(party[index]);
+                            amountChosenFoodFeeds -= 1;
+                            if (amountChosenFoodFeeds == 0)
+                            {
+                                foreach (BuffDebuff buffDebuff in Initializer.buffsDebuffs)
+                                {
+                                    if (buffDebuff.BuffDebuffName == chosenFood)
+                                    {
+                                        foreach (Hero hero in party)
+                                        {
+                                            if (chosenHeroesToEat.Contains(hero))
+                                            {
+                                                hero.BuffsDebuffs.Add(buffDebuff);
+                                            }
+                                            chosenHeroesToEat.Clear();
+                                        }
+                                    }
+                                }
+                                lbOptions.Items.Clear();
+                                lbOptions.Items.Add("1. Cancel");
+                                lbOptions.Items.Add("2. Well Done Lamb Chops");
+                                lbOptions.Items.Add("3. Traditional Breakfast");
+                                lbOptions.Items.Add("4. Meat Platter");
+                                btInput.Click += new RoutedEventHandler(TavernChooseFood);
+                            }
+                            else
+                            {
+                                lbDisplay.Items.Add($"GAME: You can still choose {amountChosenFoodFeeds} more hero(es).");
+                                btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+            }
+        }
+
+        public void TavernReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Rest");
+            lbOptions.Items.Add("2. Order Food");
+            lbOptions.Items.Add("3. Leave");
+            btInput.Click += new RoutedEventHandler(TavernChooseActivity);
+        }
+
+        //Tavern Order Food ends here ----------------------------------------------------------------------------------
+
         public void TavernLeave()
         {
             lbDisplay.Items.Add("Tavernkeeper: Hope to see you again before nightfall!");
@@ -4110,6 +4409,23 @@ namespace Dungeon_Valley_Explorer
         }
 
         //Tavern ends here ---------------------------------------------------------------------------------------------
+
+        //Adventurers Guild starts here --------------------------------------------------------------------------------
+
+        public void AdventurersGuildEnter()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Sort Party");
+            lbOptions.Items.Add("2. Quests");
+            lbOptions.Items.Add("3. Inspect Party Members");
+            lbOptions.Items.Add("4. Library");
+            lbOptions.Items.Add("5. Leave");
+            lbDisplay.Items.Add("Receptionist: Welcome to the local branch of the Adventurers Guild! How may I assist you today?");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+        }
+
+        //Adventurers Guild ends here ----------------------------------------------------------------------------------
 
         //Town ends here -----------------------------------------------------------------------------------------------
     }

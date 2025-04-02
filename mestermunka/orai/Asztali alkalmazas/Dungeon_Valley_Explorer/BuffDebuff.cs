@@ -21,6 +21,7 @@ namespace Dungeon_Valley_Explorer
             BuffDebuffName = linecutter[1];
             Description = linecutter[2];
             Affect = linecutter[3];
+            Timer = 0;
         }
 
         public BuffDebuff()

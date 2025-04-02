@@ -51,7 +51,7 @@ img {
 
 .header-left a {
   font-weight: bold;
-  font-size: 24px;
+  font-size: 24px; /* Kisebb betűméret telefonon */
   text-decoration: none;
   color: #f1c40f;
   text-transform: uppercase;
