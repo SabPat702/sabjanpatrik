@@ -50,8 +50,17 @@ const DungeonBook = () => {
     };
 
     const toggleBook = () => {
-        setIsOpen(!isOpen);
-        if (!isOpen) setCurrentSpread(0);
+        if (isOpen) {
+            // Ha éppen nyitva van a könyv, zárás előtt várunk az animációval
+            setIsOpen(false);
+            setTimeout(() => {
+                setCurrentSpread(0); // Miután az animáció lefutott, visszaállítjuk a spread értékét
+            }, 600); // Az animáció időtartama (600ms)
+        } else {
+            // Ha nincs nyitva, akkor nyitjuk
+            setCurrentSpread(0);
+            setIsOpen(true);
+        }
     };
 
     const getPageContent = () => {
@@ -74,7 +83,6 @@ const DungeonBook = () => {
 
     const { left, right } = getPageContent();
 
-    // E-book nézet telefonra
     const EbookView = () => {
         const [currentPage, setCurrentPage] = useState(0);
         const [touchStart, setTouchStart] = useState(null);
@@ -162,7 +170,6 @@ const DungeonBook = () => {
         );
     };
 
-    // Könyv nézet nagyobb eszközökre
     const BookView = () => (
         <div className="dungeon-book-container">
             <div
