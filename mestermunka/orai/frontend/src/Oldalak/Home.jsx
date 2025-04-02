@@ -77,14 +77,16 @@ const Home = () => {
         </div>
         <div className="header-right d-flex">
           <div className="dropdown">
-            <button
-              className="btn btn-secondary dropdown-toggle"
-              type="button"
-              id="userMenuButton"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
+          <button
+            className="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="userMenuButton"
+            data-bs-toggle="dropdown"
+            data-bs-placement="bottom-end" /* A menü jobb alsó sarokhoz igazítása */
+            data-bs-offset="0,5" /* Eltolás finomhangolása */
+            aria-expanded="false"
             >
-              <i className="bi bi-person-circle"></i>
+            <i className="bi bi-person-circle"></i>
             </button>
             <ul className="dropdown-menu" aria-labelledby="userMenuButton">
               <li>
@@ -126,7 +128,7 @@ const Home = () => {
           {/* Letöltési gomb hozzáadása */}
           <div className="download-section">
             <button className="download-btn" onClick={handleDownload}>
-              Download DungeonBook
+              Download Dungeon Valley Explorer
             </button>
           </div>
           <DungeonBook />

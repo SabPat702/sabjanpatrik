@@ -156,6 +156,7 @@ li {
 /* Mobile Responsiveness */
 @media screen and (max-width: 858px) {
     .topnav {
+        position: relative;
         flex-direction: column;
         padding: 20px;
     }
@@ -179,7 +180,7 @@ li {
     }
 
     .Informational {
-        margin-top: 150px;
+        margin-top: 20px;
         padding: 40px 15px;
     }
 
