@@ -4530,8 +4530,10 @@ namespace Dungeon_Valley_Explorer
                     btInput.Click += new RoutedEventHandler(AdventurersGuildMainOption);
                     break;
                 case "3":
+                    InspectParty();
                     break;
                 case "Inspect Party Members":
+                    InspectParty();
                     break;
                 case "4":
                     break;
@@ -4933,6 +4935,97 @@ namespace Dungeon_Valley_Explorer
         //Quests will end here -----------------------------------------------------------------------------------------
 
         //Inspect Party Members starts here ----------------------------------------------------------------------------
+
+        public void InspectParty()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < party.Count; i++)
+            {
+                lbOptions.Items.Add($"{i+2}. {party[i].HeroName}");
+            }
+            btInput.Click += new RoutedEventHandler(InspectPartyChooseToInspect);
+        }
+
+        public void InspectPartyChooseToInspect(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(InspectPartyChooseToInspect);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: Choose a hero to inspect them and see their stats, passives, weapons, armors, buffs and debuffs or leave with 'Cancel'.");
+                btInput.Click += new RoutedEventHandler(InspectPartyChooseToInspect);
+            }
+            else if (tbInputArea.Text == "1" ||tbInputArea.Text == "Cancel")
+            {
+                AdventurersGuildMainOptionReEntry();
+            }
+            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
+            {
+                if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                {
+                    InspectPartyInspecting(party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First());
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        InspectPartyInspecting(party[index]);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(InspectPartyChooseToInspect);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(InspectPartyChooseToInspect);
+            }
+        }
+
+        public void InspectPartyInspecting(Hero hero)
+        {
+            lbDisplay.Items.Add($"{hero.HeroName} Max HP: {hero.MaxHP} HP: {hero.HP} Max MP: {hero.MaxMP} MP: {hero.MP} Max SP: {hero.MaxSP} SP: {hero.SP} Physical DEF: {hero.DEF} Magical DEF: {hero.MDEF} Race: {hero.Race.RaceName} Class: {hero.heroClass} Background: {hero.Background}");
+            lbDisplay.Items.Add("Weapons: ----------------------------------------");
+            foreach (Weapon weapon in hero.Weapons)
+            {
+                lbDisplay.Items.Add($"{weapon.WeaponName}");
+            }
+            lbDisplay.Items.Add("Armors: ----------------------------------------");
+            foreach (Armor armor in hero.Armors)
+            {
+                lbDisplay.Items.Add($"{armor.ArmorName}");
+            }
+            lbDisplay.Items.Add("Skills: ----------------------------------------");
+            foreach (Skill skill in hero.Skills)
+            {
+                lbDisplay.Items.Add($"{skill.SkillName}");
+            }
+            lbDisplay.Items.Add("Magics: ----------------------------------------");
+            foreach (Magic magic in hero.Magics)
+            {
+                lbDisplay.Items.Add($"{magic.MagicName}");
+            }
+            lbDisplay.Items.Add("Passives: --------------------------------------");
+            foreach (Passive passive in hero.Passives)
+            {
+                lbDisplay.Items.Add($"{passive.PassiveName}");
+            }
+            lbDisplay.Items.Add("Buffs and Debuffs: -----------------------------");
+            foreach (BuffDebuff buffDebuff in hero.BuffsDebuffs)
+            {
+                lbDisplay.Items.Add($"{buffDebuff.BuffDebuffName}");
+            }
+            lbDisplay.Items.Add("GAME: You can learn more about weapons, armors, passives, buffs and debuffs in the library.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            tbInputArea.Text = "";
+            btInput.Click += new RoutedEventHandler(InspectPartyChooseToInspect);
+        }
 
         //Inspect Party Members ends here ------------------------------------------------------------------------------
 
