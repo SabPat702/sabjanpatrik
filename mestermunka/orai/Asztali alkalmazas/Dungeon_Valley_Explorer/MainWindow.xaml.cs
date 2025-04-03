@@ -4769,9 +4769,10 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbOptions.Items.Add("1. Cancel");
+            lbOptions.Items.Add("2. Add Hero");
             for (int i = 0; i < party.Count; i++)
             {
-                lbOptions.Items.Add($"{i + 2}. {party[i].HeroName}");
+                lbOptions.Items.Add($"{i + 3}. {party[i].HeroName}");
             }
             lbDisplay.Items.Add("GAME: To change heroes select a hero from the party then select a hero from the heroes that are not in the party.");
             lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
@@ -4792,7 +4793,13 @@ namespace Dungeon_Valley_Explorer
             {
                 SortPartyChooseChangeReEntry();
             }
-            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
+            else if (tbInputArea.Text == "2" ||tbInputArea.Text == "Add Hero")
+            {
+                party.Add(new Hero());
+                changeHeroPartyHero = party.Last();
+                SortPartyChangeHeroesTwo();
+            }
+            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6"))
             {
                 if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
                 {
@@ -4803,7 +4810,7 @@ namespace Dungeon_Valley_Explorer
                 {
                     try
                     {
-                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        int index = Convert.ToInt32(tbInputArea.Text) - 3;
                         changeHeroPartyHero = party[index];
                         SortPartyChangeHeroesTwo();
                     }
@@ -4849,17 +4856,25 @@ namespace Dungeon_Valley_Explorer
             }
             else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
             {
+                if (changeHeroPartyHero.HeroName != string.Empty)
+                {
+                    party.Remove(party.Last());
+                }
                 SortPartyChooseChangeReEntry();
             }
             else if (tbInputArea.Text == "2" || tbInputArea.Text == "Remove")
             {
-                if (party.Count > 1)
+                if (party.Count > 1 && changeHeroPartyHero.HeroName != string.Empty)
                 {
                     party.Remove(changeHeroPartyHero);
                 }
                 else
                 {
-                    MessageBox.Show("Can't remove: there is only one hero in the party.");
+                    MessageBox.Show("Can't remove: there is only one hero in the party or you picked the 'Add Hero' option.");
+                    if (changeHeroPartyHero.HeroName != string.Empty)
+                    {
+                        party.Remove(party.Last());
+                    }
                 }
                 SortPartyChooseChangeReEntry();
             }

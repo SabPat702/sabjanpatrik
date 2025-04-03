@@ -278,6 +278,7 @@ namespace Dungeon_Valley_Explorer
 
         public Hero()
         {
+            HeroName = string.Empty;
             Weapons = new Weapon[3];
             Armors = new Armor[4];
             BuffsDebuffs = new List<BuffDebuff>();
