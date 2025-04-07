@@ -105,6 +105,15 @@ namespace Dungeon_Valley_Explorer
         Hero changeOrderSecondHero = new Hero();
         Hero changeHeroPartyHero = new Hero();
         Hero changeHeroHeroesHero = new Hero();
+        Weapon libraryWeapon = new Weapon();
+        Armor libraryArmor = new Armor();
+        Consumable libraryConsumable = new Consumable();
+        Passive libraryPassive = new Passive();
+        BuffDebuff libraryBuffDebuff = new BuffDebuff();
+        SpecialEffect librarySpecialEffect = new SpecialEffect();
+        Dungeon libraryDungeon = new Dungeon();
+        Monster libraryMonster = new Monster();
+        EnvironmentHazard libraryEnvironmentHazard = new EnvironmentHazard();
         //Adventurers Guild variables ----------------------------------------------------------------------------------
         public MainWindow()
         {
@@ -143,15 +152,12 @@ namespace Dungeon_Valley_Explorer
             EnterTown();*/
 
             lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
-            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Tip: To check if you have all the game assets downloaded just delete the GameAssets folder and download everything again.");
-            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Tip: To play with cloud saving you need to login to an account through the Select Profile option.");
-            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Tip: To progress write text based on the options on the far left into the area at the bottom of the window or select an option on the far left then press the input button. (This can be the number or the option as well example:'1'. 'Offline play')");
-            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Tip: To learn more about most options you can type '?' to get a short explanation.");
-            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbDisplay.Items.Add("Tip: There is an automatic scroll down feature for the diplay but it is currently unreliable.");
+
 
             lbOptions.Items.Add("1. Offline play");
             lbOptions.Items.Add("2. Select Profile");
@@ -4536,8 +4542,10 @@ namespace Dungeon_Valley_Explorer
                     InspectParty();
                     break;
                 case "4":
+                    Library();
                     break;
                 case "Library":
+                    Library();
                     break;
                 case "5":
                     AdventurersGuildLeave();
@@ -5030,6 +5038,506 @@ namespace Dungeon_Valley_Explorer
         //Inspect Party Members ends here ------------------------------------------------------------------------------
 
         //Library starts here ------------------------------------------------------------------------------------------
+
+        public void Library()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Weapons");
+            lbOptions.Items.Add("2. Armors");
+            lbOptions.Items.Add("3. Consumables");
+            lbOptions.Items.Add("4. Passives");
+            lbOptions.Items.Add("5. Buffs & Debuffs");
+            lbOptions.Items.Add("6. Special Effects");
+            lbOptions.Items.Add("7. Dungeons");
+            lbOptions.Items.Add("8. Monsters");
+            lbOptions.Items.Add("9. Environment Hazards");
+            lbOptions.Items.Add("10. Cancel");
+            lbDisplay.Items.Add("Librarian: Can I help you?");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryThemeSelection);
+        }
+
+        public void LibraryThemeSelection(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryThemeSelection);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainLibraryThemeSelection();
+                    break;
+                case "1":
+                    LibraryWeapons();
+                    break;
+                case "Weapons":
+                    LibraryWeapons();
+                    break;
+                case "2":
+                    break;
+                case "Armors":
+                    break;
+                case "3":
+                    break;
+                case "Consumables":
+                    break;
+                case "4":
+                    break;
+                case "Passives":
+                    break;
+                case "5":
+                    break;
+                case "Buffs & Debuffs":
+                    break;
+                case "6":
+                    break;
+                case "Special Effects":
+                    break;
+                case "7":
+                    break;
+                case "Dungeons":
+                    break;
+                case "8":
+                    break;
+                case "Monsters":
+                    break;
+                case "9":
+                    break;
+                case "Environment Hazards":
+                    break;
+                case "10":
+                    AdventurersGuildMainOptionReEntry();
+                    break;
+                case "Cancel":
+                    AdventurersGuildMainOptionReEntry();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(LibraryThemeSelection);
+                    break;
+            }
+        }
+
+        public void ExplainLibraryThemeSelection()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("EXPLANATION: The first eight options allow you to learn more about the specific game assets that you mostly have seen already.");
+            lbDisplay.Items.Add("EXPLANATION: Cancel allows you to leave the 'Library' option.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryThemeSelection);
+        }
+
+        //Library Weapons starts here ----------------------------------------------------------------------------------
+
+        public void LibraryWeapons()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.weapons.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.weapons[i].WeaponName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibraryWeaponsChooseWeapon);
+        }
+
+        public void LibraryWeaponsChooseWeapon(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryWeaponsChooseWeapon);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibraryWeaponsChooseWeapon);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.weapons.Select(x => x.WeaponName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.weapons.Select(x => x.WeaponName).Contains(tbInputArea.Text) == true)
+                {
+                    libraryWeapon = Initializer.weapons.Where(x => x.WeaponName == tbInputArea.Text).Select(x => x).First();
+                    LibraryWeaponsLearnAboutWeapon();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        libraryWeapon = Initializer.weapons[index];
+                        LibraryWeaponsLearnAboutWeapon();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibraryWeaponsChooseWeapon);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibraryWeaponsChooseWeapon);
+            }
+        }
+
+        public void LibraryWeaponsLearnAboutWeapon()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{libraryWeapon.WeaponName} ATK: {libraryWeapon.ATK} Crit Chance: {libraryWeapon.CritChance}% Crit Damage: {libraryWeapon.CritDamage}x Damage Type: {libraryWeapon.DamageType} Range: {libraryWeapon.Range} Skill Compatibility: {libraryWeapon.SkillCompatibility} Unique: {libraryWeapon.Unique} Price: {libraryWeapon.Price}");
+            lbDisplay.Items.Add("Special Effects: -------------------------------");
+            foreach (SpecialEffect specialEffect in libraryWeapon.SpecialEffects)
+            {
+                lbDisplay.Items.Add($"{specialEffect.SpecialEffectName}");
+            }
+            lbDisplay.Items.Add(libraryWeapon.Description);
+            lbDisplay.Items.Add("GAME: You can learn more about special effects here in the library.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryWeaponsChooseWeapon);
+        }
+
+        //Library Weapons ends here ------------------------------------------------------------------------------------
+
+        //Library Armors starts here -----------------------------------------------------------------------------------
+
+        public void LibraryArmors()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.armors.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.armors[i].ArmorName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibraryArmorsChooseArmor);
+        }
+
+        public void LibraryArmorsChooseArmor(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryArmorsChooseArmor);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibraryArmorsChooseArmor);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.armors.Select(x => x.ArmorName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.armors.Select(x => x.ArmorName).Contains(tbInputArea.Text) == true)
+                {
+                    libraryArmor = Initializer.armors.Where(x => x.ArmorName == tbInputArea.Text).Select(x => x).First();
+                    LibraryArmorsLearnAboutArmor();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        libraryArmor = Initializer.armors[index];
+                        LibraryArmorsLearnAboutArmor();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibraryArmorsChooseArmor);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibraryArmorsChooseArmor);
+            }
+        }
+
+        public void LibraryArmorsLearnAboutArmor()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{libraryArmor.ArmorName} DEF: {libraryArmor.DEF} MDEF: {libraryArmor.MDEF} Unique: {libraryArmor.Unique} Price: {libraryArmor.Price}");
+            switch (libraryArmor.Type)
+            {
+                case 1:
+                    lbDisplay.Items.Add($"Slot: Helmet (1)");
+                    break;
+                case 2:
+                    lbDisplay.Items.Add($"Slot: Chestplate (2)");
+                    break;
+                case 3:
+                    lbDisplay.Items.Add($"Slot: Leggings (3)");
+                    break;
+                case 4:
+                    lbDisplay.Items.Add($"Slot: Boots (4)");
+                    break;
+                default:
+                    break;
+            }
+            lbDisplay.Items.Add("Special Effects: -------------------------------");
+            foreach (SpecialEffect specialEffect in libraryArmor.SpecialEffects)
+            {
+                lbDisplay.Items.Add($"{specialEffect.SpecialEffectName}");
+            }
+            lbDisplay.Items.Add(libraryArmor.Description);
+            lbDisplay.Items.Add("GAME: You can learn more about special effects here in the library.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryArmorsChooseArmor);
+        }
+        
+        //Library Armors ends here -------------------------------------------------------------------------------------
+
+        //Library Consumables starts here ------------------------------------------------------------------------------
+
+        public void LibraryConsumables()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.consumables.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.consumables[i].ConsumableName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibraryConsumablesChooseConsumable);
+        }
+
+        public void LibraryConsumablesChooseConsumable(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryConsumablesChooseConsumable);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibraryConsumablesChooseConsumable);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.consumables.Select(x => x.ConsumableName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.consumables.Select(x => x.ConsumableName).Contains(tbInputArea.Text) == true)
+                {
+                    libraryConsumable = Initializer.consumables.Where(x => x.ConsumableName == tbInputArea.Text).Select(x => x).First();
+                    LibraryConsumablesLearnAboutConsumable();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        libraryConsumable = Initializer.consumables[index];
+                        LibraryConsumablesLearnAboutConsumable();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibraryConsumablesChooseConsumable);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibraryConsumablesChooseConsumable);
+            }
+        }
+
+        public void LibraryConsumablesLearnAboutConsumable()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{libraryConsumable.ConsumableName} Price: {libraryConsumable.Price}");
+            lbDisplay.Items.Add("Special Effects: -------------------------------");
+            foreach (SpecialEffect specialEffect in libraryConsumable.SpecialEffects)
+            {
+                lbDisplay.Items.Add($"{specialEffect.SpecialEffectName}");
+            }
+            lbDisplay.Items.Add(libraryConsumable.Description);
+            lbDisplay.Items.Add("GAME: You can learn more about special effects here in the library.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryConsumablesChooseConsumable);
+        }
+
+        //Library Consumables ends here --------------------------------------------------------------------------------
+
+        //Library Passives starts here ---------------------------------------------------------------------------------
+
+        public void LibraryPassives()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.passives.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.passives[i].PassiveName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibraryPassivesChoosePassive);
+        }
+
+        public void LibraryPassivesChoosePassive(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryPassivesChoosePassive);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibraryPassivesChoosePassive);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.passives.Select(x => x.PassiveName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.passives.Select(x => x.PassiveName).Contains(tbInputArea.Text) == true)
+                {
+                    libraryPassive = Initializer.passives.Where(x => x.PassiveName == tbInputArea.Text).Select(x => x).First();
+                    LibraryPassivesLearnAboutPassive();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        libraryPassive = Initializer.passives[index];
+                        LibraryPassivesLearnAboutPassive();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibraryPassivesChoosePassive);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibraryPassivesChoosePassive);
+            }
+        }
+
+        public void LibraryPassivesLearnAboutPassive()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{libraryPassive.PassiveName}");
+            lbDisplay.Items.Add("Affects: ---------------------------------------");
+            foreach (string thing in libraryPassive.Affect.Split(','))
+            {
+                lbDisplay.Items.Add($"{thing}");
+            }
+            lbDisplay.Items.Add(libraryPassive.Description);
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryPassivesChoosePassive);
+        }
+
+        //Library Passives ends here -----------------------------------------------------------------------------------
+
+        //Library Buffs & Debuffs starts here --------------------------------------------------------------------------
+
+        public void LibraryBuffsDebuffs()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.passives.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.passives[i].PassiveName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
+        }
+
+        public void LibraryBuffsDebuffsChooseBuffDebuff(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.passives.Select(x => x.PassiveName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.passives.Select(x => x.PassiveName).Contains(tbInputArea.Text) == true)
+                {
+                    libraryPassive = Initializer.passives.Where(x => x.PassiveName == tbInputArea.Text).Select(x => x).First();
+                    LibraryBuffsDebuffsLearnAboutBuffDebuff();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        libraryPassive = Initializer.passives[index];
+                        LibraryBuffsDebuffsLearnAboutBuffDebuff();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
+            }
+        }
+
+        public void LibraryBuffsDebuffsLearnAboutBuffDebuff()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{libraryPassive.PassiveName}");
+            lbDisplay.Items.Add("Affects: ---------------------------------------");
+            foreach (string thing in libraryPassive.Affect.Split(','))
+            {
+                lbDisplay.Items.Add($"{thing}");
+            }
+            lbDisplay.Items.Add(libraryPassive.Description);
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
+        }
+
+        //Library Buffs & Debuffs ends here ----------------------------------------------------------------------------
+
+        //Library Special Effects starts here --------------------------------------------------------------------------
+
+        //Library Special Effects ends here ----------------------------------------------------------------------------
+
+        //Library Dungeons starts here ---------------------------------------------------------------------------------
+
+        //Library Dungeons ends here -----------------------------------------------------------------------------------
+
+        //Library Monsters starts here ---------------------------------------------------------------------------------
+
+        //Library Monsters ends here -----------------------------------------------------------------------------------
+
+        //Library Environment Hazards starts here ----------------------------------------------------------------------
+
+        //Library Environment Hazards ends here ------------------------------------------------------------------------
+
+        public void LibraryThemeSelectionReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Weapons");
+            lbOptions.Items.Add("2. Armors");
+            lbOptions.Items.Add("3. Consumables");
+            lbOptions.Items.Add("4. Passives");
+            lbOptions.Items.Add("5. Buffs & Debuffs");
+            lbOptions.Items.Add("6. Special Effects");
+            lbOptions.Items.Add("7. Dungeons");
+            lbOptions.Items.Add("8. Monsters");
+            lbOptions.Items.Add("9. Environment Hazards");
+            lbOptions.Items.Add("10. Cancel");
+            btInput.Click += new RoutedEventHandler(LibraryThemeSelection);
+        }
 
         //Library ends here --------------------------------------------------------------------------------------------
 
