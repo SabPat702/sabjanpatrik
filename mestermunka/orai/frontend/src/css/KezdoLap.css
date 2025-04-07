@@ -5,18 +5,25 @@ body {
     background-color: #f5f7fa;
     color: #333;
 }
-.kep{
-    width: auto !important;
-    height: 100% !important;
+
+.kep {
+    width: 100%;  /* Képek teljes szélessége a kisebb képernyőkön */
+    max-width: 500px;  /* Maximális szélesség korlátozása */
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
 }
-.Welcome{
+
+.Welcome {
     color: black !important;
     font-weight: 600 !important;
 }
-li{
+
+li {
     color: black !important;
-    font-weight: 600 !important ;
+    font-weight: 600 !important;
 }
+
 /* Top Navigation */
 .topnav {
     background: linear-gradient(90deg, #2c3e50, #3498db);
@@ -134,6 +141,7 @@ li{
     font-size: 24px;
 }
 
+/* Image Styling */
 .kep {
     width: 40%; /* Reduced size to be smaller and more proportional */
     height: auto;
@@ -148,6 +156,7 @@ li{
 /* Mobile Responsiveness */
 @media screen and (max-width: 858px) {
     .topnav {
+        position: relative;
         flex-direction: column;
         padding: 20px;
     }
@@ -155,20 +164,23 @@ li{
     .topnav h1 {
         font-size: 26px;
         margin-bottom: 15px;
+        text-align: center;  /* A cím középre igazítása */
     }
 
     .button-container {
-        flex-direction: row;
+        flex-direction: column;  /* Gombok egymás alá kerülnek */
         gap: 10px;
+        align-items: center;  /* Középre igazítás */
     }
 
     .btn {
-        padding: 8px 20px;
+        padding: 10px 25px;
         font-size: 16px !important;
+        width: 100%;
     }
 
     .Informational {
-        margin-top: 150px;
+        margin-top: 20px;
         padding: 40px 15px;
     }
 
@@ -197,11 +209,38 @@ li{
     }
 
     .kep {
-        width: 50%; /* Slightly larger on mobile for visibility, but still controlled */
+        width: 100%;  /* Mobilon a képek szélessége teljes */
+        max-width: 100%;  /* Ne legyenek túl nagyok */
+        margin-bottom: 20px;  /* Térköz a képek között */
+    }
+    .info-block ul li {
+        font-size: 16px !important;
+    }
+
+    /* Nagyobb térközök a szövegek között */
+    .Informational p {
+        line-height: 1.6;
     }
 }
+
+/* Egyéb kisebb javítások a reszponzivitáshoz */
+@media screen and (max-width: 576px) {
+    .btn {
+        padding: 12px 30px;
+        font-size: 14px !important;
+    }
+
+    .topnav h1 {
+        font-size: 24px;
+    }
+
+    .Informational h3 {
+        font-size: 24px;
+    }
+}
+/* Prevent Text Selection */
 .prevent-select {
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
-  }
+}

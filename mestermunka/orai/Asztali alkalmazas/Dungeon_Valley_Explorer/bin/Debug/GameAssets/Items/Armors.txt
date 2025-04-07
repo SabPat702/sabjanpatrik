@@ -10,3 +10,4 @@
 10@Dirty Cloak@A long cloak that was dragged through everything a journey can find.@1@0@None@2@0@False
 11@Iron Chestplate@A basic piece of protection made of iron.@15@0@None@2@100@False
 12@Bejeweled Helmet@A fancy iron helmet.@4@0@None@1@200@True
+13@Chainmail Hood@A mess of chains woven together in the form of a hood@5@0@None@1@50@False

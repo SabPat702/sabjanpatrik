@@ -91,6 +91,30 @@ namespace Dungeon_Valley_Explorer
         List<Armor> selectableNewArmors = new List<Armor>();
         Armor selectedNewArmor = new Armor();
         //Town Blacksmith variables ------------------------------------------------------------------------------------
+
+        //Tavern variables ---------------------------------------------------------------------------------------------
+        bool canRest = true;
+        string chosenFoodEffect = "";
+        int amountChosenFoodFeeds = 0;
+        int chosenFoodPrice = 0;
+        List<Hero> chosenHeroesToEat = new List<Hero>();
+        //Tavern variables ---------------------------------------------------------------------------------------------
+
+        //Adventurers Guild variables ----------------------------------------------------------------------------------
+        Hero changeOrderFirstHero = new Hero();
+        Hero changeOrderSecondHero = new Hero();
+        Hero changeHeroPartyHero = new Hero();
+        Hero changeHeroHeroesHero = new Hero();
+        Weapon libraryWeapon = new Weapon();
+        Armor libraryArmor = new Armor();
+        Consumable libraryConsumable = new Consumable();
+        Passive libraryPassive = new Passive();
+        BuffDebuff libraryBuffDebuff = new BuffDebuff();
+        SpecialEffect librarySpecialEffect = new SpecialEffect();
+        Dungeon libraryDungeon = new Dungeon();
+        Monster libraryMonster = new Monster();
+        EnvironmentHazard libraryEnvironmentHazard = new EnvironmentHazard();
+        //Adventurers Guild variables ----------------------------------------------------------------------------------
         public MainWindow()
         {
             InitializeComponent();
@@ -128,15 +152,12 @@ namespace Dungeon_Valley_Explorer
             EnterTown();*/
 
             lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
-            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Tip: To check if you have all the game assets downloaded just delete the GameAssets folder and download everything again.");
-            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Tip: To play with cloud saving you need to login to an account through the Select Profile option.");
-            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Tip: To progress write text based on the options on the far left into the area at the bottom of the window or select an option on the far left then press the input button. (This can be the number or the option as well example:'1'. 'Offline play')");
-            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbDisplay.Items.Add("Tip: To learn more about most options you can type '?' to get a short explanation.");
-            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbDisplay.Items.Add("Tip: There is an automatic scroll down feature for the diplay but it is currently unreliable.");
+
 
             lbOptions.Items.Add("1. Offline play");
             lbOptions.Items.Add("2. Select Profile");
@@ -279,10 +300,18 @@ namespace Dungeon_Valley_Explorer
             if (ShortDisplayNames == false)
             {
                 ShortDisplayNames = true;
+                foreach(Hero hero in Initializer.npcs)
+                {
+                    hero.DisplayName = hero.HeroName.Split(' ')[0];
+                }
             }
             else
             {
                 ShortDisplayNames = false;
+                foreach (Hero hero in Initializer.npcs)
+                {
+                    hero.DisplayName = hero.HeroName;
+                }
             }
             lbOptions.Items.Add("1. Change Colors");
             lbOptions.Items.Add($"2. Shortened Names ({ShortDisplayNames})");
@@ -1099,6 +1128,8 @@ namespace Dungeon_Valley_Explorer
                 case "Warlock":
                     Hero.SetClassWarlock(newPlayerHero);
                     break;
+                default:
+                    break;
             }
         }
 
@@ -1215,6 +1246,8 @@ namespace Dungeon_Valley_Explorer
                     break;
                 case "Blacksmith":
                     Hero.SetBackgroundBlacksmith(newPlayerHero);
+                    break;
+                default:
                     break;
             }
         }
@@ -1439,6 +1472,8 @@ namespace Dungeon_Valley_Explorer
                 case "Halfling":
                     Hero.SetRaceHalfling(newPlayerHero);
                     break;
+                default:
+                    break;
             }
         }
 
@@ -1541,7 +1576,7 @@ namespace Dungeon_Valley_Explorer
             {
                 case "?":
                     tbInputArea.Text = "";
-                    lbDisplay.Items.Add("There is nothing to explain here.");
+                    MessageBox.Show("There is nothing to explain here.");
                     lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     btInput.Click += new RoutedEventHandler(NewGameCharacterConfirming);
                     break;
@@ -1950,7 +1985,9 @@ namespace Dungeon_Valley_Explorer
         public void EnterTown()
         {
             heroes.Add(Initializer.npcs[0]);
+            party.Add(Initializer.npcs[0]);
             Gold += 1000;
+            Experience += 200;
             weaponsObtained["Family Lance"] = true;
             armorsObtained["Bejeweled Helmet"] = true;
             tbInputArea.Text = "";
@@ -1998,16 +2035,22 @@ namespace Dungeon_Valley_Explorer
                     BlacksmithEnter();
                     break;
                 case "4":
+                    TavernEnter();
                     break;
                 case "Tavern":
+                    TavernEnter();
                     break;
                 case "5":
+                    AdventurersGuildEnter();
                     break;
                 case "Adventurers Guild":
+                    AdventurersGuildEnter();
                     break;
                 case "6":
+                    btInput.Click += new RoutedEventHandler(MainTownOption);
                     break;
                 case "Enter Dungeon":
+                    btInput.Click += new RoutedEventHandler(MainTownOption);
                     break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
@@ -2456,7 +2499,7 @@ namespace Dungeon_Valley_Explorer
         public void BlacksmithBuyWeaponChosenWeaponBought()
         {
             int cost = buyWeaponSelectedWeapon.Price;
-            foreach (Passive passive in party[0].Passives)
+            foreach (Passive passive in heroes[0].Passives)
             {
                 if (passive.Affect.Contains("Shop Payment"))
                 {
@@ -2646,7 +2689,7 @@ namespace Dungeon_Valley_Explorer
         public void BlacksmithBuyArmorChosenArmorBought()
         {
             int cost = buyArmorSelectedArmor.Price;
-            foreach (Passive passive in party[0].Passives)
+            foreach (Passive passive in heroes[0].Passives)
             {
                 if (passive.Affect.Contains("Shop Payment"))
                 {
@@ -2823,7 +2866,7 @@ namespace Dungeon_Valley_Explorer
         {
             int successRate = 100;
             int cost = (weaponsImproved[improveWeaponSelectedWeapon.WeaponName] + 1) * improveWeaponSelectedWeapon.ATK;
-            foreach (Passive passive in party[0].Passives)
+            foreach (Passive passive in heroes[0].Passives)
             {
                 if (passive.Affect.Contains("Shop Payment"))
                 {
@@ -3040,7 +3083,7 @@ namespace Dungeon_Valley_Explorer
             }
             cost = cost * (armorsImproved[improveArmorSelectedArmor.ArmorName] + 1);
 
-            foreach (Passive passive in party[0].Passives)
+            foreach (Passive passive in heroes[0].Passives)
             {
                 if (passive.Affect.Contains("Shop Payment"))
                 {
@@ -3976,6 +4019,1551 @@ namespace Dungeon_Valley_Explorer
         }
 
         //Blacksmith ends here -----------------------------------------------------------------------------------------
+
+        //Tavern starts here -------------------------------------------------------------------------------------------
+
+        public void TavernEnter()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Rest");
+            lbOptions.Items.Add("2. Order Food");
+            lbOptions.Items.Add("3. Leave");
+            lbDisplay.Items.Add("Tavernkeeper: Welcome dear customer! How can I help you today?");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(TavernMainOption);
+        }
+
+        public void TavernMainOption(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(TavernMainOption);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainTavernMainOption();
+                    break;
+                case "1":
+                    TavernRest();
+                    break;
+                case "Rest":
+                    TavernRest();
+                    break;
+                case "2":
+                    TavernOrderFood();
+                    break;
+                case "Order Food":
+                    TavernOrderFood();
+                    break;
+                case "3":
+                    TavernLeave();
+                    break;
+                case "Leave":
+                    TavernLeave();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(TavernMainOption);
+                    break;
+            }
+        }
+
+        public void ExplainTavernMainOption()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"EXPLANATION: Rest allows you to heal all your heroes and gives your acquired experience points to current party members divided to even numbers among the members. (current experience: {Experience})");
+            lbDisplay.Items.Add("EXPLANATION: Order Food allows you to pay for a meal that buffs the party for a single a day. (until the next rest in the tavern)");
+            lbDisplay.Items.Add("EXPLANATION: Leave allows you to leave the tavern.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(TavernMainOption);
+        }
+
+        //Tavern Rest starts here --------------------------------------------------------------------------------------
+
+        public void TavernRest()
+        {
+            tbInputArea.Text = "";
+            if (canRest == true)
+            {
+                lbOptions.Items.Clear();
+                canRest = false;
+                double experienceShare = Convert.ToDouble(1) / Convert.ToDouble(party.Count);
+                foreach (Hero hero in party)
+                {
+                    double personalExperienceModifier = 1;
+                    foreach (Passive passive in hero.Passives)
+                    {
+                        if (passive.Affect.Contains("Experience Gain"))
+                        {
+                            switch (passive.PassiveName)
+                            {
+                                case "Adventurer":
+                                    personalExperienceModifier += 0.1;
+                                    break;
+                                case "Human":
+                                    personalExperienceModifier += 0.1;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    hero.Exp += Convert.ToInt32((Experience * experienceShare) * personalExperienceModifier);
+                    LevelUp.HeroLevelUp(hero);
+                }
+                Experience = 0;
+
+                foreach (Hero hero in heroes)
+                {
+                    foreach (Passive passive in hero.Passives)
+                    {
+                        if (passive.Affect.Contains("Sleep"))
+                        {
+                            switch (passive.PassiveName)
+                            {
+                                case "Merchant":
+                                    Gold += (hero.Lvl + 1) * 5;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    Hero.Sleep(hero);
+                }
+                lbOptions.Items.Add("1. Rest");
+                lbOptions.Items.Add("2. Order Food");
+                lbOptions.Items.Add("3. Leave");
+                lbDisplay.Items.Add("GAME: You wake up refreshed.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(TavernMainOption);
+            }
+            else
+            {
+                lbDisplay.Items.Add("GAME: You are currently not tired enough to rest.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(TavernMainOption);
+            }
+        }
+
+        //Tavern Rest ends here ----------------------------------------------------------------------------------------
+
+        //Tavern Order Food starts here --------------------------------------------------------------------------------
+
+        public void TavernOrderFood()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            lbOptions.Items.Add("2. Well Done Lamb Chops");
+            lbOptions.Items.Add("3. Traditional Breakfast");
+            lbOptions.Items.Add("4. Meat Platter");
+            lbDisplay.Items.Add("Tavernkeeper: Sorry about the small selection business been slow lately.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(TavernChooseFood);
+        }
+
+        public void TavernChooseFood(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(TavernChooseFood);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainTavernChooseFood();
+                    break;
+                case "1":
+                    TavernReEntry();
+                    break;
+                case "Cancel":
+                    TavernReEntry();
+                    break;
+                case "2":
+                    chosenFoodEffect = "Warm Food";
+                    amountChosenFoodFeeds = 2;
+                    chosenFoodPrice = 12;
+                    TavernHeroesToEatFood();
+                    break;
+                case "Well Done Lamb Chops":
+                    chosenFoodEffect = "Warm Food";
+                    amountChosenFoodFeeds = 2;
+                    chosenFoodPrice = 12;
+                    TavernHeroesToEatFood();
+                    break;
+                case "3":
+                    chosenFoodEffect = "Warm Food";
+                    amountChosenFoodFeeds = 1;
+                    chosenFoodPrice = 5;
+                    TavernHeroesToEatFood();
+                    break;
+                case "Traditional Breakfast":
+                    chosenFoodEffect = "Warm Food";
+                    amountChosenFoodFeeds = 1;
+                    chosenFoodPrice = 5;
+                    TavernHeroesToEatFood();
+                    break;
+                case "4":
+                    chosenFoodEffect = "Hearty Meal";
+                    amountChosenFoodFeeds = 4;
+                    chosenFoodPrice = 35;
+                    TavernHeroesToEatFood();
+                    break;
+                case "Meat Platter":
+                    chosenFoodEffect = "Hearty Meal";
+                    amountChosenFoodFeeds = 4;
+                    chosenFoodPrice = 35;
+                    TavernHeroesToEatFood();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(TavernChooseFood);
+                    break;
+            }
+        }
+
+        public void ExplainTavernChooseFood()
+        {
+            lbDisplay.Items.Add("EXPLANATION: Cancel allows you to leave the Order Food section of the tavern.");
+            lbDisplay.Items.Add("EXPLANATION: Well Done Lamb Chops is a meal for two people costing 12 gold that gives a Warm Food Buff for one Dungeon.");
+            lbDisplay.Items.Add("EXPLANATION: Traditional Breakfast is a meal for one person costing 5 gold that gives a Warm Food Buff for one Dungeon.");
+            lbDisplay.Items.Add("EXPLANATION: Meat Platter is a meal for the whole party costing 35 gold that gives a Hearty Meal Buff for one Dungeon.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            tbInputArea.Text = "";
+            btInput.Click += new RoutedEventHandler(TavernChooseFood);
+        }
+
+        public void TavernHeroesToEatFood()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            foreach (Passive passive in heroes[0].Passives)
+            {
+                if (passive.Affect.Contains("Shop Payment"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        case "Noble":
+                            chosenFoodPrice = Convert.ToInt32(chosenFoodPrice * 0.9);
+                            break;
+                        case "Merchant":
+                            chosenFoodPrice = Convert.ToInt32(chosenFoodPrice * 0.75);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            if (Gold - chosenFoodPrice >= 0)
+            {
+                Gold -= chosenFoodPrice;
+                List<Hero> heroesThatHaveChosenFoodEffect = new List<Hero>();
+                foreach (Hero hero in party)
+                {
+                    foreach (BuffDebuff buffDebuff in hero.BuffsDebuffs)
+                    {
+                        if (buffDebuff.BuffDebuffName == chosenFoodEffect)
+                        {
+                            heroesThatHaveChosenFoodEffect.Add(hero);
+                        }
+                    }
+                }
+                if (party.Count - (amountChosenFoodFeeds + heroesThatHaveChosenFoodEffect.Count) <= 0)
+                {
+                    foreach (BuffDebuff buffDebuff in Initializer.buffsDebuffs)
+                    {
+                        if (buffDebuff.BuffDebuffName == chosenFoodEffect)
+                        {
+                            foreach (Hero hero in party)
+                            {
+                                if (hero.BuffsDebuffs.Select(x => x.BuffDebuffName).Contains(chosenFoodEffect))
+                                {
+                                    lbDisplay.Items.Add($"{hero.DisplayName} already has this food buff and because of that they didn't benefit from this meal.");
+                                }
+                                else
+                                {
+                                    lbDisplay.Items.Add($"{hero.DisplayName} got the food buff from the meal.");
+                                    hero.BuffsDebuffs.Add(buffDebuff);
+                                }
+                            }
+                        }
+                    }
+                    lbOptions.Items.Add("1. Cancel");
+                    lbOptions.Items.Add("2. Well Done Lamb Chops");
+                    lbOptions.Items.Add("3. Traditional Breakfast");
+                    lbOptions.Items.Add("4. Meat Platter");
+                    btInput.Click += new RoutedEventHandler(TavernChooseFood);
+                }
+                else if (amountChosenFoodFeeds < 4)
+                {
+                    lbDisplay.Items.Add($"GAME: Choose who gets to eat the meal. (you can choose {amountChosenFoodFeeds} person/people)");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    for (int i = 0; i < party.Count; i++)
+                    {
+                        lbOptions.Items.Add($"{i+1} {party[i].HeroName}");
+                    }
+                    btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                }
+                else
+                {
+                    foreach (BuffDebuff buffDebuff in Initializer.buffsDebuffs)
+                    {
+                        if (buffDebuff.BuffDebuffName == chosenFoodEffect)
+                        {
+                            foreach (Hero hero in party)
+                            {
+                                if (hero.BuffsDebuffs.Select(x => x.BuffDebuffName).Contains(chosenFoodEffect))
+                                {
+                                    lbDisplay.Items.Add($"{hero.DisplayName} already has this food buff and because of that they didn't benefit from this meal.");
+                                }
+                                else
+                                {
+                                    lbDisplay.Items.Add($"{hero.DisplayName} got the food buff from the meal.");
+                                    hero.BuffsDebuffs.Add(buffDebuff);
+                                }
+                            }
+                        }
+                    }
+                    lbOptions.Items.Add("1. Cancel");
+                    lbOptions.Items.Add("2. Well Done Lamb Chops");
+                    lbOptions.Items.Add("3. Traditional Breakfast");
+                    lbOptions.Items.Add("4. Meat Platter");
+                    btInput.Click += new RoutedEventHandler(TavernChooseFood);
+                }
+            }
+            else
+            {
+                lbOptions.Items.Add("1. Cancel");
+                lbOptions.Items.Add("2. Well Done Lamb Chops");
+                lbOptions.Items.Add("3. Traditional Breakfast");
+                lbOptions.Items.Add("4. Meat Platter");
+                lbDisplay.Items.Add("Tavernkeeper: I'm afraid you can't afford that right now.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(TavernChooseFood);
+            }
+        }
+
+        public void TavernChooseHeroToEatFood(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(TavernChooseHeroToEatFood);
+            if (tbInputArea.Text == "?")
+            {
+                MessageBox.Show("There is nothing to explain here.");
+                btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+            }
+            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4"))
+            {
+                if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                {
+                    if (chosenHeroesToEat.Contains(party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First()))
+                    {
+                        MessageBox.Show("This hero has already been chosen to eat the meal.");
+                        btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                    }
+                    else
+                    {
+                        chosenHeroesToEat.Add(party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First());
+                        amountChosenFoodFeeds -= 1;
+                        if (amountChosenFoodFeeds == 0)
+                        {
+                            foreach (BuffDebuff buffDebuff in Initializer.buffsDebuffs)
+                            {
+                                if (buffDebuff.BuffDebuffName == chosenFoodEffect)
+                                {
+                                    foreach (Hero hero in party)
+                                    {
+                                        if (chosenHeroesToEat.Contains(hero))
+                                        {
+                                            if (hero.BuffsDebuffs.Select(x => x.BuffDebuffName).Contains(chosenFoodEffect))
+                                            {
+                                                lbDisplay.Items.Add($"{hero.DisplayName} already has this food buff and because of that they didn't benefit from this meal.");
+                                            }
+                                            else
+                                            {
+                                                lbDisplay.Items.Add($"{hero.DisplayName} got the food buff from the meal.");
+                                                hero.BuffsDebuffs.Add(buffDebuff);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                            tbInputArea.Text = "";
+                            chosenHeroesToEat.Clear();
+                            lbOptions.Items.Clear();
+                            lbOptions.Items.Add("1. Cancel");
+                            lbOptions.Items.Add("2. Well Done Lamb Chops");
+                            lbOptions.Items.Add("3. Traditional Breakfast");
+                            lbOptions.Items.Add("4. Meat Platter");
+                            btInput.Click += new RoutedEventHandler(TavernChooseFood);
+                        }
+                        else
+                        {
+                            tbInputArea.Text = "";
+                            lbDisplay.Items.Add($"GAME: You can still choose {amountChosenFoodFeeds} more hero(es).");
+                            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                            btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                        }
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text)-1;
+                        if (chosenHeroesToEat.Contains(party[index]))
+                        {
+                            MessageBox.Show("This hero has already been chosen to eat the meal.");
+                            btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                        }
+                        else
+                        {
+                            chosenHeroesToEat.Add(party[index]);
+                            amountChosenFoodFeeds -= 1;
+                            if (amountChosenFoodFeeds == 0)
+                            {
+                                foreach (BuffDebuff buffDebuff in Initializer.buffsDebuffs)
+                                {
+                                    if (buffDebuff.BuffDebuffName == chosenFoodEffect)
+                                    {
+                                        foreach (Hero hero in party)
+                                        {
+                                            if (chosenHeroesToEat.Contains(hero))
+                                            {
+                                                if (hero.BuffsDebuffs.Select(x => x.BuffDebuffName).Contains(chosenFoodEffect))
+                                                {
+                                                    lbDisplay.Items.Add($"{hero.DisplayName} already has this food buff and because of that they didn't benefit from this meal.");
+                                                }
+                                                else
+                                                {
+                                                    lbDisplay.Items.Add($"{hero.DisplayName} got the food buff from the meal.");
+                                                    hero.BuffsDebuffs.Add(buffDebuff);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                                tbInputArea.Text = "";
+                                chosenHeroesToEat.Clear();
+                                lbOptions.Items.Clear();
+                                lbOptions.Items.Add("1. Cancel");
+                                lbOptions.Items.Add("2. Well Done Lamb Chops");
+                                lbOptions.Items.Add("3. Traditional Breakfast");
+                                lbOptions.Items.Add("4. Meat Platter");
+                                btInput.Click += new RoutedEventHandler(TavernChooseFood);
+                            }
+                            else
+                            {
+                                tbInputArea.Text = "";
+                                lbDisplay.Items.Add($"GAME: You can still choose {amountChosenFoodFeeds} more hero(es).");
+                                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                                btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
+            }
+        }
+
+        public void TavernReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Rest");
+            lbOptions.Items.Add("2. Order Food");
+            lbOptions.Items.Add("3. Leave");
+            btInput.Click += new RoutedEventHandler(TavernMainOption);
+        }
+
+        //Tavern Order Food ends here ----------------------------------------------------------------------------------
+
+        public void TavernLeave()
+        {
+            lbDisplay.Items.Add("Tavernkeeper: Hope to see you again before nightfall!");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbOptions.Items.Clear();
+            tbInputArea.Text = "";
+            MainTownOptions();
+            btInput.Click += new RoutedEventHandler(MainTownOption);
+        }
+
+        //Tavern ends here ---------------------------------------------------------------------------------------------
+
+        //Adventurers Guild starts here --------------------------------------------------------------------------------
+
+        public void AdventurersGuildEnter()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Sort Party");
+            lbOptions.Items.Add("2. Quests");
+            lbOptions.Items.Add("3. Inspect Party Members");
+            lbOptions.Items.Add("4. Library");
+            lbOptions.Items.Add("5. Leave");
+            lbDisplay.Items.Add("Receptionist: Welcome to the local branch of the Adventurers Guild! How may I assist you today?");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(AdventurersGuildMainOption);
+        }
+
+        public void AdventurersGuildMainOption(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(AdventurersGuildMainOption);
+            switch(tbInputArea.Text)
+            {
+                case "?":
+                    ExplainAdventurersGuildMainOption();
+                    break;
+                case "1":
+                    SortParty();
+                    break;
+                case "Sort Party":
+                    SortParty();
+                    break;
+                case "2":
+                    MessageBox.Show("Receptionist: There are currently no quests available.");
+                    btInput.Click += new RoutedEventHandler(AdventurersGuildMainOption);
+                    break;
+                case "Quest":
+                    MessageBox.Show("Receptionist: There are currently no quests available.");
+                    btInput.Click += new RoutedEventHandler(AdventurersGuildMainOption);
+                    break;
+                case "3":
+                    InspectParty();
+                    break;
+                case "Inspect Party Members":
+                    InspectParty();
+                    break;
+                case "4":
+                    Library();
+                    break;
+                case "Library":
+                    Library();
+                    break;
+                case "5":
+                    AdventurersGuildLeave();
+                    break;
+                case "Leave":
+                    AdventurersGuildLeave();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(AdventurersGuildMainOption);
+                    break;
+            }
+        }
+
+        public void ExplainAdventurersGuildMainOption()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("EXPLANATION: Sort Party allows you to sort your party members from your available heroes and make a party of your liking.");
+            lbDisplay.Items.Add("EXPLANATION: Quests allows you to take quests from the adventurers guild to get higher rewards, however you can only complete them once.");
+            lbDisplay.Items.Add("EXPLANATION: Inspect Party Members allows you to inspect party members stats, equipment, passives, buffs and debuffs.");
+            lbDisplay.Items.Add("EXPLANATION: Library allows you to read up on a couple of game elements like basic enemies.");
+            lbDisplay.Items.Add("EXPLANATION: Leave allows you to leave the adventurers guild.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(AdventurersGuildMainOption);
+        }
+
+        //Sort Party starts here ---------------------------------------------------------------------------------------
+
+        public void SortParty()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Change Order");
+            lbOptions.Items.Add("2. Change Heroes");
+            lbOptions.Items.Add("3. Cancel");
+            btInput.Click += new RoutedEventHandler(SortPartyChooseChange);
+        }
+
+        public void SortPartyChooseChange(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SortPartyChooseChange);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainSortPartyChooseChange();
+                    break;
+                case "1":
+                    SortPartyChangeOrder();
+                    break;
+                case "Change Order":
+                    SortPartyChangeOrder();
+                    break;
+                case "2":
+                    SortPartyChangeHeroes();
+                    break;
+                case "Change Heroes":
+                    SortPartyChangeHeroes();
+                    break;
+                case "3":
+                    AdventurersGuildMainOptionReEntry();
+                    break;
+                case "Cancel":
+                    AdventurersGuildMainOptionReEntry();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(SortPartyChooseChange);
+                    break;
+            }
+        }
+
+        public void ExplainSortPartyChooseChange()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("EXPLANATION: Change Order allows you to change the order of your heroes in your party.");
+            lbDisplay.Items.Add("EXPLANATION: Change Heroes allows you to change which hero joins you in exploration in dungeons and in turn are considered to be in the party in other town activities.");
+            lbDisplay.Items.Add("EXPLANATION: Cancel allows you to exit the 'Sort Party' option.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(SortPartyChooseChange);
+        }
+
+        //Sort Party Change Order starts here --------------------------------------------------------------------------
+
+        public void SortPartyChangeOrder()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < party.Count; i++)
+            {
+                lbOptions.Items.Add($"{i+2}. {party[i].HeroName}");
+            }
+            lbDisplay.Items.Add("GAME: To change the order select a party member then select another one and they will change spots.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(SortPartyChangeOrderFirstHero);
+        }
+
+        public void SortPartyChangeOrderFirstHero(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SortPartyChangeOrderFirstHero);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(SortPartyChangeOrderFirstHero);
+            }
+            else if (tbInputArea.Text == "1" ||tbInputArea.Text == "Cancel")
+            {
+                SortPartyChooseChangeReEntry();
+            }
+            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
+            {
+                if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                {
+                    changeOrderFirstHero = party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First();
+                    SortPartyChangeOrderTwo();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        changeOrderFirstHero = party[index];
+                        SortPartyChangeOrderTwo();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(SortPartyChangeOrderFirstHero);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(SortPartyChangeOrderFirstHero);
+            }
+        }
+
+        public void SortPartyChangeOrderTwo()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < party.Count; i++)
+            {
+                if (party[i].HeroName != changeOrderFirstHero.HeroName)
+                {
+                    lbOptions.Items.Add($"{i + 2}. {party[i].HeroName}");
+                }
+            }
+            btInput.Click += new RoutedEventHandler(SortPartyChangeOrderSecondHero);
+        }
+
+        public void SortPartyChangeOrderSecondHero(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SortPartyChangeOrderSecondHero);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(SortPartyChangeOrderSecondHero);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                SortPartyChooseChangeReEntry();
+            }
+            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
+            {
+                if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                {
+                    if (party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First() != changeOrderFirstHero)
+                    {
+                        changeOrderSecondHero = party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First();
+                        SortPartyChangeOrderOrderChanging();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(SortPartyChangeOrderSecondHero);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        if (party[index] != changeOrderFirstHero)
+                        {
+                            changeOrderSecondHero = party[index];
+                            SortPartyChangeOrderOrderChanging();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                            btInput.Click += new RoutedEventHandler(SortPartyChangeOrderSecondHero);
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(SortPartyChangeOrderSecondHero);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(SortPartyChangeOrderSecondHero);
+            }
+        }
+
+        public void SortPartyChangeOrderOrderChanging()
+        {
+            int indexFirst = party.IndexOf(changeOrderFirstHero);
+            int indexSecond = party.IndexOf(changeOrderSecondHero);
+            party[indexSecond] = new Hero();
+            party[indexFirst] = changeOrderSecondHero;
+            party[indexSecond] = changeOrderFirstHero;
+            SortPartyChooseChangeReEntry();
+        }
+
+        //Sort Party Change Order ends here ----------------------------------------------------------------------------
+
+        //Sort Party Change Heroes starts here -------------------------------------------------------------------------
+
+        public void SortPartyChangeHeroes()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            lbOptions.Items.Add("2. Add Hero");
+            for (int i = 0; i < party.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 3}. {party[i].HeroName}");
+            }
+            lbDisplay.Items.Add("GAME: To change heroes select a hero from the party then select a hero from the heroes that are not in the party.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesPartyHero);
+        }
+
+        public void SortPartyChangeHeroesPartyHero(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SortPartyChangeHeroesPartyHero);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesPartyHero);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                SortPartyChooseChangeReEntry();
+            }
+            else if (tbInputArea.Text == "2" ||tbInputArea.Text == "Add Hero")
+            {
+                party.Add(new Hero());
+                changeHeroPartyHero = party.Last();
+                SortPartyChangeHeroesTwo();
+            }
+            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6"))
+            {
+                if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                {
+                    changeHeroPartyHero = party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First();
+                    SortPartyChangeHeroesTwo();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 3;
+                        changeHeroPartyHero = party[index];
+                        SortPartyChangeHeroesTwo();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesPartyHero);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesPartyHero);
+            }
+        }
+
+        public void SortPartyChangeHeroesTwo()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            lbOptions.Items.Add("2. Remove");
+            for (int i = 0; i < heroes.Count; i++)
+            {
+                if (party.Contains(heroes[i]) == false)
+                {
+                    lbOptions.Items.Add($"{i + 3}. {heroes[i].HeroName}");
+                }
+            }
+            btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesHeroesHero);
+        }
+
+        public void SortPartyChangeHeroesHeroesHero(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(SortPartyChangeHeroesHeroesHero);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: Remove allows you to remove the selected hero from the party.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesHeroesHero);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                if (changeHeroPartyHero.HeroName != string.Empty)
+                {
+                    party.Remove(party.Last());
+                }
+                SortPartyChooseChangeReEntry();
+            }
+            else if (tbInputArea.Text == "2" || tbInputArea.Text == "Remove")
+            {
+                if (party.Count > 1 && changeHeroPartyHero.HeroName != string.Empty)
+                {
+                    party.Remove(changeHeroPartyHero);
+                }
+                else
+                {
+                    MessageBox.Show("Can't remove: there is only one hero in the party or you picked the 'Add Hero' option.");
+                    if (changeHeroPartyHero.HeroName != string.Empty)
+                    {
+                        party.Remove(party.Last());
+                    }
+                }
+                SortPartyChooseChangeReEntry();
+            }
+            else if (heroes.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (heroes.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                {
+                    changeHeroHeroesHero = heroes.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First();
+                    SortPartyChangeHeroesHeroChanging();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 3;
+                        changeHeroHeroesHero = heroes[index];
+                        SortPartyChangeHeroesHeroChanging();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesHeroesHero);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesHeroesHero);
+            }
+        }
+
+        public void SortPartyChangeHeroesHeroChanging()
+        {
+            int index = party.IndexOf(changeHeroPartyHero);
+            party[index] = changeHeroHeroesHero;
+            SortPartyChooseChangeReEntry();
+        }
+
+        //Sort Party Change Heroes ends here ---------------------------------------------------------------------------
+
+        public void SortPartyChooseChangeReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Change Order");
+            lbOptions.Items.Add("2. Change Heroes");
+            lbOptions.Items.Add("3. Cancel");
+            btInput.Click += new RoutedEventHandler(SortPartyChooseChange);
+        }
+
+        //Sort Party ends here -----------------------------------------------------------------------------------------
+
+        //Quests will start here ---------------------------------------------------------------------------------------
+
+        //Quests will end here -----------------------------------------------------------------------------------------
+
+        //Inspect Party Members starts here ----------------------------------------------------------------------------
+
+        public void InspectParty()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < party.Count; i++)
+            {
+                lbOptions.Items.Add($"{i+2}. {party[i].HeroName}");
+            }
+            btInput.Click += new RoutedEventHandler(InspectPartyChooseToInspect);
+        }
+
+        public void InspectPartyChooseToInspect(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(InspectPartyChooseToInspect);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: Choose a hero to inspect them and see their stats, passives, weapons, armors, buffs and debuffs or leave with 'Cancel'.");
+                btInput.Click += new RoutedEventHandler(InspectPartyChooseToInspect);
+            }
+            else if (tbInputArea.Text == "1" ||tbInputArea.Text == "Cancel")
+            {
+                AdventurersGuildMainOptionReEntry();
+            }
+            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
+            {
+                if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                {
+                    InspectPartyInspecting(party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First());
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        InspectPartyInspecting(party[index]);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(InspectPartyChooseToInspect);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(InspectPartyChooseToInspect);
+            }
+        }
+
+        public void InspectPartyInspecting(Hero hero)
+        {
+            lbDisplay.Items.Add($"{hero.HeroName} Max HP: {hero.MaxHP} HP: {hero.HP} Max MP: {hero.MaxMP} MP: {hero.MP} Max SP: {hero.MaxSP} SP: {hero.SP} Physical DEF: {hero.DEF} Magical DEF: {hero.MDEF} Race: {hero.Race.RaceName} Class: {hero.heroClass} Background: {hero.Background}");
+            lbDisplay.Items.Add("Weapons: ----------------------------------------");
+            foreach (Weapon weapon in hero.Weapons)
+            {
+                lbDisplay.Items.Add($"{weapon.WeaponName}");
+            }
+            lbDisplay.Items.Add("Armors: ----------------------------------------");
+            foreach (Armor armor in hero.Armors)
+            {
+                lbDisplay.Items.Add($"{armor.ArmorName}");
+            }
+            lbDisplay.Items.Add("Skills: ----------------------------------------");
+            foreach (Skill skill in hero.Skills)
+            {
+                lbDisplay.Items.Add($"{skill.SkillName}");
+            }
+            lbDisplay.Items.Add("Magics: ----------------------------------------");
+            foreach (Magic magic in hero.Magics)
+            {
+                lbDisplay.Items.Add($"{magic.MagicName}");
+            }
+            lbDisplay.Items.Add("Passives: --------------------------------------");
+            foreach (Passive passive in hero.Passives)
+            {
+                lbDisplay.Items.Add($"{passive.PassiveName}");
+            }
+            lbDisplay.Items.Add("Buffs and Debuffs: -----------------------------");
+            foreach (BuffDebuff buffDebuff in hero.BuffsDebuffs)
+            {
+                lbDisplay.Items.Add($"{buffDebuff.BuffDebuffName}");
+            }
+            lbDisplay.Items.Add("GAME: You can learn more about weapons, armors, passives, buffs and debuffs in the library.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            tbInputArea.Text = "";
+            btInput.Click += new RoutedEventHandler(InspectPartyChooseToInspect);
+        }
+
+        //Inspect Party Members ends here ------------------------------------------------------------------------------
+
+        //Library starts here ------------------------------------------------------------------------------------------
+
+        public void Library()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Weapons");
+            lbOptions.Items.Add("2. Armors");
+            lbOptions.Items.Add("3. Consumables");
+            lbOptions.Items.Add("4. Passives");
+            lbOptions.Items.Add("5. Buffs & Debuffs");
+            lbOptions.Items.Add("6. Special Effects");
+            lbOptions.Items.Add("7. Dungeons");
+            lbOptions.Items.Add("8. Monsters");
+            lbOptions.Items.Add("9. Environment Hazards");
+            lbOptions.Items.Add("10. Cancel");
+            lbDisplay.Items.Add("Librarian: Can I help you?");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryThemeSelection);
+        }
+
+        public void LibraryThemeSelection(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryThemeSelection);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainLibraryThemeSelection();
+                    break;
+                case "1":
+                    LibraryWeapons();
+                    break;
+                case "Weapons":
+                    LibraryWeapons();
+                    break;
+                case "2":
+                    break;
+                case "Armors":
+                    break;
+                case "3":
+                    break;
+                case "Consumables":
+                    break;
+                case "4":
+                    break;
+                case "Passives":
+                    break;
+                case "5":
+                    break;
+                case "Buffs & Debuffs":
+                    break;
+                case "6":
+                    break;
+                case "Special Effects":
+                    break;
+                case "7":
+                    break;
+                case "Dungeons":
+                    break;
+                case "8":
+                    break;
+                case "Monsters":
+                    break;
+                case "9":
+                    break;
+                case "Environment Hazards":
+                    break;
+                case "10":
+                    AdventurersGuildMainOptionReEntry();
+                    break;
+                case "Cancel":
+                    AdventurersGuildMainOptionReEntry();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(LibraryThemeSelection);
+                    break;
+            }
+        }
+
+        public void ExplainLibraryThemeSelection()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("EXPLANATION: The first eight options allow you to learn more about the specific game assets that you mostly have seen already.");
+            lbDisplay.Items.Add("EXPLANATION: Cancel allows you to leave the 'Library' option.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryThemeSelection);
+        }
+
+        //Library Weapons starts here ----------------------------------------------------------------------------------
+
+        public void LibraryWeapons()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.weapons.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.weapons[i].WeaponName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibraryWeaponsChooseWeapon);
+        }
+
+        public void LibraryWeaponsChooseWeapon(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryWeaponsChooseWeapon);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibraryWeaponsChooseWeapon);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.weapons.Select(x => x.WeaponName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.weapons.Select(x => x.WeaponName).Contains(tbInputArea.Text) == true)
+                {
+                    libraryWeapon = Initializer.weapons.Where(x => x.WeaponName == tbInputArea.Text).Select(x => x).First();
+                    LibraryWeaponsLearnAboutWeapon();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        libraryWeapon = Initializer.weapons[index];
+                        LibraryWeaponsLearnAboutWeapon();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibraryWeaponsChooseWeapon);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibraryWeaponsChooseWeapon);
+            }
+        }
+
+        public void LibraryWeaponsLearnAboutWeapon()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{libraryWeapon.WeaponName} ATK: {libraryWeapon.ATK} Crit Chance: {libraryWeapon.CritChance}% Crit Damage: {libraryWeapon.CritDamage}x Damage Type: {libraryWeapon.DamageType} Range: {libraryWeapon.Range} Skill Compatibility: {libraryWeapon.SkillCompatibility} Unique: {libraryWeapon.Unique} Price: {libraryWeapon.Price}");
+            lbDisplay.Items.Add("Special Effects: -------------------------------");
+            foreach (SpecialEffect specialEffect in libraryWeapon.SpecialEffects)
+            {
+                lbDisplay.Items.Add($"{specialEffect.SpecialEffectName}");
+            }
+            lbDisplay.Items.Add(libraryWeapon.Description);
+            lbDisplay.Items.Add("GAME: You can learn more about special effects here in the library.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryWeaponsChooseWeapon);
+        }
+
+        //Library Weapons ends here ------------------------------------------------------------------------------------
+
+        //Library Armors starts here -----------------------------------------------------------------------------------
+
+        public void LibraryArmors()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.armors.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.armors[i].ArmorName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibraryArmorsChooseArmor);
+        }
+
+        public void LibraryArmorsChooseArmor(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryArmorsChooseArmor);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibraryArmorsChooseArmor);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.armors.Select(x => x.ArmorName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.armors.Select(x => x.ArmorName).Contains(tbInputArea.Text) == true)
+                {
+                    libraryArmor = Initializer.armors.Where(x => x.ArmorName == tbInputArea.Text).Select(x => x).First();
+                    LibraryArmorsLearnAboutArmor();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        libraryArmor = Initializer.armors[index];
+                        LibraryArmorsLearnAboutArmor();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibraryArmorsChooseArmor);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibraryArmorsChooseArmor);
+            }
+        }
+
+        public void LibraryArmorsLearnAboutArmor()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{libraryArmor.ArmorName} DEF: {libraryArmor.DEF} MDEF: {libraryArmor.MDEF} Unique: {libraryArmor.Unique} Price: {libraryArmor.Price}");
+            switch (libraryArmor.Type)
+            {
+                case 1:
+                    lbDisplay.Items.Add($"Slot: Helmet (1)");
+                    break;
+                case 2:
+                    lbDisplay.Items.Add($"Slot: Chestplate (2)");
+                    break;
+                case 3:
+                    lbDisplay.Items.Add($"Slot: Leggings (3)");
+                    break;
+                case 4:
+                    lbDisplay.Items.Add($"Slot: Boots (4)");
+                    break;
+                default:
+                    break;
+            }
+            lbDisplay.Items.Add("Special Effects: -------------------------------");
+            foreach (SpecialEffect specialEffect in libraryArmor.SpecialEffects)
+            {
+                lbDisplay.Items.Add($"{specialEffect.SpecialEffectName}");
+            }
+            lbDisplay.Items.Add(libraryArmor.Description);
+            lbDisplay.Items.Add("GAME: You can learn more about special effects here in the library.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryArmorsChooseArmor);
+        }
+        
+        //Library Armors ends here -------------------------------------------------------------------------------------
+
+        //Library Consumables starts here ------------------------------------------------------------------------------
+
+        public void LibraryConsumables()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.consumables.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.consumables[i].ConsumableName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibraryConsumablesChooseConsumable);
+        }
+
+        public void LibraryConsumablesChooseConsumable(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryConsumablesChooseConsumable);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibraryConsumablesChooseConsumable);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.consumables.Select(x => x.ConsumableName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.consumables.Select(x => x.ConsumableName).Contains(tbInputArea.Text) == true)
+                {
+                    libraryConsumable = Initializer.consumables.Where(x => x.ConsumableName == tbInputArea.Text).Select(x => x).First();
+                    LibraryConsumablesLearnAboutConsumable();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        libraryConsumable = Initializer.consumables[index];
+                        LibraryConsumablesLearnAboutConsumable();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibraryConsumablesChooseConsumable);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibraryConsumablesChooseConsumable);
+            }
+        }
+
+        public void LibraryConsumablesLearnAboutConsumable()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{libraryConsumable.ConsumableName} Price: {libraryConsumable.Price}");
+            lbDisplay.Items.Add("Special Effects: -------------------------------");
+            foreach (SpecialEffect specialEffect in libraryConsumable.SpecialEffects)
+            {
+                lbDisplay.Items.Add($"{specialEffect.SpecialEffectName}");
+            }
+            lbDisplay.Items.Add(libraryConsumable.Description);
+            lbDisplay.Items.Add("GAME: You can learn more about special effects here in the library.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryConsumablesChooseConsumable);
+        }
+
+        //Library Consumables ends here --------------------------------------------------------------------------------
+
+        //Library Passives starts here ---------------------------------------------------------------------------------
+
+        public void LibraryPassives()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.passives.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.passives[i].PassiveName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibraryPassivesChoosePassive);
+        }
+
+        public void LibraryPassivesChoosePassive(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryPassivesChoosePassive);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibraryPassivesChoosePassive);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.passives.Select(x => x.PassiveName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.passives.Select(x => x.PassiveName).Contains(tbInputArea.Text) == true)
+                {
+                    libraryPassive = Initializer.passives.Where(x => x.PassiveName == tbInputArea.Text).Select(x => x).First();
+                    LibraryPassivesLearnAboutPassive();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        libraryPassive = Initializer.passives[index];
+                        LibraryPassivesLearnAboutPassive();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibraryPassivesChoosePassive);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibraryPassivesChoosePassive);
+            }
+        }
+
+        public void LibraryPassivesLearnAboutPassive()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{libraryPassive.PassiveName}");
+            lbDisplay.Items.Add("Affects: ---------------------------------------");
+            foreach (string thing in libraryPassive.Affect.Split(','))
+            {
+                lbDisplay.Items.Add($"{thing}");
+            }
+            lbDisplay.Items.Add(libraryPassive.Description);
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryPassivesChoosePassive);
+        }
+
+        //Library Passives ends here -----------------------------------------------------------------------------------
+
+        //Library Buffs & Debuffs starts here --------------------------------------------------------------------------
+
+        public void LibraryBuffsDebuffs()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.passives.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.passives[i].PassiveName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
+        }
+
+        public void LibraryBuffsDebuffsChooseBuffDebuff(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.passives.Select(x => x.PassiveName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.passives.Select(x => x.PassiveName).Contains(tbInputArea.Text) == true)
+                {
+                    libraryPassive = Initializer.passives.Where(x => x.PassiveName == tbInputArea.Text).Select(x => x).First();
+                    LibraryBuffsDebuffsLearnAboutBuffDebuff();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        libraryPassive = Initializer.passives[index];
+                        LibraryBuffsDebuffsLearnAboutBuffDebuff();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
+            }
+        }
+
+        public void LibraryBuffsDebuffsLearnAboutBuffDebuff()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{libraryPassive.PassiveName}");
+            lbDisplay.Items.Add("Affects: ---------------------------------------");
+            foreach (string thing in libraryPassive.Affect.Split(','))
+            {
+                lbDisplay.Items.Add($"{thing}");
+            }
+            lbDisplay.Items.Add(libraryPassive.Description);
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
+        }
+
+        //Library Buffs & Debuffs ends here ----------------------------------------------------------------------------
+
+        //Library Special Effects starts here --------------------------------------------------------------------------
+
+        //Library Special Effects ends here ----------------------------------------------------------------------------
+
+        //Library Dungeons starts here ---------------------------------------------------------------------------------
+
+        //Library Dungeons ends here -----------------------------------------------------------------------------------
+
+        //Library Monsters starts here ---------------------------------------------------------------------------------
+
+        //Library Monsters ends here -----------------------------------------------------------------------------------
+
+        //Library Environment Hazards starts here ----------------------------------------------------------------------
+
+        //Library Environment Hazards ends here ------------------------------------------------------------------------
+
+        public void LibraryThemeSelectionReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Weapons");
+            lbOptions.Items.Add("2. Armors");
+            lbOptions.Items.Add("3. Consumables");
+            lbOptions.Items.Add("4. Passives");
+            lbOptions.Items.Add("5. Buffs & Debuffs");
+            lbOptions.Items.Add("6. Special Effects");
+            lbOptions.Items.Add("7. Dungeons");
+            lbOptions.Items.Add("8. Monsters");
+            lbOptions.Items.Add("9. Environment Hazards");
+            lbOptions.Items.Add("10. Cancel");
+            btInput.Click += new RoutedEventHandler(LibraryThemeSelection);
+        }
+
+        //Library ends here --------------------------------------------------------------------------------------------
+
+        public void AdventurersGuildMainOptionReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Sort Party");
+            lbOptions.Items.Add("2. Quests");
+            lbOptions.Items.Add("3. Inspect Party Members");
+            lbOptions.Items.Add("4. Library");
+            lbOptions.Items.Add("5. Leave");
+            btInput.Click += new RoutedEventHandler(AdventurersGuildMainOption);
+        }
+
+        public void AdventurersGuildLeave()
+        {
+            lbDisplay.Items.Add("Receptionist: We hope to see you again adventurer.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            lbOptions.Items.Clear();
+            tbInputArea.Text = "";
+            MainTownOptions();
+            btInput.Click += new RoutedEventHandler(MainTownOption);
+        }
+
+        //Adventurers Guild ends here ----------------------------------------------------------------------------------
 
         //Town ends here -----------------------------------------------------------------------------------------------
     }
