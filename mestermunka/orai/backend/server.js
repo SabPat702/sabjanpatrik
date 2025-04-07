@@ -13,9 +13,6 @@ const saltRounds = 5;
 app.use(bodyParser.json());
 app.use(cors());
 
-
-
-
 app.get("/", (req, res) => {
     res.send("Fut a backend!");
 });
@@ -27,7 +24,6 @@ const db = mysql2.createConnection({
   database:"sabpat702",
   port: 3306
 })
-
 
 db.connect(err => {
     if (err) {
