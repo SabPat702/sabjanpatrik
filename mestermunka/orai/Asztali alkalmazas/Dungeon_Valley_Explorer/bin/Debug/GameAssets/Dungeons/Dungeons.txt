@@ -1,1 +1,3 @@
-1@Test Place@A place for testing@10@10@10
+1@Tutorial@A tutorial to the game. Not available after the tutorial.@5@10@10
+2@Small Goblin Cave@A small cave on the edge of the forest housing many goblins.@5@15@20
+3@Developer Secret@Unlikely to see this normally.@1@10000@10000

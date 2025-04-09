@@ -19,6 +19,7 @@ namespace Dungeon_Valley_Explorer
 
         public EnvironmentHazard(string oneLine, List<SpecialEffect> specialEffects)
         {
+            SpecialEffects = new List<SpecialEffect>();
             string[] linecutter = oneLine.Split('@');
             Id = Convert.ToInt32(linecutter[0]);
             EnvironmentHazardName = linecutter[1];

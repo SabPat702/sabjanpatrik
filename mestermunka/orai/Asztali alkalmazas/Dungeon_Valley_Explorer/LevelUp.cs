@@ -175,7 +175,6 @@ namespace Dungeon_Valley_Explorer
         public static Hero LevelUpFighterToLevelThree(Hero hero)
         {
             hero.Lvl += 1;
-            hero.Lvl += 1;
             hero.InHP += 12;
             hero.InMP += 4;
             hero.InSP += 10;
@@ -203,7 +202,6 @@ namespace Dungeon_Valley_Explorer
         public static Hero LevelUpFighterToLevelFour(Hero hero)
         {
             hero.Lvl += 1;
-            hero.Lvl += 1;
             hero.InHP += 15;
             hero.InMP += 5;
             hero.InSP += 11;
@@ -230,7 +228,6 @@ namespace Dungeon_Valley_Explorer
 
         public static Hero LevelUpFighterToLevelFive(Hero hero)
         {
-            hero.Lvl += 1;
             hero.Lvl += 1;
             hero.InHP += 20;
             hero.InMP += 5;

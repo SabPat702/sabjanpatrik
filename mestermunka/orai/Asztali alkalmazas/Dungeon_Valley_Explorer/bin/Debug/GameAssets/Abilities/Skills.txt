@@ -4,3 +4,4 @@
 4@Knock Away@A weak strike that forces the enemy to move backwards.@Blunt@1@2@None@Melee@1@2
 6@Taunt@Makes an enemy focus you on its turn.@None@0@0@Taunt@Both@3@4
 7@Mark Bounty@Marks an enemy and makes them take extra damage.@None@0@0@Mark@Both@1@4
+8@Basic Strike@The most basic strike a creature can use when they have nothing left.@Blunt@10@1,5@None@Melee@0@0

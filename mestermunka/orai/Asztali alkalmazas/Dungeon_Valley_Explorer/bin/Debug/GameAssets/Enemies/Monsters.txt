@@ -1,2 +1,2 @@
-1@TestMonster@100@0@0@20@0@0@Sword Proficiency,Test Passive@Basic Strike,Advanced Strike@None,None@Goblin@Basic@Test Place
-2@TestMonster2@10@100@100@5@20@20@Test Passive,Test Passive@Basic Strike,Shield@Firebolt@Goblin@Defense@Test Place
+1@Goblin@8@0@0@4@0@0@None@Basic Strike@None@Goblin@Basic@Small Goblin Cave
+2@Goblin Warrior@20@1@0@4@20@0@None@Basic Strike,Powerful Cut@None@Goblin@Basic@Small Goblin Cave

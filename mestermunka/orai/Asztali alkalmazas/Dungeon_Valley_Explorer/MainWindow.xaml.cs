@@ -1987,7 +1987,7 @@ namespace Dungeon_Valley_Explorer
             heroes.Add(Initializer.npcs[0]);
             party.Add(Initializer.npcs[0]);
             Gold += 1000;
-            Experience += 200;
+            Experience += 2000000;
             weaponsObtained["Family Lance"] = true;
             armorsObtained["Bejeweled Helmet"] = true;
             tbInputArea.Text = "";
@@ -2047,10 +2047,10 @@ namespace Dungeon_Valley_Explorer
                     AdventurersGuildEnter();
                     break;
                 case "6":
-                    btInput.Click += new RoutedEventHandler(MainTownOption);
+                    TownEnterDungeon();
                     break;
                 case "Enter Dungeon":
-                    btInput.Click += new RoutedEventHandler(MainTownOption);
+                    TownEnterDungeon();
                     break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
@@ -4881,7 +4881,7 @@ namespace Dungeon_Valley_Explorer
                 else
                 {
                     MessageBox.Show("Can't remove: there is only one hero in the party or you picked the 'Add Hero' option.");
-                    if (changeHeroPartyHero.HeroName != string.Empty)
+                    if (changeHeroPartyHero.HeroName == string.Empty)
                     {
                         party.Remove(party.Last());
                     }
@@ -5073,36 +5073,52 @@ namespace Dungeon_Valley_Explorer
                     LibraryWeapons();
                     break;
                 case "2":
+                    LibraryArmors();
                     break;
                 case "Armors":
+                    LibraryArmors();
                     break;
                 case "3":
+                    LibraryConsumables();
                     break;
                 case "Consumables":
+                    LibraryConsumables();
                     break;
                 case "4":
+                    LibraryPassives();
                     break;
                 case "Passives":
+                    LibraryPassives();
                     break;
                 case "5":
+                    LibraryBuffsDebuffs();
                     break;
                 case "Buffs & Debuffs":
+                    LibraryBuffsDebuffs();
                     break;
                 case "6":
+                    LibrarySpecialEffects();
                     break;
                 case "Special Effects":
+                    LibrarySpecialEffects();
                     break;
                 case "7":
+                    LibraryDungeons();
                     break;
                 case "Dungeons":
+                    LibraryDungeons();
                     break;
                 case "8":
+                    LibraryMonsters();
                     break;
                 case "Monsters":
+                    LibraryMonsters();
                     break;
                 case "9":
+                    LibraryEnvironmentHazards();
                     break;
                 case "Environment Hazards":
+                    LibraryEnvironmentHazards();
                     break;
                 case "10":
                     AdventurersGuildMainOptionReEntry();
@@ -5441,9 +5457,9 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbOptions.Items.Add("1. Cancel");
-            for (int i = 0; i < Initializer.passives.Count; i++)
+            for (int i = 0; i < Initializer.buffsDebuffs.Count; i++)
             {
-                lbOptions.Items.Add($"{i + 2}. {Initializer.passives[i].PassiveName}");
+                lbOptions.Items.Add($"{i + 2}. {Initializer.buffsDebuffs[i].BuffDebuffName}");
             }
             btInput.Click += new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
         }
@@ -5461,11 +5477,11 @@ namespace Dungeon_Valley_Explorer
             {
                 LibraryThemeSelectionReEntry();
             }
-            else if (Initializer.passives.Select(x => x.PassiveName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            else if (Initializer.buffsDebuffs.Select(x => x.BuffDebuffName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
             {
-                if (Initializer.passives.Select(x => x.PassiveName).Contains(tbInputArea.Text) == true)
+                if (Initializer.buffsDebuffs.Select(x => x.BuffDebuffName).Contains(tbInputArea.Text) == true)
                 {
-                    libraryPassive = Initializer.passives.Where(x => x.PassiveName == tbInputArea.Text).Select(x => x).First();
+                    libraryBuffDebuff = Initializer.buffsDebuffs.Where(x => x.BuffDebuffName == tbInputArea.Text).Select(x => x).First();
                     LibraryBuffsDebuffsLearnAboutBuffDebuff();
                 }
                 else
@@ -5473,7 +5489,7 @@ namespace Dungeon_Valley_Explorer
                     try
                     {
                         int index = Convert.ToInt32(tbInputArea.Text) - 2;
-                        libraryPassive = Initializer.passives[index];
+                        libraryBuffDebuff = Initializer.buffsDebuffs[index];
                         LibraryBuffsDebuffsLearnAboutBuffDebuff();
                     }
                     catch
@@ -5493,13 +5509,13 @@ namespace Dungeon_Valley_Explorer
         public void LibraryBuffsDebuffsLearnAboutBuffDebuff()
         {
             tbInputArea.Text = "";
-            lbDisplay.Items.Add($"{libraryPassive.PassiveName}");
+            lbDisplay.Items.Add($"{libraryBuffDebuff.BuffDebuffName}");
             lbDisplay.Items.Add("Affects: ---------------------------------------");
-            foreach (string thing in libraryPassive.Affect.Split(','))
+            foreach (string thing in libraryBuffDebuff.Affect.Split(','))
             {
                 lbDisplay.Items.Add($"{thing}");
             }
-            lbDisplay.Items.Add(libraryPassive.Description);
+            lbDisplay.Items.Add(libraryBuffDebuff.Description);
             lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(LibraryBuffsDebuffsChooseBuffDebuff);
         }
@@ -5508,17 +5524,292 @@ namespace Dungeon_Valley_Explorer
 
         //Library Special Effects starts here --------------------------------------------------------------------------
 
+        public void LibrarySpecialEffects()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.specialEffects.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.specialEffects[i].SpecialEffectName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibrarySpecialEffectsChooseSpecialEffect);
+        }
+
+        public void LibrarySpecialEffectsChooseSpecialEffect(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibrarySpecialEffectsChooseSpecialEffect);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibrarySpecialEffectsChooseSpecialEffect);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.specialEffects.Select(x => x.SpecialEffectName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.specialEffects.Select(x => x.SpecialEffectName).Contains(tbInputArea.Text) == true)
+                {
+                    librarySpecialEffect = Initializer.specialEffects.Where(x => x.SpecialEffectName == tbInputArea.Text).Select(x => x).First();
+                    LibrarySpecialEffectsLearnAboutSpecialEffect();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        librarySpecialEffect = Initializer.specialEffects[index];
+                        LibrarySpecialEffectsLearnAboutSpecialEffect();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibrarySpecialEffectsChooseSpecialEffect);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibrarySpecialEffectsChooseSpecialEffect);
+            }
+        }
+
+        public void LibrarySpecialEffectsLearnAboutSpecialEffect()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{librarySpecialEffect.SpecialEffectName}");
+            lbDisplay.Items.Add("Affects: ---------------------------------------");
+            foreach (string thing in librarySpecialEffect.Affect.Split(','))
+            {
+                lbDisplay.Items.Add($"{thing}");
+            }
+            lbDisplay.Items.Add(librarySpecialEffect.Description);
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibrarySpecialEffectsChooseSpecialEffect);
+        }
+
         //Library Special Effects ends here ----------------------------------------------------------------------------
 
         //Library Dungeons starts here ---------------------------------------------------------------------------------
+
+        public void LibraryDungeons()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.dungeons.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.dungeons[i].DungeonName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibraryDungeonsChooseDungeon);
+        }
+
+        public void LibraryDungeonsChooseDungeon(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryDungeonsChooseDungeon);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibraryDungeonsChooseDungeon);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.dungeons.Select(x => x.DungeonName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.dungeons.Select(x => x.DungeonName).Contains(tbInputArea.Text) == true)
+                {
+                    libraryDungeon = Initializer.dungeons.Where(x => x.DungeonName == tbInputArea.Text).Select(x => x).First();
+                    LibraryDungeonsLearnAboutDungeon();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        libraryDungeon = Initializer.dungeons[index];
+                        LibraryDungeonsLearnAboutDungeon();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibraryDungeonsChooseDungeon);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibraryDungeonsChooseDungeon);
+            }
+        }
+
+        public void LibraryDungeonsLearnAboutDungeon()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{libraryDungeon.DungeonName} Length: {libraryDungeon.Length} Gold reward: {libraryDungeon.GoldReward} Exp reward: {libraryDungeon.ExpReward}");
+            lbDisplay.Items.Add(libraryDungeon.Description);
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryDungeonsChooseDungeon);
+        }
 
         //Library Dungeons ends here -----------------------------------------------------------------------------------
 
         //Library Monsters starts here ---------------------------------------------------------------------------------
 
+        public void LibraryMonsters()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.monsters.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.monsters[i].MonsterName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibraryMonstersChooseMonster);
+        }
+
+        public void LibraryMonstersChooseMonster(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryMonstersChooseMonster);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibraryMonstersChooseMonster);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.monsters.Select(x => x.MonsterName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.monsters.Select(x => x.MonsterName).Contains(tbInputArea.Text) == true)
+                {
+                    libraryMonster = Initializer.monsters.Where(x => x.MonsterName == tbInputArea.Text).Select(x => x).First();
+                    LibraryMonstersLearnAboutMonster();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        libraryMonster = Initializer.monsters[index];
+                        LibraryMonstersLearnAboutMonster();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibraryMonstersChooseMonster);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibraryMonstersChooseMonster);
+            }
+        }
+
+        public void LibraryMonstersLearnAboutMonster()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{libraryMonster.MonsterName} Max HP: {libraryMonster.MaxHP} Max MP: {libraryMonster.MaxMP} Max SP: {libraryMonster.MaxSP} DEF: {libraryMonster.DEF} MDEF: {libraryMonster.MDEF} ATK: {libraryMonster.ATK} Race: {libraryMonster.Race} Dungeon: {libraryMonster.Dungeon} Behaviour: {libraryMonster.Ai}");
+            lbDisplay.Items.Add("Passives -----------------------------------------");
+            foreach (Passive passive in libraryMonster.Passives)
+            {
+                lbDisplay.Items.Add(passive.PassiveName);
+            }
+            lbDisplay.Items.Add("Skills -------------------------------------------");
+            foreach (Skill skill in libraryMonster.Skills)
+            {
+                lbDisplay.Items.Add(skill.SkillName);
+            }
+            lbDisplay.Items.Add("Magics -------------------------------------------");
+            foreach (Magic magic in libraryMonster.Magics)
+            {
+                lbDisplay.Items.Add(magic.MagicName);
+            }
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryMonstersChooseMonster);
+        }
+
         //Library Monsters ends here -----------------------------------------------------------------------------------
 
         //Library Environment Hazards starts here ----------------------------------------------------------------------
+
+        public void LibraryEnvironmentHazards()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < Initializer.environmentHazards.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {Initializer.environmentHazards[i].EnvironmentHazardName}");
+            }
+            btInput.Click += new RoutedEventHandler(LibraryEnvironmentHazardsChooseEnvironmentHazard);
+        }
+
+        public void LibraryEnvironmentHazardsChooseEnvironmentHazard(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(LibraryEnvironmentHazardsChooseEnvironmentHazard);
+            if (tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: There is nothing to explain here.");
+                tbInputArea.Text = "";
+                btInput.Click += new RoutedEventHandler(LibraryEnvironmentHazardsChooseEnvironmentHazard);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                LibraryThemeSelectionReEntry();
+            }
+            else if (Initializer.environmentHazards.Select(x => x.EnvironmentHazardName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (Initializer.environmentHazards.Select(x => x.EnvironmentHazardName).Contains(tbInputArea.Text) == true)
+                {
+                    libraryEnvironmentHazard = Initializer.environmentHazards.Where(x => x.EnvironmentHazardName == tbInputArea.Text).Select(x => x).First();
+                    LibraryEnvironmentHazardsLearnAboutEnvironmentHazard();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        libraryEnvironmentHazard = Initializer.environmentHazards[index];
+                        LibraryEnvironmentHazardsLearnAboutEnvironmentHazard();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(LibraryEnvironmentHazardsChooseEnvironmentHazard);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(LibraryEnvironmentHazardsChooseEnvironmentHazard);
+            }
+        }
+
+        public void LibraryEnvironmentHazardsLearnAboutEnvironmentHazard()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add($"{libraryEnvironmentHazard.EnvironmentHazardName} ATK: {libraryEnvironmentHazard.ATK} Damage Type: {libraryEnvironmentHazard.DamageType} Crit Chance: {libraryEnvironmentHazard.CritChance}% Crit Damage: {libraryEnvironmentHazard.CritDamage}x Dungeon: {libraryEnvironmentHazard.Dungeon}");
+            lbDisplay.Items.Add("Special Effects ----------------------------------");
+            foreach (SpecialEffect specialEffect in libraryEnvironmentHazard.SpecialEffects)
+            {
+                lbDisplay.Items.Add(specialEffect.SpecialEffectName);
+            }
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(LibraryEnvironmentHazardsChooseEnvironmentHazard);
+        }
 
         //Library Environment Hazards ends here ------------------------------------------------------------------------
 
@@ -5565,7 +5856,74 @@ namespace Dungeon_Valley_Explorer
 
         //Adventurers Guild ends here ----------------------------------------------------------------------------------
 
+        //Enter Dungeon starts here ------------------------------------------------------------------------------------
+
+        public void TownEnterDungeon()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            lbOptions.Items.Add("2. Small Goblin Cave");
+            foreach (Hero hero in heroes)
+            {
+                if (hero.Lvl > 4)
+                {
+                    lbOptions.Items.Add("3. Developer Secret");
+                    break;
+                }
+            }
+            lbDisplay.Items.Add("GAME: Choose a dungeon to explore.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(EnterDungeonChooseDungeon);
+        }
+
+        public void EnterDungeonChooseDungeon(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(EnterDungeonChooseDungeon);
+            if ( tbInputArea.Text == "?")
+            {
+                lbDisplay.Items.Add("EXPLANATION: By choosing a dungeon you will immediately start exploring said dungeon. More dungeons can be accessed as you clear dungeons, level up and accept quests.");
+                lbDisplay.Items.Add("EXPLANATION: Cancel will put you back in the town.");
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                tbInputArea.Text = "";
+                lbOptions.Items.Clear();
+                MainTownOptions();
+                btInput.Click += new RoutedEventHandler(MainTownOption);
+            }
+            else if (tbInputArea.Text == "2" || tbInputArea.Text == "Small Goblin Cave")
+            {
+                //Dungeon Explorations will be finished later ----------------------------------------------------------
+                tbInputArea.Text = "";
+                lbOptions.Items.Clear();
+                MainTownOptions();
+                btInput.Click += new RoutedEventHandler(MainTownOption);
+            }
+            else if ( (tbInputArea.Text == "3" && lbOptions.Items.Contains("3. Developer Secret") == true) || (tbInputArea.Text == "Developer Secret" && lbOptions.Items.Contains("3. Developer Secret") == true))
+            {
+                //Dungeon Explorations will be finished later ----------------------------------------------------------
+                tbInputArea.Text = "";
+                lbOptions.Items.Clear();
+                MainTownOptions();
+                btInput.Click += new RoutedEventHandler(MainTownOption);
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(EnterDungeonChooseDungeon);
+            }
+        }
+
+        //Enter Dungeon ends here --------------------------------------------------------------------------------------
+
         //Town ends here -----------------------------------------------------------------------------------------------
+
+        //Dungeon Exploration starts here ------------------------------------------------------------------------------
+
+
+
+        //Dungeon Exploration ends here --------------------------------------------------------------------------------
     }
 }
 
