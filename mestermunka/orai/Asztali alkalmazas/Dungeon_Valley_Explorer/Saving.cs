@@ -225,7 +225,7 @@ namespace Dungeon_Valley_Explorer
 
             foreach (Hero partyMember in party)
             {
-                if (partyMember.HeroName == hero.HeroName)
+                if (partyMember == hero)
                 {
                     output += true;
                 }

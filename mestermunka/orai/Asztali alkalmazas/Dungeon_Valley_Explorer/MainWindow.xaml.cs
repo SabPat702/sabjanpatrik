@@ -74,7 +74,7 @@ namespace Dungeon_Valley_Explorer
         bool ShortDisplayNames = false;
 
 
-        //Town Blacksmith variables ------------------------------------------------------------------------------------
+        //Blacksmith variables -----------------------------------------------------------------------------------------
         List<Weapon> purchasableWeapons = new List<Weapon>();
         Weapon buyWeaponSelectedWeapon = new Weapon();
         List<Armor> purchasableArmors = new List<Armor>();
@@ -90,7 +90,7 @@ namespace Dungeon_Valley_Explorer
         Armor selectedArmor = new Armor();
         List<Armor> selectableNewArmors = new List<Armor>();
         Armor selectedNewArmor = new Armor();
-        //Town Blacksmith variables ------------------------------------------------------------------------------------
+        //Blacksmith variables -----------------------------------------------------------------------------------------
 
         //Tavern variables ---------------------------------------------------------------------------------------------
         bool canRest = true;
@@ -125,31 +125,6 @@ namespace Dungeon_Valley_Explorer
             }
             Initializer.Initialize(folders, files);
             Initializer.GetProfilesFromDevice(folders, lbOptions, tempProfiles);
-
-            /*heroes.Add(new Hero("1@player@10@10@100@20@20@0@1@TestWeapon,Unarmed,Unarmed@Test Helmet,Test Chestplate,Test Leggings,Test Boots@Fighter@Power Slash@Firebolt,Self care@Sword Proficiency@Human", Initializer.passives, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons));
-            party.Add(new Hero("1@player@10@10@100@20@20@0@1@TestWeapon,Unarmed,Unarmed@Test Helmet,Test Chestplate,Test Leggings,Test Boots@Fighter@Power Slash@Firebolt,Self care@Sword Proficiency@Human", Initializer.passives, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons));
-            questsCompleted.Add("test", false);
-            consumables.Add("Test Item", 1);
-            Gold = 123;
-            Experience = 100;
-            dungeonsCompleted.Add("Test Place", false);
-            weaponsImproved.Add("Unarmed", 0);
-            weaponsImproved.Add("TestWeapon", 2);
-            armorsImproved.Add("Test Helmet", 3);
-            armorsImproved.Add("Test Chestplate", 0);
-            armorsImproved.Add("Test Leggings", 0);
-            armorsImproved.Add("Test Boots", 0);
-            weaponsObtained.Add("TestWeapon", true);
-            weaponsObtained.Add("Unarmed", true);
-            armorsObtained.Add("Test Helmet", true);
-            armorsObtained.Add("Test Chestplate", true);
-            armorsObtained.Add("Test Leggings", true);
-            armorsObtained.Add("Test Boots", true);
-            consumablesUnlocked.Add("Test Item", true);
-
-            files.Add("first_save.txt");
-            folders.Add("Patrik05");
-            EnterTown();*/
 
             lbDisplay.Items.Add("Welcome to Dungeon Valley Explorer!");
             lbDisplay.Items.Add("Tip: To check if you have all the game assets downloaded just delete the GameAssets folder and download everything again.");
@@ -1554,6 +1529,7 @@ namespace Dungeon_Valley_Explorer
                 {
                     newPlayerHero.DisplayName = tbInputArea.Text.Split(' ')[0];
                 }
+                newPlayerHero.DisplayName += "(Player)";
                 NewGameCharacterConfirm();
             }
         }
@@ -1561,7 +1537,7 @@ namespace Dungeon_Valley_Explorer
         public void NewGameCharacterConfirm()
         {
             tbInputArea.Text = "";
-            lbDisplay.Items.Add($"Are you sure you want this character? (name:{newPlayerHero.HeroName},display name:{newPlayerHero.DisplayName},class:{newPlayerHero.heroClass},race:{newPlayerHero.Race.RaceName},background:{newPlayerHero.Background})");
+            lbDisplay.Items.Add($"Are you sure you want this character? (name:{newPlayerHero.DisplayName},display name:{newPlayerHero.DisplayName},class:{newPlayerHero.heroClass},race:{newPlayerHero.Race.RaceName},background:{newPlayerHero.Background})");
             lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             lbOptions.Items.Add("1. Yes");
             lbOptions.Items.Add("2. No");
@@ -1773,6 +1749,7 @@ namespace Dungeon_Valley_Explorer
                     {
                         heroes.Add(new Hero(hero, Initializer.passives, Initializer.buffsDebuffs, Initializer.skills, Initializer.magics, Initializer.races, Initializer.armors, Initializer.weapons, ShortDisplayNames, weaponsImproved, armorsImproved));
                     }
+                    heroes[0].DisplayName += "(Player)";
                     for (int i = 0; i < heroescutter.Length; i++)
                     {
                         if (heroescutter[i].Split('@').Last() == "true")
@@ -3161,7 +3138,7 @@ namespace Dungeon_Valley_Explorer
         {
             for (int i = 0; i < party.Count; i++)
             {
-                lbOptions.Items.Add($"{i+2}. {party[i].HeroName}");
+                lbOptions.Items.Add($"{i+2}. {party[i].DisplayName}");
             }
         }
 
@@ -3179,7 +3156,7 @@ namespace Dungeon_Valley_Explorer
         public void BlacksmithChangeEquipmentChoosePartyMember(object sender, RoutedEventArgs e)
         {
             btInput.Click -= new RoutedEventHandler(BlacksmithChangeEquipmentChoosePartyMember);
-            List<string> partyMembers = new List<string>(party.Select(x => x.HeroName));
+            List<string> partyMembers = new List<string>(party.Select(x => x.DisplayName));
             if (tbInputArea.Text == "?")
             {
                 tbInputArea.Text = "";
@@ -3197,7 +3174,7 @@ namespace Dungeon_Valley_Explorer
                 {
                     foreach (Hero hero in party)
                     {
-                        if (hero.HeroName == tbInputArea.Text)
+                        if (hero.DisplayName == tbInputArea.Text)
                         {
                             selectedHero = hero;
                         }
@@ -3513,7 +3490,7 @@ namespace Dungeon_Valley_Explorer
             {
                 case "?":
                     tbInputArea.Text = "";
-                    lbDisplay.Items.Add($"EXPLANATION: Confirm will replace the currently selected weapon ({selectedWeapon.WeaponName}) from the currently selected party member ({selectedHero.HeroName}). Or you can cancel with the cancel option.");
+                    lbDisplay.Items.Add($"EXPLANATION: Confirm will replace the currently selected weapon ({selectedWeapon.WeaponName}) from the currently selected party member ({selectedHero.DisplayName}). Or you can cancel with the cancel option.");
                     lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     btInput.Click += new RoutedEventHandler(BlacksmithChangeWeaponNewWeaponChangeConfirmOrCancel);
                     break;
@@ -3547,7 +3524,7 @@ namespace Dungeon_Valley_Explorer
                     {
                         if (weapon.WeaponName == selectedNewWeapon.WeaponName)
                         {
-                            MessageBox.Show($"This is a unique weapon and someone else already has it equipped ({hero.HeroName})");
+                            MessageBox.Show($"This is a unique weapon and someone else already has it equipped ({hero.DisplayName})");
                             BlacksmithChangeWeaponChooseNewWeaponReEntry();
                             equipable = false;
                         }
@@ -3875,7 +3852,7 @@ namespace Dungeon_Valley_Explorer
             {
                 case "?":
                     tbInputArea.Text = "";
-                    lbDisplay.Items.Add($"EXPLANATION: Confirm will replace the currently selected armor ({selectedArmor.ArmorName}) from the currently selected party member ({selectedHero.HeroName}). Or you can cancel with the cancel option.");
+                    lbDisplay.Items.Add($"EXPLANATION: Confirm will replace the currently selected armor ({selectedArmor.ArmorName}) from the currently selected party member ({selectedHero.DisplayName}). Or you can cancel with the cancel option.");
                     lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     btInput.Click += new RoutedEventHandler(BlacksmithChangeArmorNewArmorChangeConfirmOrCancel);
                     break;
@@ -3909,7 +3886,7 @@ namespace Dungeon_Valley_Explorer
                     {
                         if (armor.ArmorName == selectedNewArmor.ArmorName)
                         {
-                            MessageBox.Show($"This is a unique armor and someone else already has it equipped ({hero.HeroName})");
+                            MessageBox.Show($"This is a unique armor and someone else already has it equipped ({hero.DisplayName})");
                             BlacksmithChangeArmorChooseNewArmorReEntry();
                             equipable = false;
                         }
@@ -4297,7 +4274,7 @@ namespace Dungeon_Valley_Explorer
                     lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     for (int i = 0; i < party.Count; i++)
                     {
-                        lbOptions.Items.Add($"{i+1} {party[i].HeroName}");
+                        lbOptions.Items.Add($"{i+1} {party[i].DisplayName}");
                     }
                     btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
                 }
@@ -4348,18 +4325,18 @@ namespace Dungeon_Valley_Explorer
                 MessageBox.Show("There is nothing to explain here.");
                 btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
             }
-            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4"))
+            else if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4"))
             {
-                if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true)
                 {
-                    if (chosenHeroesToEat.Contains(party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First()))
+                    if (chosenHeroesToEat.Contains(party.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First()))
                     {
                         MessageBox.Show("This hero has already been chosen to eat the meal.");
                         btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
                     }
                     else
                     {
-                        chosenHeroesToEat.Add(party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First());
+                        chosenHeroesToEat.Add(party.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First());
                         amountChosenFoodFeeds -= 1;
                         if (amountChosenFoodFeeds == 0)
                         {
@@ -4636,7 +4613,7 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("1. Cancel");
             for (int i = 0; i < party.Count; i++)
             {
-                lbOptions.Items.Add($"{i+2}. {party[i].HeroName}");
+                lbOptions.Items.Add($"{i+2}. {party[i].DisplayName}");
             }
             lbDisplay.Items.Add("GAME: To change the order select a party member then select another one and they will change spots.");
             lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
@@ -4657,11 +4634,11 @@ namespace Dungeon_Valley_Explorer
             {
                 SortPartyChooseChangeReEntry();
             }
-            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
+            else if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
             {
-                if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true)
                 {
-                    changeOrderFirstHero = party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First();
+                    changeOrderFirstHero = party.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First();
                     SortPartyChangeOrderTwo();
                 }
                 else
@@ -4693,9 +4670,9 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("1. Cancel");
             for (int i = 0; i < party.Count; i++)
             {
-                if (party[i].HeroName != changeOrderFirstHero.HeroName)
+                if (party[i].DisplayName != changeOrderFirstHero.DisplayName)
                 {
-                    lbOptions.Items.Add($"{i + 2}. {party[i].HeroName}");
+                    lbOptions.Items.Add($"{i + 2}. {party[i].DisplayName}");
                 }
             }
             btInput.Click += new RoutedEventHandler(SortPartyChangeOrderSecondHero);
@@ -4715,13 +4692,13 @@ namespace Dungeon_Valley_Explorer
             {
                 SortPartyChooseChangeReEntry();
             }
-            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
+            else if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
             {
-                if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true)
                 {
-                    if (party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First() != changeOrderFirstHero)
+                    if (party.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First() != changeOrderFirstHero)
                     {
-                        changeOrderSecondHero = party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First();
+                        changeOrderSecondHero = party.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First();
                         SortPartyChangeOrderOrderChanging();
                     }
                     else
@@ -4782,7 +4759,7 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("2. Add Hero");
             for (int i = 0; i < party.Count; i++)
             {
-                lbOptions.Items.Add($"{i + 3}. {party[i].HeroName}");
+                lbOptions.Items.Add($"{i + 3}. {party[i].DisplayName}");
             }
             lbDisplay.Items.Add("GAME: To change heroes select a hero from the party then select a hero from the heroes that are not in the party.");
             lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
@@ -4809,11 +4786,11 @@ namespace Dungeon_Valley_Explorer
                 changeHeroPartyHero = party.Last();
                 SortPartyChangeHeroesTwo();
             }
-            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6"))
+            else if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6"))
             {
-                if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true)
                 {
-                    changeHeroPartyHero = party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First();
+                    changeHeroPartyHero = party.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First();
                     SortPartyChangeHeroesTwo();
                 }
                 else
@@ -4848,7 +4825,7 @@ namespace Dungeon_Valley_Explorer
             {
                 if (party.Contains(heroes[i]) == false)
                 {
-                    lbOptions.Items.Add($"{i + 3}. {heroes[i].HeroName}");
+                    lbOptions.Items.Add($"{i + 3}. {heroes[i].DisplayName}");
                 }
             }
             btInput.Click += new RoutedEventHandler(SortPartyChangeHeroesHeroesHero);
@@ -4866,7 +4843,7 @@ namespace Dungeon_Valley_Explorer
             }
             else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
             {
-                if (changeHeroPartyHero.HeroName != string.Empty)
+                if (changeHeroPartyHero.DisplayName != string.Empty)
                 {
                     party.Remove(party.Last());
                 }
@@ -4874,25 +4851,25 @@ namespace Dungeon_Valley_Explorer
             }
             else if (tbInputArea.Text == "2" || tbInputArea.Text == "Remove")
             {
-                if (party.Count > 1 && changeHeroPartyHero.HeroName != string.Empty)
+                if (party.Count > 1 && changeHeroPartyHero.DisplayName != string.Empty)
                 {
                     party.Remove(changeHeroPartyHero);
                 }
                 else
                 {
                     MessageBox.Show("Can't remove: there is only one hero in the party or you picked the 'Add Hero' option.");
-                    if (changeHeroPartyHero.HeroName == string.Empty)
+                    if (changeHeroPartyHero.DisplayName == string.Empty)
                     {
                         party.Remove(party.Last());
                     }
                 }
                 SortPartyChooseChangeReEntry();
             }
-            else if (heroes.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            else if (heroes.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
             {
-                if (heroes.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                if (heroes.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true)
                 {
-                    changeHeroHeroesHero = heroes.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First();
+                    changeHeroHeroesHero = heroes.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First();
                     SortPartyChangeHeroesHeroChanging();
                 }
                 else
@@ -4951,7 +4928,7 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("1. Cancel");
             for (int i = 0; i < party.Count; i++)
             {
-                lbOptions.Items.Add($"{i+2}. {party[i].HeroName}");
+                lbOptions.Items.Add($"{i+2}. {party[i].DisplayName}");
             }
             btInput.Click += new RoutedEventHandler(InspectPartyChooseToInspect);
         }
@@ -4969,11 +4946,11 @@ namespace Dungeon_Valley_Explorer
             {
                 AdventurersGuildMainOptionReEntry();
             }
-            else if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
+            else if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
             {
-                if (party.Select(x => x.HeroName).Contains(tbInputArea.Text) == true)
+                if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true)
                 {
-                    InspectPartyInspecting(party.Where(x => x.HeroName == tbInputArea.Text).Select(x => x).First());
+                    InspectPartyInspecting(party.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First());
                 }
                 else
                 {
@@ -4998,7 +4975,7 @@ namespace Dungeon_Valley_Explorer
 
         public void InspectPartyInspecting(Hero hero)
         {
-            lbDisplay.Items.Add($"{hero.HeroName} Max HP: {hero.MaxHP} HP: {hero.HP} Max MP: {hero.MaxMP} MP: {hero.MP} Max SP: {hero.MaxSP} SP: {hero.SP} Physical DEF: {hero.DEF} Magical DEF: {hero.MDEF} Race: {hero.Race.RaceName} Class: {hero.heroClass} Background: {hero.Background}");
+            lbDisplay.Items.Add($"{hero.DisplayName} Max HP: {hero.MaxHP} HP: {hero.HP} Max MP: {hero.MaxMP} MP: {hero.MP} Max SP: {hero.MaxSP} SP: {hero.SP} Physical DEF: {hero.DEF} Magical DEF: {hero.MDEF} Race: {hero.Race.RaceName} Class: {hero.heroClass} Background: {hero.Background}");
             lbDisplay.Items.Add("Weapons: ----------------------------------------");
             foreach (Weapon weapon in hero.Weapons)
             {

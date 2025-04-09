@@ -36,7 +36,7 @@ namespace Dungeon_Valley_Explorer
                     default: 
                         break;
                 }
-                MessageBox.Show($"{hero.HeroName} leveled up reaching level 2!");
+                MessageBox.Show($"{hero.DisplayName} leveled up reaching level 2!");
             }
             if (hero.Lvl == 2 && hero.Exp >= 1000)
             {
@@ -63,7 +63,7 @@ namespace Dungeon_Valley_Explorer
                     default:
                         break;
                 }
-                MessageBox.Show($"{hero.HeroName} leveled up reaching level 3!");
+                MessageBox.Show($"{hero.DisplayName} leveled up reaching level 3!");
             }
             if (hero.Lvl == 3 && hero.Exp >= 4000)
             {
@@ -90,7 +90,7 @@ namespace Dungeon_Valley_Explorer
                     default:
                         break;
                 }
-                MessageBox.Show($"{hero.HeroName} leveled up reaching level 4!");
+                MessageBox.Show($"{hero.DisplayName} leveled up reaching level 4!");
             }
             if (hero.Lvl == 4 && hero.Exp >= 10000)
             {
@@ -117,7 +117,7 @@ namespace Dungeon_Valley_Explorer
                     default:
                         break;
                 }
-                MessageBox.Show($"{hero.HeroName} leveled up reaching level 5!");
+                MessageBox.Show($"{hero.DisplayName} leveled up reaching level 5!");
             }
             return hero;
         }
