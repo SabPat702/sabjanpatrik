@@ -51,13 +51,11 @@ const DungeonBook = () => {
 
     const toggleBook = () => {
         if (isOpen) {
-            // Ha éppen nyitva van a könyv, zárás előtt várunk az animációval
             setIsOpen(false);
             setTimeout(() => {
-                setCurrentSpread(0); // Miután az animáció lefutott, visszaállítjuk a spread értékét
-            }, 600); // Az animáció időtartama (600ms)
+                setCurrentSpread(0);
+            }, 600); // A zárási animáció időtartama megmarad
         } else {
-            // Ha nincs nyitva, akkor nyitjuk
             setCurrentSpread(0);
             setIsOpen(true);
         }
@@ -88,41 +86,38 @@ const DungeonBook = () => {
         const [touchStart, setTouchStart] = useState(null);
         const [touchEnd, setTouchEnd] = useState(null);
         const ebookRef = useRef(null);
-
+    
         const allPages = [{ isLogo: true }, ...pages];
         const minSwipeDistance = 50;
-
+    
         const onTouchStart = (e) => {
-            e.stopPropagation(); // Esemény terjedésének megakadályozása
+            e.stopPropagation();
             setTouchEnd(null);
             setTouchStart(e.targetTouches[0].clientX);
-            // Görgetés letiltása az oldalon, amíg a swipe tart
             document.body.style.overflow = 'hidden';
         };
-
+    
         const onTouchMove = (e) => {
-            e.stopPropagation(); // Esemény terjedésének megakadályozása
+            e.stopPropagation();
             setTouchEnd(e.targetTouches[0].clientX);
         };
-
+    
         const onTouchEnd = (e) => {
-            e.stopPropagation(); // Esemény terjedésének megakadályozása
+            e.stopPropagation();
             if (!touchStart || !touchEnd) return;
             const distance = touchStart - touchEnd;
             const isLeftSwipe = distance > minSwipeDistance;
             const isRightSwipe = distance < -minSwipeDistance;
-
+    
             if (isLeftSwipe && currentPage < allPages.length - 1) {
                 setCurrentPage(currentPage + 1);
             }
             if (isRightSwipe && currentPage > 0) {
                 setCurrentPage(currentPage - 1);
             }
-
-            // Görgetés visszaállítása
             document.body.style.overflow = 'auto';
         };
-
+    
         return (
             <div className="ebook-container">
                 <div className="ebook-book" ref={ebookRef}>
@@ -134,12 +129,18 @@ const DungeonBook = () => {
                     >
                         {allPages[currentPage] ? (
                             allPages[currentPage].isLogo ? (
-                                <div className="logo-container">
-                                    <img
-                                        src={logo}
-                                        alt="Dungeon Valley Explorer Logo"
-                                        className="book-logo"
-                                    />
+                                <div className="ebook-content-wrapper">
+                                    <div className="logo-container">
+                                        <img
+                                            src={logo}
+                                            alt="Dungeon Valley Explorer Logo"
+                                            className="book-logo"
+                                        />
+                                    </div>
+                                    <div className="page-content">
+                                        <h2>Welcome to Dungeon Valley Explorer</h2>
+                                        <p>Your journey begins here.</p>
+                                    </div>
                                 </div>
                             ) : (
                                 <div className="page-content">
@@ -152,100 +153,103 @@ const DungeonBook = () => {
                         )}
                     </div>
                 </div>
-                <div className="ebook-navigation">
-                    <button
-                        onClick={() => currentPage > 0 && setCurrentPage(currentPage - 1)}
-                        disabled={currentPage === 0}
-                    >
-                        Previous
-                    </button>
-                    <button
-                        onClick={() => currentPage < allPages.length - 1 && setCurrentPage(currentPage + 1)}
-                        disabled={currentPage === allPages.length - 1}
-                    >
-                        Next
+                
+                
+            </div>
+        );
+    };
+
+    const BookView = () => {
+        // Eltávolítjuk az isFlipping állapotot, mert nincs animáció
+        const goToPreviousSpread = () => {
+            if (currentSpread > 0) {
+                setCurrentSpread(currentSpread - 1); // Azonnali váltás
+            }
+        };
+
+        const goToNextSpread = () => {
+            if (currentSpread < totalSpreads - 1) {
+                setCurrentSpread(currentSpread + 1);
+            }
+        };
+
+        return (
+            <div className="dungeon-book-container">
+                <div
+                    className={`book ${isOpen ? 'open' : 'closed'}`}
+                    ref={bookRef}
+                    onMouseDown={handleDragStart}
+                    onMouseMove={handleDragMove}
+                    onMouseUp={handleDragEnd}
+                    onMouseLeave={handleDragEnd}
+                    onTouchStart={handleDragStart}
+                    onTouchMove={handleDragMove}
+                    onTouchEnd={handleDragEnd}
+                >
+                    <div className="book-inner">
+                        {!isOpen ? (
+                            <div className="book-cover">
+                                <h1>Dungeon Valley Explorer</h1>
+                                <p>A Text-Based Adventure</p>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="page left-page">
+                                    {left ? (
+                                        left.isLogo ? (
+                                            <div className="logo-container">
+                                                <img
+                                                    src={logo}
+                                                    alt="Dungeon Valley Explorer Logo"
+                                                    className="book-logo"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className="page-content">
+                                                {left.title && <h2>{left.title}</h2>}
+                                                <p>{left.content}</p>
+                                                <div
+                                                    className="page-corner page-corner-left"
+                                                    onClick={goToPreviousSpread}
+                                                    onTouchStart={goToPreviousSpread}
+                                                    role="button"
+                                                    aria-label="Previous page"
+                                                />
+                                            </div>
+                                        )
+                                    ) : (
+                                        <div className="empty-page" />
+                                    )}
+                                </div>
+                                <div className="page right-page">
+                                    {right ? (
+                                        <div className="page-content">
+                                            {right.title && <h2>{right.title}</h2>}
+                                            <p>{right.content}</p>
+                                            <div
+                                                className="page-corner page-corner-right"
+                                                onClick={goToNextSpread}
+                                                onTouchStart={goToNextSpread}
+                                                role="button"
+                                                aria-label="Next page"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="empty-page" />
+                                    )}
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+                <div className="navigation">
+                    <button onClick={toggleBook}>
+                        {isOpen ? 'Close Book' : 'Open Book'}
                     </button>
                 </div>
             </div>
         );
     };
-
-    const BookView = () => (
-        <div className="dungeon-book-container">
-            <div
-                className={`book ${isOpen ? 'open' : 'closed'}`}
-                ref={bookRef}
-                onMouseDown={handleDragStart}
-                onMouseMove={handleDragMove}
-                onMouseUp={handleDragEnd}
-                onMouseLeave={handleDragEnd}
-                onTouchStart={handleDragStart}
-                onTouchMove={handleDragMove}
-                onTouchEnd={handleDragEnd}
-            >
-                <div className="book-inner">
-                    {!isOpen ? (
-                        <div className="book-cover">
-                            <h1>Dungeon Valley Explorer</h1>
-                            <p>A Text-Based Adventure</p>
-                        </div>
-                    ) : (
-                        <>
-                            <div className="page left-page">
-                                {left ? (
-                                    left.isLogo ? (
-                                        <div className="logo-container">
-                                            <img
-                                                src={logo}
-                                                alt="Dungeon Valley Explorer Logo"
-                                                className="book-logo"
-                                            />
-                                        </div>
-                                    ) : (
-                                        <div className="page-content">
-                                            {left.title && <h2>{left.title}</h2>}
-                                            <p>{left.content}</p>
-                                            <div
-                                                className="page-corner page-corner-left"
-                                                onClick={goToPreviousSpread}
-                                                onTouchStart={goToPreviousSpread}
-                                                role="button"
-                                                aria-label="Previous page"
-                                            />
-                                        </div>
-                                    )
-                                ) : (
-                                    <div className="empty-page" />
-                                )}
-                            </div>
-                            <div className="page right-page">
-                                {right ? (
-                                    <div className="page-content">
-                                        {right.title && <h2>{right.title}</h2>}
-                                        <p>{right.content}</p>
-                                        <div
-                                            className="page-corner page-corner-right"
-                                            onClick={goToNextSpread}
-                                            onTouchStart={goToNextSpread}
-                                            role="button"
-                                            aria-label="Next page"
-                                        />
-                                    </div>
-                                ) : (
-                                    <div className="empty-page" />
-                                )}
-                            </div>
-                        </>
-                    )}
-                </div>
-            </div>
-            <div className="navigation">
-                <button onClick={toggleBook}>
-                    {isOpen ? 'Close Book' : 'Open Book'}
-                </button>
-            </div>
-        </div>
-    );
 
     return isMobile ? <EbookView /> : <BookView />;
 };
