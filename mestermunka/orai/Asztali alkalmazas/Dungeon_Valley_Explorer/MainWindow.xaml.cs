@@ -38,8 +38,8 @@ namespace Dungeon_Valley_Explorer
         static string connectionString = mySqlConnectionStringBuilder.ConnectionString;
         MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
 
-        List<string> folders = new List<string> { "GameAssets","Enemies","Dungeons","Effects","Characters","Items","Abilities","EnvironmentHazard","Races","Profiles","Offline"};
-        List<string> files = new List<string> { "Monsters.txt","Ais.txt","NPCs.txt","Dungeons.txt","EnvironmentHazards.txt","Passives.txt","BuffsDebuffs.txt","SpecialEffects.txt","Skills.txt","Magics.txt","Races.txt","Consumables.txt","Armors.txt","Weapons.txt"};
+        List<string> folders = new List<string> { "GameAssets", "Enemies", "Dungeons", "Effects", "Characters", "Items", "Abilities", "EnvironmentHazard", "Races", "Profiles", "Offline" };
+        List<string> files = new List<string> { "Monsters.txt", "Ais.txt", "NPCs.txt", "Dungeons.txt", "EnvironmentHazards.txt", "Passives.txt", "BuffsDebuffs.txt", "SpecialEffects.txt", "Skills.txt", "Magics.txt", "Races.txt", "Consumables.txt", "Armors.txt", "Weapons.txt" };
         List<string> tempProfiles = new List<string>();
         List<string> tempSaves = new List<string>();
 
@@ -50,7 +50,7 @@ namespace Dungeon_Valley_Explorer
 
         List<Hero> heroes = new List<Hero>();
         List<Hero> party = new List<Hero>();
-        Dictionary<string, bool> questsCompleted = new Dictionary<string,bool>();
+        Dictionary<string, bool> questsCompleted = new Dictionary<string, bool>();
         Dictionary<string, int> consumables = new Dictionary<string, int>();
         bool newHero = false;
         int Gold = 0;
@@ -62,15 +62,18 @@ namespace Dungeon_Valley_Explorer
         Dictionary<string, bool> armorsObtained = new Dictionary<string, bool>();
         Dictionary<string, bool> consumablesUnlocked = new Dictionary<string, bool>();
 
-        List<string> classes = new List<string> { "Fighter","Hunter","Wizard","Paladin","Bounty Hunter","Warlock"};
-        List<string> quests = new List<string> { "test"};
-        List<string> physicalDamageTypes = new List<string> { "Blunt","Pierce","Slash"};
-        List<string> magicalDamageTypes = new List<string> { "Fire"};
+        List<string> classes = new List<string> { "Fighter", "Hunter", "Wizard", "Paladin", "Bounty Hunter", "Warlock" };
+        List<string> quests = new List<string> { "test" };
+        List<string> physicalDamageTypes = new List<string> { "Blunt", "Pierce", "Slash" };
+        List<string> magicalDamageTypes = new List<string> { "Fire" };
+
+        //Damage Calculation variables ---------------------------------------------------------------------------------
         bool skipDamageCalculation = false;
-        Random random = new Random();
         Target targetPrep = new Target();
         DamageSource damageSourcePrep = new DamageSource();
+        //Damage Calculation variables ---------------------------------------------------------------------------------
 
+        Random random = new Random();
         bool ShortDisplayNames = false;
 
 
@@ -115,6 +118,16 @@ namespace Dungeon_Valley_Explorer
         Monster libraryMonster = new Monster();
         EnvironmentHazard libraryEnvironmentHazard = new EnvironmentHazard();
         //Adventurers Guild variables ----------------------------------------------------------------------------------
+
+        //Dungeon Exploration variables --------------------------------------------------------------------------------
+        Dungeon currentDungeon = new Dungeon();
+        int currentRoom = 0;
+        int emptyRoomChance = 0;
+        int encounterRoomChance = 0;
+        int secretRoomChance = 0;
+        int fightRoomChance = 0;
+        bool canDungeonRest = true;
+        //Dungeon Exploration variables --------------------------------------------------------------------------------
         public MainWindow()
         {
             InitializeComponent();
@@ -138,7 +151,7 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("2. Select Profile");
             lbOptions.Items.Add("3. Add Profile");
             lbOptions.Items.Add("4. Options");
-            
+
             btInput.Click += new RoutedEventHandler(OfflineSelectProfileAddProfileOption);
         }
 
@@ -232,7 +245,7 @@ namespace Dungeon_Valley_Explorer
                     break;
                 case "1":
                     OptionsChangeColors();
-                    break; 
+                    break;
                 case "2":
                     OptionsShortenedNames();
                     break;
@@ -252,7 +265,7 @@ namespace Dungeon_Valley_Explorer
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
                     btInput.Click += new RoutedEventHandler(MainMenuOptionsOptions);
                     break;
-            } 
+            }
         }
 
         public void ExplainMainMenuOptionsOptions()
@@ -275,7 +288,7 @@ namespace Dungeon_Valley_Explorer
             if (ShortDisplayNames == false)
             {
                 ShortDisplayNames = true;
-                foreach(Hero hero in Initializer.npcs)
+                foreach (Hero hero in Initializer.npcs)
                 {
                     hero.DisplayName = hero.HeroName.Split(' ')[0];
                 }
@@ -447,7 +460,7 @@ namespace Dungeon_Valley_Explorer
                 {
                     if (tempProfiles.Contains(tbInputArea.Text) == true)
                     {
-                        
+
                         folders.Add(tbInputArea.Text);
                         lbDisplay.Items.Add("Will you login with this profile? You can also write 'Back' to cancel.");
                         lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
@@ -461,7 +474,7 @@ namespace Dungeon_Valley_Explorer
                     {
                         try
                         {
-                            int profileIndex = Convert.ToInt32(tbInputArea.Text)-1;
+                            int profileIndex = Convert.ToInt32(tbInputArea.Text) - 1;
                             folders.Add(tempProfiles[profileIndex]);
                             lbDisplay.Items.Add("Will you login with this profile? You can also write 'Back' to cancel.");
                             lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
@@ -653,7 +666,7 @@ namespace Dungeon_Valley_Explorer
             for (int i = 0; i < seged.Count(); i++)
             {
                 string[] linecutter = seged[i].Split('\\');
-                lbOptions.Items.Add($"{i + 3}. " + linecutter[2].Substring(0,linecutter[2].Length-4));
+                lbOptions.Items.Add($"{i + 3}. " + linecutter[2].Substring(0, linecutter[2].Length - 4));
                 tempSaves.Add(linecutter[2]);
             }
         }
@@ -903,7 +916,7 @@ namespace Dungeon_Valley_Explorer
                 }
             }
             catch (Exception error)
-            { 
+            {
                 MessageBox.Show(error.Message);
             }
             Initializer.GetProfilesFromDevice(folders, lbOptions, tempProfiles);
@@ -913,7 +926,7 @@ namespace Dungeon_Valley_Explorer
         public void AddProfileGetProfileSaves()
         {
             string command = $"Select `save_game`.SaveName, `save_game`.SaveData from save_game inner join hero on hero.Id = save_game.HeroId inner join user on user.Id = hero.UserId where UserName = '{folders.Last()}'";
-            MySqlCommand mySqlCommand = new MySqlCommand(command,mySqlConnection);
+            MySqlCommand mySqlCommand = new MySqlCommand(command, mySqlConnection);
             int savesCount = 0;
             List<string> saveData = new List<string>();
             try
@@ -931,7 +944,7 @@ namespace Dungeon_Valley_Explorer
                 {
                     for (int i = 0; i < savesCount; i++)
                     {
-                        StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files[files.Count()-(i+1)]}.txt");
+                        StreamWriter streamWriter = new StreamWriter($@"{folders[9]}\{folders.Last()}\{files[files.Count() - (i + 1)]}.txt");
                         streamWriter.WriteLine(saveData[i]);
                         streamWriter.Close();
                     }
@@ -1319,7 +1332,7 @@ namespace Dungeon_Valley_Explorer
                     {
                         output += $"{race.Fatal.Count()} Fatal damage resistances (";
                         int resistanceCounter = 0;
-                        foreach (string resistance in  race.Fatal)
+                        foreach (string resistance in race.Fatal)
                         {
                             if (resistanceCounter < race.Fatal.Count() - 1)
                             {
@@ -1693,10 +1706,10 @@ namespace Dungeon_Valley_Explorer
         {
             try
             {
-                foreach(string oneline in File.ReadAllLines($@"{folders[9]}\{folders.Last()}\{files.Last()}"))
+                foreach (string oneline in File.ReadAllLines($@"{folders[9]}\{folders.Last()}\{files.Last()}"))
                 {
                     string[] linecutter = oneline.Split('$');
-                    
+
                     string[] consumablescutter = linecutter[2].Split('%');
                     foreach (string consumable in consumablescutter)
                     {
@@ -1759,7 +1772,7 @@ namespace Dungeon_Valley_Explorer
                     }
                 }
             }
-            catch (Exception error )
+            catch (Exception error)
             {
                 MessageBox.Show(error.Message);
             }
@@ -1961,16 +1974,10 @@ namespace Dungeon_Valley_Explorer
 
         public void EnterTown()
         {
-            heroes.Add(Initializer.npcs[0]);
-            party.Add(Initializer.npcs[0]);
-            Gold += 1000;
-            Experience += 2000000;
-            weaponsObtained["Family Lance"] = true;
-            armorsObtained["Bejeweled Helmet"] = true;
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbDisplay.Items.Add("GAME: You have entered the town and now you can save and modify your party and your items.");
-            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count-1]);
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             MainTownOptions();
             btInput.Click += new RoutedEventHandler(MainTownOption);
         }
@@ -2359,7 +2366,7 @@ namespace Dungeon_Valley_Explorer
             lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(BlacksmithBuyWeaponChooseWeapon);
         }
-        
+
         public void BlacksmithBuyWeaponChooseWeapon(object sender, RoutedEventArgs e)
         {
             btInput.Click -= new RoutedEventHandler(BlacksmithBuyWeaponChooseWeapon);
@@ -2370,7 +2377,7 @@ namespace Dungeon_Valley_Explorer
                 lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                 btInput.Click += new RoutedEventHandler(BlacksmithBuyWeaponChooseWeapon);
             }
-            else if (tbInputArea.Text == "1" ||  tbInputArea.Text == "Cancel")
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
             {
                 purchasableWeapons.Clear();
                 BlacksmithMainOptionReEntry();
@@ -2382,7 +2389,7 @@ namespace Dungeon_Valley_Explorer
                 {
                     if (purchasableWeaponsName.Contains(tbInputArea.Text) == true)
                     {
-                        foreach(Weapon weapon in purchasableWeapons)
+                        foreach (Weapon weapon in purchasableWeapons)
                         {
                             if (weapon.WeaponName == tbInputArea.Text)
                             {
@@ -3138,7 +3145,7 @@ namespace Dungeon_Valley_Explorer
         {
             for (int i = 0; i < party.Count; i++)
             {
-                lbOptions.Items.Add($"{i+2}. {party[i].DisplayName}");
+                lbOptions.Items.Add($"{i + 2}. {party[i].DisplayName}");
             }
         }
 
@@ -3164,7 +3171,7 @@ namespace Dungeon_Valley_Explorer
                 lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                 btInput.Click += new RoutedEventHandler(BlacksmithChangeEquipmentChoosePartyMember);
             }
-            else if (tbInputArea.Text == "1" ||  tbInputArea.Text == "Cancel")
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
             {
                 BlacksmithMainOptionReEntry();
             }
@@ -4274,7 +4281,7 @@ namespace Dungeon_Valley_Explorer
                     lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     for (int i = 0; i < party.Count; i++)
                     {
-                        lbOptions.Items.Add($"{i+1} {party[i].DisplayName}");
+                        lbOptions.Items.Add($"{i + 1} {party[i].DisplayName}");
                     }
                     btInput.Click += new RoutedEventHandler(TavernChooseHeroToEatFood);
                 }
@@ -4384,7 +4391,7 @@ namespace Dungeon_Valley_Explorer
                 {
                     try
                     {
-                        int index = Convert.ToInt32(tbInputArea.Text)-1;
+                        int index = Convert.ToInt32(tbInputArea.Text) - 1;
                         if (chosenHeroesToEat.Contains(party[index]))
                         {
                             MessageBox.Show("This hero has already been chosen to eat the meal.");
@@ -4493,7 +4500,7 @@ namespace Dungeon_Valley_Explorer
         public void AdventurersGuildMainOption(object sender, RoutedEventArgs e)
         {
             btInput.Click -= new RoutedEventHandler(AdventurersGuildMainOption);
-            switch(tbInputArea.Text)
+            switch (tbInputArea.Text)
             {
                 case "?":
                     ExplainAdventurersGuildMainOption();
@@ -4613,7 +4620,7 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("1. Cancel");
             for (int i = 0; i < party.Count; i++)
             {
-                lbOptions.Items.Add($"{i+2}. {party[i].DisplayName}");
+                lbOptions.Items.Add($"{i + 2}. {party[i].DisplayName}");
             }
             lbDisplay.Items.Add("GAME: To change the order select a party member then select another one and they will change spots.");
             lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
@@ -4630,7 +4637,7 @@ namespace Dungeon_Valley_Explorer
                 lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                 btInput.Click += new RoutedEventHandler(SortPartyChangeOrderFirstHero);
             }
-            else if (tbInputArea.Text == "1" ||tbInputArea.Text == "Cancel")
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
             {
                 SortPartyChooseChangeReEntry();
             }
@@ -4780,7 +4787,7 @@ namespace Dungeon_Valley_Explorer
             {
                 SortPartyChooseChangeReEntry();
             }
-            else if (tbInputArea.Text == "2" ||tbInputArea.Text == "Add Hero")
+            else if (tbInputArea.Text == "2" || tbInputArea.Text == "Add Hero")
             {
                 party.Add(new Hero());
                 changeHeroPartyHero = party.Last();
@@ -4928,7 +4935,7 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Add("1. Cancel");
             for (int i = 0; i < party.Count; i++)
             {
-                lbOptions.Items.Add($"{i+2}. {party[i].DisplayName}");
+                lbOptions.Items.Add($"{i + 2}. {party[i].DisplayName}");
             }
             btInput.Click += new RoutedEventHandler(InspectPartyChooseToInspect);
         }
@@ -4942,7 +4949,7 @@ namespace Dungeon_Valley_Explorer
                 lbDisplay.Items.Add("EXPLANATION: Choose a hero to inspect them and see their stats, passives, weapons, armors, buffs and debuffs or leave with 'Cancel'.");
                 btInput.Click += new RoutedEventHandler(InspectPartyChooseToInspect);
             }
-            else if (tbInputArea.Text == "1" ||tbInputArea.Text == "Cancel")
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
             {
                 AdventurersGuildMainOptionReEntry();
             }
@@ -5279,7 +5286,7 @@ namespace Dungeon_Valley_Explorer
             lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(LibraryArmorsChooseArmor);
         }
-        
+
         //Library Armors ends here -------------------------------------------------------------------------------------
 
         //Library Consumables starts here ------------------------------------------------------------------------------
@@ -5857,7 +5864,7 @@ namespace Dungeon_Valley_Explorer
         public void EnterDungeonChooseDungeon(object sender, RoutedEventArgs e)
         {
             btInput.Click -= new RoutedEventHandler(EnterDungeonChooseDungeon);
-            if ( tbInputArea.Text == "?")
+            if (tbInputArea.Text == "?")
             {
                 lbDisplay.Items.Add("EXPLANATION: By choosing a dungeon you will immediately start exploring said dungeon. More dungeons can be accessed as you clear dungeons, level up and accept quests.");
                 lbDisplay.Items.Add("EXPLANATION: Cancel will put you back in the town.");
@@ -5871,19 +5878,13 @@ namespace Dungeon_Valley_Explorer
             }
             else if (tbInputArea.Text == "2" || tbInputArea.Text == "Small Goblin Cave")
             {
-                //Dungeon Explorations will be finished later ----------------------------------------------------------
-                tbInputArea.Text = "";
-                lbOptions.Items.Clear();
-                MainTownOptions();
-                btInput.Click += new RoutedEventHandler(MainTownOption);
+                currentDungeon = Initializer.dungeons.Where(x => x.DungeonName == "Small Goblin Cave").Select(x => x).First();
+                EnterDungeon();
             }
-            else if ( (tbInputArea.Text == "3" && lbOptions.Items.Contains("3. Developer Secret") == true) || (tbInputArea.Text == "Developer Secret" && lbOptions.Items.Contains("3. Developer Secret") == true))
+            else if ((tbInputArea.Text == "3" && lbOptions.Items.Contains("3. Developer Secret") == true) || (tbInputArea.Text == "Developer Secret" && lbOptions.Items.Contains("3. Developer Secret") == true))
             {
-                //Dungeon Explorations will be finished later ----------------------------------------------------------
-                tbInputArea.Text = "";
-                lbOptions.Items.Clear();
-                MainTownOptions();
-                btInput.Click += new RoutedEventHandler(MainTownOption);
+                currentDungeon = Initializer.dungeons.Where(x => x.DungeonName == "Developer Secret").Select(x => x).First();
+                EnterDungeon();
             }
             else
             {
@@ -5898,7 +5899,210 @@ namespace Dungeon_Valley_Explorer
 
         //Dungeon Exploration starts here ------------------------------------------------------------------------------
 
+        public void EnterDungeon()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            currentRoom = 0;
+            switch (currentDungeon.DungeonName)
+            {
+                case "Small Goblin Cave":
+                    emptyRoomChance = 50;
+                    encounterRoomChance = 0;
+                    secretRoomChance = 0;
+                    fightRoomChance = 50;
+                    lbDisplay.Items.Add("GAME: You are infront of the caves entrance and now you may explore inside if you are ready.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    break;
+                case "Developer Secret":
+                    emptyRoomChance = 0;
+                    encounterRoomChance = 0;
+                    secretRoomChance = 0;
+                    fightRoomChance = 100;
+                    lbDisplay.Items.Add("GAME: You are not supposed to be here.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    break;
+                default:
+                    break;
+            }
 
+        }
+
+        //Exploration starts here --------------------------------------------------------------------------------------
+
+        public void ExplorationOptions()
+        {
+            lbOptions.Items.Add("1. Leave");
+            lbOptions.Items.Add("2. Rest");
+            lbOptions.Items.Add("3. Inventory");
+            lbOptions.Items.Add("4. Skills");
+            lbOptions.Items.Add("5. Magics");
+            lbOptions.Items.Add("6. Move Forward");
+            if (currentRoom > 0)
+            {
+                lbOptions.Items.Add("7. Move Backwards");
+            }
+            btInput.Click += new RoutedEventHandler(ExplorationChooseOption);
+        }
+
+        public void ExplorationChooseOption(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(ExplorationChooseOption);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainExplorationChooseOption();
+                    break;
+                case "1":
+                    LeaveDungeon();
+                    break;
+                case "Leave":
+                    LeaveDungeon();
+                    break;
+                case "2":
+                    DungeonRest();
+                    break;
+                case "Rest":
+                    DungeonRest();
+                    break;
+                case "3":
+                    MessageBox.Show("The inventory is not available in the current version.");
+                    btInput.Click += new RoutedEventHandler(ExplorationChooseOption);
+                    break;
+                case "Inventory":
+                    MessageBox.Show("The inventory is not available in the current version.");
+                    btInput.Click += new RoutedEventHandler(ExplorationChooseOption);
+                    break;
+                case "4":
+                    break;
+                case "Skills":
+                    break;
+                case "5":
+                    break;
+                case "Magics":
+                    break;
+                case "6":
+                    break;
+                case "Move Forwards":
+                    break;
+                case "7":
+                    break;
+                case "Move Backwards":
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(ExplorationChooseOption);
+                    break;
+            }
+        }
+
+        public void ExplainExplorationChooseOption()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("EXPLANATION: Leave will make you leave the dungeon without claiming the rewards from the dungeon and you will not be able to do dungeons locked behind this dungeon.");
+            lbDisplay.Items.Add($"EXPLANATION: Rest will allow you to rest the party and recover your health, mana and skill points, but you can be attacked during rest by current room times dungeon length ({currentRoom * currentDungeon.Length}%). This can be reduced and you can only rest once. All rooms cleared will be reset if you moved backwards.");
+            lbDisplay.Items.Add("EXPLANATION: Inventory will allow you to use items from your inventory that can be used outside of fights.");
+            lbDisplay.Items.Add("EXPLANATION: Skills will allow you to use skills that are recovery or buff based and can be used outside of battles.");
+            lbDisplay.Items.Add("EXPLANATION: Magics will allow you to use magics that are recovery or buff based and can be used outside of battles.");
+            lbDisplay.Items.Add("EXPLANATION: Move Forwards will allow you to proceed further in the dungeon.");
+            if (currentRoom > 0)
+            {
+                lbDisplay.Items.Add("EXPLANATION: Move Backwards will allow you to move backwards to reduce the attack chance when resting.");
+            }
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(ExplorationChooseOption);
+        }
+
+        public void LeaveDungeon()
+        {
+            canRest = true;
+            EnterTown();
+        }
+
+        //Dungeon Rest starts here -------------------------------------------------------------------------------------
+
+        public void DungeonRest()
+        {
+            tbInputArea.Text = "";
+            if (canDungeonRest == false)
+            {
+                lbDisplay.Items.Add("GAME: You have already rested during this exploration.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(ExplorationChooseOption);
+            }
+            else
+            {
+                int extraChance = 0;
+                foreach (Hero hero in party)
+                {
+                    foreach (Passive passive in hero.Passives)
+                    {
+                        if (passive.Affect.Contains("Rest"))
+                        {
+                            switch (passive.PassiveName)
+                            {
+                                case "Adventurer":
+                                    extraChance += hero.Lvl * currentDungeon.Length;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+                if (random.Next(1,100) > (currentRoom * currentDungeon.Length) - extraChance)
+                {
+                    foreach (Hero hero in party)
+                    {
+                        hero.HP += hero.MaxHP / 2;
+                        hero.MP += hero.MaxMP / 2;
+                        hero.SP += hero.MaxSP / 2;
+                        foreach (Passive passive in hero.Passives)
+                        {
+                            if (passive.Affect.Contains("Rest"))
+                            {
+                                switch (passive.PassiveName)
+                                {
+                                    case "Adventurer":
+                                        hero.HP += hero.MaxHP / 4;
+                                        hero.MP += hero.MaxMP / 4;
+                                        hero.SP += hero.MaxSP / 4;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                        if (hero.HP > hero.MaxHP) hero.HP = hero.MaxHP;
+                        if (hero.MP > hero.MaxMP) hero.MP = hero.MaxMP;
+                        if (hero.SP > hero.MaxSP) hero.SP = hero.MaxSP;
+                        canDungeonRest = false;
+                    }
+                }
+                else
+                {
+                    lbDisplay.Items.Add("GAME: You failed to rest. (When fighting is finished there will be a fight here)");
+                    //Fight needs to start here ------------------------------------------------------------------------
+                }
+            }
+        }
+
+        //Dungeon Rest ends here ---------------------------------------------------------------------------------------
+
+        //Exploration Inventory starts here ----------------------------------------------------------------------------
+
+        //Exploration Inventory ends here ------------------------------------------------------------------------------
+
+        //Exploration Skills starts here -------------------------------------------------------------------------------
+
+        public void ExplorationSkills()
+        {
+
+        }
+
+        //Exploration Skills ends here ---------------------------------------------------------------------------------
+
+        //Exploration ends here ----------------------------------------------------------------------------------------
 
         //Dungeon Exploration ends here --------------------------------------------------------------------------------
     }
