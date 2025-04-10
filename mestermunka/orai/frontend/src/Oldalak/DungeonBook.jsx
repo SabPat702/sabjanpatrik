@@ -153,20 +153,8 @@ const DungeonBook = () => {
                         )}
                     </div>
                 </div>
-                <div className="ebook-navigation">
-                    <button
-                        onClick={() => currentPage > 0 && setCurrentPage(currentPage - 1)}
-                        disabled={currentPage === 0}
-                    >
-                        Previous
-                    </button>
-                    <button
-                        onClick={() => currentPage < allPages.length - 1 && setCurrentPage(currentPage + 1)}
-                        disabled={currentPage === allPages.length - 1}
-                    >
-                        Next
-                    </button>
-                </div>
+                
+                
             </div>
         );
     };
