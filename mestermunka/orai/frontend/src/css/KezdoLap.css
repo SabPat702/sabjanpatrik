@@ -7,9 +7,9 @@ body {
 }
 
 .kep {
-    width: 100%;  /* Képek teljes szélessége a kisebb képernyőkön */
+    width: 250px !important;  /* Képek teljes szélessége a kisebb képernyőkön */
     max-width: 500px;  /* Maximális szélesség korlátozása */
-    height: auto;
+    height: 200px !important;
     border-radius: 10px;
     transition: transform 0.3s ease;
 }
