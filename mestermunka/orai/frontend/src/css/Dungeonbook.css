@@ -5,7 +5,7 @@
     align-items: center;
     flex-direction: column;
     min-height: 100vh;
-    background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), #2c2c2c;
+    background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), gray  ;
     background-size: 10vw;
     background-blend-mode: overlay;
     font-family: 'Cinzel', serif;
@@ -16,45 +16,26 @@
 /* ========== 2. Könyv (book) és borító (cover) ========== */
 .book {
     width: 80%;
-    max-width: 750px;
-    height: 620px;
+    max-width: 550px;
+    height: 680px !important;
     position: relative;
     transform-style: preserve-3d;
     transition: transform 1s ease;
+    margin-left: 150px;
 }
 
 .book.closed {
+    
     transform: rotateY(-30deg) rotateX(10deg) scale(0.8);
-    animation: closeBook 0.6s ease-in-out forwards;
+    animation: closeBook 0.3s ease-in-out;
+    
 }
 
 .book.open {
     transform: rotateY(0deg) rotateX(15deg);
-    animation: forwards 0.6 ease-in-out;
+    animation: openBook 0.6s ease-in-out forwards;
 }
 
-/*
-.book-spine {
-    position: absolute;
-    left: -40px;
-    top: 0;
-    width: 40px;
-    height: 100%;
-    background: linear-gradient(90deg, #3b2f2f, #5c4033);
-    border-radius: 5px 0 0 5px;
-    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.5);
-    transform: rotateY(-90deg);
-    transform-origin: right;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #d4af37;
-    font-size: 18px;
-    writing-mode: vertical-rl;
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-}
-*/
 /* Book Inner */
 .book-inner {
     display: flex;
@@ -69,7 +50,7 @@
 .book-cover {
     width: 70%;
     height: 100%;
-    background: url('https://www.transparenttextures.com/patterns/leather.png'), linear-gradient(135deg, #3b4a5a, #2c3e50);
+    background: url('https://www.transparenttextures.com/patterns/leather.png'), linear-gradient(135deg, black, #404040);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -82,7 +63,7 @@
     z-index: 2;
     border-radius: 0 12px 12px 0;
     box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.3);
-    border: 2px solid #1a252f;
+    border: 10px solid black;
 }
 
 .book-cover p {
@@ -110,6 +91,7 @@
     transition: transform 0.6s ease-out;
     user-select: none;
     overflow: hidden; /* Hide scrollbars */
+    
 }
 
 .left-page {
@@ -222,10 +204,25 @@ button:hover:not(:disabled) {
         transform: rotateY(180deg);
     }
 }
+@keyframes flipBack {
+    0% {
+        transform: rotateY(180deg);
+    }
+    50% {
+        transform: rotateY(90deg);
+    }
+    100% {
+        transform: rotateY(0deg);
+    }
+}
 
+/* Az oldal animációja */
+.page.flipping-forward {
+    animation: none !important;
+}
 
-.page.flipping {
-    animation: flip 0.6s ease-in-out;
+.page.flipping-back {
+    animation: none !important;
 }
 
 .book-inner::before {
@@ -240,9 +237,7 @@ button:hover:not(:disabled) {
     z-index: 1;
     opacity: 0;
 }
-.book.open {
-    animation: openBook 0.6s ease-in-out forwards;
-} 
+
 
 .book.open .book-inner::before {
     opacity: 1;
@@ -273,13 +268,14 @@ button:hover:not(:disabled) {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
     width: 100%;
+    height: clamp(100px, 30vh, 200px); /* Dinamikus magasság */
+    margin-top: 0; /* Eltávolítva a fix margin-top */
 }
 
 .book-logo {
-    max-width: 80%;
-    max-height: 80%;
+    max-width: 90%; /* Kicsit nagyobb, hogy jobban kitöltse a teret */
+    max-height: 90%;
     object-fit: contain;
 }
 
@@ -288,26 +284,92 @@ button:hover:not(:disabled) {
     width: 100%;
     height: 100%;
 }
-/*
-.page-content::-webkit-scrollbar {
-    width: 8px;
-}
 
-.page-content::-webkit-scrollbar-track {
-    background: #d4c4a1;
-}
-
-.page-content::-webkit-scrollbar-thumb {
-    background: #8B4513;
-    border-radius: 4px;
-}
-
-.page-content::-webkit-scrollbar-thumb:hover {
-    background: #6b3410;
-}
-*/
 .flipping {
-    animation: flip 0.6s ease-in-out;
+    animation: none !important;
+}
+.book.open,
+.book.closed,
+.book.closing {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Tablet nézet */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .book {
+        width: 90%;
+        height: 550px;
+        margin-left: 50px;
+        transform: rotateY(0deg) rotateX(10deg) scale(0.95);
+    }
+
+    .book-cover {
+        font-size: 20px;
+    }
+
+    .page {
+        padding: 20px;
+        font-size: 18px;
+    }
+
+    .page h2 {
+        font-size: 20px;
+    }
+
+    .navigation {
+        flex-direction: row;
+        justify-content: center;
+        gap: 15px;
+    }
+}
+
+/* Nagyobb mobil, pl. iPhone Plus vagy foldable */
+@media (max-width: 480px) {
+    .book {
+        height: 450px;
+    }
+
+    .page {
+        font-size: 13.5px;
+    }
+
+    .page h2 {
+        font-size: 16px;
+    }
+
+    .book-cover {
+        font-size: 16px;
+    }
+}
+
+/* Nagyon kicsi kijelzők (pl. 360px alatt) */
+@media (max-width: 360px) {
+    .ebook-book {
+        height: clamp(350px, 60vh, 400px);
+    }
+
+    .logo-container {
+        height: clamp(80px, 25vh, 150px);
+    }
+
+    .ebook-page h2 {
+        font-size: clamp(12px, 2vw, 16px);
+    }
+
+    .ebook-page p {
+        font-size: clamp(10px, 1.5vw, 14px);
+    }
+
+    .ebook-navigation {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .ebook-navigation button {
+        width: 100%;
+    }
+    
 }
 /* Mobile Styles */
 @media (max-width: 768px) {
@@ -360,6 +422,7 @@ button:hover:not(:disabled) {
     }
 }
 
+
 /* E-book nézet telefonra */
 .ebook-container {
     display: flex;
@@ -370,19 +433,19 @@ button:hover:not(:disabled) {
     background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), #2c2c2c;
     background-blend-mode: overlay;
     font-family: 'Cinzel', serif;
-    padding: 20px;
-    touch-action: none; /* Az alapértelmezett érintési műveletek letiltása az egész konténeren */
+    padding: clamp(10px, 2vw, 20px);
+    touch-action: none;
 }
 
 .ebook-book {
     width: 100%;
-    max-width: 400px;
-    height: 600px;
+    max-width: clamp(280px, 90vw, 400px);
+    height: clamp(400px, 70vh, 600px);
     position: relative;
     background: linear-gradient(90deg, #3b2f2f, #5c4033);
     border-radius: 8px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    padding: 10px;
+    padding: clamp(8px, 2vw, 10px);
     perspective: 1000px;
 }
 
@@ -391,58 +454,72 @@ button:hover:not(:disabled) {
     height: 100%;
     background: url('https://www.transparenttextures.com/patterns/paper-fibers.png'), #e8d5a5;
     background-blend-mode: overlay;
-    padding: 20px;
+    padding: clamp(10px, 3vw, 20px);
     border-radius: 4px;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
     overflow-y: auto;
-    font-size: 16px;
     color: #333;
     line-height: 1.6;
     position: relative;
     transform-style: preserve-3d;
     user-select: none;
-    touch-action: pan-y; /* Csak függőleges görgetést engedélyez az ebook-page területen */
+    touch-action: pan-y;
+    display: flex; /* Hozzáadva a középre igazításhoz */
+    flex-direction: column;
+    justify-content: center; /* Középre igazítás függőlegesen */
+    align-items: center; /* Középre igazítás vízszintesen */
+}
+
+.ebook-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(10px, 2vh, 20px); /* Kép és szöveg közötti távolság */
+    text-align: center;
 }
 
 .ebook-page h2 {
-    font-size: 20px;
+    font-size: clamp(14px, 2.5vw, 20px);
     font-weight: bold;
     color: #2c3e50;
-    margin-bottom: 15px;
+    margin-bottom: clamp(8px, 2vw, 15px);
     text-transform: uppercase;
     letter-spacing: 1.5px;
     border-bottom: 2px solid #b39d6b;
-    padding-bottom: 8px;
-    text-align: left;
+    padding-bottom: clamp(5px, 1vw, 8px);
+    text-align: center; /* Középre igazítás */
 }
 
 .ebook-page p {
-    font-size: 16px;
+    font-size: clamp(11px, 1.8vw, 16px);
     color: #4a4a4a;
     line-height: 1.6;
     white-space: pre-wrap;
     word-wrap: break-word;
-    text-align: left;
+    text-align: center; /* Középre igazítás */
 }
 
 .ebook-navigation {
-    margin-top: 20px;
+    margin-top: clamp(10px, 2vw, 20px);
     display: flex;
     justify-content: space-between;
     width: 90%;
-    max-width: 400px;
+    max-width: clamp(280px, 90vw, 400px);
+    gap: 10px;
 }
 
 .ebook-navigation button {
-    padding: 10px 20px;
+    padding: clamp(8px, 1.5vw, 10px) clamp(15px, 2.5vw, 20px);
     background-color: #f1c40f;
     border: none;
     color: #fff;
-    font-size: 14px;
+    font-size: clamp(12px, 1.5vw, 14px);
     cursor: pointer;
     border-radius: 6px;
     transition: all 0.3s ease;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    flex: 1; /* Gombok egyenlő szélessége */
 }
 
 .ebook-navigation button:disabled {

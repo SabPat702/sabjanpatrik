@@ -59,19 +59,6 @@ const transporter = nodemailer.createTransport({
 });
 */
 
-app.get("/", (req, res) => {
-    res.send("Fut a backend!");
-});
-
-
-db.connect(err => {
-    if (err) {
-        console.error('Database connection failed:', err);
-    } else {
-        console.log('Connected to MySQL');
-    }
-});
-
 // Felhasználók lekérdezése
 app.get('/signup', (req, res) => {
     db.query('SELECT * FROM user', (err, results) => {

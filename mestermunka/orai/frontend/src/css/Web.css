@@ -4,17 +4,18 @@ body {
   margin: 0;
   padding: 0;
   background-size: cover;
+  overflow-x: hidden;
 }
 
 p {
-  font-weight: bolder;
-  font-size: medium;
+  font-weight: bold;
+  font-size: 1rem;
   color: gray;
 }
 
 li {
   color: gray;
-  font-weight: bolder;
+  font-weight: bold;
 }
 
 img {
@@ -30,31 +31,33 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 0.75rem 1.5rem;
   background-color: rgba(51, 51, 51, 0.8); /* Félig átlátszó háttér */
   position: relative;
-  top: 10px; /* A margóhoz igazítjuk */
-  width: 600px;
-  max-width: calc(90% - 10px); /* A margókhoz igazítjuk */
+  top: 0.5rem; /* A margóhoz igazítjuk */
+  width: 90%;
+  max-width: 1200px; /* Limit max width for large screens */
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  height: 50px;
-  border-radius: 25px;
+  height: 3.5rem;
+  border-radius: 1.5rem;
+  box-sizing: border-box;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  margin-left: 1rem;
 }
 
 .header-left a {
   font-weight: bold;
-  font-size: 24px; /* Kisebb betűméret telefonon */
+  font-size: 1.5rem;
   text-decoration: none;
   color: #f1c40f;
   text-transform: uppercase;
+  transition: color 0.3s ease;
 }
 
 .header-right {
@@ -174,21 +177,23 @@ img {
 .dropdown{
   position: relative;
 }
-/* Dropdown menü finomhangolása */
 .dropdown-menu {
   background-color: #333;
   border: none;
-  min-width: 200px; /* Biztosítjuk, hogy a dropdown ne legyen túl keskeny */
+  min-width: 12rem;
   position: absolute;
   top: 100%;
   right: 0;
   z-index: 1000;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.3);
 }
 
 .dropdown-item {
   color: #f1c40f;
-  font-size: 14px; /* Kisebb betűméret telefonon */
-  padding: 8px 15px;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .dropdown-item:hover {
@@ -199,46 +204,54 @@ img {
 /* Háttérkép */
 .castle-background {
   position: relative;
-  margin-top: 65px;
+  top: 4.5rem; /* Account for header height */
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  width: calc(100% - 1rem);
+  height: calc(100vh - 5rem);
+  z-index: -1;
   overflow: hidden;
+  border-radius: 1.5rem;
 }
 
 #castle {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* A kép arányosan kitölti a területet */
+  object-fit: cover;
   display: block;
   filter: sepia(0.4);
 }
 
 /* Main konténer */
 .main {
+  position: relative;
   text-align: center;
-  margin-top: 20px;
-  padding: 20px; /* Kisebb padding telefonon */
-  border-radius: 10px;
+  margin-top: 10vh; /* Reduced for better mobile fit */
+  padding: 1.5rem;
+  color: white;
+  text-shadow: 0.1rem 0.1rem 0.2rem rgba(0, 0, 0, 0.6);
 }
 
 /* H1 és H2 */
 .main h1 {
-  font-size: 40px; /* Kisebb betűméret telefonon */
-  font-weight: bolder;
+  font-size: clamp(1.8rem, 5vw, 2.5rem); /* Responsive font size */
+  font-weight: bold;
   color: gray;
 }
 
 .main h2 {
-  font-size: 30px; /* Kisebb betűméret telefonon */
+  font-size: clamp(1.5rem, 4vw, 2rem);
   color: gray;
-  margin-top: 10px;
-  font-weight: bolder;
+  margin-top: 0.5rem;
+  font-weight: bold;
 }
 
 /* Képek beállítása */
 #guides {
-  max-height: 200px; /* Kisebb magasság telefonon */
+  max-height: 12rem;
   background-color: transparent;
-  float: right;
-  border-radius: 10px;
+  border-radius: 0.5rem;
 }
 
 /* Sorok elrendezése */
@@ -248,136 +261,174 @@ img {
   justify-content: center;
   max-width: 900px;
   margin: 0 auto;
-  gap: 15px; /* Kisebb gap telefonon */
+  gap: 1rem;
+  flex-wrap: wrap; /* Allow wrapping */
 }
-
 /* A flex konténerek */
 .col-md-6 {
   flex: 1;
-  padding: 15px; /* Kisebb padding telefonon */
-  font-size: 20px; /* Kisebb betűméret telefonon */
+  padding: 1rem;
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+  min-width: 250px; /* Prevent squashing */
 }
-
 /* Letöltési gomb */
 .download-section {
   text-align: center;
-  margin-bottom: 15px; /* Kisebb margó telefonon */
+  margin-bottom: 1rem;
 }
 
 .download-btn {
-  padding: 8px 15px; /* Kisebb padding telefonon */
+  padding: 0.5rem 1rem;
   background-color: #4caf50;
   color: white;
   border: none;
-  border-radius: 5px;
-  font-size: 14px; /* Kisebb betűméret telefonon */
+  border-radius: 0.3rem;
+  font-size: 0.875rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  min-width: 12rem; /* Touch-friendly size */
 }
 
 .download-btn:hover {
   background-color: #45a049;
 }
 
-/* Mobil nézet */
+/* Logout gomb */
+#logoutButton {
+  border-radius: 0.3rem; /* Consistent with other buttons */
+}
+
+/* Tablet nézet (768px alatt) */
 @media (max-width: 768px) {
   .header {
-    padding: 8px 10px; /* Még kisebb padding telefonon */
-    flex-direction: column; /* A fejléc elemei egymás alá kerüljenek */
-    align-items: flex-start;
+    padding: 0.5rem 1rem;
+    width: 95%;
     height: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .header-left {
+    margin-left: 0;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
   }
 
   .header-left a {
-    font-size: 18px; /* Még kisebb betűméret */
+    font-size: 1.2rem;
   }
 
   .header-right {
-    margin-top: 10px;
+    margin-right: 0;
+    margin-top: 0.5rem;
     width: 100%;
-    display: flex;
-    justify-content: flex-end;
+    justify-content: center;
   }
 
   .header-right button {
-    padding: 6px 12px; /* Még kisebb padding */
-    font-size: 12px; /* Még kisebb betűméret */
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+  }
+
+  .castle-background {
+    top: 6rem;
+    height: calc(100vh - 6.5rem);
+    border-radius: 1rem;
   }
 
   .main {
-    padding: 15px; /* Még kisebb padding */
+    margin-top: 8vh;
+    padding: 1rem;
   }
 
   .main h1 {
-    font-size: 30px; /* Még kisebb betűméret */
+    font-size: clamp(1.5rem, 4.5vw, 2rem);
   }
 
   .main h2 {
-    font-size: 24px; /* Még kisebb betűméret */
+    font-size: clamp(1.2rem, 3.5vw, 1.5rem);
   }
 
   .row {
     flex-direction: column;
-    text-align: center;
-    gap: 10px; /* Még kisebb gap */
+    gap: 0.75rem;
   }
 
   .col-md-6 {
-    width: 100%;
-    padding: 10px; /* Még kisebb padding */
-    font-size: 16px; /* Még kisebb betűméret */
-  }
-
-  #castle {
-    max-height: 40vh; /* Még kisebb magasság telefonon */
+    padding: 0.75rem;
+    font-size: 0.9rem;
   }
 
   #guides {
-    float: none;
-    margin-top: 15px;
-    max-height: 150px; /* Még kisebb magasság */
+    max-height: 10rem;
   }
 
   .download-btn {
-    padding: 6px 12px; /* Még kisebb padding */
-    font-size: 12px; /* Még kisebb betűméret */
-  }
-
-  .download-section {
-    margin-bottom: 10px; /* Még kisebb margó */
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    min-width: 10rem;
   }
 }
 
-/* Kisebb telefonok (pl. 576px alatt) */
+/* Kisebb telefonok (576px alatt) */
 @media (max-width: 576px) {
+  .header {
+    padding: 0.4rem 0.8rem;
+    top: 0.3rem;
+    border-radius: 0.8rem;
+  }
+
   .header-left a {
-    font-size: 16px;
+    font-size: 1rem;
   }
 
   .header-right button {
-    padding: 5px 10px;
-    font-size: 10px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.7rem;
+  }
+
+  .dropdown-menu {
+    min-width: 10rem;
+  }
+
+  .dropdown-item {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .castle-background {
+    top: 5rem;
+    left: 0.3rem;
+    right: 0.3rem;
+    border-radius: 0.8rem;
+  }
+
+  .main {
+    margin-top: 6vh;
+    padding: 0.8rem;
   }
 
   .main h1 {
-    font-size: 24px;
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
   }
 
   .main h2 {
-    font-size: 20px;
+    font-size: clamp(1rem, 3vw, 1.2rem);
   }
 
   .col-md-6 {
-    font-size: 14px;
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+
+  #guides {
+    max-height: 8rem;
   }
 
   .download-btn {
-    padding: 5px 10px;
-    font-size: 10px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+    min-width: 8rem;
   }
-}
-
-/* Logout gomb */
-#logoutButton {
-  border-radius: 35px;
 }
