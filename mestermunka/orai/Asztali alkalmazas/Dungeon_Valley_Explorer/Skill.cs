@@ -50,5 +50,31 @@ namespace Dungeon_Valley_Explorer
         {
             SpecialEffects = new List<SpecialEffect>();
         }
+
+        public static List<Hero> ExplorationSkills(Hero hero, Skill skill, List<Hero> party, Hero target, bool targeting)
+        {
+            if (targeting)
+            {
+                //party wide
+                switch (skill.SkillName)
+                {
+                    default:
+                        break;
+                }
+                party.Where(x => x.DisplayName == hero.DisplayName).Select(x => x).First().SP -= skill.SPCost;
+            }
+            else
+            {
+                //single
+                switch (skill.SkillName)
+                {
+                    default:
+                        break;
+                }
+                party.Where(x => x.DisplayName == hero.DisplayName).Select(x => x).First().SP -= skill.SPCost;
+            }
+
+            return party;
+        }
     }
 }

@@ -6205,16 +6205,32 @@ namespace Dungeon_Valley_Explorer
             {
                 if (explorationSkills.Select(x => x.SkillName).Contains(tbInputArea.Text) == true)
                 {
-                    explorationSkill = explorationSkills.Where(x => x.SkillName == tbInputArea.Text).Select(x => x).First();
-                    ExplorationSkillsTargets();
+                    if (explorationSkillsHero.SP - explorationSkills.Where(x => x.SkillName == tbInputArea.Text).Select(x => x).First().SPCost >= 0)
+                    {
+                        explorationSkill = explorationSkills.Where(x => x.SkillName == tbInputArea.Text).Select(x => x).First();
+                        ExplorationSkillsTargets();
+                    }
+                    else
+                    {
+                        MessageBox.Show("You don't have enough SP to use this skill.");
+                        btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseSkill);
+                    }
                 }
                 else
                 {
                     try
                     {
                         int index = Convert.ToInt32(tbInputArea.Text) - 2;
-                        explorationSkill = explorationSkills[index];
-                        ExplorationSkillsTargets();
+                        if (explorationSkillsHero.SP - explorationSkills[index].SPCost >= 0)
+                        {
+                            explorationSkill = explorationSkills[index];
+                            ExplorationSkillsTargets();
+                        }
+                        else
+                        {
+                            MessageBox.Show("You don't have enough SP to use this skill.");
+                            btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseSkill);
+                        }
                     }
                     catch
                     {
@@ -6235,6 +6251,7 @@ namespace Dungeon_Valley_Explorer
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbOptions.Items.Add("1. Cancel");
+            explorationSkillMagicTarget = new Hero();
             if (explorationSkill.Range == "None")
             {
                 lbOptions.Items.Add($"2. {explorationSkillsHero.DisplayName}");
@@ -6257,7 +6274,7 @@ namespace Dungeon_Valley_Explorer
             }
             else
             {
-
+                ExplorationSkillsUseSkill();
             }
         }
 
@@ -6280,16 +6297,32 @@ namespace Dungeon_Valley_Explorer
             {
                 if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true)
                 {
-                    explorationSkillMagicTarget = party.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First();
-
+                    if (lbOptions.Items.Contains($"2. {tbInputArea.Text}") || lbOptions.Items.Contains($"3. {tbInputArea.Text}") || lbOptions.Items.Contains($"4. {tbInputArea.Text}") || lbOptions.Items.Contains($"5. {tbInputArea.Text}"))
+                    {
+                        explorationSkillMagicTarget = party.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First();
+                        ExplorationSkillsUseSkill();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseTarget);
+                    }
                 }
                 else
                 {
                     try
                     {
                         int index = Convert.ToInt32(tbInputArea.Text) - 2;
-                        explorationSkillMagicTarget = party[index];
-
+                        if (lbOptions.Items.Contains($"{tbInputArea.Text}. {party[index].DisplayName}"))
+                        {
+                            explorationSkillMagicTarget = party[index];
+                            ExplorationSkillsUseSkill();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                            btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseTarget);
+                        }
                     }
                     catch
                     {
@@ -6303,6 +6336,23 @@ namespace Dungeon_Valley_Explorer
                 MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
                 btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseTarget);
             }
+        }
+
+        public void ExplorationSkillsUseSkill()
+        {
+            tbInputArea.Text = "";
+            if (explorationSkillMagicTarget.Passives.Count == 0)
+            {
+                bool targeting = true;
+                Skill.ExplorationSkills(explorationSkillsHero, explorationSkill, party, explorationSkillMagicTarget, targeting);
+            }
+            else
+            {
+                bool targeting = false;
+                Skill.ExplorationSkills(explorationSkillsHero, explorationSkill, party, explorationSkillMagicTarget, targeting);
+            }
+            lbOptions.Items.Clear();
+            ExplorationOptions();
         }
 
         //Exploration Skills ends here ---------------------------------------------------------------------------------
