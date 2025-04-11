@@ -127,6 +127,13 @@ namespace Dungeon_Valley_Explorer
         int secretRoomChance = 0;
         int fightRoomChance = 0;
         bool canDungeonRest = true;
+        Hero explorationSkillsHero = new Hero();
+        List<Skill> explorationSkills = new List<Skill>();
+        Skill explorationSkill = new Skill();
+        Hero explorationMagicsHero = new Hero();
+        List<Magic> explorationMagics = new List<Magic>();
+        Magic explorationMagic = new Magic();
+        Hero explorationSkillMagicTarget = new Hero();
         //Dungeon Exploration variables --------------------------------------------------------------------------------
         public MainWindow()
         {
@@ -5974,8 +5981,10 @@ namespace Dungeon_Valley_Explorer
                     btInput.Click += new RoutedEventHandler(ExplorationChooseOption);
                     break;
                 case "4":
+                    ExplorationSkills();
                     break;
                 case "Skills":
+                    ExplorationSkills();
                     break;
                 case "5":
                     break;
@@ -6078,6 +6087,7 @@ namespace Dungeon_Valley_Explorer
                         if (hero.SP > hero.MaxSP) hero.SP = hero.MaxSP;
                         canDungeonRest = false;
                     }
+                    btInput.Click += new RoutedEventHandler(ExplorationChooseOption);
                 }
                 else
                 {
@@ -6097,7 +6107,202 @@ namespace Dungeon_Valley_Explorer
 
         public void ExplorationSkills()
         {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < party.Count; i++)
+            {
+                lbOptions.Items.Add($"{i+2}. {party[i].DisplayName}");
+            }
+            lbDisplay.Items.Add("GAME: Choose a party member to use a skill with.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseHero);
+        }
 
+        public void ExplorationSkillsChooseHero(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(ExplorationSkillsChooseHero);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: Choosing a hero here will decide whose skills you have access to as well as who will use their SP.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseHero);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                tbInputArea.Text = "";
+                lbOptions.Items.Clear();
+                ExplorationOptions();
+            }
+            else if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
+            {
+                if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true)
+                {
+                    explorationSkillsHero = party.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First();
+                    ExplorationSkillsSkills();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        explorationSkillsHero = party[index];
+                        ExplorationSkillsSkills();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseHero);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseHero);
+            }
+        }
+
+        public void ExplorationSkillsSkills()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < explorationSkillsHero.Skills.Count; i++)
+            {
+                if (explorationSkillsHero.Skills[i].Range == "None" || explorationSkillsHero.Skills[i].Range == "Party" || explorationSkillsHero.Skills[i].Range == "Other")
+                {
+                    explorationSkills.Add(explorationSkillsHero.Skills[i]);
+                    lbOptions.Items.Add($"{explorationSkills.Count + 1}. {explorationSkills.Last().SkillName}");
+                }
+            }
+            lbDisplay.Items.Add("GAME: Choose a skill to use or if is the 'Cancel' only option choose a different party member.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseSkill);
+        }
+
+        public void ExplorationSkillsChooseSkill(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(ExplorationSkillsChooseSkill);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: Choosing a skill here will decide what skill you will use on a chosen target(s) or the whole party.");
+                foreach (Skill skill in explorationSkills)
+                {
+                    lbDisplay.Items.Add($"{skill.SkillName}: cost: {skill.SPCost}SP Range: {skill.Range} Description: {skill.Description}");
+                }
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseSkill);
+            }
+            else if (tbInputArea.Text == "1" ||tbInputArea.Text == "Cancel")
+            {
+                explorationSkills.Clear();
+                ExplorationSkills();
+            }
+            else if (explorationSkills.Select(x => x.SkillName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (explorationSkills.Select(x => x.SkillName).Contains(tbInputArea.Text) == true)
+                {
+                    explorationSkill = explorationSkills.Where(x => x.SkillName == tbInputArea.Text).Select(x => x).First();
+                    ExplorationSkillsTargets();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        explorationSkill = explorationSkills[index];
+                        ExplorationSkillsTargets();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseSkill);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseSkill);
+            }
+        }
+
+        public void ExplorationSkillsTargets()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            if (explorationSkill.Range == "None")
+            {
+                lbOptions.Items.Add($"2. {explorationSkillsHero.DisplayName}");
+                lbDisplay.Items.Add("GAME: Choose a target to use the skill on.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseTarget);
+            }
+            else if (explorationSkill.Range == "Other")
+            {
+                for (int i = 0; i < party.Count; i++)
+                {
+                    if (party[i].DisplayName != explorationSkillsHero.DisplayName)
+                    {
+                        lbOptions.Items.Add($"{i + 2}. {party[i].DisplayName}");
+                    }
+                }
+                lbDisplay.Items.Add("GAME: Choose a target to use the skill on.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseTarget);
+            }
+            else
+            {
+
+            }
+        }
+
+        public void ExplorationSkillsChooseTarget(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(ExplorationSkillsChooseTarget);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: Choosing a target here will use the selected skill on the target.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseTarget);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                explorationSkills.Clear();
+                ExplorationSkillsSkills();
+            }
+            else if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
+            {
+                if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true)
+                {
+                    explorationSkillMagicTarget = party.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First();
+
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        explorationSkillMagicTarget = party[index];
+
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseTarget);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(ExplorationSkillsChooseTarget);
+            }
         }
 
         //Exploration Skills ends here ---------------------------------------------------------------------------------
