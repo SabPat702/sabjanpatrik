@@ -8,8 +8,26 @@ const LoginSignup = () => {
     const [action, setAction] = useState(location.pathname === "/Register" ? "register" : "login");
 
     useEffect(() => {
-        setAction(location.pathname === "/Register" ? "register" : "login");
-    }, [location.pathname]);
+        const storedUserId = localStorage.getItem('userId');
+        const storedUsername = localStorage.getItem('username');
+    
+        console.log('Betöltött username:', storedUsername); // Hibakeresés
+    
+        if (!storedUserId) {
+            const newId = generateRandomId();
+            localStorage.setItem('userId', newId);
+            setUserId(newId);
+        } else {
+            setUserId(storedUserId);
+        }
+    
+        if (storedUsername) {
+            setUsername(storedUsername);
+        } else {
+            setUsername("Vendég");
+            localStorage.setItem('username', 'Vendég'); // Biztosítjuk, hogy a localStorage is frissül
+        }
+    }, []);
 
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -19,6 +37,8 @@ const LoginSignup = () => {
     const [passwordStrength, setPasswordStrength] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
+    const [loginUsername, setLoginUsername] = useState('');
+    const [loginPassword, setLoginPassword] = useState('');
     const [showModal, setShowModal] = useState(false);
 
     const registerLink = () => setAction('register');
@@ -65,33 +85,33 @@ const LoginSignup = () => {
 
     const handleLoginSubmit = (e) => {
         e.preventDefault();
-
-        const username = e.target.username.value;
-        const password = e.target.password.value;
-
+    
+        console.log('Login - Username:', loginUsername); // Hibakeresés
+    
         fetch('http://localhost:3001/login', {
-            method: 'POST',  // POST metódust használunk
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })  // A felhasználónevet és jelszót küldjük a szervernek
+            body: JSON.stringify({ username: loginUsername, password: loginPassword })
         })
-        .then(response => response.json())  // Az eredményt JSON formátumban dolgozzuk fel
-        .then(data => {
-            console.log(data);  // A válasz naplózása
-        
-            if (data.message === "Login successful!") {
-                setSuccessMessage("Login successful! Redirecting...");
-                setShowModal(true); // Modal megjelenítése
-                setTimeout(() => {
-                    window.location.href = "/DungeonValleyExplorer";  // Átirányítás másik oldalra
-                }, 2000);
-            } else {
-                setErrorMessage("Invalid username or password!");  // Hibaüzenet megjelenítése
-                console.error("Login failed:", data.message);
-            }
-        })
-        .catch(() => {
-            setErrorMessage("Error during login.");  // Hálózati hiba esetén
-        });        
+            .then(response => response.json())
+            .then(data => {
+                console.log('Login - Backend response:', data);
+                if (data.message === "Login successful!") {
+                    setSuccessMessage("Login successful! Redirecting...");
+                    setUsername(loginUsername);
+                    localStorage.setItem('username', loginUsername); // Felhasználónév mentése localStorage-ba
+                    setShowModal(true);
+                    setTimeout(() => {
+                        window.location.href = "/DungeonValleyExplorer";
+                    }, 2000);
+                } else {
+                    setErrorMessage("Invalid username or password!");
+                    console.error("Login failed:", data.message);
+                }
+            })
+            .catch(() => {
+                setErrorMessage("Error during login.");
+            });
     };
 
     const handlePasswordChange = (e) => {
@@ -160,38 +180,52 @@ const LoginSignup = () => {
     return (
         <div className="login-signup">
             <div className={`wrapper ${action}`}>    
-                <div className={`form-box login ${action === 'login' ? 'show' : ''}`}>
-                    <form onSubmit={handleLoginSubmit}>
-                        <h1>Login</h1>
-                        <div className="input-box">
-                            <input type="text" name="username" placeholder="Username" required />
-                        </div>
-                        <div className="input-box password-box">
-                            <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" required />
-                            <span className="toggle-icon" onClick={() => setShowPassword(!showPassword)}>
-                                {showPassword ? <FaEyeSlash /> : <FaEye />}
-                            </span>
-                        </div>
-                        <button type="submit">Login</button>
-                        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-                        <div className="register-link">
-                            <p>Don't have an account? <a href="#" onClick={registerLink}>Register</a></p>
-                        </div>   
-                    </form>
-                    {showModal && (
-                        <div className="modal-overlay">
-                            <div className="modal-content">
-                                <h2>Dear {username}, Welcome back!</h2>
-                                <button onClick={() => setShowModal(false)}>Close</button>
-                            </div>
-                        </div>
-                    )}
-                    {successMessage && (
-                        <div className="success-message">
-                            <p>{successMessage}</p>
-                        </div>
-                    )}
-                </div>
+            <div className={`form-box login ${action === 'login' ? 'show' : ''}`}>
+    <form onSubmit={handleLoginSubmit}>
+        <h1>Login</h1>
+        <div className="input-box">
+            <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                value={loginUsername}
+                onChange={(e) => setLoginUsername(e.target.value)}
+                required
+            />
+        </div>
+        <div className="input-box password-box">
+            <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
+                required
+            />
+            <span className="toggle-icon" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+        </div>
+        <button type="submit">Login</button>
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+        <div className="register-link">
+            <p>Don't have an account? <a href="#" onClick={registerLink}>Register</a></p>
+        </div>
+    </form>
+    {showModal && (
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <h2>Dear {username}, Welcome back!</h2>
+                <button onClick={() => setShowModal(false)}>Close</button>
+            </div>
+        </div>
+    )}
+    {successMessage && (
+        <div className="success-message">
+            <p>{successMessage}</p>
+        </div>
+    )}
+</div>
 
                 <div className={`form-box register ${action === 'register' ? 'show' : ''}`}>
                     <form onSubmit={handleRegisterSubmit}>

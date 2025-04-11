@@ -3,13 +3,10 @@ import cors from 'cors';
 import mysql2 from 'mysql2';
 import bodyParser from 'body-parser';
 import bcrypt from 'bcrypt';
-/*
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
-dotenv.config();  // Betölti az .env fájlt
-*/
+
 const app = express();
 const saltRounds = 5;
+
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -18,12 +15,12 @@ app.get("/", (req, res) => {
 });
 
 const db = mysql2.createConnection({
-  user: "sabpat702",
-  host: "10.3.1.65",
-  password: "72587413702",
-  database:"sabpat702",
-  port: 3306
-})
+    user: "sabpat702",
+    host: "10.3.1.65",
+    password: "72587413702",
+    database: "sabpat702",
+    port: 3306
+});
 
 db.connect(err => {
     if (err) {
@@ -32,32 +29,6 @@ db.connect(err => {
         console.log('Connected to MySQL');
     }
 });
-
-/*
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER, 
-    pass: process.env.EMAIL_PASS, 
-  },
-});
-
-  // Test Nodemailer setup
-  transporter.verify((error, success) => {
-    if (error) {
-      console.error('Nodemailer configuration error:', error);
-    } else {
-      console.log('Nodemailer is ready to send emails', success);
-    }
-  });
-  const db = mysql2.createConnection({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
-*/
 
 // Felhasználók lekérdezése
 app.get('/signup', (req, res) => {
@@ -95,85 +66,57 @@ app.post('/signup', (req, res) => {
 
 // Bejelentkezés
 app.post('/login', (req, res) => {
-  const { username, password } = req.body;
+    const { username, password } = req.body;
 
-  // Ellenőrizzük, hogy mindkét mező (username és password) meg van-e adva
-  if (!username || !password) {
-      return res.status(400).json({ message: "Username and password are required!" });
-  }
+    if (!username || !password) {
+        return res.status(400).json({ message: "Username and password are required!" });
+    }
 
-  // SQL lekérdezés a felhasználó keresésére
-  const query = 'SELECT * FROM user WHERE Username = ?';
-  db.query(query, [username], (err, results) => {
-      if (err) {
-          console.error("Database error:", err);
-          return res.status(500).json({ message: "Error during login." });
-      }
+    const query = 'SELECT * FROM user WHERE Username = ?';
+    db.query(query, [username], (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ message: "Error during login." });
+        }
 
-      // Ha a felhasználó nem található
-      if (results.length === 0) {
-          return res.status(400).json({ message: "Invalid username or password." });
-      }
+        if (results.length === 0) {
+            return res.status(400).json({ message: "Invalid username or password." });
+        }
 
-      // Ellenőrizzük a jelszót a bcrypt segítségével
-      bcrypt.compare(password, results[0].Password, (err, match) => {
-          if (err) {
-              console.error("Bcrypt error:", err);
-              return res.status(500).json({ message: "Error while checking password." });
-          }
+        bcrypt.compare(password, results[0].Password, (err, match) => {
+            if (err) {
+                console.error("Bcrypt error:", err);
+                return res.status(500).json({ message: "Error while checking password." });
+            }
 
-          // Ha a jelszó nem egyezik
-          if (!match) {
-              return res.status(400).json({ message: "Invalid username or password." });
-          }
+            if (!match) {
+                return res.status(400).json({ message: "Invalid username or password." });
+            }
 
-          // Ha sikeres a bejelentkezés
-          res.status(200).json({ message: "Login successful!" });
-      });
-  });
+            res.status(200).json({ message: "Login successful!" });
+        });
+    });
 });
 
+// Felhasználó törlése
+app.delete('/users/:username', (req, res) => {
+    const { username } = req.params;
 
-/*
-app.post('/forgot-password', (req, res) => {
-    const { email } = req.body;
-  
-    if (!email) {
-      return res.status(400).json({ message: 'Email is required!' });
-    }
-  
-    // Check if the email exists in the database
-    const query = 'SELECT * FROM user WHERE Email = ?';
-    db.query(query, [email], (err, results) => {
-      if (err) {
-        console.error('Database error:', err);
-        return res.status(500).json({ message: 'Error checking email.' });
-      }
-  
-      if (results.length === 0) {
-        return res.status(404).json({ message: 'Email not found.' });
-      }
-  
-      // Email options
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: email,
-        subject: 'Password Reset Request',
-        text: `Hello,\n\nYou requested a password reset. Click this link to reset your password: http://localhost:3000/reset-password?email=${email}\n\nIf you didn’t request this, ignore this email.`,
-      };
-  
-      // Send the email
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.error('Error sending email:', error);
-          return res.status(500).json({ message: 'Error sending reset email.' });
+    const query = 'DELETE FROM user WHERE Username = ?';
+    db.query(query, [username], (err, result) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).json({ message: 'Error during deletion.' });
         }
-        console.log('Reset email sent:', info.response);
-        res.status(200).json({ message: 'Reset email sent successfully!' });
-      });
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        res.status(200).json({ message: 'User successfully deleted!' });
     });
-  });
-  */
+});
+
 app.listen(3001, () => {
     console.log("Server is running on port 3001");
 });
