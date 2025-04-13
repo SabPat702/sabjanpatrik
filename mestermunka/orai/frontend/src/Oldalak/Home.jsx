@@ -140,6 +140,11 @@ const Home = () => {
                                         </a>
                                     </li>
                                     <li>
+                                    <a className="dropdown-item" href="#">
+                                            Chat
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a className="dropdown-item" href="#" onClick={handleDeleteAccount}>
                                             Fiók törlése
                                         </a>

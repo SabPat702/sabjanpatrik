@@ -81,4 +81,29 @@ app.delete('/users/:username', (req, res) => {
     });
 });
 
+// Mock in-memory adat (helyettesítsd DB-vel)
+let posts = [];
+let nextId = 1;
+
+app.get('/chat', (req, res) => {
+    res.json(posts);
+});
+
+app.post('/chat', (req, res) => {
+    const { author, text } = req.body;
+    const newPost = { id: nextId++, author, text, reports: 0 };
+    posts.push(newPost);
+    res.status(201).json({ message: "Post created" });
+});
+
+app.post('/chat/:id/report', (req, res) => {
+    const post = posts.find(p => p.id === parseInt(req.params.id));
+    if (post) {
+        post.reports += 1;
+        res.json({ message: "Reported" });
+    } else {
+        res.status(404).json({ message: "Post not found" });
+    }
+});
+
 app.listen(3001, () => console.log("Server is running on port 3001"));
