@@ -5,7 +5,7 @@ import '../css/Web.css';
 import DungeonBook from './DungeonBook';
 
 const Home = () => {
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState('');
     const [userId, setUserId] = useState(null);
     const [isAccountVisible, setIsAccountVisible] = useState(false);
 
@@ -17,7 +17,7 @@ const Home = () => {
         const storedUserId = localStorage.getItem('userId');
         const storedUsername = localStorage.getItem('username');
 
-        console.log('Betöltött username:', storedUsername);
+        console.log('Home - Betöltött username:', storedUsername, 'Betöltött userId:', storedUserId);
 
         if (!storedUserId) {
             const newId = generateRandomId();
@@ -27,60 +27,66 @@ const Home = () => {
             setUserId(storedUserId);
         }
 
-        if (storedUsername && storedUsername !== "Vendég") {
+        if (storedUsername && storedUsername.trim() !== '') {
             setUsername(storedUsername);
         } else {
-            setUsername("Vendég");
-            localStorage.setItem('username', "Vendég"); // Biztosítjuk a konzisztenciát
+            setUsername('');
+            localStorage.removeItem('username'); // Tisztítjuk a localStorage-t
         }
     }, []);
 
     const handleDeleteAccount = async () => {
-        console.log('handleDeleteAccount called with username:', username); // Hibakeresés
-        const confirmDelete = window.confirm("Biztosan törölni szeretnéd a fiókodat?");
-        if (confirmDelete) {
-            try {
-                console.log('Törlési kérés username:', username);
-                if (!username || username === "Vendég") {
-                    throw new Error('Nincs érvényes felhasználónév a törléshez.');
+        console.log('handleDeleteAccount - Jelenlegi username:', username);
+        if (!username || username.trim() === '') {
+            alert('Nincs érvényes felhasználónév a törléshez!');
+            console.error('Nincs érvényes felhasználónév:', username);
+            return;
+        }
+
+        const confirmDelete = window.confirm(`Biztosan törölni szeretnéd a "${username}" fiókot?`);
+        if (!confirmDelete) {
+            return;
+        }
+
+        try {
+            console.log('DELETE kérés URL:', `http://localhost:3001/users/${encodeURIComponent(username)}`);
+            const response = await fetch(`http://localhost:3001/users/${encodeURIComponent(username)}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+            console.log('Backend válasz:', data);
+
+            if (!response.ok) {
+                if (response.status === 404) {
+                    throw new Error('Felhasználó nem található.');
+                } else {
+                    throw new Error(data.message || 'Hiba történt a fiók törlése közben.');
                 }
-                console.log('DELETE URL:', `http://localhost:3001/users/${encodeURIComponent(username)}`);
-                const response = await fetch(`http://localhost:3001/users/${encodeURIComponent(username)}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                const data = await response.json();
-                console.log('Backend válasz:', data);
-
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        throw new Error('Felhasználó nem található.');
-                    } else {
-                        throw new Error(data.message || 'Hiba történt a fiók törlése közben.');
-                    }
-                }
-
-                alert("Fiók sikeresen törölve.");
-                localStorage.removeItem('userId');
-                localStorage.removeItem('username');
-                setUsername("");
-                setUserId(null);
-                window.location.href = "/";
-            } catch (error) {
-                console.error('Hiba a fiók törlése közben:', error);
-                alert(`Hiba történt: ${error.message}`);
             }
+
+            alert('Fiók sikeresen törölve!');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('username');
+            setUsername('');
+            setUserId(null);
+            window.location.href = "/Login";
+        } catch (error) {
+            console.error('Hiba a fiók törlése közben:', error);
+            alert(`Hiba történt: ${error.message}`);
         }
     };
 
     const handleLogout = () => {
-        alert("Sikeres kijelentkezés!");
+        alert('Sikeres kijelentkezés!');
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
-        window.location.href = "/";
+        setUsername('');
+        setUserId(null);
+        window.location.href = "/Login";
     };
 
     const handleEditProfile = () => {
@@ -122,23 +128,27 @@ const Home = () => {
                         <ul className="dropdown-menu" aria-labelledby="userMenuButton">
                             <li>
                                 <a className="dropdown-item" href="#">
-                                    <strong>{username}</strong> <br />
-                                    User ID: {userId}
+                                    <strong>{username || 'Felhasználó'}</strong> <br />
+                                    Felhasználó ID: {userId || 'N/A'}
                                 </a>
                             </li>
-                            <li>
-                                <a className="dropdown-item" href="#" onClick={handleEditProfile}>
-                                    Edit Profile
-                                </a>
-                            </li>
+                            {username && username.trim() !== '' && (
+                                <>
+                                    <li>
+                                        <a className="dropdown-item" href="#" onClick={handleEditProfile}>
+                                            Profil szerkesztése
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a className="dropdown-item" href="#" onClick={handleDeleteAccount}>
+                                            Fiók törlése
+                                        </a>
+                                    </li>
+                                </>
+                            )}
                             <li>
                                 <a className="dropdown-item" href="#" onClick={handleLogout}>
-                                    Log Out
-                                </a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#" onClick={handleDeleteAccount}>
-                                    Delete Account
+                                    Kijelentkezés
                                 </a>
                             </li>
                         </ul>
@@ -147,18 +157,18 @@ const Home = () => {
             </div>
 
             <div className="castle-background">
-                <img src="/AiSlop.jpg" alt="Castle" id="castle" />
+                <img src="/AiSlop.jpg" alt="Kastély" id="castle" />
             </div>
 
             <div className="main">
-                <h1>Welcome to Dungeon Valley Explorer</h1>
-                <h2>Your journey begins here.</h2>
+                <h1>Üdvözöllek a Dungeon Valley Explorerben</h1>
+                <h2>Itt kezdődik az utazásod.</h2>
                 <br />
                 <br />
                 <div className="row">
                     <div className="download-section">
                         <button className="download-btn" onClick={handleDownload}>
-                            Download Dungeon Valley Explorer
+                            Dungeon Valley Explorer letöltése
                         </button>
                     </div>
                     <DungeonBook />
