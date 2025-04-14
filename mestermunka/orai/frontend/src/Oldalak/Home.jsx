@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useNavigate } from 'react-router-dom'; // React Router navigáláshoz
 import '../css/Web.css';
 import DungeonBook from './DungeonBook';
 
@@ -8,6 +9,7 @@ const Home = () => {
     const [username, setUsername] = useState("");
     const [userId, setUserId] = useState(null);
     const [isAccountVisible, setIsAccountVisible] = useState(false);
+    const navigate = useNavigate(); // Hook a navigáláshoz
 
     const generateRandomId = () => {
         return Math.floor(Math.random() * 1000000);
@@ -100,6 +102,11 @@ const Home = () => {
         window.URL.revokeObjectURL(url);
     };
 
+    // Handle chat functionality - navigate to Chat page
+    const handleChat = () => {
+        navigate('/chat'); // Navigálás a /chat oldalra
+    };
+
     return (
         <>
             <div className="header">
@@ -129,6 +136,11 @@ const Home = () => {
                             <li>
                                 <a className="dropdown-item" href="#" onClick={handleEditProfile}>
                                     Edit Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a className="dropdown-item" href="#" onClick={handleChat}>
+                                    Chat
                                 </a>
                             </li>
                             <li>

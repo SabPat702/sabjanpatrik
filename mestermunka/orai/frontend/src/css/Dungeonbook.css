@@ -1,16 +1,16 @@
 /* ========== 1. Alap konténer és háttér ========== */
 .dungeon-book-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    min-height: 100vh;
-    background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), gray  ;
-    background-size: 10vw;
-    background-blend-mode: overlay;
+    display: flex;      /* A Flexbox elrendezés aktiválása */
+    justify-content: center;        /* Középre igazítja a tartalmat horizontálisan */
+    align-items: center;        /* Középre igazítja a tartalmat vertikálisan */
+    flex-direction: column;     /* A tartalmat oszlopos irányban rendezi el (vertikálisan) */
+    min-height: 100vh;          /* A konténer legalább a teljes viewport magasságát kitölti */
+    background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), gray  ;   /* Háttérkép és szürke szín */
+    background-size: 10vw;      /* A háttérkép méretének beállítása 10vw-ra (a viewport szélességének 10%-a) */
+    background-blend-mode: overlay;     /* Háttérkeverés (overlay mód), hogy a háttér színének és mintázatának hatása egyesüljön */
     font-family: 'Cinzel', serif;
-    padding: 20px;
-    perspective: 1500px;
+    padding: 20px;                  /* A tartalom körüli 20px-es térköz biztosítása */
+    perspective: 1500px;            /* A térhatás beállítása a gyermekelemekhez */
 }
 
 /* ========== 2. Könyv (book) és borító (cover) ========== */
@@ -18,22 +18,27 @@
     width: 80%;
     max-width: 550px;
     height: 680px !important;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 1s ease;
-    margin-left: 150px;
+    position: relative;     /* A könyv pozíciója relatív, így a gyermekelemek (például animációk) pontosan elhelyezhetők */
+    transform-style: preserve-3d;       /* A 3D transformációk alkalmazása, hogy a könyv 3D-ben jelenjen meg */
+    transition: transform 1s ease;      /* A könyv transzformációját egy másodperces animációval simítjuk (ease időzítéssel) */
+    margin-left: 150px;                 /*A könyvet 150px-től kezdve helyezzük el balra */
 }
 
 .book.closed {
     
-    transform: rotateY(-30deg) rotateX(10deg) scale(0.8);
-    animation: closeBook 0.3s ease-in-out;
+    transform: rotateY(-30deg) rotateX(10deg) scale(0.8);       /* -30 fokkal forgatja el a könyvet a Y tengely körül (balra) */
+    /* 10 fokkal forgatja el a könyvet az X tengely körül (fel és le) */
+    /* 0.8-as skálázással csökkenti a könyv méretét 80%-ra */
+    animation: closeBook 0.3s ease-in-out;                  /* Az animáció neve 'closeBook', 0.3 másodpercig tart, simán (ease-in-out) kezdődik és végződik */
     
 }
 
 .book.open {
-    transform: rotateY(0deg) rotateX(15deg);
-    animation: openBook 0.6s ease-in-out forwards;
+    transform: rotateY(0deg) rotateX(15deg);        /* A könyv nem lesz elforgatva a Y tengely körül (0 fok), tehát a könyv nem elforgott balra vagy jobbra */
+    /* 15 fokkal elforgatja a könyvet az X tengely körül, így a könyv egy kicsit feljebb lesz elhelyezve, mintha a tetejét néznénk */
+    animation: openBook 0.6s ease-in-out forwards;      /* Az animáció neve 'openBook'. Az animáció 0.6 másodpercig tart, */
+    /* és az 'ease-in-out' időzítéssel indul és lassul, hogy simább mozgást biztosítson. */
+   /* Az 'forwards' érték biztosítja, hogy az animáció végén a könyv az utolsó állapotában maradjon (tehát nem tér vissza az eredeti állapotába) */
 }
 
 /* Book Inner */
@@ -41,10 +46,10 @@
     display: flex;
     width: 100%;
     height: 100%;
-    background: none;
-    position: relative;
-    overflow: hidden;
-    transform-style: preserve-3d;
+    background: none;         /*Nincs háttér*/ 
+    position: relative;     /* A pozíció relatív, így a gyermekelemeket a könyv belső terében relatívan tudjuk pozicionálni */
+    overflow: hidden;        /* Az elemek, amelyek kívül esnek ezen az elem határain, el lesznek rejtve */
+    transform-style: preserve-3d;       /* A könyv belső elemeit térben tudjuk elhelyezni (pl. oldalak forgatásához) */
 }
 
 .book-cover {
@@ -119,11 +124,13 @@
 }
 
 .page p {
+    font-family: 'Times New Roman', Times, serif;
     white-space: pre-wrap;
     word-wrap: break-word;
-    color: black;
+    color:black;
     text-align: left;
-    font-size: 16.5px;
+    font-size: 17px;
+    
 }
 
 /* Lapozási sarkok */
