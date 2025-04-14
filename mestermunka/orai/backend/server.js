@@ -11,10 +11,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const db = mysql2.createConnection({
-    user: "root",
-    host: "127.0.0.1",
-    password: "",
-    database: "jatek",
+    user: "sabpat702",
+    host: "10.3.1.65",
+    password: "72587413702",
+    database: "sabpat702",
     port: 3306
 });
 
@@ -103,6 +103,31 @@ app.post('/chat/:id/report', (req, res) => {
         res.json({ message: "Reported" });
     } else {
         res.status(404).json({ message: "Post not found" });
+    }
+});
+
+// PUT - szerkesztés
+app.put('/chat/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const { text } = req.body;
+    const post = posts.find((p) => p.id === id);
+    if (post) {
+        post.text = text;
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+});
+
+// DELETE - törlés
+app.delete('/chat/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const index = posts.findIndex((p) => p.id === id);
+    if (index !== -1) {
+        posts.splice(index, 1);
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
     }
 });
 

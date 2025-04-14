@@ -6,11 +6,12 @@ const ChatPage = () => {
     const [posts, setPosts] = useState([]);
     const [newPost, setNewPost] = useState('');
     const [loading, setLoading] = useState(false);
+    const [editingPost, setEditingPost] = useState(null);
+    const [menuOpenId, setMenuOpenId] = useState(null); // új: megnyitott menü azonosító
     const username = localStorage.getItem('username') || 'Vendég';
     const navigate = useNavigate();
-    const postsEndRef = useRef(null); // Referencia az utolsó bejegyzéshez
+    const postsEndRef = useRef(null);
 
-    // Automatikus görgetés az új üzenetekhez
     const scrollToBottom = () => {
         postsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -33,26 +34,51 @@ const ChatPage = () => {
     }, []);
 
     useEffect(() => {
-        scrollToBottom(); // Görgetés az új üzenetekhez, ha új bejegyzés érkezik
+        scrollToBottom();
     }, [posts]);
 
     const handlePost = async () => {
         if (!newPost.trim()) return;
 
         try {
-            const res = await fetch('http://localhost:3001/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ author: username, text: newPost }),
-            });
-
-            if (res.ok) {
-                setNewPost('');
-                fetchPosts();
+            if (editingPost) {
+                await fetch(`http://localhost:3001/chat/${editingPost.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: newPost }),
+                });
+                setEditingPost(null);
+            } else {
+                await fetch('http://localhost:3001/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ author: username, text: newPost }),
+                });
             }
+
+            setNewPost('');
+            fetchPosts();
         } catch (error) {
             console.error('Hiba a bejegyzés küldésekor:', error);
         }
+    };
+
+    const handleDelete = async (postId) => {
+        if (!window.confirm('Biztosan törlöd ezt a bejegyzést?')) return;
+        try {
+            await fetch(`http://localhost:3001/chat/${postId}`, {
+                method: 'DELETE',
+            });
+            fetchPosts();
+        } catch (error) {
+            console.error('Hiba a törlés során:', error);
+        }
+    };
+
+    const handleEdit = (post) => {
+        setEditingPost(post);
+        setNewPost(post.text);
+        setMenuOpenId(null); // Menü becsukása
     };
 
     const handleReport = async (postId) => {
@@ -64,6 +90,10 @@ const ChatPage = () => {
         } catch (error) {
             console.error('Hiba a jelentés során:', error);
         }
+    };
+
+    const toggleMenu = (postId) => {
+        setMenuOpenId((prevId) => (prevId === postId ? null : postId));
     };
 
     return (
@@ -85,27 +115,43 @@ const ChatPage = () => {
                 ) : (
                     posts.map((post) => (
                         <div key={post.id} className="post">
-                            <p>
-                                <strong>{post.author}</strong>: {post.text}
-                            </p>
-                            <button onClick={() => handleReport(post.id)}>Report</button>
+                            <div className="post-content-wrapper">
+                                <p>
+                                    <strong>{post.author}</strong>: {post.text}
+                                </p>
+                                {post.author === username && (
+                                    <div className="post-menu-wrapper">
+                                        <button className="post-menu-button" onClick={() => toggleMenu(post.id)}>
+                                            ⋮
+                                        </button>
+                                        {menuOpenId === post.id && (
+                                            <div className="post-dropdown">
+                                                <div onClick={() => handleEdit(post)}>✏️ Szerkesztés</div>
+                                                <div onClick={() => handleDelete(post.id)}>🗑️ Törlés</div>
+                                                 
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     ))
                 )}
-                <div ref={postsEndRef} /> {/* Referencia az utolsó bejegyzéshez */}
+                <div ref={postsEndRef} />
             </div>
 
             <div className="post-form">
-                <h3>Írjon egy bejegyzést</h3>
+                <h3>{editingPost ? 'Bejegyzés szerkesztése' : 'Írjon egy bejegyzést'}</h3>
                 <textarea
                     value={newPost}
                     onChange={(e) => setNewPost(e.target.value)}
                     placeholder="Írjon valamit..."
-                    maxLength={500} // Karakterkorlát a visszaélések elkerülésére
+                    maxLength={1000}
                 />
-                <button onClick={handlePost}>Küldés</button>
+                <button onClick={handlePost}>{editingPost ? 'Mentés' : 'Küldés'}</button>
             </div>
         </div>
     );
 };
+
 export default ChatPage;
