@@ -141,6 +141,8 @@ namespace Dungeon_Valley_Explorer
         List<Monster> currentDungeonMonsters = new List<Monster>();
         List<Monster> currentDungeonEliteMonsters = new List<Monster>();
         Monster currentDungeonBossMonster = new Monster();
+        List<Monster> activeMonsters = new List<Monster>();
+        List<string> initiative = new List<string>();
         //Fighting Variables -------------------------------------------------------------------------------------------
         public MainWindow()
         {
@@ -6136,8 +6138,9 @@ namespace Dungeon_Valley_Explorer
                 }
                 else
                 {
-                    lbDisplay.Items.Add("GAME: You failed to rest. (When fighting is finished there will be a fight here)");
-                    //Fight needs to start here ------------------------------------------------------------------------
+                    lbDisplay.Items.Add("GAME: You were ambushed during your rest.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    FightingEnter();
                 }
             }
         }
@@ -6735,7 +6738,7 @@ namespace Dungeon_Valley_Explorer
                     {
                         lbDisplay.Items.Add($"GAME: You moved forwards to the final room and find a stronger hostile monster.");
                         lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
-
+                        FightingEnter();
                     }
                     else
                     {
@@ -6764,7 +6767,7 @@ namespace Dungeon_Valley_Explorer
                         {
                             lbDisplay.Items.Add($"GAME: You moved forwards to room {currentRoom} and find some hostile monsters.");
                             lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
-
+                            FightingEnter();
                         }
                     }
                 }
@@ -6786,7 +6789,62 @@ namespace Dungeon_Valley_Explorer
 
         //Fighting starts here -----------------------------------------------------------------------------------------
 
+        public void FightingEnter()
+        {
+            if (currentRoom == currentDungeon.Length)
+            {
+                activeMonsters.Clear();
+                activeMonsters.Add(currentDungeonBossMonster);
+                lbDisplay.Items.Add($"GAME: You encountered a(n) {activeMonsters[0].MonsterName}");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
 
+            }
+            else if (random.Next(1, currentDungeon.Length) >= currentDungeon.Length / 2 && currentDungeon.Length > 9)
+            {
+                //Elite fights will be implemented later
+
+            }
+            else
+            {
+                if (currentDungeon.Length <= 5)
+                {
+                    List<string> monsterNames = new List<string>();
+                    for (int i = 0; i < party.Count; i++)
+                    {
+                        Monster newMonster = currentDungeonMonsters[random.Next(0, currentDungeonMonsters.Count - 1)];
+                        monsterNames.Add(newMonster.MonsterName);
+                        if (monsterNames.Contains(newMonster.MonsterName))
+                        {
+
+                        }
+                    }
+                }
+                else if (currentDungeon.Length <= 10)
+                {
+                    List<string> monsterNames = new List<string>();
+                    for (int i = 0; i < party.Count + 1; i++)
+                    {
+
+                    }
+                }
+                else if (currentDungeon.Length <= 15)
+                {
+                    List<string> monsterNames = new List<string>();
+                    for (int i = 0; i < party.Count + 2; i++)
+                    {
+
+                    }
+                }
+                else
+                {
+                    List<string> monsterNames = new List<string>();
+                    for (int i = 0; i < party.Count + 3; i++)
+                    {
+
+                    }
+                }
+            }
+        }
 
         //Fighting ends here -------------------------------------------------------------------------------------------
 
