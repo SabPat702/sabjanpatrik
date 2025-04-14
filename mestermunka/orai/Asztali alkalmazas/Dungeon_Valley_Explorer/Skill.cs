@@ -50,5 +50,7 @@ namespace Dungeon_Valley_Explorer
         {
             SpecialEffects = new List<SpecialEffect>();
         }
+
+        
     }
 }

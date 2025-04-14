@@ -11,10 +11,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const db = mysql2.createConnection({
-    user: "sabpat702",
-    host: "10.3.1.65",
-    password: "72587413702",
-    database: "sabpat702",
+    user: "root",
+    host: "127.0.0.1",
+    password: "",
+    database: "jatek",
     port: 3306
 });
 
