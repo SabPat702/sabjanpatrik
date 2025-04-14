@@ -122,6 +122,7 @@ namespace Dungeon_Valley_Explorer
         //Dungeon Exploration variables --------------------------------------------------------------------------------
         Dungeon currentDungeon = new Dungeon();
         int currentRoom = 0;
+        int deepestRoom = 0;
         int emptyRoomChance = 0;
         int encounterRoomChance = 0;
         int secretRoomChance = 0;
@@ -135,6 +136,12 @@ namespace Dungeon_Valley_Explorer
         Magic explorationMagic = new Magic();
         Hero explorationSkillMagicTarget = new Hero();
         //Dungeon Exploration variables --------------------------------------------------------------------------------
+
+        //Fighting Variables -------------------------------------------------------------------------------------------
+        List<Monster> currentDungeonMonsters = new List<Monster>();
+        List<Monster> currentDungeonEliteMonsters = new List<Monster>();
+        Monster currentDungeonBossMonster = new Monster();
+        //Fighting Variables -------------------------------------------------------------------------------------------
         public MainWindow()
         {
             InitializeComponent();
@@ -5918,6 +5925,7 @@ namespace Dungeon_Valley_Explorer
                     encounterRoomChance = 0;
                     secretRoomChance = 0;
                     fightRoomChance = 50;
+                    GetMonstersForDungeon();
                     lbDisplay.Items.Add("GAME: You are infront of the caves entrance and now you may explore inside if you are ready.");
                     lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     break;
@@ -5926,13 +5934,44 @@ namespace Dungeon_Valley_Explorer
                     encounterRoomChance = 0;
                     secretRoomChance = 0;
                     fightRoomChance = 100;
+                    GetMonstersForDungeon();
                     lbDisplay.Items.Add("GAME: You are not supposed to be here.");
                     lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     break;
                 default:
                     break;
             }
+            ExplorationOptions();
+        }
 
+        public void GetMonstersForDungeon()
+        {
+            switch (currentDungeon.DungeonName)
+            {
+                case "Small Goblin Cave":
+                    foreach (Monster monster in Initializer.monsters)
+                    {
+                        if (monster.Dungeon == currentDungeon.DungeonName)
+                        {
+                            switch (monster.MonsterName)
+                            {
+                                case "Goblin":
+                                    currentDungeonMonsters.Add(monster);
+                                    break;
+                                case "Goblin Warrior":
+                                    currentDungeonBossMonster = monster;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } 
+                    }
+                    break;
+                case "Developer Secret":
+                    break;
+                default:
+                    break;
+            }
         }
 
         //Exploration starts here --------------------------------------------------------------------------------------
@@ -5987,16 +6026,22 @@ namespace Dungeon_Valley_Explorer
                     ExplorationSkills();
                     break;
                 case "5":
+                    ExplorationMagics();
                     break;
                 case "Magics":
+                    ExplorationMagics();
                     break;
                 case "6":
+                    ExplorationMovement();
                     break;
-                case "Move Forwards":
+                case "Move Forward":
+                    ExplorationMovement();
                     break;
                 case "7":
+                    ExplorationMovement();
                     break;
-                case "Move Backwards":
+                case "Move Backward":
+                    ExplorationMovement();
                     break;
                 default:
                     MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
@@ -6344,20 +6389,406 @@ namespace Dungeon_Valley_Explorer
             if (explorationSkillMagicTarget.Passives.Count == 0)
             {
                 bool targeting = true;
-                Skill.ExplorationSkills(explorationSkillsHero, explorationSkill, party, explorationSkillMagicTarget, targeting);
+                ExplorationSkillsSwitch(targeting);
             }
             else
             {
                 bool targeting = false;
-                Skill.ExplorationSkills(explorationSkillsHero, explorationSkill, party, explorationSkillMagicTarget, targeting);
+                ExplorationSkillsSwitch(targeting);
             }
             lbOptions.Items.Clear();
             ExplorationOptions();
         }
 
+        public void ExplorationSkillsSwitch(bool targeting)
+        {
+            if (targeting)
+            {
+                //party wide
+                switch (explorationSkill.SkillName)
+                {
+                    default:
+                        break;
+                }
+                party.Where(x => x.DisplayName == explorationSkillsHero.DisplayName).Select(x => x).First().SP -= explorationSkill.SPCost;
+            }
+            else
+            {
+                //single
+                switch (explorationSkill.SkillName)
+                {
+                    default:
+                        break;
+                }
+                party.Where(x => x.DisplayName == explorationSkillsHero.DisplayName).Select(x => x).First().SP -= explorationSkill.SPCost;
+            }
+        }
+
         //Exploration Skills ends here ---------------------------------------------------------------------------------
 
+        //Exploration Magics starts here -------------------------------------------------------------------------------
+
+        public void ExplorationMagics()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < party.Count; i++)
+            {
+                lbOptions.Items.Add($"{i + 2}. {party[i].DisplayName}");
+            }
+            lbDisplay.Items.Add("GAME: Choose a party member to use a magic with.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseHero);
+        }
+
+        public void ExplorationMagicsChooseHero(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(ExplorationMagicsChooseHero);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: Choosing a hero here will decide whose magics you have access to as well as who will use their MP.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseHero);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                tbInputArea.Text = "";
+                lbOptions.Items.Clear();
+                ExplorationOptions();
+            }
+            else if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
+            {
+                if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true)
+                {
+                    explorationMagicsHero = party.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First();
+                    ExplorationMagicsMagics();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        explorationMagicsHero = party[index];
+                        ExplorationMagicsMagics();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseHero);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseHero);
+            }
+        }
+
+        public void ExplorationMagicsMagics()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < explorationMagicsHero.Magics.Count; i++)
+            {
+                if (explorationMagicsHero.Magics[i].Range == "None" || explorationMagicsHero.Magics[i].Range == "Party" || explorationMagicsHero.Magics[i].Range == "Other")
+                {
+                    explorationMagics.Add(explorationMagicsHero.Magics[i]);
+                    lbOptions.Items.Add($"{explorationMagics.Count + 1}. {explorationMagics.Last().MagicName}");
+                }
+            }
+            lbDisplay.Items.Add("GAME: Choose a magic to use or if is the 'Cancel' only option choose a different party member.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseMagic);
+        }
+
+        public void ExplorationMagicsChooseMagic(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(ExplorationMagicsChooseMagic);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: Choosing a magic here will decide what magic you will use on a chosen target(s) or the whole party.");
+                foreach (Magic magic in explorationMagics)
+                {
+                    lbDisplay.Items.Add($"{magic.MagicName}: cost: {magic.MPCost}MP Range: {magic.Range} Description: {magic.Description}");
+                }
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseMagic);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                explorationMagics.Clear();
+                ExplorationMagics();
+            }
+            else if (explorationMagics.Select(x => x.MagicName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (explorationMagics.Select(x => x.MagicName).Contains(tbInputArea.Text) == true)
+                {
+                    if (explorationMagicsHero.MP - explorationMagics.Where(x => x.MagicName == tbInputArea.Text).Select(x => x).First().MPCost >= 0)
+                    {
+                        explorationMagic = explorationMagics.Where(x => x.MagicName == tbInputArea.Text).Select(x => x).First();
+                        ExplorationMagicsTargets();
+                    }
+                    else
+                    {
+                        MessageBox.Show("You don't have enough MP to use this magic.");
+                        btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseMagic);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        if (explorationMagicsHero.MP - explorationMagics[index].MPCost >= 0)
+                        {
+                            explorationMagic = explorationMagics[index];
+                            ExplorationMagicsTargets();
+                        }
+                        else
+                        {
+                            MessageBox.Show("You don't have enough MP to use this magic.");
+                            btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseMagic);
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseMagic);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseMagic);
+            }
+        }
+
+        public void ExplorationMagicsTargets()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Cancel");
+            explorationSkillMagicTarget = new Hero();
+            if (explorationMagic.Range == "None")
+            {
+                lbOptions.Items.Add($"2. {explorationMagicsHero.DisplayName}");
+                lbDisplay.Items.Add("GAME: Choose a target to use the magic on.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseTarget);
+            }
+            else if (explorationMagic.Range == "Other")
+            {
+                for (int i = 0; i < party.Count; i++)
+                {
+                    if (party[i].DisplayName != explorationMagicsHero.DisplayName)
+                    {
+                        lbOptions.Items.Add($"{i + 2}. {party[i].DisplayName}");
+                    }
+                }
+                lbDisplay.Items.Add("GAME: Choose a target to use the magic on.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseTarget);
+            }
+            else
+            {
+                ExplorationSkillsUseSkill();
+            }
+        }
+
+        public void ExplorationMagicsChooseTarget(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(ExplorationMagicsChooseTarget);
+            if (tbInputArea.Text == "?")
+            {
+                tbInputArea.Text = "";
+                lbDisplay.Items.Add("EXPLANATION: Choosing a target here will use the selected magic on the target.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseTarget);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                explorationMagics.Clear();
+                ExplorationMagicsMagics();
+            }
+            else if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5"))
+            {
+                if (party.Select(x => x.DisplayName).Contains(tbInputArea.Text) == true)
+                {
+                    if (lbOptions.Items.Contains($"2. {tbInputArea.Text}") || lbOptions.Items.Contains($"3. {tbInputArea.Text}") || lbOptions.Items.Contains($"4. {tbInputArea.Text}") || lbOptions.Items.Contains($"5. {tbInputArea.Text}"))
+                    {
+                        explorationSkillMagicTarget = party.Where(x => x.DisplayName == tbInputArea.Text).Select(x => x).First();
+                        ExplorationMagicsUseMagic();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseTarget);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text) - 2;
+                        if (lbOptions.Items.Contains($"{tbInputArea.Text}. {party[index].DisplayName}"))
+                        {
+                            explorationSkillMagicTarget = party[index];
+                            ExplorationMagicsUseMagic();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                            btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseTarget);
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseTarget);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(ExplorationMagicsChooseTarget);
+            }
+        }
+
+        public void ExplorationMagicsUseMagic()
+        {
+            tbInputArea.Text = "";
+            if (explorationSkillMagicTarget.Passives.Count == 0)
+            {
+                bool targeting = true;
+                ExplorationMagicsSwitch(targeting);
+            }
+            else
+            {
+                bool targeting = false;
+                ExplorationMagicsSwitch(targeting);
+            }
+            lbOptions.Items.Clear();
+            ExplorationOptions();
+        }
+
+        public void ExplorationMagicsSwitch(bool targeting)
+        {
+            if (targeting)
+            {
+                //party wide
+                switch (explorationMagic.MagicName)
+                {
+                    default:
+                        break;
+                }
+                party.Where(x => x.DisplayName == explorationMagicsHero.DisplayName).Select(x => x).First().MP -= explorationMagic.MPCost;
+            }
+            else
+            {
+                //single
+                switch (explorationMagic.MagicName)
+                {
+                    default:
+                        break;
+                }
+                party.Where(x => x.DisplayName == explorationMagicsHero.DisplayName).Select(x => x).First().MP -= explorationMagic.MPCost;
+            }
+        }
+
+        //Exploration Magics ends here ---------------------------------------------------------------------------------
+
+        //Eploration Movement starts here ------------------------------------------------------------------------------
+
+        public void ExplorationMovement()
+        {
+            bool move = true;
+            if (tbInputArea.Text == "7" || tbInputArea.Text == "Move Backward")
+            {
+                if (currentRoom != 0)
+                {
+                    move = false;
+                }
+            }
+
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+
+            if (move)
+            {
+                currentRoom++;
+                if (deepestRoom >= currentRoom)
+                {
+                    lbDisplay.Items.Add($"GAME: You moved forwards to room {currentRoom}. The furthest you went is {deepestRoom}. The final room is {currentDungeon.Length}.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    ExplorationOptions();
+                }
+                else
+                {
+                    if (currentRoom == currentDungeon.Length)
+                    {
+                        lbDisplay.Items.Add($"GAME: You moved forwards to the final room and find a stronger hostile monster.");
+                        lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+
+                    }
+                    else
+                    {
+                        int newRoomChosen = random.Next(1, emptyRoomChance + encounterRoomChance + secretRoomChance + fightRoomChance);
+                        if (newRoomChosen <= emptyRoomChance)
+                        {
+                            lbDisplay.Items.Add($"GAME: You moved forwards to room {currentRoom} and find nothing. The final room is {currentDungeon.Length}.");
+                            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                            ExplorationOptions();
+                        }
+                        else if (newRoomChosen <= emptyRoomChance + encounterRoomChance)
+                        {
+                            //Encounters will be added in a later version
+                            lbDisplay.Items.Add($"GAME: You moved forwards to room {currentRoom} and find nothing. The final room is {currentDungeon.Length}.");
+                            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                            ExplorationOptions();
+                        }
+                        else if (newRoomChosen <= emptyRoomChance + emptyRoomChance + secretRoomChance)
+                        {
+                            //Secrets will be added in a later version
+                            lbDisplay.Items.Add($"GAME: You moved forwards to room {currentRoom} and find nothing. The final room is {currentDungeon.Length}.");
+                            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                            ExplorationOptions();
+                        }
+                        else
+                        {
+                            lbDisplay.Items.Add($"GAME: You moved forwards to room {currentRoom} and find some hostile monsters.");
+                            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+
+                        }
+                    }
+                }
+                deepestRoom = currentRoom;
+            }
+            else
+            {
+                deepestRoom = currentRoom;
+                currentRoom--;
+                lbDisplay.Items.Add($"GAME: You moved backwards to room {currentRoom}. The furthest you went is {deepestRoom}. The final room is {currentDungeon.Length}.");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                ExplorationOptions();
+            }
+        }
+
+        //Exploration Movement ends here -------------------------------------------------------------------------------
+
         //Exploration ends here ----------------------------------------------------------------------------------------
+
+        //Fighting starts here -----------------------------------------------------------------------------------------
+
+
+
+        //Fighting ends here -------------------------------------------------------------------------------------------
 
         //Dungeon Exploration ends here --------------------------------------------------------------------------------
     }
