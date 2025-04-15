@@ -18,6 +18,8 @@ using Mysqlx;
 using Org.BouncyCastle.Bcpg;
 using BCrypt.Net;
 using System.Diagnostics;
+using System.Threading;
+using System.Security.RightsManagement;
 
 namespace Dungeon_Valley_Explorer
 {
@@ -142,7 +144,10 @@ namespace Dungeon_Valley_Explorer
         List<Monster> currentDungeonEliteMonsters = new List<Monster>();
         Monster currentDungeonBossMonster = new Monster();
         List<Monster> activeMonsters = new List<Monster>();
-        List<string> initiative = new List<string>();
+        Dictionary<string, int> initiative = new Dictionary<string, int>();
+        int initiativeTracker = 0;
+        Hero activeHero = new Hero();
+        Monster activeMonster = new Monster();
         //Fighting Variables -------------------------------------------------------------------------------------------
         public MainWindow()
         {
@@ -6797,7 +6802,10 @@ namespace Dungeon_Valley_Explorer
                 activeMonsters.Add(currentDungeonBossMonster);
                 lbDisplay.Items.Add($"GAME: You encountered a(n) {activeMonsters[0].MonsterName}");
                 lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                FightingInitiativeRoll();
 
+                initiativeTracker = 0;
+                TurnStart();
             }
             else if (random.Next(1, currentDungeon.Length) >= currentDungeon.Length / 2 && currentDungeon.Length > 9)
             {
@@ -6815,36 +6823,476 @@ namespace Dungeon_Valley_Explorer
                         monsterNames.Add(newMonster.MonsterName);
                         if (monsterNames.Contains(newMonster.MonsterName))
                         {
-
+                            if (monsterNames.Contains(newMonster.MonsterName + " A") == false)
+                            {
+                                newMonster.MonsterName += " A";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " B") == false)
+                            {
+                                newMonster.MonsterName += " B";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " C") == false)
+                            {
+                                newMonster.MonsterName += " C";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else
+                            {
+                                newMonster.MonsterName += " D";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
                         }
                     }
+                    FightingInitiativeRoll();
+                    string output = "GAME: You encountered ";
+                    for (int i = 0; i < activeMonsters.Count; i++)
+                    {
+                        if (i < activeMonsters.Count - 1)
+                        {
+                            output += activeMonsters[i].MonsterName + ", ";
+                        }
+                        else
+                        {
+                            output += activeMonsters[i].MonsterName;
+                        }
+                    }
+                    lbDisplay.Items.Add(output);
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+
+                    initiativeTracker = 0;
+                    TurnStart();
                 }
                 else if (currentDungeon.Length <= 10)
                 {
                     List<string> monsterNames = new List<string>();
                     for (int i = 0; i < party.Count + 1; i++)
                     {
-
+                        Monster newMonster = currentDungeonMonsters[random.Next(0, currentDungeonMonsters.Count - 1)];
+                        monsterNames.Add(newMonster.MonsterName);
+                        if (monsterNames.Contains(newMonster.MonsterName))
+                        {
+                            if (monsterNames.Contains(newMonster.MonsterName + " A") == false)
+                            {
+                                newMonster.MonsterName += " A";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " B") == false)
+                            {
+                                newMonster.MonsterName += " B";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " C") == false)
+                            {
+                                newMonster.MonsterName += " C";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " D") == false)
+                            {
+                                newMonster.MonsterName += " D";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else
+                            {
+                                newMonster.MonsterName += " E";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                        }
                     }
+                    FightingInitiativeRoll();
+                    string output = "GAME: You encountered ";
+                    for (int i = 0; i < activeMonsters.Count; i++)
+                    {
+                        if (i < activeMonsters.Count - 1)
+                        {
+                            output += activeMonsters[i].MonsterName + ", ";
+                        }
+                        else
+                        {
+                            output += activeMonsters[i].MonsterName;
+                        }
+                    }
+                    lbDisplay.Items.Add(output);
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+
+                    initiativeTracker = 0;
+                    TurnStart();
                 }
                 else if (currentDungeon.Length <= 15)
                 {
                     List<string> monsterNames = new List<string>();
                     for (int i = 0; i < party.Count + 2; i++)
                     {
-
+                        Monster newMonster = currentDungeonMonsters[random.Next(0, currentDungeonMonsters.Count - 1)];
+                        monsterNames.Add(newMonster.MonsterName);
+                        if (monsterNames.Contains(newMonster.MonsterName))
+                        {
+                            if (monsterNames.Contains(newMonster.MonsterName + " A") == false)
+                            {
+                                newMonster.MonsterName += " A";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " B") == false)
+                            {
+                                newMonster.MonsterName += " B";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " C") == false)
+                            {
+                                newMonster.MonsterName += " C";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " D") == false)
+                            {
+                                newMonster.MonsterName += " D";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " E") == false)
+                            {
+                                newMonster.MonsterName += " E";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else
+                            {
+                                newMonster.MonsterName += " F";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                        }
                     }
+                    FightingInitiativeRoll();
+                    string output = "GAME: You encountered ";
+                    for (int i = 0; i < activeMonsters.Count; i++)
+                    {
+                        if (i < activeMonsters.Count - 1)
+                        {
+                            output += activeMonsters[i].MonsterName + ", ";
+                        }
+                        else
+                        {
+                            output += activeMonsters[i].MonsterName;
+                        }
+                    }
+                    lbDisplay.Items.Add(output);
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+
+                    initiativeTracker = 0;
+                    TurnStart();
                 }
                 else
                 {
                     List<string> monsterNames = new List<string>();
                     for (int i = 0; i < party.Count + 3; i++)
                     {
-
+                        Monster newMonster = currentDungeonMonsters[random.Next(0, currentDungeonMonsters.Count - 1)];
+                        monsterNames.Add(newMonster.MonsterName);
+                        if (monsterNames.Contains(newMonster.MonsterName))
+                        {
+                            if (monsterNames.Contains(newMonster.MonsterName + " A") == false)
+                            {
+                                newMonster.MonsterName += " A";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " B") == false)
+                            {
+                                newMonster.MonsterName += " B";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " C") == false)
+                            {
+                                newMonster.MonsterName += " C";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " D") == false)
+                            {
+                                newMonster.MonsterName += " D";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " E") == false)
+                            {
+                                newMonster.MonsterName += " E";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else if (monsterNames.Contains(newMonster.MonsterName + " F") == false)
+                            {
+                                newMonster.MonsterName += " F";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                            else
+                            {
+                                newMonster.MonsterName += " G";
+                                monsterNames.Add(newMonster.MonsterName);
+                                activeMonsters.Add(newMonster);
+                            }
+                        }
                     }
+                    FightingInitiativeRoll();
+                    string output = "GAME: You encountered ";
+                    for (int i = 0; i < activeMonsters.Count; i++)
+                    {
+                        if (i < activeMonsters.Count - 1)
+                        {
+                            output += activeMonsters[i].MonsterName + ", ";
+                        }
+                        else
+                        {
+                            output += activeMonsters[i].MonsterName;
+                        }
+                    }
+                    lbDisplay.Items.Add(output);
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+
+                    initiativeTracker = 0;
+                    TurnStart();
                 }
             }
         }
+
+        public void FightingInitiativeRoll()
+        {
+            foreach (Monster monster in activeMonsters)
+            {
+                initiative.Add(monster.MonsterName, random.Next(1,10));
+                foreach (Passive passive in monster.Passives)
+                {
+                    if (passive.Affect.Contains("Initiative Roll"))
+                    {
+                        switch (passive.PassiveName)
+                        {
+                            case "Elf":
+                                initiative[monster.MonsterName] += random.Next(1,4);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            foreach (Hero hero in party)
+            {
+                initiative.Add(hero.DisplayName, random.Next(1,10));
+                foreach (Passive passive in hero.Passives)
+                {
+                    if (passive.Affect.Contains("Initiative Roll"))
+                    {
+                        switch (passive.PassiveName)
+                        {
+                            case "Elf":
+                                initiative[hero.DisplayName] += random.Next(1, 4);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                foreach (BuffDebuff buffDebuff in hero.BuffsDebuffs)
+                {
+                    if (buffDebuff.Affect.Contains("Initiative Roll"))
+                    {
+                        switch (buffDebuff.BuffDebuffName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+                foreach (Weapon weapon in hero.Weapons)
+                {
+                    foreach (SpecialEffect specialEffect in weapon.SpecialEffects)
+                    {
+                        if (specialEffect.Affect.Contains("Initiative Roll"))
+                        {
+                            switch (specialEffect.SpecialEffectName)
+                            {
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+                foreach (Armor armor in hero.Armors)
+                {
+                    foreach (SpecialEffect specialEffect in armor.SpecialEffects)
+                    {
+                        if (specialEffect.Affect.Contains("Initiative Roll"))
+                        {
+                            switch (specialEffect.SpecialEffectName)
+                            {
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+            initiative.OrderByDescending(x => x.Value);
+        }
+
+        //Turn Start starts here ---------------------------------------------------------------------------------------
+
+        public void TurnStart()
+        {
+            if (party.Select(x => x.DisplayName).Contains(initiative.ElementAt(initiativeTracker).Key))
+            {
+                activeHero = party.Where(x => x.DisplayName == initiative.ElementAt(initiativeTracker).Key).Select(x => x).First();
+
+                foreach (Passive passive in activeHero.Passives)
+                {
+                    if (passive.Affect.Contains("Turn Start"))
+                    {
+                        switch (passive.PassiveName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+                foreach (BuffDebuff buffDebuff in activeHero.BuffsDebuffs)
+                {
+                    if (buffDebuff.Affect.Contains("Turn Start"))
+                    {
+                        switch (buffDebuff.BuffDebuffName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+                foreach (Weapon weapon in activeHero.Weapons)
+                {
+                    foreach (SpecialEffect specialEffect in weapon.SpecialEffects)
+                    {
+                        if (specialEffect.Affect.Contains("Turn Start"))
+                        {
+                            switch (specialEffect.SpecialEffectName)
+                            {
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+                foreach (Armor armor in activeHero.Armors)
+                {
+                    foreach (SpecialEffect specialEffect in armor.SpecialEffects)
+                    {
+                        if (specialEffect.Affect.Contains("Turn Start"))
+                        {
+                            switch (specialEffect.SpecialEffectName)
+                            {
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+
+            }
+            else
+            {
+                activeMonster = activeMonsters.Where(x => x.MonsterName == initiative.ElementAt(initiativeTracker).Key).Select(x => x).First();
+
+                foreach (Passive passive in activeMonster.Passives)
+                {
+                    if (passive.Affect.Contains("Turn Start"))
+                    {
+                        switch (passive.PassiveName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                MonsterChooseAction();
+            }
+        }
+
+        //Turn Start ends here -----------------------------------------------------------------------------------------
+
+        //Monster Turn starts here -------------------------------------------------------------------------------------
+
+        public void MonsterChooseAction()
+        {
+            string monsterAction = "";
+            switch (activeMonster.Ai)
+            {
+                case "Basic":
+                    Ai.BasicMonsterAction(monsterAction, activeMonster);
+                    break;
+                default:
+                    break;
+            }
+
+            Skill chosenSkill = new Skill();
+            Magic chosenMagic = new Magic();
+            List<Target> targets = new List<Target>();
+
+            switch (monsterAction)
+            {
+                case "Block":
+                    if (activeMonster.Ai == "Basic")
+                    {
+                        activeMonster.Guard = true;
+
+                    }
+                    
+                    break;
+                case "Skill":
+                    if (activeMonster.Ai == "Basic")
+                    {
+                        chosenSkill = Ai.BasicSkillChoosing(activeMonster);
+                        targets = Ai.BasicSkillTargetChoosing(chosenSkill, activeMonsters, party, activeMonster);
+
+                    }
+                    
+                    break;
+                case "Magic":
+                    if (activeMonster.Ai == "Basic")
+                    {
+                        chosenMagic = Ai.BasicMagicChoosing(activeMonster);
+                        targets = Ai.BasicMagicTargetChoosing(chosenMagic, activeMonsters, party, activeMonster);
+
+                    }
+                    
+                    break;
+                default:
+                    if (activeMonster.Ai == "Basic")
+                    {
+                        chosenSkill = Ai.BasicSkillChoosing(activeMonster);
+                        targets = Ai.BasicSkillTargetChoosing(chosenSkill, activeMonsters, party, activeMonster);
+
+                    }
+                    
+                    break;
+            }
+
+
+        }
+
+        //Monster Turn ends here ---------------------------------------------------------------------------------------
 
         //Fighting ends here -------------------------------------------------------------------------------------------
 
