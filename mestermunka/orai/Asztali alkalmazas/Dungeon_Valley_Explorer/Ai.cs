@@ -131,10 +131,7 @@ namespace Dungeon_Valley_Explorer
                             }
                         }
                     }
-                    foreach (Hero hero in possibleTargetsMelee)
-                    {
-                        targets.Add(new Target(hero));
-                    }
+                    targets.Add(new Target(possibleTargetsMelee[random.Next(0, possibleTargetsMelee.Count - 1)]));
                     break;
                 case "Ranged":
                     List<Hero> possibleTargetsRanged = new List<Hero>();
@@ -161,10 +158,7 @@ namespace Dungeon_Valley_Explorer
                             }
                         }
                     }
-                    foreach (Hero hero in possibleTargetsRanged)
-                    {
-                        targets.Add(new Target(hero));
-                    }
+                    targets.Add(new Target(possibleTargetsRanged[random.Next(0, possibleTargetsRanged.Count - 1)]));
                     break;
                 case "Both":
                     foreach (Hero hero in party)
@@ -232,10 +226,7 @@ namespace Dungeon_Valley_Explorer
                             }
                         }
                     }
-                    foreach (Hero hero in possibleTargetsMelee)
-                    {
-                        targets.Add(new Target(hero));
-                    }
+                    targets.Add(new Target(possibleTargetsMelee[random.Next(0, possibleTargetsMelee.Count - 1)]));
                     break;
                 case "Ranged":
                     List<Hero> possibleTargetsRanged = new List<Hero>();
@@ -262,10 +253,7 @@ namespace Dungeon_Valley_Explorer
                             }
                         }
                     }
-                    foreach (Hero hero in possibleTargetsRanged)
-                    {
-                        targets.Add(new Target(hero));
-                    }
+                    targets.Add(new Target(possibleTargetsRanged[random.Next(0,possibleTargetsRanged.Count-1)]));
                     break;
                 case "Both":
                     foreach (Hero hero in party)

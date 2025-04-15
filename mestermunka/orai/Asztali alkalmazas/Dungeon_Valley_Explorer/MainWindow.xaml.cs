@@ -72,12 +72,6 @@ namespace Dungeon_Valley_Explorer
         List<string> meleeClasses = new List<string> { "Fighter", "Paladin", "Bounty Hunter" };
         List<string> rangedClasses = new List<string> { "Hunter", "Wizard", "Warlock" };
 
-        //Damage Calculation variables ---------------------------------------------------------------------------------
-        bool skipDamageCalculation = false;
-        Target targetPrep = new Target();
-        DamageSource damageSourcePrep = new DamageSource();
-        //Damage Calculation variables ---------------------------------------------------------------------------------
-
         Random random = new Random();
         bool ShortDisplayNames = false;
 
@@ -1815,183 +1809,6 @@ namespace Dungeon_Valley_Explorer
                 int dotintext = selectedItem.IndexOf('.');
                 tbInputArea.Text = selectedItem.Substring(0, dotintext);
             }
-        }
-
-        public void WIP()
-        {
-            lbDisplay.Items.Add("This is the current extent of the project.");
-            lbDisplay.Items.Add("The program will calculate damage after the press of the button in the bottom right.");
-            lbDisplay.Items.Add("To choose the target write 1 or 2 in the textbox on the bottom of the screen.");
-            lbOptions.Items.Add("1. (The target is the Monster)");
-            lbOptions.Items.Add("2. (The target is the Hero)");
-            if (tbInputArea.Text == "1")
-            {
-                damageSourcePrep = new DamageSource(Initializer.npcs[0], 0);
-                targetPrep = new Target(Initializer.monsters[0]);
-                lbDisplay.Items.Add(DamageCalculation(targetPrep, damageSourcePrep));
-            }
-            else if (tbInputArea.Text == "2")
-            {
-                damageSourcePrep = new DamageSource(Initializer.monsters[0], Initializer.monsters[0].Skills[0]);
-                targetPrep = new Target(Initializer.npcs[0]);
-                lbDisplay.Items.Add(DamageCalculation(targetPrep, damageSourcePrep));
-            }
-            else
-            {
-                lbDisplay.Items.Add(" -- Please choose an option from the left. -- ");
-            }
-        }
-
-        public int DamageCalculation(Target target, DamageSource damageSource)
-        {
-            skipDamageCalculation = false;
-            int damage = random.Next(damageSource.ATK / 2, damageSource.ATK);
-            if (random.Next(0, 100) < damageSource.CritChance)
-            {
-                damage = (int)(damage * damageSource.CritDamage);
-            }
-            damage = DMGCalcDamageTypeChecker(damage, target, damageSource);
-
-            if (skipDamageCalculation == false)
-            {
-                if (physicalDamageTypes.Contains(damageSource.DamageType))
-                {
-                    damage = damage - target.DEF;
-                }
-                else if (magicalDamageTypes.Contains(damageSource.DamageType))
-                {
-                    damage = damage - target.MDEF;
-                }
-                if (target.Guard == true)
-                {
-                    damage = (int)Math.Round(damage * 0.5, 0);
-                }
-                damage = DMGCalcSpecialEffectChecker(damage, target, damageSource);
-                damage = DMGCalcEffectChecker(damage, target, damageSource);
-                damage = DMGCalcPassiveChecker(damage, target, damageSource);
-            }
-            return damage;
-        }
-
-        public int DMGCalcDamageTypeChecker(int damage, Target target, DamageSource damageSource)
-        {
-            if (Initializer.races[target.Race.Id].Fatal.Contains(damageSource.DamageType))
-            {
-                damage = damage * 2;
-            }
-            else if (Initializer.races[target.Race.Id].Weak.Contains(damageSource.DamageType))
-            {
-                damage = (int)Math.Round(damage * 1.5, 0);
-            }
-            else if (Initializer.races[target.Race.Id].Resist.Contains(damageSource.DamageType))
-            {
-                damage = (int)Math.Round(damage * 0.75, 0);
-            }
-            else if (Initializer.races[target.Race.Id].Endure.Contains(damageSource.DamageType))
-            {
-                damage = (int)Math.Round(damage * 0.25, 0);
-            }
-            else if (Initializer.races[target.Race.Id].Nulls.Contains(damageSource.DamageType))
-            {
-                damage = 0;
-                skipDamageCalculation = true;
-            }
-            else
-            {
-
-            }
-            return damage;
-        }
-
-        public int DMGCalcEffectChecker(int damage, Target target, DamageSource damageSource)
-        {
-            foreach (BuffDebuff buffdebuff in target.BuffsDebuffs)
-            {
-                if (buffdebuff.Affect == "Damage Calculation")
-                {
-                    switch (buffdebuff.BuffDebuffName)
-                    {
-                        case "W.I.P":
-                            break;
-                        default:
-
-                            break;
-                    }
-                }
-            }
-            foreach (BuffDebuff buffdebuff in damageSource.BuffsDebuffs)
-            {
-                if (buffdebuff.Affect == "Damage Calculation")
-                {
-                    switch (buffdebuff.BuffDebuffName)
-                    {
-                        case "Damage up":
-                            damage = BuffDebuff.DamageUp(damage);
-                            break;
-                        default:
-
-                            break;
-                    }
-                }
-            }
-            return damage;
-        }
-
-        public int DMGCalcSpecialEffectChecker(int damage, Target target, DamageSource damageSource)
-        {
-            foreach (SpecialEffect specialEffect in damageSource.SpecialEffects)
-            {
-                if (specialEffect.Affect == "Damage Calculation")
-                {
-                    switch (specialEffect.SpecialEffectName)
-                    {
-                        case "Piercing Blade":
-                            if (physicalDamageTypes.Contains(damageSource.DamageType))
-                            {
-                                damage = SpecialEffect.PiercingBlade(damage, target);
-                            }
-                            break;
-                        default:
-
-                            break;
-                    }
-                }
-            }
-            return damage;
-        }
-
-        public int DMGCalcPassiveChecker(int damage, Target target, DamageSource damageSource)
-        {
-            foreach (Passive passive in target.Passives)
-            {
-                if (passive.Affect == "Damage Calculation")
-                {
-                    switch (passive.PassiveName)
-                    {
-                        case "W.I.P":
-                            break;
-                        default:
-
-                            break;
-                    }
-                }
-            }
-            foreach (Passive passive in damageSource.Passives)
-            {
-                if (passive.Affect == "Damage Calculation")
-                {
-                    switch (passive.PassiveName)
-                    {
-                        case "Sword Proficiency":
-                            damage = Passive.SwordProficiency(damage);
-                            break;
-                        default:
-
-                            break;
-                    }
-                }
-            }
-            return damage;
         }
 
         //Town starts here ---------------------------------------------------------------------------------------------
@@ -7260,6 +7077,7 @@ namespace Dungeon_Valley_Explorer
                     {
                         activeMonster.Guard = true;
                         MonsterExecuteAction(targets, chosenSkill, chosenMagic, monsterAction);
+
                     }
                     break;
                 case "Skill":
@@ -7268,6 +7086,7 @@ namespace Dungeon_Valley_Explorer
                         chosenSkill = Ai.BasicSkillChoosing(activeMonster);
                         targets = Ai.BasicSkillTargetChoosing(chosenSkill, activeMonsters, party, activeMonster, meleeClasses, rangedClasses);
                         MonsterExecuteAction(targets, chosenSkill, chosenMagic, monsterAction);
+
                     }
                     break;
                 case "Magic":
@@ -7276,6 +7095,7 @@ namespace Dungeon_Valley_Explorer
                         chosenMagic = Ai.BasicMagicChoosing(activeMonster);
                         targets = Ai.BasicMagicTargetChoosing(chosenMagic, activeMonsters, party, activeMonster, meleeClasses, rangedClasses);
                         MonsterExecuteAction(targets, chosenSkill, chosenMagic, monsterAction);
+
                     }
                     break;
                 default:
@@ -7284,6 +7104,7 @@ namespace Dungeon_Valley_Explorer
                         chosenSkill = Ai.BasicSkillChoosing(activeMonster);
                         targets = Ai.BasicSkillTargetChoosing(chosenSkill, activeMonsters, party, activeMonster, meleeClasses, rangedClasses);
                         MonsterExecuteAction(targets, chosenSkill, chosenMagic, monsterAction);
+
                     }
                     break;
             }
@@ -7301,6 +7122,7 @@ namespace Dungeon_Valley_Explorer
                     switch (chosenSkill.SkillName)
                     {
                         case "Basic Strike":
+                            Skill.BasicStrike(targets, new DamageSource(activeMonster, chosenSkill), party);
                             break;
                         default:
                             break;
@@ -7314,7 +7136,14 @@ namespace Dungeon_Valley_Explorer
                     }
                     break;
                 default:
-
+                    switch (chosenSkill.SkillName)
+                    {
+                        case "Basic Strike":
+                            Skill.BasicStrike(targets, new DamageSource(activeMonster, chosenSkill), party);
+                            break;
+                        default:
+                            break;
+                    }
                     break;
             }
         }
