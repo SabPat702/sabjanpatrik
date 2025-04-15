@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Org.BouncyCastle.Asn1.Cmp.Challenge;
 
 namespace Dungeon_Valley_Explorer
 {
@@ -94,9 +95,11 @@ namespace Dungeon_Valley_Explorer
             return chosenMagic;
         }
 
-        public static List<Target> BasicMagicTargetChoosing(Magic magic, List<Monster> activeMonsters, List<Hero> party, Monster activeMonster)
+        public static List<Target> BasicMagicTargetChoosing(Magic magic, List<Monster> activeMonsters, List<Hero> party, Monster activeMonster, List<string> meleeClasses, List<string> rangedClasses)
         {
             List<Target> targets = new List<Target>();
+
+            Random random = new Random();
 
             switch (magic.Range)
             {
@@ -104,13 +107,70 @@ namespace Dungeon_Valley_Explorer
                     targets.Add(new Target(activeMonster));
                     break;
                 case "Melee":
-
+                    List<Hero> possibleTargetsMelee = new List<Hero>();
+                    foreach (string heroClass in meleeClasses)
+                    {
+                        if (party.Select(x => x.heroClass).Contains(heroClass))
+                        {
+                            foreach (Hero hero in party.Where(x => x.heroClass == heroClass).Select(x => x))
+                            {
+                                possibleTargetsMelee.Add(hero);
+                            }
+                        }
+                    }
+                    if (possibleTargetsMelee.Count < 1)
+                    {
+                        foreach (string heroClass in rangedClasses)
+                        {
+                            if (party.Select(x => x.heroClass).Contains(heroClass))
+                            {
+                                foreach (Hero hero in party.Where(x => x.heroClass == heroClass).Select(x => x))
+                                {
+                                    possibleTargetsMelee.Add(hero);
+                                }
+                            }
+                        }
+                    }
+                    foreach (Hero hero in possibleTargetsMelee)
+                    {
+                        targets.Add(new Target(hero));
+                    }
                     break;
                 case "Ranged":
-
+                    List<Hero> possibleTargetsRanged = new List<Hero>();
+                    foreach (string heroClass in rangedClasses)
+                    {
+                        if (party.Select(x => x.heroClass).Contains(heroClass))
+                        {
+                            foreach (Hero hero in party.Where(x => x.heroClass == heroClass).Select(x => x))
+                            {
+                                possibleTargetsRanged.Add(hero);
+                            }
+                        }
+                    }
+                    if (possibleTargetsRanged.Count < 1)
+                    {
+                        foreach (string heroClass in meleeClasses)
+                        {
+                            if (party.Select(x => x.heroClass).Contains(heroClass))
+                            {
+                                foreach (Hero hero in party.Where(x => x.heroClass == heroClass).Select(x => x))
+                                {
+                                    possibleTargetsRanged.Add(hero);
+                                }
+                            }
+                        }
+                    }
+                    foreach (Hero hero in possibleTargetsRanged)
+                    {
+                        targets.Add(new Target(hero));
+                    }
                     break;
                 case "Both":
-
+                    foreach (Hero hero in party)
+                    {
+                        targets.Add(new Target(hero));
+                    }
                     break;
                 case "Party":
                     foreach (Monster monster in activeMonsters)
@@ -119,13 +179,14 @@ namespace Dungeon_Valley_Explorer
                     }
                     break;
                 case "Other":
-                    if (activeMonsters.Count == 1)
+                    if (activeMonsters.Count != 1)
                     {
-
+                        activeMonsters.Remove(activeMonster);
+                        targets.Add(new Target(activeMonsters[random.Next(0,activeMonsters.Count - 1)]));
                     }
                     else
                     {
-
+                        targets.Add(new Target(activeMonster));
                     }
                     break;
                 default:
@@ -135,23 +196,99 @@ namespace Dungeon_Valley_Explorer
             return targets;
         }
 
-        public static List<Target> BasicSkillTargetChoosing(Skill skill, List<Monster> activeMonsters, List<Hero> party, Monster activeMonster)
+        public static List<Target> BasicSkillTargetChoosing(Skill skill, List<Monster> activeMonsters, List<Hero> party, Monster activeMonster, List<string> meleeClasses, List<string> rangedClasses)
         {
             List<Target> targets = new List<Target>();
+
+            Random random = new Random();
 
             switch (skill.Range)
             {
                 case "None":
+                    targets.Add(new Target(activeMonster));
                     break;
                 case "Melee":
+                    List<Hero> possibleTargetsMelee = new List<Hero>();
+                    foreach (string heroClass in meleeClasses)
+                    {
+                        if (party.Select(x => x.heroClass).Contains(heroClass))
+                        {
+                            foreach (Hero hero in party.Where(x => x.heroClass == heroClass).Select(x => x))
+                            {
+                                possibleTargetsMelee.Add(hero);
+                            }
+                        }
+                    }
+                    if (possibleTargetsMelee.Count < 1)
+                    {
+                        foreach (string heroClass in rangedClasses)
+                        {
+                            if (party.Select(x => x.heroClass).Contains(heroClass))
+                            {
+                                foreach (Hero hero in party.Where(x => x.heroClass == heroClass).Select(x => x))
+                                {
+                                    possibleTargetsMelee.Add(hero);
+                                }
+                            }
+                        }
+                    }
+                    foreach (Hero hero in possibleTargetsMelee)
+                    {
+                        targets.Add(new Target(hero));
+                    }
                     break;
                 case "Ranged":
+                    List<Hero> possibleTargetsRanged = new List<Hero>();
+                    foreach (string heroClass in rangedClasses)
+                    {
+                        if (party.Select(x => x.heroClass).Contains(heroClass))
+                        {
+                            foreach (Hero hero in party.Where(x => x.heroClass == heroClass).Select(x => x))
+                            {
+                                possibleTargetsRanged.Add(hero);
+                            }
+                        }
+                    }
+                    if (possibleTargetsRanged.Count < 1)
+                    {
+                        foreach (string heroClass in meleeClasses)
+                        {
+                            if (party.Select(x => x.heroClass).Contains(heroClass))
+                            {
+                                foreach (Hero hero in party.Where(x => x.heroClass == heroClass).Select(x => x))
+                                {
+                                    possibleTargetsRanged.Add(hero);
+                                }
+                            }
+                        }
+                    }
+                    foreach (Hero hero in possibleTargetsRanged)
+                    {
+                        targets.Add(new Target(hero));
+                    }
                     break;
                 case "Both":
+                    foreach (Hero hero in party)
+                    {
+                        targets.Add(new Target(hero));
+                    }
                     break;
                 case "Party":
+                    foreach (Monster monster in activeMonsters)
+                    {
+                        targets.Add(new Target(monster));
+                    }
                     break;
                 case "Other":
+                    if (activeMonsters.Count != 1)
+                    {
+                        activeMonsters.Remove(activeMonster);
+                        targets.Add(new Target(activeMonsters[random.Next(0, activeMonsters.Count - 1)]));
+                    }
+                    else
+                    {
+                        targets.Add(new Target(activeMonster));
+                    }
                     break;
                 default:
                     break;

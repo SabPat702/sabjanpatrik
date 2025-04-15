@@ -20,6 +20,7 @@ using BCrypt.Net;
 using System.Diagnostics;
 using System.Threading;
 using System.Security.RightsManagement;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace Dungeon_Valley_Explorer
 {
@@ -68,6 +69,8 @@ namespace Dungeon_Valley_Explorer
         List<string> quests = new List<string> { "test" };
         List<string> physicalDamageTypes = new List<string> { "Blunt", "Pierce", "Slash" };
         List<string> magicalDamageTypes = new List<string> { "Fire" };
+        List<string> meleeClasses = new List<string> { "Fighter", "Paladin", "Bounty Hunter" };
+        List<string> rangedClasses = new List<string> { "Hunter", "Wizard", "Warlock" };
 
         //Damage Calculation variables ---------------------------------------------------------------------------------
         bool skipDamageCalculation = false;
@@ -7256,40 +7259,64 @@ namespace Dungeon_Valley_Explorer
                     if (activeMonster.Ai == "Basic")
                     {
                         activeMonster.Guard = true;
-
+                        MonsterExecuteAction(targets, chosenSkill, chosenMagic, monsterAction);
                     }
-                    
                     break;
                 case "Skill":
                     if (activeMonster.Ai == "Basic")
                     {
                         chosenSkill = Ai.BasicSkillChoosing(activeMonster);
-                        targets = Ai.BasicSkillTargetChoosing(chosenSkill, activeMonsters, party, activeMonster);
-
+                        targets = Ai.BasicSkillTargetChoosing(chosenSkill, activeMonsters, party, activeMonster, meleeClasses, rangedClasses);
+                        MonsterExecuteAction(targets, chosenSkill, chosenMagic, monsterAction);
                     }
-                    
                     break;
                 case "Magic":
                     if (activeMonster.Ai == "Basic")
                     {
                         chosenMagic = Ai.BasicMagicChoosing(activeMonster);
-                        targets = Ai.BasicMagicTargetChoosing(chosenMagic, activeMonsters, party, activeMonster);
-
+                        targets = Ai.BasicMagicTargetChoosing(chosenMagic, activeMonsters, party, activeMonster, meleeClasses, rangedClasses);
+                        MonsterExecuteAction(targets, chosenSkill, chosenMagic, monsterAction);
                     }
-                    
                     break;
                 default:
                     if (activeMonster.Ai == "Basic")
                     {
                         chosenSkill = Ai.BasicSkillChoosing(activeMonster);
-                        targets = Ai.BasicSkillTargetChoosing(chosenSkill, activeMonsters, party, activeMonster);
-
+                        targets = Ai.BasicSkillTargetChoosing(chosenSkill, activeMonsters, party, activeMonster, meleeClasses, rangedClasses);
+                        MonsterExecuteAction(targets, chosenSkill, chosenMagic, monsterAction);
                     }
-                    
                     break;
             }
 
 
+        }
+
+        public void MonsterExecuteAction(List<Target> targets, Skill chosenSkill, Magic chosenMagic, string monsterAction)
+        {
+            switch (monsterAction)
+            {
+                case "Block":
+                    break;
+                case "Skill":
+                    switch (chosenSkill.SkillName)
+                    {
+                        case "Basic Strike":
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case "Magic":
+                    switch (chosenMagic.MagicName)
+                    {
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+
+                    break;
+            }
         }
 
         //Monster Turn ends here ---------------------------------------------------------------------------------------
