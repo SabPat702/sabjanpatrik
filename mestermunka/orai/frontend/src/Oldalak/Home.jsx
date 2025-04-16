@@ -147,7 +147,7 @@ const Home = () => {
                                         </a>
                                     </li>
                                     <li>
-                                    <a className="dropdown-item" href="#">
+                                    <a className="dropdown-item" href="#" onClick={handleChat}>
                                             Chat
                                         </a>
                                     </li>
@@ -158,11 +158,6 @@ const Home = () => {
                                     </li>
                                 </>
                             )}
-                            <li>
-                                <a className="dropdown-item" href="#" onClick={handleChat}>
-                                    Chat
-                                </a>
-                            </li>
                             <li>
                                 <a className="dropdown-item" href="#" onClick={handleLogout}>
                                     Kijelentkezés

@@ -11,10 +11,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const db = mysql2.createConnection({
-    user: "sabpat702",
-    host: "10.3.1.65",
-    password: "72587413702",
-    database: "sabpat702",
+    user: "root",
+    host: "127.0.0.1",
+    password: "",
+    database: "jatek",
     port: 3306
 });
 
@@ -86,14 +86,45 @@ let posts = [];
 let nextId = 1;
 
 app.get('/chat', (req, res) => {
-    res.json(posts);
+    try {
+        res.json(posts);  // Az adatokat JSON-ként küldjük vissza
+    } catch (err) {
+        console.error('Error fetching posts:', err);
+        res.status(500).json({ message: 'Error fetching posts' });
+    }
 });
 
+
 app.post('/chat', (req, res) => {
-    const { author, text } = req.body;
-    const newPost = { id: nextId++, author, text, reports: 0 };
+    const { title, text } = req.body;
+    const newPost = { id: nextId++, title, text, reports: 0 };
     posts.push(newPost);
     res.status(201).json({ message: "Post created" });
+    const query = 'INSERT INTO post (title, text) VALUES (?, ?)';
+});
+app.put('/chat/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    console.log(`PUT request for post with id: ${id}`);  // Debugging log
+    const { title, text } = req.body;
+    const post = posts.find((p) => p.id === id);
+    if (post) {
+        post.title = title;
+        post.text = text;
+        console.log(`Updated post with id ${id}`);  // Debugging log
+        res.sendStatus(200);
+    } else {
+        console.log(`Post with id ${id} not found`);  // Debugging log
+        res.sendStatus(404);
+    }
+});
+app.get('/chat/:id', (req, res) => {
+    const id = parseInt(req.params.id);  // Az ID a kérés paramétereiből
+    const post = posts.find((p) => p.id === id);  // Megkeressük a posztot az ID alapján
+    if (post) {
+        res.json(post);  // Visszaadjuk az egyedi posztot
+    } else {
+        res.status(404).json({ message: "Post not found" });  // Ha nem találjuk a posztot
+    }
 });
 
 app.post('/chat/:id/report', (req, res) => {
