@@ -43,7 +43,8 @@ namespace Dungeon_Valley_Explorer
             }
             Range = linecutter[7];
             SPCost = Convert.ToInt32(linecutter[8]);
-            CD = Convert.ToInt32(linecutter[9]);
+            inCD = Convert.ToInt32(linecutter[9]);
+            CD = 0;
         }
 
         public Skill()
@@ -51,6 +52,11 @@ namespace Dungeon_Valley_Explorer
             SpecialEffects = new List<SpecialEffect>();
         }
 
-        
+        public static List<Hero> BasicStrike(List<Target> targets, DamageSource damageSource, List<Hero> party)
+        {
+            List<int> damages = DamageCalculator.PreDamageCalculation(targets, damageSource);
+
+            return party;
+        }
     }
 }

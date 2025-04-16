@@ -116,6 +116,7 @@
     <Compile Include="Armor.cs" />
     <Compile Include="BuffDebuff.cs" />
     <Compile Include="Consumable.cs" />
+    <Compile Include="DamageCalculator.cs" />
     <Compile Include="DamageSource.cs" />
     <Compile Include="Downloader.cs" />
     <Compile Include="Dungeon.cs" />

@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `sabpat702` /*!40100 DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_hungarian_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `sabpat702`;
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: mysql    Database: sabpat702
@@ -23,12 +25,12 @@ DROP TABLE IF EXISTS `ai`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ai` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(40) NOT NULL,
   `Description` text NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +39,7 @@ CREATE TABLE `ai` (
 
 LOCK TABLES `ai` WRITE;
 /*!40000 ALTER TABLE `ai` DISABLE KEYS */;
-INSERT INTO `ai` VALUES (0,'Basic','The most basic behaviour'),(1,'Defense','Defensive behaviour');
+INSERT INTO `ai` VALUES (1,'Basic','The most basic behaviour'),(2,'Defense','Defensive Behaviour');
 /*!40000 ALTER TABLE `ai` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -49,7 +51,7 @@ DROP TABLE IF EXISTS `armor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `armor` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Description` text NOT NULL,
   `DEF` int NOT NULL,
@@ -57,9 +59,10 @@ CREATE TABLE `armor` (
   `SpecialEffect` varchar(300) NOT NULL,
   `Type` int NOT NULL,
   `Price` int NOT NULL,
+  `Unique` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +71,7 @@ CREATE TABLE `armor` (
 
 LOCK TABLES `armor` WRITE;
 /*!40000 ALTER TABLE `armor` DISABLE KEYS */;
-INSERT INTO `armor` VALUES (0,'Test Helmet','Armor for testing purpose',4,4,'None',1,10),(1,'Test Chestplate','Armor for testing purpose',6,6,'None',2,20),(2,'Test Leggings','Armor for testing purpose',2,2,'None',3,5),(3,'Test Boots','Armor for testing purpose',2,2,'None',4,5);
+INSERT INTO `armor` VALUES (1,'None (Helmet)','No armor just clothes, skin and body hair.',0,0,'None',1,0,0),(2,'None (Chestplate)','No armor just clothes, skin and body hair.',0,0,'None',2,0,0),(3,'None (Leggings)','No armor just clothes, skin and body hair.',0,0,'None',3,0,0),(4,'None (Boots)','No armor just clothes, skin and body hair.',0,0,'None',4,0,0),(5,'Mana Touched Rag','A rag like cloak with a faint sense of magic within.',0,1,'None',2,0,0),(6,'Worn Leather Knee Pads','An old pair of leather knee pads.',1,0,'None',3,0,0),(7,'Rusting Chainmail','An old piece of weak and rusting armor.',2,0,'None',2,0,0),(8,'Worn Leather Chestpiece','A worn set of leather that is used for protection.',1,0,'None',2,0,0),(9,'Old Travel Boots','A pair of old boots made for walking in the countryside that has seen better days.',1,0,'None',4,0,0),(10,'Dirty Cloak','A long cloak that was dragged through everything a journey can find.',1,0,'None',2,0,0),(11,'Iron Chestplate','A basic piece of protection made of iron.',15,0,'None',2,100,0),(12,'Bejeweled Helmet','A fancy iron helmet.',4,0,'None',1,200,1),(13,'Chainmail Hood','A mess of chains woven together in the form of a hood',5,0,'None',1,50,0);
 /*!40000 ALTER TABLE `armor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -80,13 +83,13 @@ DROP TABLE IF EXISTS `buff_and_debuff`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `buff_and_debuff` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Description` text NOT NULL,
   `Affect` varchar(500) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +98,7 @@ CREATE TABLE `buff_and_debuff` (
 
 LOCK TABLES `buff_and_debuff` WRITE;
 /*!40000 ALTER TABLE `buff_and_debuff` DISABLE KEYS */;
-INSERT INTO `buff_and_debuff` VALUES (0,'Damage up','A small increase in damage.','Damage Calculation');
+INSERT INTO `buff_and_debuff` VALUES (1,'Marked','The mark of death increases damage received by a fix amount based on the level of the inflicter.','Damage Calculation'),(2,'Burning','Currently on fire and will receive damage at the end of the turn based on level.','Turn End'),(3,'Shielded (Physical)','Shielded from all sources of physical damage.','Turn End'),(4,'Taunted','Can only target a taunting enemy.','Targeting'),(5,'Taunting','Taunted enemies can only target you.','Targeting'),(6,'Warm Food','The warmt of a previous meal fills your body.','Pre Damage Calculation,Hp Calculation'),(7,'Hearty Meal','Your previous meal fills you with extra strength.','HP Calculation,Initiative Roll,Pre Damage Calculation,Turn End');
 /*!40000 ALTER TABLE `buff_and_debuff` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -107,7 +110,7 @@ DROP TABLE IF EXISTS `category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `category` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Category` varchar(30) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Category_UNIQUE` (`Category`)
@@ -131,16 +134,16 @@ DROP TABLE IF EXISTS `comment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `comment` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Content` text NOT NULL,
   `Date` date NOT NULL,
   `CommenterId` int NOT NULL,
   `PostId` int NOT NULL,
   PRIMARY KEY (`Id`),
-  KEY `comment_user_idx` (`CommenterId`),
-  KEY `comment_post_idx` (`PostId`),
-  CONSTRAINT `comment_post` FOREIGN KEY (`PostId`) REFERENCES `post` (`Id`),
-  CONSTRAINT `comment_user` FOREIGN KEY (`CommenterId`) REFERENCES `user` (`Id`)
+  KEY `user_comment_idx` (`CommenterId`),
+  KEY `post_comment_idx` (`PostId`),
+  CONSTRAINT `post_comment` FOREIGN KEY (`PostId`) REFERENCES `post` (`Id`),
+  CONSTRAINT `user_comment` FOREIGN KEY (`CommenterId`) REFERENCES `user` (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -161,14 +164,14 @@ DROP TABLE IF EXISTS `consumable`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `consumable` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Description` text NOT NULL,
   `SpecialEffect` varchar(200) NOT NULL,
   `Price` int NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -177,7 +180,7 @@ CREATE TABLE `consumable` (
 
 LOCK TABLES `consumable` WRITE;
 /*!40000 ALTER TABLE `consumable` DISABLE KEYS */;
-INSERT INTO `consumable` VALUES (0,'Test Item','Item for testin purpose','None',10);
+INSERT INTO `consumable` VALUES (1,'Test Item','Item for testin purpose','None',10);
 /*!40000 ALTER TABLE `consumable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,7 +192,7 @@ DROP TABLE IF EXISTS `dungeon`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dungeon` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Description` text NOT NULL,
   `Length` int NOT NULL,
@@ -197,7 +200,7 @@ CREATE TABLE `dungeon` (
   `Experience` int NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +209,7 @@ CREATE TABLE `dungeon` (
 
 LOCK TABLES `dungeon` WRITE;
 /*!40000 ALTER TABLE `dungeon` DISABLE KEYS */;
-INSERT INTO `dungeon` VALUES (0,'Test Place','A place for testing',10,10,10);
+INSERT INTO `dungeon` VALUES (1,'Tutorial','A tutorial to the game. Not available after the tutorial.',5,10,10),(2,'Small Goblin Cave','A small cave on the edge of the forest housing many goblins.',5,15,20),(3,'Developer Secret','Unlikely to see this normally.',1,10000,10000);
 /*!40000 ALTER TABLE `dungeon` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -218,7 +221,7 @@ DROP TABLE IF EXISTS `environment_hazard`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `environment_hazard` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Description` text NOT NULL,
   `ATK` int NOT NULL,
@@ -229,7 +232,7 @@ CREATE TABLE `environment_hazard` (
   `Dungeon` varchar(100) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -238,7 +241,7 @@ CREATE TABLE `environment_hazard` (
 
 LOCK TABLES `environment_hazard` WRITE;
 /*!40000 ALTER TABLE `environment_hazard` DISABLE KEYS */;
-INSERT INTO `environment_hazard` VALUES (0,'Testing Hazard','Hazard for testing purpose',10,'Blunt',10,1.2,'Test Effect','Test Place');
+INSERT INTO `environment_hazard` VALUES (1,'Testing Hazard','Hazard for testing purpose',10,'Blunt',10,1.2,'Test Effect','Test Place');
 /*!40000 ALTER TABLE `environment_hazard` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -250,9 +253,8 @@ DROP TABLE IF EXISTS `hero`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `hero` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
-  `Description` text NOT NULL,
   `DEF` int NOT NULL,
   `MDEF` int NOT NULL,
   `HP` int NOT NULL,
@@ -268,10 +270,11 @@ CREATE TABLE `hero` (
   `Passive` varchar(3000) NOT NULL,
   `UserId` int NOT NULL,
   `Race` varchar(100) NOT NULL,
+  `Background` varchar(50) NOT NULL,
   PRIMARY KEY (`Id`),
-  KEY `hero_user_idx` (`UserId`),
-  CONSTRAINT `hero_user` FOREIGN KEY (`UserId`) REFERENCES `user` (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `user_hero_idx` (`UserId`),
+  CONSTRAINT `user_hero` FOREIGN KEY (`UserId`) REFERENCES `user` (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -280,7 +283,6 @@ CREATE TABLE `hero` (
 
 LOCK TABLES `hero` WRITE;
 /*!40000 ALTER TABLE `hero` DISABLE KEYS */;
-INSERT INTO `hero` VALUES (1,'player','Player made hero',0,0,10,10,10,0,1,'Unarmed,Unarmed,Unarmed','Test Helmet, Test Chestplate,Test Leggings,Test Boots','Fighter','Power Slash','Firebolt,Self care','Sword Proficiency',1,'Human');
 /*!40000 ALTER TABLE `hero` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -292,7 +294,7 @@ DROP TABLE IF EXISTS `magic`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `magic` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Description` text NOT NULL,
   `ATK` int NOT NULL,
@@ -305,7 +307,7 @@ CREATE TABLE `magic` (
   `CD` int NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -314,7 +316,7 @@ CREATE TABLE `magic` (
 
 LOCK TABLES `magic` WRITE;
 /*!40000 ALTER TABLE `magic` DISABLE KEYS */;
-INSERT INTO `magic` VALUES (0,'Firebolt','A fiery ball of magic.',15,'Fire',15,1.5,'Burn','Both',2,0),(1,'Self care','A basic healing spell that all adventurers know about.',0,'None',0,0.0,'None','None',2,3);
+INSERT INTO `magic` VALUES (1,'Self Care','A basic healing spell that everyone knows about.',5,'None',1,1.5,'None','None',2,3),(2,'Firebolt','A fiery ball of magic.',15,'Fire',15,1.5,'Burn','Both',2,0),(3,'Divine Smite','A strike of holy magic infused into a weapon',15,'Holy',20,2.0,'None','Melee',3,3);
 /*!40000 ALTER TABLE `magic` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -326,7 +328,7 @@ DROP TABLE IF EXISTS `monster`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `monster` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Description` text NOT NULL,
   `HP` int NOT NULL,
@@ -343,7 +345,7 @@ CREATE TABLE `monster` (
   `Dungeon` varchar(100) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -352,7 +354,7 @@ CREATE TABLE `monster` (
 
 LOCK TABLES `monster` WRITE;
 /*!40000 ALTER TABLE `monster` DISABLE KEYS */;
-INSERT INTO `monster` VALUES (0,'TestMonster','testing purpose',100,0,0,20,0,0,'Sword Proficiency,Test Passive','Basic Strike,Advanced Strike','None,None','Goblin','Basic','Test Place'),(1,'TestMonster2','testing purpose',10,100,100,5,20,20,'Test Passive,Test Passive','Basic Strike,Shield','Firebolt','Goblin','Defense','Test Place');
+INSERT INTO `monster` VALUES (1,'Goblin','A goblin like any other. Weak but high in numbers. New adventurers are to be cautious.',8,0,0,4,0,0,'None','Basic Strike','None','Goblin','Basic','Small Goblin Cave'),(2,'Goblin Warrior','A goblin with a small dagger. Slightly tougher but still pretty weak.',20,1,0,4,20,0,'None','Basic Strike,Powerful Cut','None','Goblin','Basic','Small Goblin Cave');
 /*!40000 ALTER TABLE `monster` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,7 +366,7 @@ DROP TABLE IF EXISTS `npc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `npc` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) COLLATE utf8mb3_hungarian_ci NOT NULL,
   `Description` text COLLATE utf8mb3_hungarian_ci NOT NULL,
   `DEF` int NOT NULL,
@@ -381,9 +383,10 @@ CREATE TABLE `npc` (
   `Magic` varchar(5000) COLLATE utf8mb3_hungarian_ci NOT NULL,
   `Passive` varchar(3000) COLLATE utf8mb3_hungarian_ci NOT NULL,
   `Race` varchar(100) COLLATE utf8mb3_hungarian_ci NOT NULL,
+  `Background` varchar(50) COLLATE utf8mb3_hungarian_ci NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_hungarian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_hungarian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -392,7 +395,7 @@ CREATE TABLE `npc` (
 
 LOCK TABLES `npc` WRITE;
 /*!40000 ALTER TABLE `npc` DISABLE KEYS */;
-INSERT INTO `npc` VALUES (0,'Test NPC','For testing purpose',10,10,100,20,20,0,1,'TestWeapon,Unarmed,Unarmed','Test Helmet,Test Chestplate,Test Leggings,Test Boots','Fighter','Power Slash','Firebolt,Self care','Sword Proficiency','Human');
+INSERT INTO `npc` VALUES (1,'Gregor','Adventure Buddy',10,10,100,20,20,0,1,'Dagger,Short Bow,Family Lance','Bejeweled Helmet,Worn Leather Chestpiece,Worn Leather Knee Pads,Old Travel Boots','Fighter','Powerful Slash,Powerful Shot,Powerful Stab','Firebolt,Self care','Adventurer,Human','Human','Adventurer');
 /*!40000 ALTER TABLE `npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -404,13 +407,13 @@ DROP TABLE IF EXISTS `passive`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `passive` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Description` text NOT NULL,
   `Affect` varchar(500) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -419,7 +422,7 @@ CREATE TABLE `passive` (
 
 LOCK TABLES `passive` WRITE;
 /*!40000 ALTER TABLE `passive` DISABLE KEYS */;
-INSERT INTO `passive` VALUES (0,'Sword Proficiency','Sword strikes are a little bit stronger.','Damage Calculation'),(1,'Test Passive','A passive ability for testing purpose.','Nothing'),(2,'None','Not so special now are we.','Nothing');
+INSERT INTO `passive` VALUES (1,'None','Not so special now are we.','Nothing'),(2,'Adventurer','Adventurers are self made explorers of the land and its dungeons. They complete quests small and big for rewards from the guilds.','Level Up,Experience Gain,Rest'),(3,'Noble','Nobles are the ruling class of society. They use their lineage to keep themselves in power and strong in therms of magic.','Shop Payment'),(4,'Merchant','Merchants are the ones responsible for keeping the money flowing out here in the valley as well as some supplies that can\'t be found here. Using their channels they can get gold anywhere but not any time.','Sleep,Shop Payment'),(5,'Blacksmith','Blacksmiths make the weapons, armors, tools and many more for the people and their massive bodies forged while forging are a force to be reckoned with.','Post Damage Calculation,Upgrade Weapon,Upgrade Armor'),(6,'Human','Humans are both adaptive and quick learners.','Experience Gain'),(7,'Elf','Elves have darksight and great mana affinity.','Turn End,Trap Triggered,Initiative Roll'),(8,'Dwarf','Dwarves are physically quite robust and are better at forging than anyone.','Upgrade Weapon,Upgrade Armor'),(9,'Halfling','Halflinges are small and brave. They are hard to stop as they are arogant.','Debuff Recieved,After Crit');
 /*!40000 ALTER TABLE `passive` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -431,17 +434,17 @@ DROP TABLE IF EXISTS `post`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `post` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Title` varchar(100) NOT NULL,
   `Content` text NOT NULL,
   `Date` date NOT NULL,
   `CategoryId` int NOT NULL,
   `PosterId` int NOT NULL,
   PRIMARY KEY (`Id`),
-  KEY `post_user_idx` (`PosterId`),
-  KEY `post_category_idx` (`CategoryId`),
-  CONSTRAINT `post_category` FOREIGN KEY (`CategoryId`) REFERENCES `category` (`Id`),
-  CONSTRAINT `post_user` FOREIGN KEY (`PosterId`) REFERENCES `user` (`Id`)
+  KEY `user_post_idx` (`PosterId`),
+  KEY `category_post_idx` (`CategoryId`),
+  CONSTRAINT `category_post` FOREIGN KEY (`CategoryId`) REFERENCES `category` (`Id`),
+  CONSTRAINT `user_post` FOREIGN KEY (`PosterId`) REFERENCES `user` (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -462,7 +465,7 @@ DROP TABLE IF EXISTS `race`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `race` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Description` text NOT NULL,
   `Fatal` varchar(100) NOT NULL,
@@ -472,7 +475,7 @@ CREATE TABLE `race` (
   `Null` varchar(100) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -481,7 +484,7 @@ CREATE TABLE `race` (
 
 LOCK TABLES `race` WRITE;
 /*!40000 ALTER TABLE `race` DISABLE KEYS */;
-INSERT INTO `race` VALUES (0,'Human','The average race we all know.','None','None','None','None','None'),(1,'Goblin','The most basic green skinned monster.','None','None','None','None','None');
+INSERT INTO `race` VALUES (1,'Human','The average race we all know.','None','Dark','None','None','None'),(2,'Goblin','The most basic green skinned monster.','None','None','None','None','None'),(3,'Elf','The long lived and frail worshipers of nature.','None','Blunt,Slash,Pierce,Dark','Holy','None','None'),(4,'Dwarf','The short inhabitants of caves with a short temper. They love their alcohol and forging.','None','Ice','Poison,Earth,Thunder','None','None'),(5,'Halfling','The short adventurers of the wild there is no place they wouldn\'t explore.','None','Dark','None','None','None');
 /*!40000 ALTER TABLE `race` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -496,9 +499,11 @@ CREATE TABLE `save_game` (
   `HeroId` int NOT NULL,
   `SaveData` text COLLATE utf8mb3_hungarian_ci NOT NULL,
   `SaveName` varchar(50) COLLATE utf8mb3_hungarian_ci NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`Id`),
   KEY `hero_save_idx` (`HeroId`),
   CONSTRAINT `hero_save` FOREIGN KEY (`HeroId`) REFERENCES `hero` (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_hungarian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_hungarian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -507,7 +512,6 @@ CREATE TABLE `save_game` (
 
 LOCK TABLES `save_game` WRITE;
 /*!40000 ALTER TABLE `save_game` DISABLE KEYS */;
-INSERT INTO `save_game` VALUES (1,'placeholdertext','first_save');
 /*!40000 ALTER TABLE `save_game` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -519,18 +523,18 @@ DROP TABLE IF EXISTS `skill`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `skill` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Description` text NOT NULL,
   `DamageType` varchar(20) NOT NULL,
   `CritChance` int NOT NULL,
   `CritDamage` double(2,1) NOT NULL,
   `SpecialEffect` varchar(300) NOT NULL,
-  `Range` varchar(5) NOT NULL,
+  `Range` varchar(6) NOT NULL,
   `SPCost` int NOT NULL,
   `CD` int NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -539,7 +543,7 @@ CREATE TABLE `skill` (
 
 LOCK TABLES `skill` WRITE;
 /*!40000 ALTER TABLE `skill` DISABLE KEYS */;
-INSERT INTO `skill` VALUES (0,'Basic Strike','A basic strike from the monster','Blunt',10,2.0,'None','Melee',0,0),(1,'Advanced Strike','An advanced striking technique from a monster.','Blunt',15,2.2,'None','Melee',0,0),(2,'Shield','A basic defensive ability that raises the users defense.','None',0,0.0,'None','None',5,2),(3,'Power Slash','A powerful cut.','Slash',20,3.0,'None','Melee',3,2);
+INSERT INTO `skill` VALUES (1,'Powerful Cut','A powerful cut.','Slash',20,3.0,'None','Melee',2,2),(2,'Powerful Stab','A powerful stab.','Pierce',25,2.5,'None','Melee',2,2),(3,'Powerful Shot','A powerful shot.','Pierce',20,3.0,'None','Ranged',2,2),(4,'Knock Away','A weak strike that forces the enemy to move backwards.','Blunt',1,2.0,'None','Melee',1,2),(6,'Taunt','Makes an enemy focus you on its turn.','None',0,0.0,'Taunt','Both',3,4),(7,'Mark Bounty','Marks an enemy and makes them take extra damage.','None',0,0.0,'Mark','Both',1,4),(8,'Basic Strike','The most basic strike a creature can use when they have nothing left.','Blunt',10,1.5,'None','Melee',0,0);
 /*!40000 ALTER TABLE `skill` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -551,13 +555,13 @@ DROP TABLE IF EXISTS `special_effect`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `special_effect` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Description` text NOT NULL,
   `Affect` varchar(500) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -566,7 +570,7 @@ CREATE TABLE `special_effect` (
 
 LOCK TABLES `special_effect` WRITE;
 /*!40000 ALTER TABLE `special_effect` DISABLE KEYS */;
-INSERT INTO `special_effect` VALUES (0,'Piercing Blade','A blade that can even cut armor. (Ignores a set amount of defense(DEF))','Damage Calculation'),(1,'Burn','Sets your targets ablaze.','Give Buff or Debuff'),(2,'None','Not so special now are we.','Nothing');
+INSERT INTO `special_effect` VALUES (1,'None','Not so special now are we.','Nothing'),(2,'Shield','A shield gives you its ATK as DEF when equipped.','Weapon Equip,DEF Calculation'),(3,'Taunt','Changes the focus of a creature to this one.','Skill Use,Magic Use,Basic Attack'),(4,'Mark','A mark of death that makes the creature take more damage.','Skill Use,Magic Use,Basic Attack'),(5,'Burn','Sets the target on fire.','Skill Use,Magic Use,Basic Attack,Environment Hazard');
 /*!40000 ALTER TABLE `special_effect` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -578,13 +582,13 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `UserName` varchar(30) NOT NULL,
-  `Password` varchar(50) NOT NULL,
+  `Password` varchar(255) DEFAULT NULL,
   `Email` varchar(100) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `UserName_UNIQUE` (`UserName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -593,7 +597,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Patrik','1234','p@e.hu');
+INSERT INTO `user` VALUES (14,'Patrik05','$2b$05$znU95Mg1XAOzLFXi8/emCu2WWTJzdN9MBsl/LOJfOSLJPnL/tz3qG','SabPat702@hengersor.hu'),(18,'Amon988','$2b$05$1qBtWkKAey4cgfUmwqJ2o.jFQDXjQZwuAQTq0QuiQKdvcmXN63pE.','totamo988@hengersor.hu'),(19,'Szekrenyes','$2b$05$Ebxc.5G6REbI2NQgqpQKh.jr7VIyjsdPo8ClB7cMT8y3sRatDmqNq','Szekrenyes@gmail.com'),(21,'teszzt','$2b$05$f0iJWzjNSYx9y/phTm0l.O1gaC3GD1pdXb.U7kFJkdCaxc8wMQp2C','test@gmail.com'),(22,'kamu','$2b$05$kXB54toK5Njk8MD.AbfpUOVDPA3BL0BBH1hTawcqAACbmJi1xHIQi','kamu@gmail.com'),(23,'Kamu1','$2b$05$hqNDFWkMj4tqm5u25.QwuOxUJ0GuSlD695D1cHnkWJjhaz72xfZp6','Kamu1@gmail.com'),(25,'kemtam197','$2b$05$k0Io.5U850M9fj3qDXig2Oye3q5d8gZoVbEYg9rZ/aqdCXIHxIXOG','kemtam197@hengersor.hu');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -605,7 +609,7 @@ DROP TABLE IF EXISTS `weapon`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `weapon` (
-  `Id` int NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Description` text NOT NULL,
   `ATK` int NOT NULL,
@@ -613,12 +617,13 @@ CREATE TABLE `weapon` (
   `CritChance` int NOT NULL,
   `CritDamage` double(2,1) NOT NULL,
   `SpecialEffect` varchar(300) NOT NULL,
-  `Range` varchar(5) NOT NULL,
-  `SkillCompatibility` varchar(5) NOT NULL,
+  `Range` varchar(6) NOT NULL,
+  `SkillCompatibility` varchar(6) NOT NULL,
   `Price` int NOT NULL,
+  `Unigue` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -627,7 +632,7 @@ CREATE TABLE `weapon` (
 
 LOCK TABLES `weapon` WRITE;
 /*!40000 ALTER TABLE `weapon` DISABLE KEYS */;
-INSERT INTO `weapon` VALUES (0,'TestWeapon','A weapon for testing.',20,'Slash',10,2.0,'Piercing Blade','Melee','Melee',20),(1,'Unarmed','No weapons here',2,'Blunt',1,1.1,'None','Melee','Melee',0);
+INSERT INTO `weapon` VALUES (1,'Unarmed','No weapons here',2,'Blunt',1,1.1,'None','Melee','Melee',0,0),(2,'Rusty Longsword','A rusty longsword that was probably picked up from the side of the road.',8,'Slash',4,1.5,'None','Melee','Melee',0,0),(3,'Broken Spear','A long spear broken in half that now is used as a short spear.',6,'Pierce',10,1.5,'None','Melee','Melee',0,0),(4,'Short Bow','A short bow with short range and small power behind each shot.',6,'Pierce',10,2.0,'None','Ranged','Ranged',0,0),(5,'Dagger','A small dagger easily hidden but not that strong and effective in frontal combat.',4,'Pierce',15,1.5,'None','Melee','Melee',0,0),(6,'Travel Staff','A staff made with traveling in mind. Not that useful for fighting.',4,'Blunt',4,1.5,'None','Melee','Melee',0,0),(7,'Wooden Shield','A small shield made of wood.',2,'Blunt',1,1.1,'Shield','Melee','Melee',0,0),(8,'Short Sword','A basic sword made of iron that is short.',12,'Slash',10,2.0,'None','Melee','Melee',30,0),(9,'Family Lance','A family heirloom',10,'Pierce',15,2.0,'None','Both','Melee',40,1),(10,'Crossbow','A slower but stronger alternative to a bow that is easier to use.',12,'Pierce',10,2.0,'None','Ranged','Ranged',100,0);
 /*!40000 ALTER TABLE `weapon` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -640,4 +645,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-03  9:59:17
+-- Dump completed on 2025-04-15 13:14:05
