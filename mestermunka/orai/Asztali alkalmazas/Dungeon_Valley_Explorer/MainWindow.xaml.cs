@@ -31,7 +31,7 @@ namespace Dungeon_Valley_Explorer
     {
         static MySqlConnectionStringBuilder mySqlConnectionStringBuilder = new MySqlConnectionStringBuilder()
         {
-            Server = "10.3.1.65",
+            Server = "127.0.0.1",
             Port = 3306,
             UserID = "sabpat702",
             Password = "72587413702",
