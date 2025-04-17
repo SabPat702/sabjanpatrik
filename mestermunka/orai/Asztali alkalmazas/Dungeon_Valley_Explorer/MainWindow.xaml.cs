@@ -143,6 +143,7 @@ namespace Dungeon_Valley_Explorer
         List<Monster> activeMonsters = new List<Monster>();
         Dictionary<string, int> initiative = new Dictionary<string, int>();
         int initiativeTracker = 0;
+        List<string> combatants = new List<string>();
         Hero activeHero = new Hero();
         Monster activeMonster = new Monster();
         //Fighting Variables -------------------------------------------------------------------------------------------
@@ -4708,6 +4709,8 @@ namespace Dungeon_Valley_Explorer
                     MessageBox.Show("Can't remove: there is only one hero in the party or you picked the 'Add Hero' option.");
                     if (changeHeroPartyHero.DisplayName == string.Empty)
                     {
+                        int index = heroes.IndexOf(heroes.Where(x => x.DisplayName == changeHeroPartyHero.DisplayName).Select(x => x).First());
+                        heroes[index] = changeHeroPartyHero;
                         party.Remove(party.Last());
                     }
                 }
@@ -4744,7 +4747,9 @@ namespace Dungeon_Valley_Explorer
 
         public void SortPartyChangeHeroesHeroChanging()
         {
-            int index = party.IndexOf(changeHeroPartyHero);
+            int index = heroes.IndexOf(heroes.Where(x => x.DisplayName == changeHeroPartyHero.DisplayName).Select(x => x).First());
+            heroes[index] = changeHeroPartyHero;
+            index = party.IndexOf(changeHeroPartyHero);
             party[index] = changeHeroHeroesHero;
             SortPartyChooseChangeReEntry();
         }
@@ -6973,7 +6978,7 @@ namespace Dungeon_Valley_Explorer
 
         public void TurnStart()
         {
-            if (party.Select(x => x.DisplayName).Contains(initiative.ElementAt(initiativeTracker).Key))
+            if (party.Select(x => x.DisplayName).Contains(combatants.ElementAt(initiativeTracker)))
             {
                 activeHero = party.Where(x => x.DisplayName == initiative.ElementAt(initiativeTracker).Key).Select(x => x).First();
 
@@ -7028,7 +7033,7 @@ namespace Dungeon_Valley_Explorer
                     }
                 }
 
-
+                PlayerActionBegins();
             }
             else
             {
@@ -7039,6 +7044,18 @@ namespace Dungeon_Valley_Explorer
                     if (passive.Affect.Contains("Turn Start"))
                     {
                         switch (passive.PassiveName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                foreach (BuffDebuff buffDebuff in activeMonster.BuffsDebuffs)
+                {
+                    if (buffDebuff.Affect.Contains("Turn Start"))
+                    {
+                        switch (buffDebuff.BuffDebuffName)
                         {
                             default:
                                 break;
@@ -7076,8 +7093,6 @@ namespace Dungeon_Valley_Explorer
                     if (activeMonster.Ai == "Basic")
                     {
                         activeMonster.Guard = true;
-                        MonsterExecuteAction(targets, chosenSkill, chosenMagic, monsterAction);
-
                     }
                     break;
                 case "Skill":
@@ -7085,31 +7100,34 @@ namespace Dungeon_Valley_Explorer
                     {
                         chosenSkill = Ai.BasicSkillChoosing(activeMonster);
                         targets = Ai.BasicSkillTargetChoosing(chosenSkill, activeMonsters, party, activeMonster, meleeClasses, rangedClasses);
-                        MonsterExecuteAction(targets, chosenSkill, chosenMagic, monsterAction);
-
                     }
                     break;
                 case "Magic":
                     if (activeMonster.Ai == "Basic")
                     {
                         chosenMagic = Ai.BasicMagicChoosing(activeMonster);
-                        targets = Ai.BasicMagicTargetChoosing(chosenMagic, activeMonsters, party, activeMonster, meleeClasses, rangedClasses);
-                        MonsterExecuteAction(targets, chosenSkill, chosenMagic, monsterAction);
-
+                        if (chosenMagic.MagicName == "None")
+                        {
+                            monsterAction = "Default";
+                            chosenSkill = activeMonster.Skills.Where(x => x.SkillName == "Basic Strike").Select(x => x).First();
+                            targets = Ai.BasicSkillTargetChoosing(chosenSkill, activeMonsters, party, activeMonster, meleeClasses, rangedClasses);
+                        }
+                        else
+                        {
+                            targets = Ai.BasicMagicTargetChoosing(chosenMagic, activeMonsters, party, activeMonster, meleeClasses, rangedClasses);
+                        }
                     }
                     break;
                 default:
                     if (activeMonster.Ai == "Basic")
                     {
-                        chosenSkill = Ai.BasicSkillChoosing(activeMonster);
+                        chosenSkill = activeMonster.Skills.Where(x => x.SkillName == "Basic Strike").Select(x => x).First();
                         targets = Ai.BasicSkillTargetChoosing(chosenSkill, activeMonsters, party, activeMonster, meleeClasses, rangedClasses);
-                        MonsterExecuteAction(targets, chosenSkill, chosenMagic, monsterAction);
-
                     }
                     break;
             }
-
-
+            MonsterExecuteAction(targets, chosenSkill, chosenMagic, monsterAction);
+            MonsterTurnEnd();
         }
 
         public void MonsterExecuteAction(List<Target> targets, Skill chosenSkill, Magic chosenMagic, string monsterAction)
@@ -7136,9 +7154,9 @@ namespace Dungeon_Valley_Explorer
                     }
                     break;
                 default:
-                    switch (chosenSkill.SkillName)
+                    switch (activeMonster.Ai)
                     {
-                        case "Basic Strike":
+                        case "Basic":
                             Skill.BasicStrike(targets, new DamageSource(activeMonster, chosenSkill), party);
                             break;
                         default:
@@ -7148,7 +7166,76 @@ namespace Dungeon_Valley_Explorer
             }
         }
 
+        public void MonsterTurnEnd()
+        {
+            foreach (Monster monster in activeMonsters)
+            {
+                if (monster.HP <= 0)
+                {
+                    initiative.Remove(monster.MonsterName);
+                }
+            }
+
+            foreach (Hero hero in party)
+            {
+                if (hero.HP <= 0)
+                {
+                    initiative.Remove(hero.DisplayName);
+                }
+            }
+
+            foreach (Passive passive in activeMonster.Passives)
+            {
+                if (passive.Affect.Contains("Turn End"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            foreach (BuffDebuff buffDebuff in activeMonster.BuffsDebuffs)
+            {
+                if (buffDebuff.Affect.Contains("Turn End"))
+                {
+                    switch (buffDebuff.BuffDebuffName)
+                    {
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            initiativeTracker++;
+            for (int i = initiativeTracker; i <= combatants.Count; i++)
+            {
+                if (initiativeTracker == combatants.Count)
+                {
+                    //Round over
+                    break;
+                }
+                else if (initiative.ContainsKey(combatants[i]))
+                {
+                    initiativeTracker = i;
+                    TurnStart();
+                    break;
+                }
+            }
+        }
+
         //Monster Turn ends here ---------------------------------------------------------------------------------------
+
+        //Player Turn starts here --------------------------------------------------------------------------------------
+
+        public void PlayerActionBegins()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+        }
+
+        //Player Turn ends here ----------------------------------------------------------------------------------------
 
         //Fighting ends here -------------------------------------------------------------------------------------------
 

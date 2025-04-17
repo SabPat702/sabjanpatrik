@@ -19,6 +19,14 @@ namespace Dungeon_Valley_Explorer
         {
             if (folders.Last() != folders[10])
             {
+                for (int i = 0; i < heroes.Count; i++)
+                {
+                    if (party.Select(x => x.DisplayName).Contains(heroes[i].DisplayName))
+                    {
+                        heroes[i] = party.Where(x => x.DisplayName == heroes[i].DisplayName).Select(x => x).First();
+                    }
+                }
+
                 if (SaveExist(mySqlConnection, folders, files) == true)
                 {
                     UpdateSave(folders, files, heroes, party, questsCompleted, consumables, Gold, Experience, dungeonsCompleted, weaponsImproved, armorsImproved, weaponsObtained, armorsObtained, consumablesUnlocked, mySqlConnection, Initializer.npcs);

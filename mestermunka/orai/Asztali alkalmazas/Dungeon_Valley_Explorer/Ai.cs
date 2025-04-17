@@ -282,6 +282,14 @@ namespace Dungeon_Valley_Explorer
                     break;
             }
 
+            foreach (Target target in targets)
+            {
+                if (target.HP <= 0)
+                {
+                    targets.Remove(target);
+                }
+            }
+
             return targets;
         }
 

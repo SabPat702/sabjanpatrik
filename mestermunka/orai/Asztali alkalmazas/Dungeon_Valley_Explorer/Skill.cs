@@ -56,6 +56,47 @@ namespace Dungeon_Valley_Explorer
         {
             List<int> damages = DamageCalculator.PreDamageCalculation(targets, damageSource);
 
+            for (int i = 0; i < targets.Count; i++)
+            {
+                party.Where(x => x.DisplayName == targets[i].TargetName).Select(x => x).First().HP -= damages[i];
+
+                foreach (SpecialEffect specialEffect in targets[i].SpecialEffects)
+                {
+                    if (specialEffect.Affect.Contains("Recieve Damage"))
+                    {
+                        switch (specialEffect.SpecialEffectName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                foreach (BuffDebuff buffDebuff in targets[i].BuffsDebuffs)
+                {
+                    if (buffDebuff.Affect.Contains("Recieve Damage"))
+                    {
+                        switch (buffDebuff.BuffDebuffName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                foreach (Passive passive in targets[i].Passives)
+                {
+                    if (passive.Affect.Contains("Recieve Damage"))
+                    {
+                        switch (passive.PassiveName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+
             return party;
         }
     }

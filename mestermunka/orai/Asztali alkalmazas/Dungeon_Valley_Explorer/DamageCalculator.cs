@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Asn1.X509;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,15 +12,86 @@ namespace Dungeon_Valley_Explorer
     {
         static List<string> physicalDamageTypes = new List<string> { "Blunt", "Pierce", "Slash" };
         static List<string> magicalDamageTypes = new List<string> { "Fire" };
-        static bool skipDamageCalculation = false;
         static Random random = new Random();
 
         public static List<int> PreDamageCalculation(List<Target> targets, DamageSource damageSource)
         {
             List<int> damages = new List<int>();
 
+            foreach (SpecialEffect specialEffect in damageSource.SpecialEffects)
+            {
+                if (specialEffect.Affect.Contains("Pre Damage Calculation"))
+                {
+                    switch (specialEffect.SpecialEffectName)
+                    {
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            foreach (BuffDebuff buffDebuff in damageSource.BuffsDebuffs)
+            {
+                if (buffDebuff.Affect.Contains("Pre Damage Calculation"))
+                {
+                    switch (buffDebuff.BuffDebuffName)
+                    {
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            foreach (Passive passive in damageSource.Passives)
+            {
+                if (passive.Affect.Contains("Pre Damage Calculation"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        default:
+                            break;
+                    }
+                }
+            }
+
             foreach (Target target in targets)
             {
+                foreach (SpecialEffect specialEffect in target.SpecialEffects)
+                {
+                    if (specialEffect.Affect.Contains("Pre Damage Calculation"))
+                    {
+                        switch (specialEffect.SpecialEffectName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                foreach (BuffDebuff buffDebuff in target.BuffsDebuffs)
+                {
+                    if (buffDebuff.Affect.Contains("Pre Damage Calculation"))
+                    {
+                        switch (buffDebuff.BuffDebuffName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                foreach (Passive passive in target.Passives)
+                {
+                    if (passive.Affect.Contains("Pre Damage Calculation"))
+                    {
+                        switch (passive.PassiveName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+
                 damages.Add(DamageCalculation(target, damageSource));
             }
 
@@ -35,24 +107,22 @@ namespace Dungeon_Valley_Explorer
             }
             damage = DMGCalcDamageTypeChecker(damage, target, damageSource);
 
-            if (skipDamageCalculation == false)
+            if (physicalDamageTypes.Contains(damageSource.DamageType))
             {
-                if (physicalDamageTypes.Contains(damageSource.DamageType))
-                {
-                    damage = damage - target.DEF;
-                }
-                else if (magicalDamageTypes.Contains(damageSource.DamageType))
-                {
-                    damage = damage - target.MDEF;
-                }
-                if (target.Guard == true)
-                {
-                    damage = (int)Math.Round(damage * 0.5, 0);
-                }
-                damage = DMGCalcSpecialEffectChecker(damage, target, damageSource);
-                damage = DMGCalcEffectChecker(damage, target, damageSource);
-                damage = DMGCalcPassiveChecker(damage, target, damageSource);
+                damage = damage - target.DEF;
             }
+            else if (magicalDamageTypes.Contains(damageSource.DamageType))
+            {
+                damage = damage - target.MDEF;
+            }
+            if (target.Guard == true)
+            {
+                damage = (int)Math.Round(damage * 0.5, 0);
+            }
+            damage = DMGCalcSpecialEffectChecker(damage, target, damageSource);
+            damage = DMGCalcEffectChecker(damage, target, damageSource);
+            damage = DMGCalcPassiveChecker(damage, target, damageSource);
+
             return damage;
         }
 
@@ -77,7 +147,6 @@ namespace Dungeon_Valley_Explorer
             else if (Initializer.races[target.Race.Id].Nulls.Contains(damageSource.DamageType))
             {
                 damage = 0;
-                skipDamageCalculation = true;
             }
             else
             {
@@ -94,8 +163,6 @@ namespace Dungeon_Valley_Explorer
                 {
                     switch (buffdebuff.BuffDebuffName)
                     {
-                        case "W.I.P":
-                            break;
                         default:
 
                             break;
@@ -108,9 +175,6 @@ namespace Dungeon_Valley_Explorer
                 {
                     switch (buffdebuff.BuffDebuffName)
                     {
-                        case "Damage up":
-                            damage = BuffDebuff.DamageUp(damage);
-                            break;
                         default:
 
                             break;
@@ -128,12 +192,6 @@ namespace Dungeon_Valley_Explorer
                 {
                     switch (specialEffect.SpecialEffectName)
                     {
-                        case "Piercing Blade":
-                            if (physicalDamageTypes.Contains(damageSource.DamageType))
-                            {
-                                damage = SpecialEffect.PiercingBlade(damage, target);
-                            }
-                            break;
                         default:
 
                             break;
@@ -151,8 +209,6 @@ namespace Dungeon_Valley_Explorer
                 {
                     switch (passive.PassiveName)
                     {
-                        case "W.I.P":
-                            break;
                         default:
 
                             break;
@@ -165,9 +221,6 @@ namespace Dungeon_Valley_Explorer
                 {
                     switch (passive.PassiveName)
                     {
-                        case "Sword Proficiency":
-                            damage = Passive.SwordProficiency(damage);
-                            break;
                         default:
 
                             break;

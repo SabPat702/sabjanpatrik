@@ -36,7 +36,7 @@ namespace Dungeon_Valley_Explorer
             BuffsDebuffs = new List<BuffDebuff>();
             SpecialEffects = new List<SpecialEffect>();
             Passives = new List<Passive>();
-            TargetName = hero.HeroName;
+            TargetName = hero.DisplayName;
             DEF = hero.DEF;
             MDEF = hero.MDEF;
             HP = hero.HP;
