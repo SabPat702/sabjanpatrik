@@ -146,6 +146,7 @@ namespace Dungeon_Valley_Explorer
         List<string> combatants = new List<string>();
         Hero activeHero = new Hero();
         Monster activeMonster = new Monster();
+        Weapon activeHeroChosenWeapon = new Weapon();
         //Fighting Variables -------------------------------------------------------------------------------------------
         public MainWindow()
         {
@@ -6981,7 +6982,7 @@ namespace Dungeon_Valley_Explorer
             if (party.Select(x => x.DisplayName).Contains(combatants.ElementAt(initiativeTracker)))
             {
                 activeHero = party.Where(x => x.DisplayName == initiative.ElementAt(initiativeTracker).Key).Select(x => x).First();
-
+                activeHero.Guard = false;
                 foreach (Passive passive in activeHero.Passives)
                 {
                     if (passive.Affect.Contains("Turn Start"))
@@ -7038,7 +7039,7 @@ namespace Dungeon_Valley_Explorer
             else
             {
                 activeMonster = activeMonsters.Where(x => x.MonsterName == initiative.ElementAt(initiativeTracker).Key).Select(x => x).First();
-
+                activeMonster.Guard = false;
                 foreach (Passive passive in activeMonster.Passives)
                 {
                     if (passive.Affect.Contains("Turn Start"))
@@ -7233,6 +7234,374 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Fight");
+            lbOptions.Items.Add("2. Block");
+            lbOptions.Items.Add("3. Inventory");
+            lbOptions.Items.Add("4. Inspect");
+            lbDisplay.Items.Add($"GAME: It is currently {activeHero.DisplayName}'s turn.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(PlayerActionMainChoice);
+        }
+
+        public void PlayerActionMainChoice(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(PlayerActionMainChoice);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainPlayerActionMainChoice();
+                    break;
+                case "1":
+                    PlayerFightAction();
+                    break;
+                case "Fight":
+                    PlayerFightAction();
+                    break;
+                case "2":
+                    PlayerBlockAction();
+                    break;
+                case "Block":
+                    PlayerBlockAction();
+                    break;
+                case "3":
+                    tbInputArea.Text = "";
+                    lbDisplay.Items.Add("GAME: This feature is not available in this version.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    btInput.Click += new RoutedEventHandler(PlayerActionMainChoice);
+                    break;
+                case "Inventory":
+                    tbInputArea.Text = "";
+                    lbDisplay.Items.Add("GAME: This feature is not available in this version.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    btInput.Click += new RoutedEventHandler(PlayerActionMainChoice);
+                    break;
+                case "4":
+                    tbInputArea.Text = "";
+                    lbDisplay.Items.Add("GAME: This feature is not available in this version.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    btInput.Click += new RoutedEventHandler(PlayerActionMainChoice);
+                    break;
+                case "Inspect":
+                    tbInputArea.Text = "";
+                    lbDisplay.Items.Add("GAME: This feature is not available in this version.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    btInput.Click += new RoutedEventHandler(PlayerActionMainChoice);
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(PlayerActionMainChoice);
+                    break;
+            }
+        }
+
+        public void ExplainPlayerActionMainChoice()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("EXPLANATION: Fight allows you to choose fight related actions such as attack, skills and magics.");
+            lbDisplay.Items.Add("EXPLANATION: Block allows you to receive 50% less damage until your next turn.");
+            lbDisplay.Items.Add("EXPLANATION: Inventory allows you to use consumables.");
+            lbDisplay.Items.Add("EXPLANATION: Inspect gives you a reading on enemies and allies.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(PlayerActionMainChoice);
+        }
+
+        //Player Fight Action starts here ------------------------------------------------------------------------------
+
+        public void PlayerFightAction()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Attack");
+            lbOptions.Items.Add("2. Skills");
+            lbOptions.Items.Add("3. Magics");
+            lbOptions.Items.Add("4. Cancel");
+            btInput.Click += new RoutedEventHandler(PlayerFightActionChoice);
+        }
+
+        public void PlayerFightActionChoice(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(PlayerFightActionChoice);
+            switch (tbInputArea.Text)
+            {
+                case "?":
+                    ExplainPlayerFightActionChoice();
+                    break;
+                case "1":
+                    PlayerFightAttackAction();
+                    break;
+                case "Attack":
+                    PlayerFightAttackAction();
+                    break;
+                case "2":
+                    tbInputArea.Text = "";
+                    lbDisplay.Items.Add("GAME: This feature is not available in this version.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    btInput.Click += new RoutedEventHandler(PlayerFightActionChoice);
+                    break;
+                case "Skills":
+                    tbInputArea.Text = "";
+                    lbDisplay.Items.Add("GAME: This feature is not available in this version.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    btInput.Click += new RoutedEventHandler(PlayerFightActionChoice);
+                    break;
+                case "3":
+                    tbInputArea.Text = "";
+                    lbDisplay.Items.Add("GAME: This feature is not available in this version.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    btInput.Click += new RoutedEventHandler(PlayerFightActionChoice);
+                    break;
+                case "Magics":
+                    tbInputArea.Text = "";
+                    lbDisplay.Items.Add("GAME: This feature is not available in this version.");
+                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                    btInput.Click += new RoutedEventHandler(PlayerFightActionChoice);
+                    break;
+                case "4":
+                    PlayerActionMainChoiceReEntry();
+                    break;
+                case "Cancel":
+                    PlayerActionMainChoiceReEntry();
+                    break;
+                default:
+                    MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                    btInput.Click += new RoutedEventHandler(PlayerFightActionChoice);
+                    break;
+            }
+        }
+
+        public void ExplainPlayerFightActionChoice()
+        {
+            tbInputArea.Text = "";
+            lbDisplay.Items.Add("EXPLANATION: Attack allows you to use one of your weapons to make a basic attack against an enemy.");
+            lbDisplay.Items.Add("EXPLANATION: Skills allows you to choose a skill to use.");
+            lbDisplay.Items.Add("EXPLANATION: Magics allows you to choose a magic to use.");
+            lbDisplay.Items.Add("EXPLANATION: Cancel allows you to go back to the previous choice.");
+            lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+            btInput.Click += new RoutedEventHandler(PlayerFightActionChoice);
+        }
+
+        //Player Attack Action starts here -----------------------------------------------------------------------------
+
+        public void PlayerFightAttackAction()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add($"1. {activeHero.Weapons[0].WeaponName}");
+            lbOptions.Items.Add($"2. {activeHero.Weapons[1].WeaponName}");
+            lbOptions.Items.Add($"3. {activeHero.Weapons[2].WeaponName}");
+            lbOptions.Items.Add("4. Cancel");
+            btInput.Click += new RoutedEventHandler(PlayerFightAttackWeaponChoice);
+        }
+
+        public void PlayerFightAttackWeaponChoice(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(PlayerFightAttackWeaponChoice);
+            if (tbInputArea.Text == "?")
+            {
+                string output = "";
+                lbDisplay.Items.Add($"1. Weapon:{activeHero.Weapons[0].WeaponName} ATK:{activeHero.Weapons[0].ATK} Crit:{activeHero.Weapons[0].CritChance}% {activeHero.Weapons[0].CritDamage}x Damage type:{activeHero.Weapons[0].DamageType} Range:{activeHero.Weapons[0].Range} Skill compatibility:{activeHero.Weapons[0].SkillCompatibility} Unique:{activeHero.Weapons[0].Unique}");
+                for (int i = 0; i < activeHero.Weapons[0].SpecialEffects.Count; i++)
+                {
+                    if (i < activeHero.Weapons[0].SpecialEffects.Count - 1)
+                    {
+                        output += activeHero.Weapons[0].SpecialEffects[i].SpecialEffectName + ",";
+                    }
+                    else
+                    {
+                        output += activeHero.Weapons[0].SpecialEffects[i].SpecialEffectName;
+                    }
+                }
+                lbDisplay.Items.Add($"Special effects:{output}");
+                lbDisplay.Items.Add($"Description:{activeHero.Weapons[0].Description}");
+                lbDisplay.Items.Add($"2. Weapon:{activeHero.Weapons[1].WeaponName} ATK:{activeHero.Weapons[1].ATK} Crit:{activeHero.Weapons[1].CritChance}% {activeHero.Weapons[1].CritDamage}x Damage type:{activeHero.Weapons[1].DamageType} Range:{activeHero.Weapons[1].Range} Skill compatibility:{activeHero.Weapons[1].SkillCompatibility} Unique:{activeHero.Weapons[1].Unique}");
+                for (int i = 0; i < activeHero.Weapons[1].SpecialEffects.Count; i++)
+                {
+                    if (i < activeHero.Weapons[1].SpecialEffects.Count - 1)
+                    {
+                        output += activeHero.Weapons[1].SpecialEffects[i].SpecialEffectName + ",";
+                    }
+                    else
+                    {
+                        output += activeHero.Weapons[1].SpecialEffects[i].SpecialEffectName;
+                    }
+                }
+                lbDisplay.Items.Add($"Special effects:{output}");
+                lbDisplay.Items.Add($"Description:{activeHero.Weapons[1].Description}");
+                lbDisplay.Items.Add($"3. Weapon:{activeHero.Weapons[2].WeaponName} ATK:{activeHero.Weapons[2].ATK} Crit:{activeHero.Weapons[2].CritChance}% {activeHero.Weapons[2].CritDamage}x Damage type:{activeHero.Weapons[2].DamageType} Range:{activeHero.Weapons[2].Range} Skill compatibility:{activeHero.Weapons[2].SkillCompatibility} Unique:{activeHero.Weapons[2].Unique}");
+                for (int i = 0; i < activeHero.Weapons[2].SpecialEffects.Count; i++)
+                {
+                    if (i < activeHero.Weapons[2].SpecialEffects.Count - 1)
+                    {
+                        output += activeHero.Weapons[2].SpecialEffects[i].SpecialEffectName + ",";
+                    }
+                    else
+                    {
+                        output += activeHero.Weapons[2].SpecialEffects[i].SpecialEffectName;
+                    }
+                }
+                lbDisplay.Items.Add($"Special effects:{output}");
+                lbDisplay.Items.Add($"Description:{activeHero.Weapons[2].Description}");
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(PlayerFightAttackWeaponChoice);
+            }
+            else if (tbInputArea.Text == "4" || tbInputArea.Text == "Cancel")
+            {
+                PlayerFightActionChoiceReEntry();
+            }
+            else if (activeHero.Weapons.Select(x => x.WeaponName).Contains(tbInputArea.Text) || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3"))
+            {
+                if (activeHero.Weapons.Select(x => x.WeaponName).Contains(tbInputArea.Text))
+                {
+                    activeHeroChosenWeapon = activeHero.Weapons.Where(x => x.WeaponName == tbInputArea.Text).Select(x => x).First();
+                    PlayerAttackTargeting();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text)-1;
+                        activeHeroChosenWeapon = activeHero.Weapons[index];
+                        PlayerAttackTargeting();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(PlayerFightAttackWeaponChoice);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(PlayerFightAttackWeaponChoice);
+            }
+        }
+
+        public void PlayerAttackTargeting()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+        }
+
+        public void PlayerFightActionChoiceReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Attack");
+            lbOptions.Items.Add("2. Skills");
+            lbOptions.Items.Add("3. Magics");
+            lbOptions.Items.Add("4. Cancel");
+            btInput.Click += new RoutedEventHandler(PlayerFightActionChoice);
+        }
+
+        //Player Attack Action ends here -------------------------------------------------------------------------------
+
+        //Player Fight Action ends here --------------------------------------------------------------------------------
+
+        public void PlayerBlockAction()
+        {
+            party.Where(x => x.DisplayName == activeHero.DisplayName).Select(x => x).First().Guard = true;
+            PlayerTurnEnd();
+        }
+
+        public void PlayerActionMainChoiceReEntry()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            lbOptions.Items.Add("1. Fight");
+            lbOptions.Items.Add("2. Block");
+            lbOptions.Items.Add("3. Inventory");
+            lbOptions.Items.Add("4. Inspect");
+            btInput.Click += new RoutedEventHandler(PlayerActionMainChoice);
+        }
+
+        public void PlayerTurnEnd()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+
+            foreach (Monster monster in activeMonsters)
+            {
+                if (monster.HP <= 0)
+                {
+                    initiative.Remove(monster.MonsterName);
+                }
+            }
+
+            foreach (Hero hero in party)
+            {
+                if (hero.HP <= 0)
+                {
+                    initiative.Remove(hero.DisplayName);
+                }
+            }
+
+            foreach (Passive passive in activeHero.Passives)
+            {
+                if (passive.Affect.Contains("Turn End"))
+                {
+                    switch (passive.PassiveName)
+                    {
+                        default:
+                            break;
+                    }
+                }
+            }
+            foreach (BuffDebuff buffDebuff in activeHero.BuffsDebuffs)
+            {
+                if (buffDebuff.Affect.Contains("Turn End"))
+                {
+                    switch (buffDebuff.BuffDebuffName)
+                    {
+                        default:
+                            break;
+                    }
+                }
+            }
+            foreach (Weapon weapon in activeHero.Weapons)
+            {
+                foreach (SpecialEffect specialEffect in weapon.SpecialEffects)
+                {
+                    if (specialEffect.Affect.Contains("Turn End"))
+                    {
+                        switch (specialEffect.SpecialEffectName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            foreach (Armor armor in activeHero.Armors)
+            {
+                foreach (SpecialEffect specialEffect in armor.SpecialEffects)
+                {
+                    if (specialEffect.Affect.Contains("Turn End"))
+                    {
+                        switch (specialEffect.SpecialEffectName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+
+            initiativeTracker++;
+            for (int i = initiativeTracker; i <= combatants.Count; i++)
+            {
+                if (initiativeTracker == combatants.Count)
+                {
+                    //Round over
+                    break;
+                }
+                else if (initiative.ContainsKey(combatants[i]))
+                {
+                    initiativeTracker = i;
+                    TurnStart();
+                    break;
+                }
+            }
         }
 
         //Player Turn ends here ----------------------------------------------------------------------------------------

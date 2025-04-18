@@ -19,7 +19,7 @@
       "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:skill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|c:\\users\\szab\u00F3\\documents\\github\\sabjanpatrik\\mestermunka\\orai\\asztali alkalmazas\\dungeon_valley_explorer\\damagecalculator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|C:\\Users\\Szab\u00F3\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\damagecalculator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{088E0480-E92A-489D-825A-37F136155F48}|Dungeon_Valley_Explorer.csproj|solutionrelative:damagecalculator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -116,7 +116,7 @@
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\Szab\u00F3\\Documents\\GitHub\\sabjanpatrik\\mestermunka\\orai\\Asztali alkalmazas\\Dungeon_Valley_Explorer\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AQIAACMcAAAAAAAAAAAqwDQcAAAqAAAA",
+              "ViewState": "AQIAABkdAAAAAAAAAADwvzodAAAkAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-28T20:55:06.735Z",
               "IsPinned": true,
@@ -132,7 +132,8 @@
               "RelativeToolTip": "MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-01-28T20:55:07.362Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -144,8 +145,7 @@
               "RelativeToolTip": "DamageCalculator.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAGEAAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T16:15:31.735Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T16:15:31.735Z"
             },
             {
               "$type": "Document",
@@ -157,8 +157,7 @@
               "RelativeToolTip": "Ai.cs",
               "ViewState": "AQIAAAwAAAAAAAAAAAA5wDEAAAAqAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-15T07:08:29.999Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-15T07:08:29.999Z"
             },
             {
               "$type": "Document",
@@ -182,8 +181,7 @@
               "RelativeToolTip": "Saving.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAB0AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-11T07:10:18.763Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-11T07:10:18.763Z"
             },
             {
               "$type": "Document",
@@ -255,8 +253,7 @@
               "RelativeToolTip": "Skill.cs",
               "ViewState": "AQIAACoAAAAAAAAAAAAQwFoAAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:29:28.723Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-29T08:29:28.723Z"
             },
             {
               "$type": "Document",
@@ -292,8 +289,7 @@
               "RelativeToolTip": "Target.cs",
               "ViewState": "AQIAABUAAAAAAAAAAAAkwCYAAAAqAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:27:46.81Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-29T08:27:46.81Z"
             },
             {
               "$type": "Document",
@@ -353,8 +349,7 @@
               "RelativeToolTip": "DamageSource.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T08:31:36.552Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-29T08:31:36.552Z"
             },
             {
               "$type": "Document",
