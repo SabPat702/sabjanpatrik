@@ -6,7 +6,6 @@ import bcrypt from 'bcrypt';
 
 const app = express();
 const saltRounds = 5;
-
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -71,47 +70,36 @@ app.get('/login', (req, res) => {
     });
 });
 
+// Bejelentkezés
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
 
-    console.log(`Login attempt: Username: ${username}, Password: ${password ? '[provided]' : '[missing]'}`);
-
     if (!username || !password) {
-        return res.status(400).json({ message: 'Username and password are required.' });
+        return res.status(400).json({ message: "Username and password are required!" });
     }
 
-    const query = 'SELECT * FROM user WHERE UserName = ?';
+    const query = 'SELECT * FROM user WHERE Username = ?';
     db.query(query, [username], (err, results) => {
         if (err) {
-            console.error('Database error:', err);
-            return res.status(500).json({ message: 'Database error.' });
+            console.error("Database error:", err);
+            return res.status(500).json({ message: "Error during login." });
         }
 
         if (results.length === 0) {
-            return res.status(400).json({ message: 'User not found.' });
+            return res.status(400).json({ message: "Invalid username or password." });
         }
 
-        const storedHash = results[0].Password;
-        console.log('Stored hash from DB:', storedHash);
-        console.log('Entered password:', `"${password}"`);
-
-        console.log("Raw entered password:", `"${password}"`);
-        console.log("Trimmed password:", `"${password.trim()}"`);
-        console.log("Stored hash:", `"${storedHash}"`);
-
-        bcrypt.compare(password.trim(), storedHash, (err, match) => {
+        bcrypt.compare(password, results[0].Password, (err, match) => {
             if (err) {
-                console.error('Bcrypt error:', err);
-                return res.status(500).json({ message: 'Password verification error.' });
+                console.error("Bcrypt error:", err);
+                return res.status(500).json({ message: "Error while checking password." });
             }
-
-            console.log('Password match result:', match);
 
             if (!match) {
-                return res.status(400).json({ message: 'Incorrect password.' });
+                return res.status(400).json({ message: "Invalid username or password." });
             }
 
-            res.status(200).json({ message: 'Login successful!' });
+            res.status(200).json({ message: "Login successful!" });
         });
     });
 });
