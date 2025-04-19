@@ -1,2 +1,2 @@
 1@Goblin@8@0@0@4@0@0@None@Basic Strike@None@Goblin@Basic@Small Goblin Cave
-2@Goblin Warrior@20@1@0@4@20@0@None@Basic Strike,Powerful Cut@None@Goblin@Basic@Small Goblin Cave
+2@Goblin Warrior@20@1@0@4@20@0@None@Basic Strike@None@Goblin@Basic@Small Goblin Cave
