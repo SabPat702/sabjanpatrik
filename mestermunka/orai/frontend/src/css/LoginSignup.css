@@ -236,3 +236,37 @@ form .register-link {
   color: red;
   margin-top: 10px;
 }
+
+
+/* Mobile Responsive - Lengthen text content on small screens */
+@media (max-width: 600px) {
+  .wrapper {
+    justify-content: flex-start; /* Align forms to the top on mobile */
+    align-items: flex-start;
+    padding-top: 10%;
+  }
+
+  h1 {
+    font-size: 28px; /* Adjust font size for better readability */
+  }
+
+  .input-box input {
+    font-size: 18px; /* Make input text bigger on smaller screens */
+  }
+
+  /* Change text content length */
+  .form-box h1 {
+    font-size: 30px;
+    text-align: left;
+    margin: 0 15px;
+  }
+
+  .input-box {
+    margin: 10px 0;
+  }
+
+  /* Increase the space between form elements */
+  .modal-content h2 {
+    font-size: 22px;
+  }
+}

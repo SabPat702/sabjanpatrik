@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import bcrypt from 'bcrypt';
 
 const app = express();
-const saltRounds = 10;
+const saltRounds = 5;
 
 app.use(bodyParser.json());
 app.use(cors());

@@ -91,21 +91,13 @@ const Home = () => {
         window.location.href = "/Login";
     };
 
-    const handleEditProfile = () => {
-        window.location.href = "/edit-profile";
-    };
-
     const handleDownload = () => {
-        const content = "Ez egy példa tartalom a DungeonBookból!";
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.href = url;
-        link.download = 'DungeonBook.txt';
+        link.href = '/setup.exe';  // Most már a helyes .exe kiterjesztés
+        link.download = 'DungeonValleyInstaller.exe';  // A letöltött fájl neve
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
     };
 
     // Handle chat functionality - navigate to Chat page
