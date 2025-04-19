@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import '../css/LoginSignup.css';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 const LoginSignup = () => {
     const location = useLocation();
@@ -14,7 +14,6 @@ const LoginSignup = () => {
     const [passwordStrength, setPasswordStrength] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const [loginUsername, setLoginUsername] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [userId, setUserId] = useState(null);
@@ -64,7 +63,7 @@ const LoginSignup = () => {
                 setShowModal(true);
                 setTimeout(() => {
                     window.location.href = "/DungeonValleyExplorer";
-                }, 2000);   
+                }, 2000);
             } else {
                 setErrorMessage(`Registration failed: ${data.message}`);
             }
@@ -74,27 +73,42 @@ const LoginSignup = () => {
 
     const handleLoginSubmit = (e) => {
         e.preventDefault();
-
+    
+        if (!username || !loginPassword) {
+            setErrorMessage("Username and password cannot be empty.");
+            return;
+        }
+    
+        const payload = { username, password: loginPassword };
+        console.log("Sending login request:", payload);
+    
         fetch('http://localhost:3001/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: loginUsername, password: loginPassword })
+            body: JSON.stringify(payload)
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log("Response status:", response.status);
+            return response.json();
+        })
         .then(data => {
+            console.log("Response data:", data);
             if (data.message === "Login successful!") {
                 setSuccessMessage("Login successful! Redirecting...");
-                localStorage.setItem('username', loginUsername);
-                setUsername(loginUsername);
+                localStorage.setItem('username', username);
+                setUsername(username);
                 setShowModal(true);
                 setTimeout(() => {
                     window.location.href = "/DungeonValleyExplorer";
                 }, 2000);
             } else {
-                setErrorMessage("Invalid username or password!");
+                setErrorMessage(data.message);
             }
         })
-        .catch(() => setErrorMessage("Error during login."));
+        .catch(err => {
+            console.error("Login error:", err);
+            setErrorMessage("Error during login.");
+        });
     };
 
     const handlePasswordChange = (e) => {
@@ -126,7 +140,7 @@ const LoginSignup = () => {
             if (/12|123|1234|4321|abcd|qwer/i.test(password)) score -= 4;
 
             const commonPasswords = [
-                "password", "123456", "qwerty", "abc123", "letmein", 
+                "password", "123456", "qwerty", "abc123", "letmein",
                 "admin", "welcome", "monkey", "football", "password123"
             ];
             if (commonPasswords.some(common => password.toLowerCase().includes(common))) score -= 5;
@@ -169,12 +183,12 @@ const LoginSignup = () => {
 
     return (
         <div className="login-signup">
-            <div className={`wrapper ${action}`}>    
+            <div className={`wrapper ${action}`}>
                 <div className={`form-box login ${action === 'login' ? 'show' : ''}`}>
                     <form onSubmit={handleLoginSubmit}>
                         <h1>Login</h1>
                         <div className="input-box">
-                            <input type="text" name="username" placeholder="Username" value={loginUsername} onChange={(e) => setLoginUsername(e.target.value)} required />
+                            <input type="text" name="username" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
                         </div>
                         <div className="input-box password-box">
                             <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required />
