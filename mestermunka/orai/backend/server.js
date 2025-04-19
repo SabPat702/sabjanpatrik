@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import bcrypt from 'bcrypt';
 
 const app = express();
-const saltRounds = 5;
+const saltRounds = 10;
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -42,19 +42,24 @@ app.post('/signup', (req, res) => {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
-        return res.status(400).json({ message: "All fields are required!" });
+        return res.status(400).json({ message: 'All fields are required.' });
     }
 
+    // Hashelés saltRounds változóval
     bcrypt.hash(password, saltRounds, (err, hash) => {
-        if (err) return res.status(500).json({ message: "Error while hashing password." });
+        if (err) {
+            console.error('Hashing error:', err);
+            return res.status(500).json({ message: 'Error hashing password.' });
+        }
 
         const query = 'INSERT INTO user (UserName, Email, Password) VALUES (?, ?, ?)';
-        db.query(query, [username, email, hash], (err) => {
+        db.query(query, [username, email, hash], (err, result) => {
             if (err) {
-                console.error("Signup DB error:", err);
-                return res.status(500).json({ message: "Error during registration." });
+                console.error('DB insert error:', err);
+                return res.status(500).json({ message: 'User registration failed.' });
             }
-            res.status(201).json({ message: "User successfully created!" });
+
+            res.status(201).json({ message: 'User successfully created!' });
         });
     });
 });
@@ -71,30 +76,41 @@ app.post('/login', (req, res) => {
 
     console.log(`Login attempt: Username: ${username}, Password: ${password ? '[provided]' : '[missing]'}`);
 
-    if (!username) {
-        return res.status(400).json({ message: 'Username is required.' });
-    }
-    if (!password) {
-        return res.status(400).json({ message: 'Password is required.' });
+    if (!username || !password) {
+        return res.status(400).json({ message: 'Username and password are required.' });
     }
 
-    db.query('SELECT * FROM user WHERE UserName = ?', [username], (err, results) => {
+    const query = 'SELECT * FROM user WHERE UserName = ?';
+    db.query(query, [username], (err, results) => {
         if (err) {
             console.error('Database error:', err);
             return res.status(500).json({ message: 'Database error.' });
         }
+
         if (results.length === 0) {
             return res.status(400).json({ message: 'User not found.' });
         }
 
-        bcrypt.compare(password, results[0].Password, (err, match) => {
+        const storedHash = results[0].Password;
+        console.log('Stored hash from DB:', storedHash);
+        console.log('Entered password:', `"${password}"`);
+
+        console.log("Raw entered password:", `"${password}"`);
+        console.log("Trimmed password:", `"${password.trim()}"`);
+        console.log("Stored hash:", `"${storedHash}"`);
+
+        bcrypt.compare(password.trim(), storedHash, (err, match) => {
             if (err) {
                 console.error('Bcrypt error:', err);
                 return res.status(500).json({ message: 'Password verification error.' });
             }
+
+            console.log('Password match result:', match);
+
             if (!match) {
                 return res.status(400).json({ message: 'Incorrect password.' });
             }
+
             res.status(200).json({ message: 'Login successful!' });
         });
     });
