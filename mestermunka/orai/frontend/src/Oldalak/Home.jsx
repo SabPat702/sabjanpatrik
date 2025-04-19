@@ -142,11 +142,6 @@ const Home = () => {
                             {username && username.trim() !== '' && (
                                 <>
                                     <li>
-                                        <a className="dropdown-item" href="#" onClick={handleEditProfile}>
-                                            Profil szerkesztése
-                                        </a>
-                                    </li>
-                                    <li>
                                     <a className="dropdown-item" href="#" onClick={handleChat}>
                                             Chat
                                         </a>
