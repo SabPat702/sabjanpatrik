@@ -71,6 +71,8 @@ namespace Dungeon_Valley_Explorer
         List<string> magicalDamageTypes = new List<string> { "Fire" };
         List<string> meleeClasses = new List<string> { "Fighter", "Paladin", "Bounty Hunter" };
         List<string> rangedClasses = new List<string> { "Hunter", "Wizard", "Warlock" };
+        List<string> meleeMonsters = new List<string> { "Basic" };
+        List<string> rangedMonsters = new List<string> { "" };
 
         Random random = new Random();
         bool ShortDisplayNames = false;
@@ -147,6 +149,8 @@ namespace Dungeon_Valley_Explorer
         Hero activeHero = new Hero();
         Monster activeMonster = new Monster();
         Weapon activeHeroChosenWeapon = new Weapon();
+        List<Target> possibleTargetsForPlayer = new List<Target>();
+        List<Target> targetsChosenByPlayer = new List<Target>();
         //Fighting Variables -------------------------------------------------------------------------------------------
         public MainWindow()
         {
@@ -1817,6 +1821,8 @@ namespace Dungeon_Valley_Explorer
 
         public void EnterTown()
         {
+            Experience += 1000000;
+            Gold += 1000000;
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
             lbDisplay.Items.Add("GAME: You have entered the town and now you can save and modify your party and your items.");
@@ -5695,14 +5701,6 @@ namespace Dungeon_Valley_Explorer
             lbOptions.Items.Clear();
             lbOptions.Items.Add("1. Cancel");
             lbOptions.Items.Add("2. Small Goblin Cave");
-            foreach (Hero hero in heroes)
-            {
-                if (hero.Lvl > 4)
-                {
-                    lbOptions.Items.Add("3. Developer Secret");
-                    break;
-                }
-            }
             lbDisplay.Items.Add("GAME: Choose a dungeon to explore.");
             lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
             btInput.Click += new RoutedEventHandler(EnterDungeonChooseDungeon);
@@ -5726,11 +5724,6 @@ namespace Dungeon_Valley_Explorer
             else if (tbInputArea.Text == "2" || tbInputArea.Text == "Small Goblin Cave")
             {
                 currentDungeon = Initializer.dungeons.Where(x => x.DungeonName == "Small Goblin Cave").Select(x => x).First();
-                EnterDungeon();
-            }
-            else if ((tbInputArea.Text == "3" && lbOptions.Items.Contains("3. Developer Secret") == true) || (tbInputArea.Text == "Developer Secret" && lbOptions.Items.Contains("3. Developer Secret") == true))
-            {
-                currentDungeon = Initializer.dungeons.Where(x => x.DungeonName == "Developer Secret").Select(x => x).First();
                 EnterDungeon();
             }
             else
@@ -5762,15 +5755,6 @@ namespace Dungeon_Valley_Explorer
                     lbDisplay.Items.Add("GAME: You are infront of the caves entrance and now you may explore inside if you are ready.");
                     lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
                     break;
-                case "Developer Secret":
-                    emptyRoomChance = 0;
-                    encounterRoomChance = 0;
-                    secretRoomChance = 0;
-                    fightRoomChance = 100;
-                    GetMonstersForDungeon();
-                    lbDisplay.Items.Add("GAME: You are not supposed to be here.");
-                    lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
-                    break;
                 default:
                     break;
             }
@@ -5800,8 +5784,6 @@ namespace Dungeon_Valley_Explorer
                         } 
                     }
                     break;
-                case "Developer Secret":
-                    break;
                 default:
                     break;
             }
@@ -5811,17 +5793,30 @@ namespace Dungeon_Valley_Explorer
 
         public void ExplorationOptions()
         {
-            lbOptions.Items.Add("1. Leave");
-            lbOptions.Items.Add("2. Rest");
-            lbOptions.Items.Add("3. Inventory");
-            lbOptions.Items.Add("4. Skills");
-            lbOptions.Items.Add("5. Magics");
-            lbOptions.Items.Add("6. Move Forward");
-            if (currentRoom > 0)
+            if (currentRoom == currentDungeon.Length)
             {
-                lbOptions.Items.Add("7. Move Backwards");
+                currentDungeonMonsters.Clear();
+                currentDungeonEliteMonsters.Clear();
+                Experience += currentDungeon.ExpReward;
+                Gold += currentDungeon.GoldReward;
+                dungeonsCompleted[currentDungeon.DungeonName] = true;
+                deepestRoom = 0;
+                EnterTown();
             }
-            btInput.Click += new RoutedEventHandler(ExplorationChooseOption);
+            else
+            {
+                lbOptions.Items.Add("1. Leave");
+                lbOptions.Items.Add("2. Rest");
+                lbOptions.Items.Add("3. Inventory");
+                lbOptions.Items.Add("4. Skills");
+                lbOptions.Items.Add("5. Magics");
+                lbOptions.Items.Add("6. Move Forward");
+                if (currentRoom > 0)
+                {
+                    lbOptions.Items.Add("7. Move Backwards");
+                }
+                btInput.Click += new RoutedEventHandler(ExplorationChooseOption);
+            }
         }
 
         public void ExplorationChooseOption(object sender, RoutedEventArgs e)
@@ -6973,6 +6968,17 @@ namespace Dungeon_Valley_Explorer
                 }
             }
             initiative.OrderByDescending(x => x.Value);
+            foreach (KeyValuePair<string, int> keyValuePair in initiative)
+            {
+                if (party.Select(x => x.DisplayName).Contains(keyValuePair.Key))
+                {
+                    combatants.Add(party.Where(x => x.DisplayName == keyValuePair.Key).Select(x => x.DisplayName).First());
+                }
+                else
+                {
+                    combatants.Add(activeMonsters.Where(x => x.MonsterName == keyValuePair.Key).Select(x => x.MonsterName).First());
+                }
+            }
         }
 
         //Turn Start starts here ---------------------------------------------------------------------------------------
@@ -7214,7 +7220,7 @@ namespace Dungeon_Valley_Explorer
             {
                 if (initiativeTracker == combatants.Count)
                 {
-                    //Round over
+                    RoundOver();
                     break;
                 }
                 else if (initiative.ContainsKey(combatants[i]))
@@ -7481,6 +7487,189 @@ namespace Dungeon_Valley_Explorer
         {
             tbInputArea.Text = "";
             lbOptions.Items.Clear();
+            switch (activeHeroChosenWeapon.Range)
+            {
+                case "Melee":
+                    foreach (Monster monster in activeMonsters)
+                    {
+                        if (monster.HP > 0)
+                        {
+                            if (meleeMonsters.Contains(monster.Ai))
+                            {
+                                possibleTargetsForPlayer.Add(new Target(monster));
+                            }
+                        }
+                    }
+                    if (possibleTargetsForPlayer.Count == 0)
+                    {
+                        foreach (Monster monster in activeMonsters)
+                        {
+                            if (monster.HP > 0)
+                            {
+                                possibleTargetsForPlayer.Add(new Target(monster));
+                            }
+                        }
+                    }
+                    break;
+                case "Ranged":
+                    foreach (Monster monster in activeMonsters)
+                    {
+                        if (monster.HP > 0)
+                        {
+                            if (rangedMonsters.Contains(monster.Ai))
+                            {
+                                possibleTargetsForPlayer.Add(new Target(monster));
+                            }
+                        }
+                    }
+                    if (possibleTargetsForPlayer.Count == 0)
+                    {
+                        foreach (Monster monster in activeMonsters)
+                        {
+                            if (monster.HP > 0)
+                            {
+                                possibleTargetsForPlayer.Add(new Target(monster));
+                            }
+                        }
+                    }
+                    break;
+                case "Both":
+                    foreach (Monster monster in activeMonsters)
+                    {
+                        if (monster.HP > 0)
+                        {
+                            possibleTargetsForPlayer.Add(new Target(monster));
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+            lbOptions.Items.Add("1. Cancel");
+            for (int i = 0; i < possibleTargetsForPlayer.Count; i++)
+            {
+                lbOptions.Items.Add($"{i+2}. {possibleTargetsForPlayer[i].TargetName}");
+            }
+            btInput.Click += new RoutedEventHandler(PlayerAttackTargetChoice);
+        }
+
+        public void PlayerAttackTargetChoice(object sender, RoutedEventArgs e)
+        {
+            btInput.Click -= new RoutedEventHandler(PlayerAttackTargetChoice);
+            if (tbInputArea.Text == "?")
+            {
+                foreach (Target target in possibleTargetsForPlayer)
+                {
+                    lbDisplay.Items.Add($"{target.TargetName}'s current HP: {target.HP}");
+                }
+                lbDisplay.ScrollIntoView(lbDisplay.Items[lbDisplay.Items.Count - 1]);
+                btInput.Click += new RoutedEventHandler(PlayerAttackTargetChoice);
+            }
+            else if (tbInputArea.Text == "1" || tbInputArea.Text == "Cancel")
+            {
+                possibleTargetsForPlayer.Clear();
+                PlayerFightActionChoiceReEntry();
+            }
+            else if (possibleTargetsForPlayer.Select(x => x.TargetName).Contains(tbInputArea.Text) || tbInputArea.Text.Contains("0") || tbInputArea.Text.Contains("1") || tbInputArea.Text.Contains("2") || tbInputArea.Text.Contains("3") || tbInputArea.Text.Contains("4") || tbInputArea.Text.Contains("5") || tbInputArea.Text.Contains("6") || tbInputArea.Text.Contains("7") || tbInputArea.Text.Contains("8") || tbInputArea.Text.Contains("9"))
+            {
+                if (possibleTargetsForPlayer.Select(x => x.TargetName).Contains(tbInputArea.Text))
+                {
+                    targetsChosenByPlayer.Add(possibleTargetsForPlayer.Where(x => x.TargetName == tbInputArea.Text).Select(x => x).First());
+                    PlayerAttackExecute();
+                }
+                else
+                {
+                    try
+                    {
+                        int index = Convert.ToInt32(tbInputArea.Text)-2;
+                        targetsChosenByPlayer.Add(possibleTargetsForPlayer[index]);
+                        PlayerAttackExecute();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                        btInput.Click += new RoutedEventHandler(PlayerAttackTargetChoice);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please use the textbox at the bottom of the window to write a valid option from the left.");
+                btInput.Click += new RoutedEventHandler(PlayerAttackTargetChoice);
+            }
+        }
+
+        public void PlayerAttackExecute()
+        {
+            tbInputArea.Text = "";
+            lbOptions.Items.Clear();
+            
+            foreach (SpecialEffect specialEffect in activeHeroChosenWeapon.SpecialEffects)
+            {
+                if (specialEffect.Affect.Contains("Targeting"))
+                {
+                    switch (specialEffect.SpecialEffectName)
+                    {
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            possibleTargetsForPlayer.Clear();
+            int index = 0;
+            for (int i = 0; i < activeHero.Weapons.Count(); i++)
+            {
+                if (activeHeroChosenWeapon.WeaponName == activeHero.Weapons[i].WeaponName)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            List<int> damages = DamageCalculator.PreDamageCalculation(targetsChosenByPlayer, new DamageSource(activeHero, index));
+
+            for (int i = 0; i < targetsChosenByPlayer.Count; i++)
+            {
+                activeMonsters.Where(x => x.MonsterName == targetsChosenByPlayer[i].TargetName).Select(x => x).First().HP -= damages[i];
+                foreach (SpecialEffect specialEffect in targetsChosenByPlayer[i].SpecialEffects)
+                {
+                    if (specialEffect.Affect.Contains("Recieve Damage"))
+                    {
+                        switch (specialEffect.SpecialEffectName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                foreach (BuffDebuff buffDebuff in targetsChosenByPlayer[i].BuffsDebuffs)
+                {
+                    if (buffDebuff.Affect.Contains("Recieve Damage"))
+                    {
+                        switch (buffDebuff.BuffDebuffName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                foreach (Passive passive in targetsChosenByPlayer[i].Passives)
+                {
+                    if (passive.Affect.Contains("Recieve Damage"))
+                    {
+                        switch (passive.PassiveName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+
+            targetsChosenByPlayer.Clear();
+            PlayerTurnEnd();
         }
 
         public void PlayerFightActionChoiceReEntry()
@@ -7587,15 +7776,126 @@ namespace Dungeon_Valley_Explorer
                 }
             }
 
-            initiativeTracker++;
+            if (activeMonsters.Where(x=>x.HP <= 0).Select(x=>x).Count() == 0 || party.Where(x=>x.HP <= 0).Select(x=>x).Count() == 0)
+            {
+                if (party.Where(x => x.HP <= 0).Select(x => x).Count() == 0)
+                {
+                    FightingOverPartyLoss();
+                }
+                else
+                {
+                    FightingOverMonsterLoss();
+                }
+            }
+            else
+            {
+                initiativeTracker++;
+                for (int i = initiativeTracker; i <= combatants.Count; i++)
+                {
+                    if (initiativeTracker == combatants.Count)
+                    {
+                        RoundOver();
+                        break;
+                    }
+                    else if (initiative.ContainsKey(combatants[i]))
+                    {
+                        initiativeTracker = i;
+                        TurnStart();
+                        break;
+                    }
+                }
+            }
+        }
+
+        //Player Turn ends here ----------------------------------------------------------------------------------------
+
+        public void RoundOver()
+        {
+            foreach (Monster monster in activeMonsters)
+            {
+                foreach (Passive passive in monster.Passives)
+                {
+                    if (passive.Affect.Contains("Round Over"))
+                    {
+                        switch (passive.PassiveName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                foreach (BuffDebuff buffDebuff in monster.BuffsDebuffs)
+                {
+                    if (buffDebuff.Affect.Contains("Round Over"))
+                    {
+                        switch (buffDebuff.BuffDebuffName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+
+            foreach (Hero hero in party)
+            {
+                foreach (Passive passive in hero.Passives)
+                {
+                    if (passive.Affect.Contains("Round Over"))
+                    {
+                        switch (passive.PassiveName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+                foreach (BuffDebuff buffDebuff in hero.BuffsDebuffs)
+                {
+                    if (buffDebuff.Affect.Contains("Round Over"))
+                    {
+                        switch (buffDebuff.BuffDebuffName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+                foreach (Weapon weapon in hero.Weapons)
+                {
+                    foreach (SpecialEffect specialEffect in weapon.SpecialEffects)
+                    {
+                        if (specialEffect.Affect.Contains("Round Over"))
+                        {
+                            switch (specialEffect.SpecialEffectName)
+                            {
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+                foreach (Armor armor in hero.Armors)
+                {
+                    foreach (SpecialEffect specialEffect in armor.SpecialEffects)
+                    {
+                        if (specialEffect.Affect.Contains("Round Over"))
+                        {
+                            switch (specialEffect.SpecialEffectName)
+                            {
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            initiativeTracker = 0;
             for (int i = initiativeTracker; i <= combatants.Count; i++)
             {
-                if (initiativeTracker == combatants.Count)
-                {
-                    //Round over
-                    break;
-                }
-                else if (initiative.ContainsKey(combatants[i]))
+                if (initiative.ContainsKey(combatants[i]))
                 {
                     initiativeTracker = i;
                     TurnStart();
@@ -7604,9 +7904,51 @@ namespace Dungeon_Valley_Explorer
             }
         }
 
-        //Player Turn ends here ----------------------------------------------------------------------------------------
-
         //Fighting ends here -------------------------------------------------------------------------------------------
+
+        public void FightingOverPartyLoss()
+        {
+            foreach (Hero hero in party)
+            {
+                hero.HP = 1;
+                hero.BuffsDebuffs.Clear();
+            }
+            Experience += currentDungeon.Length * activeMonsters.Where(x=>x.HP <= 0).Select(x => x).Sum(x => x.InHP) / activeMonsters.Count;
+            Gold += activeMonsters.Where(x => x.HP <= 0).Select(x => x).Count() * currentDungeon.Length;
+            activeMonsters.Clear();
+            currentDungeonMonsters.Clear();
+            currentDungeonEliteMonsters.Clear();
+            initiative.Clear();
+            deepestRoom = 0;
+            EnterTown();
+        }
+
+        public void FightingOverMonsterLoss()
+        {
+            Experience += currentDungeon.Length * activeMonsters.Where(x => x.HP <= 0).Select(x => x).Sum(x => x.InHP) / activeMonsters.Count;
+            Gold += activeMonsters.Where(x => x.HP <= 0).Select(x => x).Count() * currentDungeon.Length;
+            activeMonsters.Clear();
+            foreach (Hero hero in party)
+            {
+                foreach (BuffDebuff buffDebuff in hero.BuffsDebuffs)
+                {
+                    if (buffDebuff.Affect.Contains("Turn End") || buffDebuff.Affect.Contains("Round Over"))
+                    {
+                        hero.BuffsDebuffs.Remove(buffDebuff);
+                    }
+                    else if (buffDebuff.Affect.Contains("Fight Over"))
+                    {
+                        hero.BuffsDebuffs.Where(x => x.BuffDebuffName == buffDebuff.BuffDebuffName).Select(x => x).First().Timer--;
+                        if (hero.BuffsDebuffs.Where(x => x.BuffDebuffName == buffDebuff.BuffDebuffName).Select(x => x).First().Timer == 0)
+                        {
+                            hero.BuffsDebuffs.Remove(hero.BuffsDebuffs.Where(x => x.BuffDebuffName == buffDebuff.BuffDebuffName).Select(x => x).First());
+                        }
+                    }
+                }
+            }
+            initiative.Clear();
+            ExplorationOptions();
+        }
 
         //Dungeon Exploration ends here --------------------------------------------------------------------------------
     }

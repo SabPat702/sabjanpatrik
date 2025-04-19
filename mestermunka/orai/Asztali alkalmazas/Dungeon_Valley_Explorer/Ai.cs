@@ -41,7 +41,7 @@ namespace Dungeon_Valley_Explorer
             {
                 monsterAction = "Skill";
             }
-            else if (value <= 100 && activeMonster.Magics.Contains(Initializer.magics.Where(x => x.MagicName == "None").Select(x => x).First()) == false)
+            else if (value <= 100 && activeMonster.Magics.Where(x => x.MagicName == "None").Select(x => x).Count() == 0)
             {
                 monsterAction = "Magic";
             }

@@ -1,0 +1,5 @@
+1@Human@The average race we all know.@None@Dark@None@None@None
+2@Goblin@The most basic green skinned monster.@None@None@None@None@None
+3@Elf@The long lived and frail worshipers of nature.@None@Blunt,Slash,Pierce,Dark@Holy@None@None
+4@Dwarf@The short inhabitants of caves with a short temper. They love their alcohol and forging.@None@Ice@Poison,Earth,Thunder@None@None
+5@Halfling@The short adventurers of the wild there is no place they wouldn't explore.@None@Dark@None@None@None
