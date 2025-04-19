@@ -102,7 +102,7 @@ const LoginSignup = () => {
                     window.location.href = "/DungeonValleyExplorer";
                 }, 2000);
             } else {
-                setErrorMessage(data.message);
+                setErrorMessage(`Login failed: ${data.message}`);
             }
         })
         .catch(err => {
