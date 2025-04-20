@@ -1,0 +1,253 @@
+/* Reset and Base Styles */
+body {
+    margin: 0;                                    /* Eltávolítja az alapértelmezett margót a body körül – így teljes kontrollt kapsz az elrendezés felett. */
+    font-family: 'Poppins', Arial, sans-serif;    /* A szöveg betűtípusát állítja be: elsőként a 'Poppins'-t próbálja, ha az nem elérhető, akkor az Arial-t, végső esetben egy általános sans-serif betűt. */
+    background-color: #f5f7fa;                    /* Világos, kékes-szürkés háttérszín – tiszta, modern hatás. */
+    color: #333;                                  /* Alap szövegszín: sötétszürke (#333), ami jól olvasható a világos háttéren. */
+}
+
+
+.kep {
+    width: 250px !important;           /* A kép szélességét 250px-re állítja, az !important felülír minden más beállítást. Általában kisebb képernyőkhöz jó. */
+    max-width: 500px;                  /* A kép sosem lehet szélesebb 500px-nél – ha pl. nagyobb képernyőn jelenik meg. */
+    height: 200px !important;          /* Fix magasság 200px, szintén !important-tel rögzítve. Arányokra érdemes figyelni. */
+    border-radius: 10px;               /* Lekerekített sarkok, 10px sugarú – esztétikusabb megjelenés. */
+    transition: transform 0.3s ease;   /* Ha a kép elmozdul vagy átméreteződik (pl. hover effectnél), akkor ez 0.3 másodperc alatt, finoman történik meg. */
+}
+
+
+.Welcome {
+    color: black !important;           /* A szöveg színe fekete, az !important felülír minden más színbeállítást. */
+    font-weight: 600 !important;       /* A betűk vastagsága 600, ami a félkövérnél egy kicsit erősebb, és az !important biztosítja, hogy ne írja felül más stílus. */
+}
+
+
+li {
+    color: black !important;           /* A listaelemek szövege fekete lesz, az !important biztosítja, hogy ne legyen felülírva. */
+    font-weight: 600 !important;       /* A listaelemek szövege félkövér, az !important segít, hogy más stílusok ne változtassák meg. */
+}
+
+
+/* Top Navigation */
+.topnav {
+    background: linear-gradient(90deg, #2c3e50, #3498db);  /* A háttér színe egy lineáris átmenet, ami a sötétkék (#2c3e50) és világoskék (#3498db) között váltakozik. */
+    padding: 15px 30px;                                     /* A navigációs sáv belső térközei: 15px felül és alul, 30px jobbra és balra. */
+    position: fixed;                                         /* A sáv fix pozícióval rendelkezik, tehát mindig a képernyő tetején marad görgetés közben. */
+    top: 0;                                                 /* A sáv a képernyő tetején helyezkedik el. */
+    left: 0;                                                /* A sáv a képernyő bal szélén kezdődik. */
+    width: 100%;                                            /* A sáv teljes szélességét a képernyőhöz igazítja. */
+    display: flex;                                          /* A sávon belül flexbox elrendezést alkalmaz. */
+    align-items: center;                                    /* A sáv tartalmát vertikálisan középre igazítja. */
+    justify-content: space-between;                          /* A tartalom két végére osztja a sávot (pl. balra a logó, jobbra a gombok). */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);               /* Enyhe árnyékot ad a sávnak, hogy kiemelkedjen a háttérből. */
+    z-index: 1000;                                           /* A sáv magas z-index értéke biztosítja, hogy a sáv mindig a többi tartalom fölött maradjon. */
+}
+
+
+.topnav h1 {
+    color: #fff;                         /* A címsor szövege fehér lesz. */
+    font-weight: 700;                     /* A betűk vastagsága 700 (félkövér) – kiemelkedő megjelenést biztosít. */
+    font-size: 32px;                      /* A betűméret 32px, amely jól látható és figyelemfelkeltő. */
+    margin: 0;                            /* Nincs margó a címsor körül, így pontosan illeszkedik a sávhoz. */
+    flex-grow: 1;                         /* A címsor egyre nagyobb lesz, hogy kitöltse a sáv középső részét. */
+    text-align: center;                   /* A címsor szövege középre igazított. */
+}
+
+
+.button-container {
+    display: flex;                      /* A gombokat egy flexbox konténerben helyezi el. */
+    gap: 20px;                          /* A gombok között 20px távolság lesz. */
+}
+
+
+.btn {
+    color: #2c3e50 !important;               /* A gomb szövege sötétkék (#2c3e50), !important biztosítja, hogy felülírja más stílusokat. */
+    background-color: #ffffff !important;    /* A gomb háttérszíne fehér (#ffffff), az !important itt is biztosítja a prioritást. */
+    border: 2px solid #3498db !important;    /* A gomb körüli szegély vastagsága 2px, kék (#3498db) színű. */
+    border-radius: 25px !important;          /* A gomb szélei erőteljesen lekerekítettek, 25px-es sugarú. */
+    padding: 10px 25px;                      /* A gomb belső térközei: 10px függőlegesen, 25px vízszintesen. */
+    font-weight: 600;                        /* A betűk vastagsága 600 (félkövér). */
+    font-size: 18px !important;              /* A betűméret 18px, !important biztosítja, hogy felülírja más beállításokat. */
+    cursor: pointer;                        /* A gomb fölött az egér mutatója kattintható jelzést mutat. */
+    transition: all 0.3s ease;               /* Az összes változás animálva van, 0.3 másodperc alatt, simán. */
+}
+
+.btn:hover {
+    background-color: #3498db !important;   /* A gomb háttérszíne a hover állapotban kék (#3498db) lesz. */
+    color: #fff !important;                  /* A szöveg színe fehér (#fff) hoverkor. */
+    transform: translateY(-2px);             /* A gomb kicsit felemelkedik (2px) hoverkor. */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Enyhe árnyékot kap a gomb, ami kiemeli a hover állapotban. */
+}
+
+/* Informational Section */
+.Informational {
+    margin-top: 120px;                         /* A szekció tetejétől 120px margó, hogy elég hely legyen a navigációs sáv számára. */
+    padding: 60px 20px;                        /* A belső térköz: 60px felül és alul, 20px jobbra és balra. */
+    text-align: center;                        /* A szöveg középre igazítása. */
+    background: linear-gradient(135deg, #ffffff, #e8f0fe); /* Egy szép átmenet a fehérből világoskékbe. */
+    border-radius: 20px;                       /* A szekció sarkainak lekerekítése, 20px sugarú. */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Finom árnyék a szekció körül. */
+    margin-bottom: 60px;                       /* Alul 60px margó, hogy ne legyen túl szoros a következő tartalom. */
+}
+
+.Informational h3 {
+    font-size: 36px;                           /* A címsor betűmérete 36px, így jól látható. */
+    font-weight: 700;                          /* A címsor félkövér (700) betűsúlyú. */
+    color: #2c3e50;                            /* A címsor színe sötétkék (#2c3e50). */
+    margin-bottom: 25px;                       /* A címsor alatti térköz: 25px. */
+}
+
+.Informational p {
+    font-size: 20px !important;                /* A szöveg betűmérete 20px, az !important biztosítja, hogy felülírja más stílusokat. */
+    color: #7f8c8d;                            /* A szöveg színe szürke (#7f8c8d). */
+    line-height: 1.8;                          /* A sorok közötti távolság 1.8, hogy olvashatóbb legyen. */
+    max-width: 800px;                          /* A szöveg maximum szélessége 800px, így nem terjed túl szélesre. */
+}
+
+/* Combined Section (Frame) */
+.combined-section {
+    background-color: #fff;                    /* Fehér háttérszín a szekcióban. */
+    border-radius: 15px;                       /* A sarkok lekerekítése, 15px-es sugarú. */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Finom árnyék a szekció körül. */
+    padding: 40px 20px;                        /* Belső térköz: 40px felül és alul, 20px jobbra és balra. */
+    margin-bottom: 60px;                       /* Alul 60px margó, hogy legyen hely a következő tartalomnak. */
+}
+
+/* Info Blocks (Helpful Guides & Community) */
+.guide-section, .community-section {
+    padding: 20px 0;                          /* Függőleges padding: 20px felül és alul. */
+}
+
+.info-block {
+    padding: 20px;                            /* A blokk belső térköze 20px. */
+}
+
+.info-block h2 {
+    font-size: 28px;                           /* A cím betűmérete 28px. */
+    font-weight: 600;                          /* Félkövér betűsúly (600). */
+    color: #2c3e50;                            /* A cím színe sötétkék (#2c3e50). */
+    margin-bottom: 25px;                       /* A cím alatti térköz 25px. */
+}
+
+.info-block ul {
+    padding-left: 0;                           /* Nincs bal oldali padding, hogy a lista pontosan illeszkedjen. */
+}
+
+.info-block ul li {
+    font-size: 18px !important;                /* A listaelemek betűmérete 18px, az !important felülírja más beállításokat. */
+    color: #7f8c8d;                            /* A listaelemek szövege szürke (#7f8c8d). */
+    line-height: 1.8;                          /* A sorok közötti távolság 1.8. */
+    margin-bottom: 15px;                       /* Minden listaelem alatti térköz 15px. */
+    list-style: none;                          /* Nincs lista jelölő. */
+    display: flex;                             /* A listaelemek vízszintesen elhelyezkednek. */
+    align-items: center;                       /* A listaelemek középre igazítása. */
+}
+
+.info-block ul li .icon {
+    margin-right: 10px;                        /* Az ikon és a szöveg közötti távolság 10px. */
+    font-size: 24px;                           /* Az ikon betűmérete 24px. */
+}
+
+/* Image Styling */
+.kep {
+    width: 40%;                                /* A kép szélessége 40%, így kisebb és arányos lesz. */
+    height: auto;                              /* A magasság automatikusan igazodik a szélességhez. */
+    border-radius: 10px;                       /* A kép sarkai lekerekítve. */
+    transition: transform 0.3s ease;           /* A kép finoman átméreteződik hoverkor 0.3 másodperc alatt. */
+}
+
+.kep:hover {
+    transform: scale(1.05);                    /* A kép 5%-kal nagyobb lesz hoverkor. */
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 858px) {
+    .topnav {
+        position: relative;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .topnav h1 {
+        font-size: 26px;
+        margin-bottom: 15px;
+        text-align: center;  /* A cím középre igazítása */
+    }
+
+    .button-container {
+        flex-direction: column;  /* Gombok egymás alá kerülnek */
+        gap: 10px;
+        align-items: center;  /* Középre igazítás */
+    }
+
+    .btn {
+        padding: 10px 25px;
+        font-size: 16px !important;
+        width: 100%;
+    }
+
+    .Informational {
+        margin-top: 20px;
+        padding: 40px 15px;
+    }
+
+    .Informational h3 {
+        font-size: 28px;
+    }
+
+    .Informational p {
+        font-size: 16px !important;
+    }
+
+    .combined-section {
+        padding: 20px 15px;
+    }
+
+    .info-block {
+        padding: 15px;
+    }
+
+    .info-block h2 {
+        font-size: 24px;
+    }
+
+    .info-block ul li {
+        font-size: 16px !important;
+    }
+
+    .kep {
+        width: 100%;  /* Mobilon a képek szélessége teljes */
+        max-width: 100%;  /* Ne legyenek túl nagyok */
+        margin-bottom: 20px;  /* Térköz a képek között */
+    }
+    .info-block ul li {
+        font-size: 16px !important;
+    }
+
+    /* Nagyobb térközök a szövegek között */
+    .Informational p {
+        line-height: 1.6;
+    }
+}
+
+/* Egyéb kisebb javítások a reszponzivitáshoz */
+@media screen and (max-width: 576px) {
+    .btn {
+        padding: 12px 30px;
+        font-size: 14px !important;
+    }
+
+    .topnav h1 {
+        font-size: 24px;
+    }
+
+    .Informational h3 {
+        font-size: 24px;
+    }
+}
+/* Prevent Text Selection */
+.prevent-select {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}

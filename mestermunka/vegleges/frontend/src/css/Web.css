@@ -1,0 +1,434 @@
+/* Alap stílusok */
+body {
+  font-family: 'Cinzel', serif;
+  margin: 0;
+  padding: 0;
+  background-size: cover;
+  overflow-x: hidden;
+}
+
+p {
+  font-weight: bold;
+  font-size: 1rem;
+  color: gray;
+}
+
+li {
+  color: gray;
+  font-weight: bold;
+}
+
+img {
+  max-width: 100%;
+  width:100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Fejléc */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background-color: rgba(51, 51, 51, 0.8); /* Félig átlátszó háttér */
+  position: relative;
+  top: 0.5rem; /* A margóhoz igazítjuk */
+  width: 90%;
+  max-width: 1200px; /* Limit max width for large screens */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  height: 3.5rem;
+  border-radius: 1.5rem;
+  box-sizing: border-box;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.header-left a {
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: #f1c40f;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  background-color: #333;
+  border: none;
+  min-width: 200px;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  color: #f1c40f;
+  font-size: 14px;
+  padding: 8px 15px;
+}
+
+.dropdown-item:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+/* A majdnem teljes képernyős háttér beállítása */
+.castle-background {
+  position: fixed; /* A háttér fixen a képernyőn marad */
+  top: -35px; /* A fejléc magassága (50px) + a fejléc top (10px) + egy kis extra tér (10px) */
+  left: 5px; /* 5px margó balról */
+  right: 5px; /* 5px margó jobbról */
+  bottom: 5px; /* 5px margó alul */
+  width: calc(100% - 10px); /* Szélesség - 10px (5px balra, 5px jobbra) */
+  height: calc(100vh - 75px); /* Magasság - (fejléc magassága + top + margó) */
+  z-index: -1; /* A háttér a tartalom alá kerül */
+  overflow: hidden;
+  border-radius: 50px;
+}
+.main {
+  position: relative;
+  text-align: center;
+  margin-top: 20vh;
+  padding: 20px;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Árnyék a jobb olvashatóság érdekében */
+}
+
+/* Mobil nézet */
+@media (max-width: 768px) {
+  .header {
+    padding: 8px 10px;
+    width: 90%; /* Mobil nézetben kicsit szélesebb */
+    max-width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 60px;
+  }
+
+  .header-left a {
+    font-size: 18px;
+  }
+
+  .header-right {
+    margin-top: 0;
+  }
+
+  .header-right button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  margin-right: 20px; /* Térköz a szöveg és a gomb között */
+}
+
+.header-left a {
+  font-weight: bold;
+  font-size: 24px; /* Kisebb betűméret telefonon */
+  text-decoration: none;
+  color: #f1c40f;
+  text-transform: uppercase;
+}
+
+.header-left a:hover {
+  text-decoration: underline;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-right button {
+  background-color: #e74c3c;
+  border: none;
+  padding: 8px 20px; /* Kisebb padding telefonon */
+  color: white;
+  font-size: 14px; /* Kisebb betűméret */
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.header-right button:hover {
+  background-color: #c0392b;
+}
+
+.dropdown{
+  position: relative;
+}
+.dropdown-menu {
+  background-color: #333;
+  border: none;
+  min-width: 12rem;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-item {
+  color: #f1c40f;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+/* Háttérkép */
+.castle-background {
+  position: relative;
+  top: 4.5rem; /* Account for header height */
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  width: calc(100% - 1rem);
+  height: calc(100vh - 5rem);
+  z-index: -1;
+  overflow: hidden;
+  border-radius: 1.5rem;
+}
+
+#castle {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: sepia(0.4);
+}
+
+/* Main konténer */
+.main {
+  position: relative;
+  text-align: center;
+  margin-top: 10vh; /* Reduced for better mobile fit */
+  padding: 1.5rem;
+  color: white;
+  text-shadow: 0.1rem 0.1rem 0.2rem rgba(0, 0, 0, 0.6);
+}
+
+/* H1 és H2 */
+.main h1 {
+  font-size: clamp(1.8rem, 5vw, 2.5rem); /* Responsive font size */
+  font-weight: bold;
+  color: gray;
+}
+
+.main h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: gray;
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
+
+/* Képek beállítása */
+#guides {
+  max-height: 12rem;
+  background-color: transparent;
+  border-radius: 0.5rem;
+}
+
+/* Sorok elrendezése */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 900px;
+  margin: 0 auto;
+  gap: 1rem;
+  flex-wrap: wrap; /* Allow wrapping */
+}
+/* A flex konténerek */
+.col-md-6 {
+  flex: 1;
+  padding: 1rem;
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+  min-width: 250px; /* Prevent squashing */
+}
+/* Letöltési gomb */
+.download-section {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.download-btn {
+  padding: 0.5rem 1rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-width: 12rem; /* Touch-friendly size */
+}
+
+.download-btn:hover {
+  background-color: #45a049;
+}
+
+/* Logout gomb */
+#logoutButton {
+  border-radius: 0.3rem; /* Consistent with other buttons */
+}
+
+/* Tablet nézet (768px alatt) */
+@media (max-width: 768px) {
+  .header {
+    padding: 0.5rem 1rem;
+    width: 95%;
+    height: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .header-left {
+    margin-left: 0;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+  }
+
+  .header-left a {
+    font-size: 1.2rem;
+  }
+
+  .header-right {
+    margin-right: 0;
+    margin-top: 0.5rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .header-right button {
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+  }
+
+  .castle-background {
+    top: 6rem;
+    height: calc(100vh - 6.5rem);
+    border-radius: 1rem;
+  }
+
+  .main {
+    margin-top: 8vh;
+    padding: 1rem;
+  }
+
+  .main h1 {
+    font-size: clamp(1.5rem, 4.5vw, 2rem);
+  }
+
+  .main h2 {
+    font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .col-md-6 {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  #guides {
+    max-height: 10rem;
+  }
+
+  .download-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    min-width: 10rem;
+  }
+}
+
+/* Kisebb telefonok (576px alatt) */
+@media (max-width: 576px) {
+  .header {
+    padding: 0.4rem 0.8rem;
+    top: 0.3rem;
+    border-radius: 0.8rem;
+  }
+
+  .header-left a {
+    font-size: 1rem;
+  }
+
+  .header-right button {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.7rem;
+  }
+
+  .dropdown-menu {
+    min-width: 10rem;
+  }
+
+  .dropdown-item {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .castle-background {
+    top: 5rem;
+    left: 0.3rem;
+    right: 0.3rem;
+    border-radius: 0.8rem;
+  }
+
+  .main {
+    margin-top: 6vh;
+    padding: 0.8rem;
+  }
+
+  .main h1 {
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+  }
+
+  .main h2 {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+  }
+
+  .col-md-6 {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+
+  #guides {
+    max-height: 8rem;
+  }
+
+  .download-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+    min-width: 8rem;
+  }
+}
