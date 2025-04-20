@@ -127,8 +127,7 @@ const ChatPage = () => {
                                                 setEditContent(post.Content);
                                                 setEditTitle(post.title); // Set the title for edit mode
                                             }}
-                                            className="edit-btn"
-                                        >
+                                            className="edit-btn">
                                             Szerkesztés
                                         </button>
                                     </div>

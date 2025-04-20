@@ -206,7 +206,6 @@ const LoginSignup = () => {
                             <div className="modal-content">
                                 <h2>Hello {username}, welcome back!</h2>
                                 <button onClick={() => setShowModal(false)}>Close</button>
-                                <button onClick={handleDeleteUser}>Delete Account</button>
                             </div>
                         </div>
                     )}
