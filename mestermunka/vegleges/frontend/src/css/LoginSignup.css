@@ -241,13 +241,14 @@ form .register-link {
 
 @media (max-width: 600px) {
   .wrapper {
-    justify-content: flex-start; 
-    align-items: flex-start;
+    justify-content: center !important; 
+    align-items: center !important;
     padding-top: 10%;
   }
 
   h1 {
-    font-size: 28px; 
+    font-size: 28px;
+    text-align: center !important;
   }
 
   .input-box input {
