@@ -1,123 +1,118 @@
-/* Disable scrolling on the entire page 
-body {
-    margin: 0;
-    overflow: hidden;
-    height: 100vh; /* Ensure the body takes the full viewport height 
-}
-*/
-/* Alap: elrejtjük a scrollt, sima megjelenés */
+/* --- A fő chat oldal beállításai --- */
 .chat-page {
-    -webkit-overflow-scrolling: touch;
-    overflow: hidden;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh; /* Take full viewport height */
-    box-sizing: border-box;
-    overflow: hidden;
+    -webkit-overflow-scrolling: touch;  /* Engedélyezi a gördítést lendítéssel iOS eszközökön */
+    overflow: hidden; /* Elrejti a túlcsorduló tartalmat (mind vízszintesen, mind függőlegesen) */
+    -ms-overflow-style: none; /* Internet Explorer-nél elrejti a scrollbar-t */
+    scrollbar-width: none; /* Firefox-ban elrejti a scrollbar-t */
+    display: flex;  /* Flexbox elrendezés aktiválása */
+    flex-direction: column; /* Gyermekelemeket oszlopirányban rendezi el */
+    align-items: center; /* Középre igazítja a gyermekelemeket vízszintesen */
+    height: 100vh; /* Az elem magassága a teljes nézetmagasság legyen (100% viewport height) */
+    box-sizing: border-box; /* A padding és border beleszámít az elem teljes méretébe */
 }
 
-/* Navigációs fejléc */
+/* --- Fejléc konténer --- */
 .cointainer-header {
-    flex-shrink: 0;
+    flex-shrink: 0; /* Megakadályozza, hogy az elem összenyomódjon a flex konténerben */
     background-color: #2c3e50;
-    padding: 1rem 2rem !important;
-    border-radius: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 1300px;
-    margin: 0 auto;
+    padding: 1rem 2rem !important; /* Belső margó: fent/lent 1rem, bal/jobb 2rem, !important felülbírál mást */
+    border-radius: 30px; /* Lekerekíti a sarkokat 30px-re */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Árnyék: lefelé 4px, elmosódás 8px, halvány fekete */
+    width: 100%; /* Teljes szélességet foglal */
+    max-width: 1300px; /* De legfeljebb 1300px széles lehet */
+    margin: 0 auto; /* Automatikusan középre igazítja vízszintesen */
     box-sizing: border-box;
 }
 
+/* --- Navigációs sáv --- */
 .chat-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #ecf0f1;
-    font-weight: bold;
-    font-size: 1.5rem;
-    width: 700px;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;  
+    display: flex; /* Flexbox elrendezés – gyermekelemeket rugalmasan rendezi el */
+    justify-content: space-between; /* Gyermekelemeket egyenletesen osztja el, első balra, utolsó jobbra */
+    align-items: center; /* Függőlegesen középre igazítja őket */
+    color: #ecf0f1;  /* Szövegszín: világosszürke */
+    font-weight: bold; /* Félkövér betűk */
+    font-size: 1.5rem; /* Betűméret */
+    width: 700px; /* Fix szélesség */
+    margin: 0; /* Margó törlése */
+    padding: 0; /* Padding törlése */
+    box-sizing: border-box;    /* Méretkezelés */
 }
 
+/* --- Cím a bal oldalon --- */
 .nav-title {
-    cursor: pointer;
-    transition: color 0.3s ease;
-    margin-left: 10px;
+    cursor: pointer; /* Kéz ikon, ha ráviszed az egeret */
+    transition: color 0.3s ease; /* Színváltás animáció 0.3 másodperc alatt */
+    margin-left: 10px; /* Bal oldalon kis térköz */
 }
 
+/* --- Cím hoverre --- */
 .nav-title:hover {
-    color: #1abc9c;
+    color: #1abc9c; /* Hover állapotban világoskékeszöld szín */
 }
 
+/* --- Középre igazított cím --- */
 .nav-center {
-    font-size: 1.5rem;
-    color: #f1c40f;
-    flex-grow: 1;
-    text-align: center;
-    margin-right: -250px;
-    color: #f1c40f;
-}
+    font-size: 1.5rem; /* Betűméret */
+    color: #f1c40f; /* Sárga szín */
+    flex-grow: 1; /* Kitölti a rendelkezésre álló helyet */
+    text-align: center;  /* Középre igazított szöveg */
+    margin-right: -250px;  /* Jobbról negatív margó, hogy jobbra tolódjon */
+} 
 
-/* A postokat tartalmazó fő container */
+/* --- Bejegyzések fő tárolója --- */
 .cointainer-posts {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-    height: calc(100vh - 250px);
-    overflow: hidden; /* Disable scrolling on the container */
-    padding: 20px;
+    flex: 1 1 auto; /* Flex-grow, shrink és basis beállítás */
+    overflow-y: auto; /* Függőleges görgetés engedélyezve (de felülírva lentebb) */
+    width: 100%; /* Teljes szélesség */
+    max-width: 1000px; /* De max 1000px lehet */
+    margin: 0 auto; /* Középre igazítás */
+    height: calc(100vh - 250px);  /* Magasság a teljes nézetmagasság - header és footer */
+    overflow: hidden; /* Görgetés mégis tiltva – a fentit felülírja */
+    padding: 20px; /* Körbe padding */
     padding-bottom: 20px;
     box-sizing: border-box;
-    border: 2px solid #ccc;
+    border: 2px solid #ccc; /* Szürke keret */
     background-color: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: flex; /* Flex layout */
+    flex-direction: column; /* Oszlopos elrendezés */
+    gap: 15px; /* Elemenkénti távolság */
 }
 
-/* Egyes post doboz */
+/* --- Egy bejegyzés doboz --- */
 .post {
     background-color: white;
-    padding: 15px;
+    padding: 15px; /* Belső térköz */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    cursor: pointer;
-    max-height: 300px;
-    overflow-y: auto;
-    -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    transition: all 0.3s ease; /* Animáció minden változásra */
+    cursor: pointer;  /* Kéz ikon */
+    max-height: 300px; /* Maximális magasság */
+    overflow-y: auto; /* Függőlegesen görgethető */
+    -ms-overflow-style: none; /* IE-ben scrollbar elrejtése */
+    scrollbar-width: none; /* Firefoxban scrollbar elrejtése */
 }
 
 
-/* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+
 .post::-webkit-scrollbar {
     display: none;
 }
 
 .post.expanded {
     background-color: #f5f5f5;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Árnyék minden irányban */
 }
 
-/* Ensure the expanded content also supports scrolling if needed */
+
 .post-expanded-content {
-    max-height: 200px; /* Limit the height of the expanded content */
-    overflow-y: auto; /* Enable scrolling for expanded content */
+    max-height: 200px; /* Maximális magasság */
+    overflow-y: auto; /* Függőlegesen görgethető */
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
 
 .post-expanded-content::-webkit-scrollbar {
-    display: none;
+    display: none; 
 }
 
 .post.expanded {
@@ -125,16 +120,17 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* --- Bejegyzés fejléce --- */
 .post-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* Szerkesztés és törlés gomb */
+/* --- Törlés és szerkesztés gombok --- */
 .delete-btn, .edit-btn {
-    background: none;
-    border: none;
+    background: none;  /* Nincs háttér */
+    border: none;  /* Nincs szegély */
     cursor: pointer;
     font-size: 18px;
     color: #ff4d4d;
@@ -186,22 +182,22 @@ textarea {
 
 /* A rögzített input-mező alul */
 .cointainer-submit {
-    flex-shrink: 0;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    flex-shrink: 0; /* Nem engedi, hogy összenyomódjon a flexbox miatt */
+    position: fixed; /* Az elem fix pozícióban marad az ablakhoz képest (nem görgetődik vele) */
+    bottom: 0; /* Az elem alul helyezkedik el a nézetablakban */
+    left: 0; /* Bal oldalt indul teljes szélességben */
+    right: 0; /* Jobb oldalt is "kitapad" – így a teljes alsó sávot lefedi */
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
     background-color: #ffffff;
     padding: 10px 15px;
     box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
+    display: flex; /* Flexbox elrendezés – a belső elemek elrendezéséhez */
+    flex-direction: column; /* A belső elemek oszlopban (függőlegesen) helyezkednek el */
     gap: 8px;
     border-top: 2px solid #ddd;
-    z-index: 10;
+    z-index: 10;  /* Réteg sorrend – más elemek fölé helyezi, ha kell */
 }
 
 /* Bővítő gomb */
@@ -238,7 +234,7 @@ textarea {
     }
 
     .nav-title {
-        margin-left: 0; /* Remove margin in mobile view */
+        margin-left: 0; 
     }
 
     .cointainer-header {
@@ -257,21 +253,21 @@ textarea {
     }
 
     .cointainer-posts {
-        height: calc(100vh - 300px); /* Adjust for mobile header/submit heights */
+        height: calc(100vh - 300px); /* Magasság - (fejléc magassága + top + margó) */
     }
 
     .submit-btn {
-        width: 100%;
+        width: 100%; /* A gomb teljes szélességben */
     }
 
     .post-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
+        flex-direction: column; /* Oszlopban helyezkednek el */
+        align-items: flex-start; /* Balra igazítás */
+        gap: 5px; /* Szelesség készítés */
     }
 
     textarea, .input-title, .input-text {
-        font-size: 14px;
+        font-size: 14px; 
     }
 }
 
@@ -292,7 +288,7 @@ textarea {
     }
 
     .nav-title {
-        margin-left: 0; /* Remove margin in mobile view */
+        margin-left: 0; 
     }
 
     .cointainer-header {
@@ -312,7 +308,7 @@ textarea {
     }
 
     .cointainer-posts {
-        height: calc(100vh - 300px); /* Adjust for mobile header/submit heights */
+        height: calc(100vh - 300px); 
     }
 
     .submit-btn {
@@ -346,7 +342,7 @@ textarea {
     }
 
     .nav-title {
-        margin-left: 0; /* Remove margin in mobile view */
+        margin-left: 0; 
     }
 
     .cointainer-header {
@@ -366,7 +362,7 @@ textarea {
     }
 
     .cointainer-posts {
-        height: calc(100vh - 300px); /* Adjust for mobile header/submit heights */
+        height: calc(100vh - 300px); 
     }
 
     .submit-btn {

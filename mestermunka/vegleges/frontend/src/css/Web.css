@@ -235,6 +235,7 @@ img {
 
 /* H1 és H2 */
 .main h1 {
+  margin-top: 15px;
   font-size: clamp(1.8rem, 5vw, 2.5rem); /* Responsive font size */
   font-weight: bold;
   color: gray;
@@ -398,6 +399,7 @@ img {
   }
 
   .castle-background {
+    margin-bottom: 1px ;
     top: 5rem;
     left: 0.3rem;
     right: 0.3rem;

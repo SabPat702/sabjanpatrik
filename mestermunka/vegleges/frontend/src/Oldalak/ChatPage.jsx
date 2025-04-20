@@ -125,7 +125,7 @@ const ChatPage = () => {
                                                 e.stopPropagation();
                                                 setEditMode(post.id);
                                                 setEditContent(post.Content);
-                                                setEditTitle(post.title); // Set the title for edit mode
+                                                setEditTitle(post.Title); // Set the title for edit mode
                                             }}
                                             className="edit-btn">
                                             Szerkesztés

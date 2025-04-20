@@ -204,9 +204,7 @@ const LoginSignup = () => {
                     {showModal && (
                         <div className="modal-overlay">
                             <div className="modal-content">
-                                <h2>Hello {username}, welcome back!</h2>
-                                <button onClick={() => setShowModal(false)}>Close</button>
-                                <button onClick={handleDeleteUser}>Delete Account</button>
+                                <h2>Hello {username}, welcome back!</h2>  
                             </div>
                         </div>
                     )}
@@ -234,7 +232,6 @@ const LoginSignup = () => {
                         <div className="modal-overlay">
                             <div className="modal-content">
                                 <h2>Dear {username}, thank you for registering!</h2>
-                                <button onClick={() => setShowModal(false)}>Close</button>
                             </div>
                         </div>
                     )}

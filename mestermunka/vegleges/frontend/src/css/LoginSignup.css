@@ -10,11 +10,11 @@ h1 {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw; /* Full width */
-  height: 100vh; /* Full height */
+  width: 100vw; /* Teljes szélesség */
+  height: 100vh; /* Teljes magasság */
   display: flex;
-  justify-content: center; /* Center form horizontally */
-  align-items: center; /* Center form vertically */
+  justify-content: center; /* Középre igazítja a formokat */
+  align-items: center; /* Középre igazítja a formokat */
   color: #fff;
   overflow: hidden;
   background-image: url("FantModernCity.jpg");
@@ -26,11 +26,11 @@ h1 {
 /* Form Box */
 .form-box {
   position: relative;
-  background-size: cover !important; /* Cover entire screen */
-  width: 100%; /* Set width for forms */
+  background-size: cover !important; 
+  width: 100%; 
   max-width: 420px;
-  height: auto; /* Let height adjust based on content */
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  height: auto; 
+  background: rgba(0, 0, 0, 0.5); 
   backdrop-filter: blur(30px);
   border-radius: 55px;
   color: #fff;
@@ -43,10 +43,10 @@ h1 {
 }
 
 .show {
-  display: flex; /* Show the form when needed */
+  display: flex; 
 }
 
-/* Form Heading */
+
 form h1 {
   font-size: 36px;
   margin: 0 75px 25px 75px;
@@ -54,17 +54,17 @@ form h1 {
   display: block;
 }
 
-/* Input Box */
+
 .input-box {
   text-align: center;
   display: flex;
   align-items: center;
   position: relative;
   width: 100%;
-  margin: 15px 0; /* Reduced margin */
+  margin: 15px 0; 
 }
 
-/* Password Box */
+
 .password-box {
   position: relative;
 }
@@ -74,7 +74,7 @@ form h1 {
   padding-right: 40px;
 }
 
-/* Password Strength Indicator */
+
 .password-strength p {
   font-size: 20px;
 }
@@ -91,7 +91,7 @@ form h1 {
   color: green;
 }
 
-/* Forgot Password Link */
+
 .forgot-password {
   text-align: center;
   margin-top: 15px;
@@ -107,7 +107,7 @@ form h1 {
   text-decoration: underline;
 }
 
-/* Modal */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -146,7 +146,7 @@ form h1 {
   background-color: #45a049;
 }
 
-/* Toggle Icon */
+
 .toggle-icon {
   position: absolute;
   right: 10px;
@@ -155,7 +155,7 @@ form h1 {
   font-size: 18px;
 }
 
-/* Input Box Styling */
+
 .input-box input {
   text-align: center;
   width: 100%;
@@ -172,7 +172,7 @@ form h1 {
   color: #fff;
 }
 
-/* Remember / Forgot Section */
+
 form .remember-forgot {
   display: flex;
   justify-content: space-between;
@@ -194,7 +194,7 @@ form .remember-forgot {
   text-decoration: underline;
 }
 
-/* Submit Button */
+
 form button {
   width: 100%;
   height: 45px;
@@ -209,7 +209,7 @@ form button {
   margin-top: 15px; /* Add margin for separation */
 }
 
-/* Register Link */
+
 form .register-link {
   font-size: 14.5px;
   text-align: center;
@@ -226,7 +226,7 @@ form .register-link {
   text-decoration: underline;
 }
 
-/* Success & Error Messages */
+
 .success {
   color: green;
   margin-top: 10px;
@@ -238,23 +238,23 @@ form .register-link {
 }
 
 
-/* Mobile Responsive - Lengthen text content on small screens */
+
 @media (max-width: 600px) {
   .wrapper {
-    justify-content: flex-start; /* Align forms to the top on mobile */
+    justify-content: flex-start; 
     align-items: flex-start;
     padding-top: 10%;
   }
 
   h1 {
-    font-size: 28px; /* Adjust font size for better readability */
+    font-size: 28px; 
   }
 
   .input-box input {
-    font-size: 18px; /* Make input text bigger on smaller screens */
+    font-size: 18px; 
   }
 
-  /* Change text content length */
+  
   .form-box h1 {
     font-size: 30px;
     text-align: left;
@@ -265,7 +265,7 @@ form .register-link {
     margin: 10px 0;
   }
 
-  /* Increase the space between form elements */
+  
   .modal-content h2 {
     font-size: 22px;
   }

@@ -160,14 +160,14 @@ const Home = () => {
             </div>
 
             <div className="main">
-                <h1>Üdvözöllek a Dungeon Valley Explorerben</h1>
-                <h2>Itt kezdődik az utazásod.</h2>
+                <h1>Welcome to Dungeon Valley Explorer.</h1>
+                <h2>This is where your journey begins.</h2>
                 <br />
                 <br />
                 <div className="row">
                     <div className="download-section">
                         <button className="download-btn" onClick={handleDownload}>
-                            Dungeon Valley Explorer letöltése
+                            Download Dungeon Valley Explorer
                         </button>
                     </div>
                     <DungeonBook />
